@@ -21,8 +21,8 @@ class HealthCheck {
 		$php_version_check = version_compare(HEALTH_CHECK_PHP_VERSION, PHP_VERSION, '<');
 		$mysql_version_check = version_compare(HEALTH_CHECK_MYSQL_VERSION, $wpdb->db_version(), '<');
 		$db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
+		$message ='';
 		
-		$message = "<div id='health-check-warning' class='updated'>";
 		if ( !$php_version_check ) 
 			$message .= "<p><strong>".__('Warning:', 'health-check')."</strong> ".sprintf(__('Your server is running PHP version %1$s. WordPress 3.2 will require PHP version %2$s.', 'health-check'), PHP_VERSION, HEALTH_CHECK_PHP_VERSION)."</p>";
 		if ( !$mysql_version_check ) {
@@ -32,13 +32,13 @@ class HealthCheck {
 				$message .= "<p><strong>".__('Note:', 'health-check')."</strong> ".__('You are using a <code>wp-content/db.php</code> drop-in which may not being using a MySQL database.', 'health-check')."</p>";
 		}
 
-		if ( $php_version_check && $mysql_version_check )
+		if ( $php_version_check && $mysql_version_check ) {
 			$message .= "<p><strong>".__('Excellent:', 'health-check')."</strong> ".sprintf(__('Your server is running PHP version %1$s and MySQL version %2$s which will be great for WordPress 3.2 onward.', 'health-check'), PHP_VERSION, $wpdb->db_version())."</p>";
-		else
+			$message = "<div id='health-check-warning' class='updated'>" . $message . "</div>";
+		} else {
 			$message .= "<p>".__('Once your host has upgraded your server you can re-activate the plugin to check again.', 'health-check')."</p>";
-
-		$message .= "</div>";
-
+			$message = "<div id='health-check-warning' class='error'>" . $message . "</div>";
+		}
 		echo $message;
 		
 		deactivate_plugins(__FILE__);
