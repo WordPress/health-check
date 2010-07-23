@@ -13,7 +13,7 @@ common configuration errors and known issues.
 For now it just checks the PHP and MySQL versions of your server are not too low
 to meet the requirements that we have announced for WordPress 3.2
 
-Once it has checked the versions and fed back the results it will de-activate itself.
+Once it has checked the versions it will feed back the results.
 
 In future this plugin will also provide a whole suite of checks for other things which
 may be affecting your install.
