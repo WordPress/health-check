@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check
 	Plugin URI: http://wordpress.org/extend/plugins/health-check/
-	Description: Checks the health of your WordPress install (and then deactivates itself)
+	Description: Checks the health of your WordPress install
 	Author: The WordPress.org community
 	Version: 0.1
 	Author URI: http://wordpress.org/extend/plugins/health-check/
@@ -11,9 +11,14 @@ define('HEALTH_CHECK_PHP_VERSION', '5.2');
 define('HEALTH_CHECK_MYSQL_VERSION', '5.0.15');
 
 class HealthCheck {
-	
+
 	function action_plugins_loaded() {
-		add_action('admin_notices', array('HealthCheck', 'action_admin_notice'));
+		if ( get_transient( 'health-check-version-test' ) )
+			add_action('admin_notices', array('HealthCheck', 'action_admin_notice'));
+	}
+
+	function action_activate() {
+		set_transient( 'health-check-version-test', '1', 300 );
 	}
 
 	function action_admin_notice() {
@@ -40,11 +45,12 @@ class HealthCheck {
 			$message = "<div id='health-check-warning' class='error'>" . $message . "</div>";
 		}
 		echo $message;
-		
-		deactivate_plugins(__FILE__);
+
+		delete_transient( 'health-check-version-test' );
 	}
 
 }
 /* Initialize ourselves */
 add_action('plugins_loaded', array('HealthCheck','action_plugins_loaded'));
+register_activation_hook( __FILE__, array( 'HealthCheck', 'action_activate' ) );
 ?>
