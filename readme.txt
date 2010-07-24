@@ -22,4 +22,4 @@ may be affecting your install.
 
 1. Upload to your plugins folder, usually `wp-content/plugins/`
 2. Activate the plugin on the plugin screen.
-3. Check the health of your WordPress install at Tools > Health Check
+3. See if your server is prepared for WordPress 3.2
