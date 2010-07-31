@@ -26,4 +26,4 @@ may be affecting your install.
 
 == Screenshots ==
 
-1. This shows the plugin in action.  When you activate it you get a message at the top of the plugins page.=======
+1. This shows the plugin in action.  When you activate it you get a message at the top of the plugins page.
