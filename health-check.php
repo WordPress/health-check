@@ -4,11 +4,11 @@
 	Plugin URI: http://wordpress.org/extend/plugins/health-check/
 	Description: Checks the health of your WordPress install
 	Author: The WordPress.org community
-	Version: 0.1
+	Version: 0.2
 	Author URI: http://wordpress.org/extend/plugins/health-check/
  */
-define('HEALTH_CHECK_PHP_VERSION', '5.2');
-define('HEALTH_CHECK_MYSQL_VERSION', '5.0.15');
+define('HEALTH_CHECK_PHP_VERSION', '5.2.4');
+define('HEALTH_CHECK_MYSQL_VERSION', '5.0');
 
 class HealthCheck {
 
