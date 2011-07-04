@@ -4,7 +4,7 @@
 	Plugin URI: http://wordpress.org/extend/plugins/health-check/
 	Description: Checks the health of your WordPress install
 	Author: The WordPress.org community
-	Version: 0.2
+	Version: 0.2.1
 	Author URI: http://wordpress.org/extend/plugins/health-check/
  */
 define('HEALTH_CHECK_PHP_VERSION', '5.2.4');
@@ -23,8 +23,8 @@ class HealthCheck {
 
 	function action_admin_notice() {
 		global $wpdb;
-		$php_version_check = version_compare(HEALTH_CHECK_PHP_VERSION, PHP_VERSION, '<');
-		$mysql_version_check = version_compare(HEALTH_CHECK_MYSQL_VERSION, $wpdb->db_version(), '<');
+		$php_version_check = version_compare(HEALTH_CHECK_PHP_VERSION, PHP_VERSION, '<=');
+		$mysql_version_check = version_compare(HEALTH_CHECK_MYSQL_VERSION, $wpdb->db_version(), '<=');
 		$db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 		$message ='';
 		
