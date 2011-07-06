@@ -27,3 +27,14 @@ may be affecting your install.
 == Screenshots ==
 
 1. This shows the plugin in action.  When you activate it you get a message at the top of the plugins page.
+
+== Changelog ==
+
+= v 0.2.1 =
+* Fixed version comparision bug - When the server had the exact required versions we reported it as out of date.
+
+= v 0.2 =
+* Updated with actual PHP and MySQL version requirements for WordPress 3.2
+
+= v 0.1 =
+* Initial release with checks for the PHP and MySQL versions we will likely target for WordPress 3.2
