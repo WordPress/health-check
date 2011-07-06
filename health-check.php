@@ -59,7 +59,7 @@ class HealthCheck {
 		}
 
 		if ( ! $json_check ) {
-			$message .= "<p><strong>".__('Note:', 'health-check')."</strong> ".__('The PHP install on your server has JSON disabled and is therefore not compatible with WordPress 3.2.', 'health-check')."</p>";
+			$message .= "<p><strong>".__('Note:', 'health-check')."</strong> ".__('The PHP install on your server has the JSON extension disabled and is therefore not compatible with WordPress 3.2.', 'health-check')."</p>";
 		}
 
 		if ( $php_version_check && $mysql_version_check && $json_check) {
