@@ -3,7 +3,7 @@ Tags: health check
 Contributors: westi, pento
 Requires at least: 2.9.2
 Tested up to: 4.3
-Stable tag: 0.2.1
+Stable tag: 0.3
 
 == Description ==
 
