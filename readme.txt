@@ -1,8 +1,8 @@
 === Health Check ===
 Tags: health check
-Contributors: westi
+Contributors: westi, pento
 Requires at least: 2.9.2
-Tested up to: 3.2
+Tested up to: 4.3
 Stable tag: 0.2.1
 
 == Description ==
@@ -22,13 +22,18 @@ may be affecting your install.
 
 1. Upload to your plugins folder, usually `wp-content/plugins/`
 2. Activate the plugin on the plugin screen.
-3. See if your server is prepared for WordPress 3.2
+3. See if your server is prepared for WordPress
 
 == Screenshots ==
 
 1. This shows the plugin in action.  When you activate it you get a message at the top of the plugins page.
 
 == Changelog ==
+
+= v 0.3 =
+* Added recommended PHP and MySQL versions
+* Check for utf8mb4 support
+* Fixed a bunch of PHP warnings
 
 = v 0.2.1 =
 * Fixed version comparision bug - When the server had the exact required versions we reported it as out of date.
