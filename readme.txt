@@ -30,6 +30,9 @@ may be affecting your install.
 
 == Changelog ==
 
+= v 0.3.1 =
+* Fixed a few typos
+
 = v 0.3 =
 * Added recommended PHP and MySQL versions
 * Check for utf8mb4 support

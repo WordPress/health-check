@@ -20,7 +20,7 @@ class HealthCheck {
 	}
 
 	static function action_admin_menu() {
-		add_dashboard_page( __( 'Heath Check', 'health-check' ), __( 'Heath Check', 'health-check' ), 'manage_options', 'health-check', array( 'HealthCheck', 'dashboard_page' ) );
+		add_dashboard_page( __( 'Health Check', 'health-check' ), __( 'Health Check', 'health-check' ), 'manage_options', 'health-check', array( 'HealthCheck', 'dashboard_page' ) );
 	}
 
 	static function settings_link( $meta, $name ) {
@@ -34,7 +34,7 @@ class HealthCheck {
 	static function dashboard_page() {
 		?>
 		<div class="wrap"><?php screen_icon(); ?>
-			<h2><?php _e( 'Heath Check', 'health-check' ); ?></h2>
+			<h2><?php _e( 'Health Check', 'health-check' ); ?></h2>
 			<?php echo HealthCheck::get_message(); ?>
 		</div>
 		<?php
