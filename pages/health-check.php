@@ -8,6 +8,7 @@ global $wpdb;
 $php_min_version_check = version_compare( HEALTH_CHECK_PHP_MIN_VERSION, PHP_VERSION, '<=' );
 $php_rec_version_check = version_compare( HEALTH_CHECK_PHP_REC_VERSION, PHP_VERSION, '<=' );
 
+$mariadb = false;
 $mysql_server_version = null;
 if ( method_exists( $wpdb, 'db_version' ) ) {
 	if ( $wpdb->use_mysqli ) {
@@ -23,6 +24,7 @@ if ( stristr( $mysql_server_version, 'mariadb' ) ) {
 	$version_parts = explode( '-', $mysql_server_version );
 	$mysql_server_version = $version_parts[1];
 
+	$mariadb = true;
 	$health_check_mysql_rec_version = '10.0';
 }
 
@@ -51,6 +53,7 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 						if ( ! $php_rec_version_check ) {
 							$status = 'warning';
 							$notice[] = sprintf(
+								// translators: %s: Recommended PHP version
 								esc_html__( 'For performance and security reasons, we strongly recommend running PHP version %s or higher.', 'health-check' ),
 								HEALTH_CHECK_PHP_REC_VERSION
 							);
@@ -59,7 +62,8 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 						if ( ! $php_min_version_check ) {
 							$status = 'error';
 							$notice[] = sprintf(
-								esc_html__( 'Your version of PHP, %s, is very outdated and no longer receiving security updates. You should contact your host for an upgrade, WordPress recommends using PHP version %s, but will work with version %s or newer.', 'health-check' ),
+								// translators: %1$s: Current PHP version. %2$s: Recommended PHP version. %3$s: Minimum PHP version.
+								esc_html__( 'Your version of PHP, %1$s, is very outdated and no longer receiving security updates. You should contact your host for an upgrade, WordPress recommends using PHP version %2$s, but will work with version %3$s or newer.', 'health-check' ),
 								PHP_VERSION,
 								HEALTH_CHECK_PHP_REC_VERSION,
 								HEALTH_CHECK_PHP_MIN_VERSION
@@ -81,7 +85,16 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 			</tr>
 
 			<tr>
-				<td><?php esc_html_e( 'MySQL Server version', 'health-check' ); ?></td>
+				<td>
+					<?php
+						if ( ! $mariadb ) {
+							esc_html_e( 'MySQL Server version', 'health-check' );
+						}
+						else {
+							esc_html_e( 'MariaDB Server version', 'health-check' );
+						}
+					?>
+				</td>
 				<td>
 					<?php
 					$status = 'good';
@@ -90,6 +103,7 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 					if ( ! $mysql_rec_version_check ) {
 						$status = 'warning';
 						$notice[] = sprintf(
+							// translators: %s: Database server recommended version number.
 							esc_html__( 'For performance and security reasons, we strongly recommend running MySQL version %s or higher.', 'health-check' ),
 							$health_check_mysql_rec_version
 						);
@@ -98,13 +112,15 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 					if ( ! $mysql_min_version_check ) {
 						$status = 'error';
 						$notice[] = sprintf(
+							// translators: %s: Database server minimum version number.
 							esc_html__( 'WordPress 3.2+ requires MySQL version %s', 'health-check' ),
 							HEALTH_CHECK_MYSQL_MIN_VERSION
 						);
 					}
 
 					if ( $db_dropin ) {
-						$notice[] = wp_kses( __( 'You are using a <code>wp-content/db.php</code> drop-in which might mean that a MySQL database is not being used.', 'health-check' ), array( 'code' => true ) );
+						// translators: %s: The database engine in use (MySQL or MariaDB).
+						$notice[] = wp_kses( sprintf( __( 'You are using a <code>wp-content/db.php</code> drop-in which might mean that a %s database is not being used.', 'health-check' ), ( $mariadb ? 'MariaDB' : 'MySQL' ) ), array( 'code' => true ) );
 					}
 
 					printf(
@@ -147,17 +163,33 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 				<td><?php esc_html_e( 'MySQL utf8mb4 support', 'health-check' ); ?></td>
 				<td>
 					<?php
-						if ( version_compare( $wpdb->db_version(), '5.5.3', '<' ) ) {
-							printf(
-								'<span class="warning"></span> %s',
-								esc_html__( 'WordPress\' utf8mb4 support requires MySQL version %s or greater', 'health-check' )
-							);
+						if ( $mariadb ) {
+							if ( version_compare( $mysql_server_version, '5.5.3', '<' ) ) {
+								printf(
+									'<span class="warning"></span> %s',
+									esc_html__( 'WordPress\' utf8mb4 support requires MySQL version %s or greater', 'health-check' )
+								);
+							} else {
+								printf(
+									'<span class="good"></span> %s',
+									esc_html__( 'Your MySQL version supports utf8mb4', 'health-check' )
+								);
+							}
 						}
+						// MariaDB introduced utf8mb4 support in 5.5.0
 						else {
-							printf(
-								'<span class="good"></span> %s',
-								esc_html__( 'Your MySQL version supportes utf8mb4', 'health-check' )
-							);
+							if ( version_compare( $mysql_server_version, '5.5.0', '<' ) ) {
+								printf(
+									'<span class="warning"></span> %s',
+									esc_html__( 'WordPress\' utf8mb4 support requires MariaDB version %s or greater', 'health-check' )
+								);
+							}
+							else {
+								printf(
+									'<span class="good"></span> %s',
+									esc_html__( 'Your MariaDB version supports utf8mb4', 'health-check' )
+								);
+							}
 						}
 
 						if ( $wpdb->use_mysqli ) {
