@@ -1,0 +1,48 @@
+body.dashboard_page_health-check .health-check-table tbody td {
+	width: 80%;
+}
+
+body.dashboard_page_health-check .health-check-table thead th:first-child,
+body.dashboard_page_health-check .health-check-table tbody td:first-child {
+	width: 20%;
+}
+
+body.dashboard_page_health-check .good:before {
+	content: "\f147";
+	display: inline-block;
+	color: #46b450;
+	font-family: dashicons;
+}
+
+body.dashboard_page_health-check .warning:before {
+	content: "\f460";
+	display: inline-block;
+	color: #ffb900;
+	font-family: dashicons;
+}
+
+body.dashboard_page_health-check .error:before {
+	content: "\f335";
+	display: inline-block;
+	color: #dc3232;
+	font-family: dashicons;
+}
+
+.health-check-notice {
+	background: #fff;
+	border-left: 4px solid #fff;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	margin: 5px 0 15px;
+	padding: 1px 12px;
+}
+
+.health-check-notice.notice-info {
+	border-color: #00a0d2;
+}
+.health-check-notice.notice-warning {
+	border-color: #ffb900;
+}
+.health-check-notice.notice-error {
+	border-color: #dc3232;
+}

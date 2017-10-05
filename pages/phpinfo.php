@@ -1,0 +1,54 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( esc_html__( 'We\'re sorry, but you can not directly access this file.', 'health-check' ) );
+}
+
+if ( ! function_exists( 'phpinfo' ) ) {
+	?>
+
+	<div class="health-check-notice notice-error">
+		<p>
+			<?php esc_html_e( 'The phpinfo() function has been disabled by your host. Please contact the host if you need more information about your setup.' ); ?>
+		</p>
+	</div>
+
+<?php } else { ?>
+
+	<div class="health-check-notice notice-warning">
+		<p>
+			<?php esc_html_e( 'Some scenarios require you to look up more detailed server configurations than what is normally required. This page allows you to view all available configuration options for your PHP setup. Please be advised that WordPress does not guarantee that any information shown on this page may not be considered private.' ); ?>
+		</p>
+	</div>
+
+	<?php
+	ob_start();
+	phpinfo();
+	$phpinfo_raw = ob_get_clean();
+
+	// Extract the body of the `phpinfo()` call, to avoid all the styles they introduce.
+	preg_match_all("/<body[^>]*>(.*)<\/body>/siU", $phpinfo_raw, $phpinfo );
+
+	// Extract the styles `phpinfo()` creates for this page.
+	preg_match_all( "/<style[^>]*>(.*)<\/style>/siU", $phpinfo_raw, $styles );
+
+	// We remove various styles that break the visual flow of wp-admin.
+	$remove_patterns = array(
+		"/a:.+?\n/si",
+		"/body.+?\n/si"
+	);
+
+	// Output the styles as an inline style block.
+	if ( isset( $styles[1][0] ) ) {
+		$styles = preg_replace( $remove_patterns, "", $styles[1][0] );
+
+		echo '<style type="text/css">' . $styles . '</style>';
+	}
+
+	// Output the actual phpinfo data.
+	if ( isset( $phpinfo[1][0] ) ) {
+		echo $phpinfo[1][0];
+	}
+	?>
+
+	<?php
+}
