@@ -8,8 +8,26 @@ global $wpdb;
 $php_min_version_check = version_compare( HEALTH_CHECK_PHP_MIN_VERSION, PHP_VERSION, '<=' );
 $php_rec_version_check = version_compare( HEALTH_CHECK_PHP_REC_VERSION, PHP_VERSION, '<=' );
 
-$mysql_min_version_check = version_compare( HEALTH_CHECK_MYSQL_MIN_VERSION, $wpdb->db_version(), '<=' );
-$mysql_rec_version_check = version_compare( HEALTH_CHECK_MYSQL_REC_VERSION, $wpdb->db_version(), '<=' );
+$mysql_server_version = null;
+if ( method_exists( $wpdb, 'db_version' ) ) {
+	if ( $wpdb->use_mysqli ) {
+		$mysql_server_version = mysqli_get_server_info( $wpdb->dbh );
+	} else {
+		$mysql_server_version = mysql_get_server_info( $wpdb->dbh );
+	}
+}
+
+$health_check_mysql_rec_version = HEALTH_CHECK_MYSQL_REC_VERSION;
+
+if ( stristr( $mysql_server_version, 'mariadb' ) ) {
+	$version_parts = explode( '-', $mysql_server_version );
+	$mysql_server_version = $version_parts[1];
+
+	$health_check_mysql_rec_version = '10.0';
+}
+
+$mysql_min_version_check = version_compare( HEALTH_CHECK_MYSQL_MIN_VERSION, $mysql_server_version, '<=' );
+$mysql_rec_version_check = version_compare( $health_check_mysql_rec_version, $mysql_server_version, '<=' );
 
 $json_check = HealthCheck::json_check();
 $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
@@ -72,8 +90,8 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 					if ( ! $mysql_rec_version_check ) {
 						$status = 'warning';
 						$notice[] = sprintf(
-							esc_html__( 'For performance and security reasons, we strongly recommend running PHP version %s or higher.', 'health-check' ),
-							HEALTH_CHECK_PHP_REC_VERSION
+							esc_html__( 'For performance and security reasons, we strongly recommend running MySQL version %s or higher.', 'health-check' ),
+							$health_check_mysql_rec_version
 						);
 					}
 
@@ -86,7 +104,7 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 					}
 
 					if ( $db_dropin ) {
-						$notice[] = esc_html__( 'You are using a <code>wp-content/db.php</code> drop-in which may not being using a MySQL database.', 'health-check' );
+						$notice[] = wp_kses( __( 'You are using a <code>wp-content/db.php</code> drop-in which might mean that a MySQL database is not being used.', 'health-check' ), array( 'code' => true ) );
 					}
 
 					printf(
@@ -94,7 +112,7 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 						esc_attr( $status ),
 						sprintf(
 							'%s%s',
-							$wpdb->db_version(),
+							esc_html( $mysql_server_version ),
 							( ! empty( $notice ) ? ' - ' . implode( '<br>', $notice ) : '' )
 						)
 					);
