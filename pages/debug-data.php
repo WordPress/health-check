@@ -513,7 +513,7 @@ $info = array_replace_recursive( $info, array_replace_recursive( $external_info,
 
 		<div id="system-information-copy-wrapper" style="display: none;">
 			<textarea id="system-information-copy-field" class="widefat" rows="10">`
-				<?php
+<?php
 				foreach ( $info AS $section => $details ) {
 					// Skip this section if there are no fields, or the section has been declared as private.
 					if ( empty( $details['fields'] ) || ( isset( $details['private'] ) && $details['private'] ) ) {
@@ -540,7 +540,7 @@ $info = array_replace_recursive( $info, array_replace_recursive( $external_info,
 					echo "\n";
 				}
 				?>
-				`</textarea>
+`</textarea>
 			<p>
 				<?php esc_html_e( 'Some information may be filtered out from the list you are about to copy, this is information that may be considers private, and is not meant to be shared in a public forum.', 'health-check' ); ?>
 				<br>
