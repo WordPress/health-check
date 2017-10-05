@@ -6,6 +6,7 @@
 	Author: The WordPress.org community
 	Version: 0.4
 	Author URI: http://wordpress.org/extend/plugins/health-check/
+	Text Domain: health-check
  */
 define( 'HEALTH_CHECK_PHP_MIN_VERSION', '5.2.4' );
 define( 'HEALTH_CHECK_PHP_REC_VERSION', '7.0' );
@@ -20,10 +21,16 @@ class HealthCheck {
 	}
 
 	public function init() {
+		add_action( 'plugins_loaded', array( $this, 'load_i18n' ) );
+
 		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'settings_link' ), 10, 2 );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ) );
+	}
+
+	public function load_i18n() {
+		load_plugin_textdomain( 'health-check', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
 	public function enqueues() {
