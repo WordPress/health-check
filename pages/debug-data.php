@@ -503,7 +503,7 @@ $info = array_replace_recursive( $info, array_replace_recursive( $external_info,
 ?>
 
 
-	<div class="health-check-notice notice-info">
+	<div class="notice notice-info inline">
 		<p>
 			<?php esc_html_e( 'The system information shown below can also be copied and pasted into support requests such as on the WordPress.org forums, or to your theme and plugin developers.', 'health-check' ); ?>
 		</p>

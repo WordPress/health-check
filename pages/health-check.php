@@ -35,7 +35,7 @@ $json_check = HealthCheck::json_check();
 $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 ?>
 
-	<div class="health-check-notice notice-info">
+	<div class="notice notice-info inline">
 		<p>
 			<?php esc_html_e( 'The health check shows critical information about your WordPress configuration and items that require your attention.', 'health-check' ); ?>
 		</p>
