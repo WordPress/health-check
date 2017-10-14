@@ -34,6 +34,11 @@ class HealthCheck {
 	}
 
 	public function enqueues() {
+		// Don't enqueue anything unless we're on the health check page
+		if ( ! isset( $_GET['page'] ) || 'health-check' !== $_GET['page'] ) {
+			return;
+		}
+
 		wp_enqueue_style( 'health-check', plugins_url( '/assets/css/health-check.css', __FILE__ ), array(), HEALTH_CHECK_PLUGIN_VERSION );
 	}
 
