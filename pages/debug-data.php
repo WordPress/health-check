@@ -39,11 +39,11 @@ $info = array(
 				'value' => get_option( 'permalink_structure' )
 			),
 			array(
-				'label' => __( 'Is this site using HTTPS', 'health-check' ),
+				'label' => __( 'Is this site using HTTPS?', 'health-check' ),
 				'value' => ( is_ssl() ? __( 'Yes' ) : __( 'No' ) )
 			),
 			array(
-				'label' => __( 'Can anyone register on this site', 'health-check' ),
+				'label' => __( 'Can anyone register on this site?', 'health-check' ),
 				'value' => ( get_option( 'users_can_register' ) ? __( 'Yes', 'health-check' ) : __( 'No', 'health-check' ) )
 			),
 			array(
@@ -51,7 +51,7 @@ $info = array(
 				'value' => get_option( 'default_comment_status' )
 			),
 			array(
-				'label' => __( 'Is this a multisite', 'health-check' ),
+				'label' => __( 'Is this a multisite?', 'health-check' ),
 				'value' => ( is_multisite() ? __( 'Yes', 'health-check' ) : __( 'No', 'health-check' ) )
 			)
 		),
