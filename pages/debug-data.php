@@ -175,10 +175,6 @@ $info = array(
 			array(
 				'label' => __( 'The themes directory', 'health-check' ),
 				'value' => ( wp_is_writable( get_template_directory() . '/..' ) ? __( 'Writable', 'health-check' ) : __( 'Not writable', 'health-check' ) )
-			),
-			array(
-				'label' => __( 'The Must User Plugins directory', 'health-check' ),
-				'value' => ( wp_is_writable( WPMU_PLUGIN_DIR ) ? __( 'Writable', 'health-check' ) : __( 'Not writable', 'health-check' ) )
 			)
 		)
 	),
@@ -457,6 +453,14 @@ foreach ( $all_themes AS $theme_slug => $theme ) {
 		'label' => sprintf( __( '%1$s (%2$s)', 'health-check' ), $theme->Name, $theme_slug ),
 		// translators: %1$s Theme version number. %2$s: Theme author name.
 		'value' => sprintf( __( 'version %1$s by %2$s', 'health-check' ), $theme->Version, wp_kses( $theme->Author, array() ) )
+	);
+}
+
+// Add more filesystem checks
+if ( defined( 'WPMU_PLUGIN_DIR' ) && is_dir( WPMU_PLUGIN_DIR ) ) {
+	$info['wp-filesystem']['fields'][] = array(
+		'label' => __( 'The Must User Plugins directory', 'health-check' ),
+		'value' => ( wp_is_writable( WPMU_PLUGIN_DIR ) ? __( 'Writable', 'health-check' ) : __( 'Not writable', 'health-check' ) )
 	);
 }
 
