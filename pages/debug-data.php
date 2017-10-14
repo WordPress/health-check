@@ -254,7 +254,7 @@ $info['wp-server']['fields'][] = array(
 );
 $info['wp-server']['fields'][] = array(
 	'label' => __( 'PHP Version', 'health-check' ),
-	'value' => ( ! function_exists( 'phpversion' ) ? __( 'Unable to determine PHP version', 'health-check' ) : phpversion() )
+	'value' => ( ! function_exists( 'phpversion' ) ? __( 'Unable to determine PHP version', 'health-check' ) : sprintf( '%s (%s bit mode)', phpversion() , PHP_INT_SIZE * 8 ) )
 );
 $info['wp-server']['fields'][] = array(
 	'label' => __( 'PHP SAPI', 'health-check' ),

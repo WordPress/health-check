@@ -74,8 +74,9 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 							'<span class="%s"></span> %s',
 							esc_attr( $status ),
 							sprintf(
-								'%s%s',
+								'%s %s%s',
 								PHP_VERSION,
+								'(' . PHP_INT_SIZE * 8 . ' bit mode)',
 								( ! empty( $notice ) ? ' - ' . implode( '<br>', $notice ) : '' )
 							)
 						);
