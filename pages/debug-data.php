@@ -549,7 +549,10 @@ $info = array_replace_recursive( $info, array_replace_recursive( $external_info,
 		</div>
 	</div>
 
-	<div id="system-information-table-of-contents">
+	<h2 id="system-information-table-of-contents">
+		<?php esc_html_e( 'Table of contents', 'health-check' ); ?>
+	</h2>
+	<div>
 		<?php
 		$toc = array();
 
