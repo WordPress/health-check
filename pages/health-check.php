@@ -276,5 +276,47 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 					?>
 				</td>
 			</tr>
+
+			<tr>
+				<td><?php esc_html_e( 'Secure communication', 'health-check' ); ?></td>
+				<td>
+					<?php
+						$supports_https = wp_http_supports( array( 'ssl' ) );
+
+						if ( $supports_https ) {
+							printf(
+								'<span class="good"></span> %s',
+								esc_html__( 'Your WordPress install can communicate securely with other services.', 'health-check' )
+							);
+						}
+						else {
+							printf(
+								'<span class="error"></span> %s',
+								esc_html__( 'Your WordPress install cannot communicate securely with other services. Talk to your web host about OpenSSL support for PHP.', 'health-check' )
+							);
+						}
+					?>
+				</td>
+			</tr>
+
+			<tr>
+				<td><?php esc_html_e( 'Background updates', 'health-check' ); ?></td>
+				<td>
+					<ul>
+						<?php
+							$automatic_updates = new Health_Check_Auto_Updates();
+							$tests = $automatic_updates->run_tests();
+
+							foreach( $tests AS $test ) {
+								printf(
+									'<li><span class="%s"></span> %s</li>',
+									esc_attr( $test->severity ),
+									$test->desc
+								);
+							}
+						?>
+					</ul>
+				</td>
+			</tr>
 		</tbody>
 	</table>

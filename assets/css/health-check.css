@@ -2,11 +2,17 @@ body.dashboard_page_health-check .health-check-table tbody td {
 	width: 80%;
 }
 
+body.dashboard_page_health-check .health-check-table tbody td ul,
+body.dashboard_page_health-check .health-check-table tbody td ol {
+	margin: 0;
+}
+
 body.dashboard_page_health-check .health-check-table thead th:first-child,
 body.dashboard_page_health-check .health-check-table tbody td:first-child {
 	width: 20%;
 }
 
+body.dashboard_page_health-check .pass:before,
 body.dashboard_page_health-check .good:before {
 	content: "\f147";
 	display: inline-block;
@@ -21,6 +27,14 @@ body.dashboard_page_health-check .warning:before {
 	font-family: dashicons;
 }
 
+body.dashboard_page_health-check .info:before {
+	content: "\f348";
+	display: inline-block;
+	color: #00a0d2;
+	font-family: dashicons;
+}
+
+body.dashboard_page_health-check .fail:before,
 body.dashboard_page_health-check .error:before {
 	content: "\f335";
 	display: inline-block;
