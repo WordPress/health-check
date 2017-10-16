@@ -163,11 +163,14 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 				<td><?php esc_html_e( 'MySQL utf8mb4 support', 'health-check' ); ?></td>
 				<td>
 					<?php
-						if ( $mariadb ) {
+						if ( ! $mariadb ) {
 							if ( version_compare( $mysql_server_version, '5.5.3', '<' ) ) {
 								printf(
 									'<span class="warning"></span> %s',
-									esc_html__( 'WordPress\' utf8mb4 support requires MySQL version %s or greater', 'health-check' )
+									sprintf(
+										esc_html__( 'WordPress\' utf8mb4 support requires MySQL version %s or greater', 'health-check' ),
+										'5.5.3'
+									)
 								);
 							} else {
 								printf(
@@ -181,7 +184,10 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 							if ( version_compare( $mysql_server_version, '5.5.0', '<' ) ) {
 								printf(
 									'<span class="warning"></span> %s',
-									esc_html__( 'WordPress\' utf8mb4 support requires MariaDB version %s or greater', 'health-check' )
+									sprintf(
+										esc_html__( 'WordPress\' utf8mb4 support requires MariaDB version %s or greater', 'health-check' ),
+										'5.5.0'
+									)
 								);
 							}
 							else {
