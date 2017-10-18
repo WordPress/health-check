@@ -113,7 +113,7 @@ $info = HealthCheck::debug_data();
 			}
 
 			$toc[] = sprintf(
-				'<a href="#%s">%s</a>',
+				'<a href="#%s" class="health-check-toc">%s</a>',
 				esc_attr( $section ),
 				esc_html( $details['label'] )
 			);
@@ -163,7 +163,7 @@ foreach ( $info AS $section => $details ) {
 		</tbody>
 	</table>
 	<span style="display: block; width: 100%; text-align: <?php echo ( is_rtl() ? 'left' : 'right' ); ?>">
-		<a href="#system-information-table-of-contents"><?php esc_html_e( 'Return to table of contents', 'health-check' ); ?></a>
+		<a href="#system-information-table-of-contents" class="health-check-toc"><?php esc_html_e( 'Return to table of contents', 'health-check' ); ?></a>
 	</span>
 	<?php
 }
