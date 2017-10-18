@@ -525,8 +525,10 @@ class HealthCheck {
 		// Populate the section for the currently active theme.
 		global $_wp_theme_features;
 		$theme_features = array();
-		foreach ( $_wp_theme_features AS $feature => $options ) {
-			$theme_features[] = $feature;
+		if ( ! empty( $_wp_theme_features ) ) {
+			foreach ( $_wp_theme_features AS $feature => $options ) {
+				$theme_features[] = $feature;
+			}
 		}
 
 		$active_theme                      = wp_get_theme();
