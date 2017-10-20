@@ -1,6 +1,6 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) {
-	die( esc_html__( 'We\'re sorry, but you can not directly access this file.', 'health-check' ) );
+	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
 if ( ! function_exists( 'phpinfo' ) ) {

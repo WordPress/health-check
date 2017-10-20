@@ -8,6 +8,10 @@
 	Author URI: http://wordpress.org/plugins/health-check/
 	Text Domain: health-check
  */
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'We\'re sorry, but you can not directly access this file.' );
+}
+
 define( 'HEALTH_CHECK_PHP_MIN_VERSION', '5.2.4' );
 define( 'HEALTH_CHECK_PHP_REC_VERSION', '7.0' );
 define( 'HEALTH_CHECK_MYSQL_MIN_VERSION', '5.0' );
