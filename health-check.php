@@ -195,7 +195,7 @@ class HealthCheck {
 				'fields'     => array()
 			),
 			'wp-mu-plugins'       => array(
-				'label'      => __( 'Must User Plugins', 'health-check' ),
+				'label'      => __( 'Must Use Plugins', 'health-check' ),
 				'show_count' => true,
 				'fields'     => array()
 			),
@@ -585,7 +585,7 @@ class HealthCheck {
 		// Add more filesystem checks
 		if ( defined( 'WPMU_PLUGIN_DIR' ) && is_dir( WPMU_PLUGIN_DIR ) ) {
 			$info['wp-filesystem']['fields'][] = array(
-				'label' => __( 'The Must User Plugins directory', 'health-check' ),
+				'label' => __( 'The Must Use Plugins directory', 'health-check' ),
 				'value' => ( wp_is_writable( WPMU_PLUGIN_DIR ) ? __( 'Writable', 'health-check' ) : __( 'Not writable', 'health-check' ) )
 			);
 		}
