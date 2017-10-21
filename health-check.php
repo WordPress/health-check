@@ -506,10 +506,27 @@ class HealthCheck {
 		$mu_plugins = get_mu_plugins();
 
 		foreach ( $mu_plugins AS $plugin_path => $plugin ) {
+			$plugin_version = $plugin['Version'];
+			$plugin_author = $plugin['Author'];
+
+			$plugin_version_string = __( 'No version or author information available', 'health-check' );
+
+			if ( ! empty( $plugin_version ) && ! empty( $plugin_author ) ) {
+				// translators: %1$s: Plugin version number. %2$s: Plugin author name.
+				$plugin_version_string = sprintf( __( 'version %1$s by %2$s', 'health-check' ), $plugin_version, $plugin_author );
+			}
+			if ( empty( $plugin_version ) && ! empty( $plugin_author ) ) {
+				// translators: %s: Plugin author name.
+				$plugin_version_string = sprintf( __( 'By %s', 'health-check' ), $plugin_author );
+			}
+			if ( ! empty( $plugin_version ) && empty( $plugin_author ) ) {
+				// translators: %s: Plugin version number.
+				$plugin_version_string = sprintf( __( 'Version %s', 'health-check' ), $plugin_version );
+			}
+
 			$info['wp-mu-plugins']['fields'][] = array(
 				'label' => $plugin['Name'],
-				// translators: %1$s: Plugin version number. %2$s: Plugin author name.
-				'value' => sprintf( __( 'version %1$s by %2$s', 'health-check' ), $plugin['Version'], $plugin['Author'] )
+				'value' => $plugin_version_string
 			);
 		}
 
@@ -520,10 +537,28 @@ class HealthCheck {
 		foreach ( $plugins AS $plugin_path => $plugin ) {
 			$plugin_part = ( is_plugin_active( $plugin_path ) ) ? 'wp-plugins-active' : 'wp-plugins-inactive';
 
+			$plugin_version = $plugin['Version'];
+			$plugin_author = $plugin['Author'];
+
+			$plugin_version_string = __( 'No version or author information available', 'health-check' );
+
+			if ( ! empty( $plugin_version ) && ! empty( $plugin_author ) ) {
+				// translators: %1$s: Plugin version number. %2$s: Plugin author name.
+				$plugin_version_string = sprintf( __( 'version %1$s by %2$s', 'health-check' ), $plugin_version, $plugin_author );
+			}
+			if ( empty( $plugin_version ) && ! empty( $plugin_author ) ) {
+				// translators: %s: Plugin author name.
+				$plugin_version_string = sprintf( __( 'By %s', 'health-check' ), $plugin_author );
+			}
+			if ( ! empty( $plugin_version ) && empty( $plugin_author ) ) {
+				// translators: %s: Plugin version number.
+				$plugin_version_string = sprintf( __( 'Version %s', 'health-check' ), $plugin_version );
+			}
+
+
 			$info[ $plugin_part ]['fields'][] = array(
 				'label' => $plugin['Name'],
-				// translators: %1$s: Plugin version number. %2$s: Plugin author name.
-				'value' => sprintf( __( 'version %1$s by %2$s', 'health-check' ), $plugin['Version'], $plugin['Author'] )
+				'value' => $plugin_version_string
 			);
 		}
 
@@ -574,11 +609,29 @@ class HealthCheck {
 				continue;
 			}
 
+			$theme_version = $theme->Version;
+			$theme_author = $theme->Author;
+
+			$theme_version_string = __( 'No version or author information available', 'health-check' );
+
+			if ( ! empty( $theme_version ) && ! empty( $theme_author ) ) {
+				// translators: %1$s: Theme version number. %2$s: Theme author name.
+				$theme_version_string = sprintf( __( 'version %1$s by %2$s', 'health-check' ), $theme_version, wp_kses( $theme_author, array() ) );
+			}
+			if ( empty( $theme_version ) && ! empty( $theme_author ) ) {
+				// translators: %s: Theme author name.
+				$theme_version_string = sprintf( __( 'By %s', 'health-check' ), wp_kses( $theme_author, array() ) );
+			}
+			if ( ! empty( $theme_version ) && empty( $theme_author ) ) {
+				// translators: %s: Theme version number.
+				$theme_version_string = sprintf( __( 'Version %s', 'health-check' ), $theme_version );
+			}
+
+
 			$info['wp-themes']['fields'][] = array(
 				// translators: %1$s: Theme name. %2$s: Theme slug.
 				'label' => sprintf( __( '%1$s (%2$s)', 'health-check' ), $theme->Name, $theme_slug ),
-				// translators: %1$s Theme version number. %2$s: Theme author name.
-				'value' => sprintf( __( 'version %1$s by %2$s', 'health-check' ), $theme->Version, wp_kses( $theme->Author, array() ) )
+				'value' => $theme_version_string
 			);
 		}
 
