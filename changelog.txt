@@ -1,0 +1,17 @@
+
+= v 0.3.1 =
+* Fixed a few typos
+
+= v 0.3 =
+* Added recommended PHP and MySQL versions
+* Check for utf8mb4 support
+* Fixed a bunch of PHP warnings
+
+= v 0.2.1 =
+* Fixed version comparision bug - When the server had the exact required versions we reported it as out of date.
+
+= v 0.2 =
+* Updated with actual PHP and MySQL version requirements for WordPress 3.2
+
+= v 0.1 =
+* Initial release with checks for the PHP and MySQL versions we will likely target for WordPress 3.2
