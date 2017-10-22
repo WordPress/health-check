@@ -306,6 +306,40 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 			</tr>
 
 			<tr>
+				<td><?php esc_html_e( 'Scheduled events', 'health-check' ); ?></td>
+				<td>
+					<?php
+						$scheduled_events = new Health_Check_WP_Cron();
+
+						if ( is_wp_error( $scheduled_events->has_missed_cron() ) ) {
+							printf(
+								'<span class="error"></span> %s',
+								esc_html( $scheduled_events->has_missed_cron()->get_error_message() )
+							);
+						}
+						else {
+							if ( $scheduled_events->has_missed_cron() ) {
+								printf(
+									'<span class="warning"></span> %s',
+									sprintf(
+										// translators: %s: The name of the failed cron event.
+										esc_html__( 'A scheduled event (%s) has failed to run. Your site still works, but this may indicate that scheduling posts or automated updates may not work as intended.', 'health-check' ),
+										$scheduled_events->last_missed_cron
+									)
+								);
+							}
+							else {
+								printf(
+									'<span class="good"></span> %s',
+									esc_html__( 'No scheduled events have been missed.', 'health-check' )
+								);
+							}
+						}
+					?>
+				</td>
+			</tr>
+
+			<tr>
 				<td><?php esc_html_e( 'Background updates', 'health-check' ); ?></td>
 				<td>
 					<ul>

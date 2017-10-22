@@ -700,3 +700,4 @@ new HealthCheck();
 
 // Include classes used by our plugin
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-auto-updates.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cron.php' );
