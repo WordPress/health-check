@@ -12,18 +12,17 @@ $mariadb = false;
 $mysql_server_version = null;
 if ( method_exists( $wpdb, 'db_version' ) ) {
 	if ( $wpdb->use_mysqli ) {
-		$mysql_server_version = mysqli_get_server_info( $wpdb->dbh );
+		$mysql_server_type = mysqli_get_server_info( $wpdb->dbh );
 	} else {
-		$mysql_server_version = mysql_get_server_info( $wpdb->dbh );
+		$mysql_server_type = mysql_get_server_info( $wpdb->dbh );
 	}
+
+	$mysql_server_version = $wpdb->get_var( 'SELECT VERSION()' );
 }
 
 $health_check_mysql_rec_version = HEALTH_CHECK_MYSQL_REC_VERSION;
 
-if ( stristr( $mysql_server_version, 'mariadb' ) ) {
-	$version_parts = explode( '-', $mysql_server_version );
-	$mysql_server_version = $version_parts[1];
-
+if ( stristr( $mysql_server_type, 'mariadb' ) ) {
 	$mariadb = true;
 	$health_check_mysql_rec_version = '10.0';
 }
@@ -103,8 +102,9 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 					if ( ! $mysql_rec_version_check ) {
 						$status = 'warning';
 						$notice[] = sprintf(
-							// translators: %s: Database server recommended version number.
-							esc_html__( 'For performance and security reasons, we strongly recommend running MySQL version %s or higher.', 'health-check' ),
+							// translators: %1$s: The database engine in use (MySQL or MariaDB). %2$s: Database server recommended version number.
+							esc_html__( 'For performance and security reasons, we strongly recommend running %1$s version %2$s or higher.', 'health-check' ),
+							( $mariadb ? 'MariaDB' : 'MySQL' ),
 							$health_check_mysql_rec_version
 						);
 					}
@@ -112,8 +112,9 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 					if ( ! $mysql_min_version_check ) {
 						$status = 'error';
 						$notice[] = sprintf(
-							// translators: %s: Database server minimum version number.
-							esc_html__( 'WordPress 3.2+ requires MySQL version %s', 'health-check' ),
+							// translators: %1$s: The database engine in use (MySQL or MariaDB). %2$s: Database server minimum version number.
+							esc_html__( 'WordPress 3.2+ requires %1$s version %2$s or higher.', 'health-check' ),
+							( $mariadb ? 'MariaDB' : 'MySQL' ),
 							HEALTH_CHECK_MYSQL_MIN_VERSION
 						);
 					}
@@ -129,7 +130,7 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 						sprintf(
 							'%s%s',
 							esc_html( $mysql_server_version ),
-							( ! empty( $notice ) ? ' - ' . implode( '<br>', $notice ) : '' )
+							( ! empty( $notice ) ? '<br> - ' . implode( '<br>', $notice ) : '' )
 						)
 					);
 					?>
