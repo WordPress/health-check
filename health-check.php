@@ -16,7 +16,7 @@ define( 'HEALTH_CHECK_PHP_MIN_VERSION', '5.2.4' );
 define( 'HEALTH_CHECK_PHP_REC_VERSION', '7.0' );
 define( 'HEALTH_CHECK_MYSQL_MIN_VERSION', '5.0' );
 define( 'HEALTH_CHECK_MYSQL_REC_VERSION', '5.6' );
-define( 'HEALTH_CHECK_PLUGIN_VERSION', '0.4.1' );
+define( 'HEALTH_CHECK_PLUGIN_VERSION', '0.5.0' );
 
 class HealthCheck {
 
