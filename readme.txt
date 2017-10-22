@@ -3,7 +3,7 @@ Tags: health check
 Contributors: westi, pento, Clorith
 Requires at least: 3.8
 Tested up to: 4.8
-Stable tag: 0.4.1
+Stable tag: 0.5.0
 
 == Description ==
 
@@ -26,6 +26,20 @@ In the future we may introduce more checks, and welcome feedback both through th
 1. This shows the plugin in action.  When you activate it you get a message at the top of the plugins page.
 
 == Changelog ==
+
+= v 0.5.0 =
+* Added clarity to many text strings.
+* Avoid listing MU directories if it's not being used.
+* Add a Table of Contents heading and make navigating the debug page from it smoother.
+* Only enqueue our CSS and JavaScript if we are on the health check pages.
+* Add some missing version numbers nor being included in text strings.
+* Avoid fatal errors if accessing files directly, caused by translation functions being used when they don't exist.
+* Avoid "empty" strings when author or version is missing from plugins or themes.
+* Make the health checker test background updates.
+* Make the health checker look for missed scheduled events.
+* If using a localized version of WordPress, also display the copy and paste field in English if using an international support resource.
+* Indicate if 64bit values are supported by PHP in the debug section.
+* Improved MariaDB version detection/comparison.
 
 = v 0.4.1 =
 * Better SQL version detection to account for MariaDB versions

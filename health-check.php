@@ -4,7 +4,7 @@
 	Plugin URI: http://wordpress.org/plugins/health-check/
 	Description: Checks the health of your WordPress install.
 	Author: The WordPress.org community
-	Version: 0.4.1
+	Version: 0.5.0
 	Author URI: http://wordpress.org/plugins/health-check/
 	Text Domain: health-check
  */
