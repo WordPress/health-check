@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
-$info = HealthCheck::debug_data();
+$info = Health_Check_Debug_Data::debug_data();
 ?>
 
 
@@ -21,7 +21,7 @@ $info = HealthCheck::debug_data();
 		<?php
 		if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) :
 
-			$english_info = HealthCheck::debug_data( 'en_US' );
+			$english_info = Health_Check_Debug_Data::debug_data( 'en_US' );
 		?>
 			<div id="system-information-english-copy-wrapper" style="display: none;">
 					<textarea id="system-information-english-copy-field" class="widefat" rows="10">`
