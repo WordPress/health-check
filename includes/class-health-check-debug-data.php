@@ -243,6 +243,12 @@ class Health_Check_Debug_Data {
 			);
 		}
 
+		$loopback = Health_Check_Loopback::can_perform_loopback();
+		$info['wp-core']['fields'][] = array(
+			'label' => __( 'Create loopback requests', 'health-check' ),
+			'value' => $loopback->message
+		);
+
 		// Get drop-ins.
 		$dropins            = get_dropins();
 		$dropin_description = _get_dropins();
