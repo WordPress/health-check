@@ -3,7 +3,7 @@ Tags: health check
 Contributors: westi, pento, Clorith
 Requires at least: 3.8
 Tested up to: 4.8
-Stable tag: 0.5.0
+Stable tag: 0.5.1
 
 == Description ==
 
@@ -26,6 +26,9 @@ In the future we may introduce more checks, and welcome feedback both through th
 1. This shows the plugin in action.  When you activate it you get a message at the top of the plugins page.
 
 == Changelog ==
+
+= v 0.5.1 =
+* Introduced loopback check to the health checker status.
 
 = v 0.5.0 =
 * Added clarity to many text strings.
