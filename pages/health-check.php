@@ -359,5 +359,20 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 					</ul>
 				</td>
 			</tr>
+
+			<tr>
+				<td><?php esc_html_e( 'Loopback request', 'health-check' ); ?></td>
+				<td>
+					<?php
+						$check_loopback = Health_Check_Loopback::can_perform_loopback();
+
+						printf(
+							'<span class="%s"></span> %s',
+							esc_attr( $check_loopback->status ),
+							esc_html( $check_loopback->message )
+						);
+					?>
+				</td>
+			</tr>
 		</tbody>
 	</table>

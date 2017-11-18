@@ -127,3 +127,4 @@ new HealthCheck();
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-auto-updates.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cron.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-debug-data.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-health-check-loopback.php' );
