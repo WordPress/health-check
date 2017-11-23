@@ -3,7 +3,7 @@
 class Health_Check_Loopback {
 	static function can_perform_loopback() {
 		$cookies = wp_unslash( $_COOKIE );
-		$timeout = 100;
+		$timeout = 10;
 		$headers = array(
 			'Cache-Control' => 'no-cache',
 		);
@@ -20,7 +20,7 @@ class Health_Check_Loopback {
 		if ( is_wp_error( $r ) ) {
 			return (object) array(
 				'status'  => 'error',
-				'message' => __( 'Unable to perform a loopback request to your site, this may prevent WP_Cron from working, along with theme and plugin editors.', 'health-check' )
+				'message' => __( 'The loopback request to your site took too long to complete, this may prevent WP_Cron from working, along with theme and plugin editors.', 'health-check' )
 			);
 		}
 
