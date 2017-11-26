@@ -1,4 +1,16 @@
 
+= v 0.4.1 =
+* Better SQL version detection to account for MariaDB versions
+* Added translation support
+* Removed unintentional indentations in the debug copying field
+
+= v 0.4 =
+* Added debug section
+* Added PHP info section
+* Cleaned up the health check
+* Added WordPress.org connectivity check
+* Added HTTPS check
+
 = v 0.3.1 =
 * Fixed a few typos
 

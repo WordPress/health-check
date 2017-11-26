@@ -3,7 +3,7 @@ Tags: health check
 Contributors: westi, pento, Clorith
 Requires at least: 3.8
 Tested up to: 4.8
-Stable tag: 0.5.1
+Stable tag: 0.6.0
 
 == Description ==
 
@@ -27,6 +27,12 @@ In the future we may introduce more checks, and welcome feedback both through th
 
 == Changelog ==
 
+= v 0.6.0 =
+* Improved loopback tests
+  * Check if loopbacks can be completed without plugins activated
+  * Test individual plugins to identify loopback blockers
+* Add troubleshooting mode, test your website without any plugins for your session without disabling functionality for visitors.
+
 = v 0.5.1 =
 * Introduced loopback check to the health checker status.
 
@@ -43,15 +49,3 @@ In the future we may introduce more checks, and welcome feedback both through th
 * If using a localized version of WordPress, also display the copy and paste field in English if using an international support resource.
 * Indicate if 64bit values are supported by PHP in the debug section.
 * Improved MariaDB version detection/comparison.
-
-= v 0.4.1 =
-* Better SQL version detection to account for MariaDB versions
-* Added translation support
-* Removed unintentional indentations in the debug copying field
-
-= v 0.4 =
-* Added debug section
-* Added PHP info section
-* Cleaned up the health check
-* Added WordPress.org connectivity check
-* Added HTTPS check

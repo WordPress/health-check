@@ -371,8 +371,21 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 							esc_attr( $check_loopback->status ),
 							esc_html( $check_loopback->message )
 						);
+
+						if ( 'error' === $check_loopback->status ) {
+							echo '<br><button type="button" id="loopback-no-plugins" class="button button-primary">Test without plugins</button>';
+						}
 					?>
 				</td>
 			</tr>
 		</tbody>
 	</table>
+
+	<div class="health-check-modal" data-modal-action="" data-parent-field="">
+		<div class="modal-content">
+			<span class="modal-close">&times;</span>
+			<div id="dynamic-content">
+				&nbsp;
+			</div>
+		</div>
+	</div>
