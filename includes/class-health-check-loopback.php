@@ -42,7 +42,10 @@ class Health_Check_Loopback {
 		if ( is_wp_error( $r ) ) {
 			return (object) array(
 				'status'  => 'error',
-				'message' => __( 'The loopback request to your site took too long to complete, this may prevent WP_Cron from working, along with theme and plugin editors.', 'health-check' )
+				'message' => sprintf(
+					__( 'The loopback request failed with the following error: %s.', 'health-check' ),
+					$r->get_error_message()
+				)
 			);
 		}
 
