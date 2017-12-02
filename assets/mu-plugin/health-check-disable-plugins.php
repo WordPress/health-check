@@ -60,6 +60,46 @@ function health_check_loopback_test_disable_plugins( $plugins ) {
 add_filter( 'option_active_plugins', 'health_check_loopback_test_disable_plugins' );
 add_filter( 'option_active_sitewide_plugins', 'health_check_loopback_test_disable_plugins' );
 
+function health_check_troubleshoot_theme( $theme ) {
+	// Check if a session cookie to disable plugins has been set.
+	if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
+		$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'];
+	}
+
+
+	// If the disable hash isn't set, no need to interact with things.
+	if ( ! isset( $_GET['health-check-disable-plugin-hash'] ) ) {
+		return $theme;
+	}
+
+	// If the plugin hash is not valid, we also break out
+	$disable_hash = get_option( 'health-check-disable-plugin-hash', '' );
+	if ( $disable_hash !== $_GET['health-check-disable-plugin-hash'] ) {
+		return $theme;
+	}
+
+	$default_themes = array(
+		'twentyseventeen',
+		'twentysixteen',
+		'twentyfifteen',
+		'twentyfourteen',
+		'twentythirteen',
+		'twentytwelve',
+		'twentyeleven',
+		'twentyten'
+	);
+
+	foreach( $default_themes AS $default_theme ) {
+		if ( is_dir( WP_CONTENT_DIR . '/themes/' . $default_theme ) ) {
+			return $default_theme;
+		}
+	}
+
+	return $theme;
+}
+add_filter( 'stylesheet', 'health_check_troubleshoot_theme' );
+add_filter( 'template', 'health_check_troubleshoot_theme' );
+
 function health_check_troubleshooter_mode_logout() {
 	if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
 		unset( $_COOKIE['health-check-disable-plugins'] );
