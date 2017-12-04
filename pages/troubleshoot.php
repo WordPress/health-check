@@ -15,6 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</p>
 
 	<p>
+		<?php esc_html_e( 'A Troubleshooting Mode menu is added to your admin bar, this will allow you to enable individual plugins when looking for issues.', 'health-check' ); ?>
+	</p>
+
+	<p>
 		<?php esc_html_e( 'Please note, that due to how Must Use plugins work, any such plugin will not be disabled for the troubleshooting session.', 'health-check' ); ?>
 	</p>
 </div>
