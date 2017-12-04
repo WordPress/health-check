@@ -13,6 +13,15 @@ class Health_Check_Troubleshooting_MU {
 	private $override_active = true;
 	private $default_theme   = true;
 
+	private $available_query_args = array(
+		'health-check-disable-plugins',
+		'health-check-disable-plugins-hash',
+		'health-check-disable-troubleshooting',
+		'health-check-toggle-default-theme',
+		'health-check-troubleshoot-enable-plugin',
+		'health-check-troubleshoot-disable-plugin',
+	);
+
 	public function __construct() {
 		$this->init();
 	}
@@ -133,7 +142,9 @@ class Health_Check_Troubleshooting_MU {
 		if ( isset( $_GET['health-check-disable-troubleshooting'] ) ) {
 			unset( $_COOKIE['health-check-disable-plugins'] );
 			setcookie( 'health-check-disable-plugins', null, 0, COOKIEPATH, COOKIE_DOMAIN );
-			wp_redirect( admin_url( '/' ) );
+
+			wp_redirect( remove_query_arg( $this->available_query_args ) );
+			die();
 		}
 		if ( isset( $_GET['health-check-troubleshoot-enable-plugin'] ) ) {
 			$allowed_plugins                                                    = get_option( 'health-check-allowed-plugins', array() );
@@ -141,7 +152,8 @@ class Health_Check_Troubleshooting_MU {
 
 			update_option( 'health-check-allowed-plugins', $allowed_plugins );
 
-			wp_redirect( admin_url( '/' ) );
+			wp_redirect( remove_query_arg( $this->available_query_args ) );
+			die();
 		}
 		if ( isset( $_GET['health-check-troubleshoot-disable-plugin'] ) ) {
 			$allowed_plugins = get_option( 'health-check-allowed-plugins', array() );
@@ -149,7 +161,8 @@ class Health_Check_Troubleshooting_MU {
 
 			update_option( 'health-check-allowed-plugins', $allowed_plugins );
 
-			wp_redirect( admin_url( '/' ) );
+			wp_redirect( remove_query_arg( $this->available_query_args ) );
+			die();
 		}
 
 		if ( isset( $_GET['health-check-toggle-default-theme'] ) ) {
@@ -160,7 +173,8 @@ class Health_Check_Troubleshooting_MU {
 				update_option( 'health-check-default-theme', 'yes' );
 			}
 
-			wp_redirect( admin_url( '/' ) );
+			wp_redirect( remove_query_arg( $this->available_query_args ) );
+			die();
 		}
 	}
 
@@ -204,17 +218,23 @@ class Health_Check_Troubleshooting_MU {
 				$label = sprintf(
 					// Translators: %s: Plugin slug.
 					esc_html__( 'Click to disable %s', 'health-check' ),
-					$plugin_slug
+					sprintf(
+						'<strong>%s</strong>',
+						$plugin_slug
+					)
 				);
-				$url   = add_query_arg( array( 'health-check-troubleshoot-disable-plugin' => $plugin_slug ) );
+				$url = add_query_arg( array( 'health-check-troubleshoot-disable-plugin' => $plugin_slug ) );
 			} else {
 				$enabled = false;
 				$label = sprintf(
 					// Translators: %s: Plugin slug.
 					esc_html__( 'Click to enable %s', 'health-check' ),
-					$plugin_slug
+					sprintf(
+						'<strong>%s</strong>',
+						$plugin_slug
+					)
 				);
-				$url   = add_query_arg( array( 'health-check-troubleshoot-enable-plugin' => $plugin_slug ) );
+				$url = add_query_arg( array( 'health-check-troubleshoot-enable-plugin' => $plugin_slug ) );
 			}
 
 			$wp_menu->add_node( array(
@@ -237,7 +257,7 @@ class Health_Check_Troubleshooting_MU {
 			'id'     => 'health-check-default-theme',
 			'title'  => ( $this->default_theme ? esc_html__( 'Use your current theme', 'health-check' ) : esc_html__( 'Use a default theme', 'health-check' ) ),
 			'parent' => 'health-check-theme',
-			'href'   => add_query_arg( array( 'health-check-toggle-default-theme' => true ), admin_url( '/' ) )
+			'href'   => add_query_arg( array( 'health-check-toggle-default-theme' => true ) )
 		) );
 
 		$wp_menu->add_group( array(
@@ -249,7 +269,7 @@ class Health_Check_Troubleshooting_MU {
 			'id'     => 'health-check-disable',
 			'title'  => esc_html__( 'Disable troubleshooting mode', 'health-check' ),
 			'parent' => 'health-check-status',
-			'href'   => add_query_arg( array( 'health-check-disable-troubleshooting' => true ), admin_url( '/' ) )
+			'href'   => add_query_arg( array( 'health-check-disable-troubleshooting' => true ) )
 		) );
 	}
 
