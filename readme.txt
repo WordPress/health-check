@@ -3,7 +3,7 @@ Tags: health check
 Contributors: westi, pento, Clorith
 Requires at least: 3.8
 Tested up to: 4.9
-Stable tag: 0.6.0
+Stable tag: 0.7.0
 
 == Description ==
 
@@ -27,25 +27,15 @@ In the future we may introduce more checks, and welcome feedback both through th
 
 == Changelog ==
 
+= v 0.7.0 =
+* Troubleshooting mode now also switches to a default theme.
+* Introduced a method for toggling default or active theme use when in troubleshooting mode.
+* Introduced a method for enabling/disabling plugins while in troubleshooting mode.
+* Introduced a method for disabling troubleshooting mode without needing to log out and back in again.
+
 = v 0.6.0 =
 * Improved loopback tests
   * Check if loopbacks can be completed without plugins activated
   * Test individual plugins to identify loopback blockers
 * Add troubleshooting mode, test your website without any plugins for your session without disabling functionality for visitors.
 
-= v 0.5.1 =
-* Introduced loopback check to the health checker status.
-
-= v 0.5.0 =
-* Added clarity to many text strings.
-* Avoid listing MU directories if it's not being used.
-* Add a Table of Contents heading and make navigating the debug page from it smoother.
-* Only enqueue our CSS and JavaScript if we are on the health check pages.
-* Add some missing version numbers nor being included in text strings.
-* Avoid fatal errors if accessing files directly, caused by translation functions being used when they don't exist.
-* Avoid "empty" strings when author or version is missing from plugins or themes.
-* Make the health checker test background updates.
-* Make the health checker look for missed scheduled events.
-* If using a localized version of WordPress, also display the copy and paste field in English if using an international support resource.
-* Indicate if 64bit values are supported by PHP in the debug section.
-* Improved MariaDB version detection/comparison.
