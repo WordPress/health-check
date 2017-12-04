@@ -41,10 +41,42 @@ class Health_Check_Troubleshoot {
 		return true;
 	}
 
+	static function maybe_update_must_use_plugin() {
+		if ( ! Health_Check_Troubleshoot::mu_plugin_exists() ) {
+			return false;
+		}
+		if ( ! Health_Check_Troubleshoot::get_filesystem_credentials() ) {
+			return false;
+		}
+
+		$current = get_plugin_data( trailingslashit( HEALTH_CHECK_PLUGIN_DIRECTORY ) . 'assets/mu-plugin/health-check-disable-plugins.php' );
+		$active  = get_plugin_data( trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php' );
+
+		$current_version = ( isset( $current['Version'] ) ? $current['Version'] : '0.0' );
+		$active_version  = ( isset( $active['Version'] ) ? $active['Version'] : '0.0' );
+
+		if ( version_compare( $current_version, $active_version, '>' ) ) {
+			global $wp_filesystem;
+
+			if ( ! $wp_filesystem->copy( trailingslashit( HEALTH_CHECK_PLUGIN_DIRECTORY ) . 'assets/mu-plugin/health-check-disable-plugins.php', trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php', true ) ) {
+				HealthCheck::display_notice( esc_html__( 'We were unable to replace the plugin file required to run in troubleshooting mode.' ,'health-check' ), 'error' );
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	static function session_started() {
 		HealthCheck::display_notice(
 			sprintf(
-				esc_html__( 'You have successfully started troubleshooting mode, all plugins will appear inactive until you log out and back in again.', 'health-check' )
+				'%s<br>%s',
+				esc_html__( 'You have successfully started troubleshooting mode, all plugins will appear inactive until you log out and back in again.', 'health-check' ),
+				sprintf(
+					'<a href="%1$s">%2$s</a><script type="text/javascript">window.location = "%1$s";</script>',
+					esc_url( admin_url( '/' ) ),
+					esc_html__( 'Return to the Dashboard' )
+				)
 			)
 		);
 	}
@@ -59,6 +91,9 @@ class Health_Check_Troubleshoot {
 			}
 			else {
 				if ( Health_Check_Troubleshoot::mu_plugin_exists() ) {
+					if ( ! Health_Check_Troubleshoot::maybe_update_must_use_plugin() ) {
+						return;
+					}
 					Health_Check_Troubleshoot::session_started();
 				}
 				else {
