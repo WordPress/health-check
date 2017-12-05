@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'HEALTH_CHECK_PHP_MIN_VERSION', '5.2.4' );
-define( 'HEALTH_CHECK_PHP_REC_VERSION', '7.0' );
+define( 'HEALTH_CHECK_PHP_REC_VERSION', '7.2' );
 define( 'HEALTH_CHECK_MYSQL_MIN_VERSION', '5.0' );
 define( 'HEALTH_CHECK_MYSQL_REC_VERSION', '5.6' );
 define( 'HEALTH_CHECK_PLUGIN_VERSION', '0.7.0' );
