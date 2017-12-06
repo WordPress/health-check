@@ -1,14 +1,43 @@
 <?php
+/**
+ * Class for testing automatic updates in the WordPress code.
+ *
+ * @package Health Check
+ */
 
+/**
+ * Class Health_Check_Auto_Updates
+ */
 class Health_Check_Auto_Updates {
+	/**
+	 * Health_Check_Auto_Updates constructor.
+	 *
+	 * @uses HealthCheck::init()
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 		$this->init();
 	}
 
+	/**
+	 * Initiate the plugin class.
+	 *
+	 * @return void
+	 */
 	public function init() {
 		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 	}
 
+	/**
+	 * Run tests to determine if auto-updates can run.
+	 *
+	 * @uses get_class_methods()
+	 * @uses substr()
+	 * @uses call_user_func()
+	 *
+	 * @return array
+	 */
 	public function run_tests() {
 		$tests = array();
 
@@ -35,6 +64,15 @@ class Health_Check_Auto_Updates {
 		return $tests;
 	}
 
+	/**
+	 * Test if file modifications are possible.
+	 *
+	 * @uses defined()
+	 * @uses sprintf()
+	 * @uses esc_html__()
+	 *
+	 * @return array
+	 */
 	function test_constant_FILE_MODS() {
 		if ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) {
 			return array(
@@ -47,6 +85,15 @@ class Health_Check_Auto_Updates {
 		}
 	}
 
+	/**
+	 * Check if automatic updates are disabled with a constant.
+	 *
+	 * @uses defined()
+	 * @uses sprintf()
+	 * @uses esc_html__()
+	 *
+	 * @return array
+	 */
 	function test_constant_AUTOMATIC_UPDATER_DISABLED() {
 		if ( defined( 'AUTOMATIC_UPDATER_DISABLED' ) && AUTOMATIC_UPDATER_DISABLED ) {
 			return array(
@@ -59,6 +106,15 @@ class Health_Check_Auto_Updates {
 		}
 	}
 
+	/**
+	 * Check if automatic core updates are disabled with a constant.
+	 *
+	 * @uses defined()
+	 * @uses sprintf()
+	 * @uses esc_html__()
+	 *
+	 * @return array
+	 */
 	function test_constant_WP_AUTO_UPDATE_CORE() {
 		if ( defined( 'WP_AUTO_UPDATE_CORE' ) && false === WP_AUTO_UPDATE_CORE ) {
 			return array(
@@ -71,6 +127,15 @@ class Health_Check_Auto_Updates {
 		}
 	}
 
+	/**
+	 * Check if updates are intercepted by a filter.
+	 *
+	 * @uses has_filter()
+	 * @uses sprintf()
+	 * @uses esc_html__()
+	 *
+	 * @return array
+	 */
 	function test_wp_version_check_attached() {
 		if ( ! has_filter( 'wp_version_check', 'wp_version_check' ) ) {
 			return array(
@@ -83,6 +148,15 @@ class Health_Check_Auto_Updates {
 		}
 	}
 
+	/**
+	 * Check if automatic updates are disabled by a filter.
+	 *
+	 * @uses apply_filters()
+	 * @uses sprintf()
+	 * @uses esc_html__()
+	 *
+	 * @return array
+	 */
 	function test_filters_automatic_updater_disabled() {
 		if ( apply_filters( 'automatic_updater_disabled', false ) ) {
 			return array(
@@ -95,6 +169,15 @@ class Health_Check_Auto_Updates {
 		}
 	}
 
+	/**
+	 * Check if automatic updates have tried to run, but failed, previously.
+	 *
+	 * @uses get_site_option()
+	 * @uses esc_html__()
+	 * @uses sprintf()
+	 *
+	 * @return array|bool
+	 */
 	function test_if_failed_update() {
 		$failed = get_site_option( 'auto_core_update_failed' );
 
@@ -132,6 +215,21 @@ class Health_Check_Auto_Updates {
 		);
 	}
 
+	/**
+	 * Check if WordPress is controlled by a VCS (Git, Subversion etc).
+	 *
+	 * @uses dirname()
+	 * @uses array_unique()
+	 * @uses is_dir()
+	 * @uses rtrim()
+	 * @uses apply_filters()
+	 * @uses sprintf()
+	 * @uses esc_html__()
+	 *
+	 * @param string $context The path to check from.
+	 *
+	 * @return array
+	 */
 	function _test_is_vcs_checkout( $context ) {
 		$context_dirs = array( ABSPATH );
 		$vcs_dirs = array( '.svn', '.git', '.hg', '.bzr' );
@@ -192,11 +290,27 @@ class Health_Check_Auto_Updates {
 		);
 	}
 
+	/**
+	 * Check if the absolute path is under Version Control.
+	 *
+	 * @uses Health_Check_Auto_Updates::_test_is_vcs_checkout()
+	 *
+	 * @return array
+	 */
 	function test_vcs_ABSPATH() {
 		$result = $this->_test_is_vcs_checkout( ABSPATH );
 		return $result;
 	}
 
+	/**
+	 * Check if we can access files without providing credentials.
+	 *
+	 * @uses Automatic_Upgrader_Skin
+	 * @uses Automatic_Upgrader_Skin::request_filesystem_credentials()
+	 * @uses esc_html__()
+	 *
+	 * @return array
+	 */
 	function test_check_wp_filesystem_method() {
 		$skin = new Automatic_Upgrader_Skin;
 		$success = $skin->request_filesystem_credentials( false, ABSPATH );
@@ -217,6 +331,29 @@ class Health_Check_Auto_Updates {
 		);
 	}
 
+	/**
+	 * Check if core files are writeable by the web user/group.
+	 *
+	 * @global $wp_filesystem
+	 *
+	 * @uses Automatic_Upgrader_Skin
+	 * @uses Automatic_Upgrader_Skin::request_filesystem_credentials()
+	 * @uses WP_Filesystem
+	 * @uses WP_Filesystem::method
+	 * @uses get_core_checksums()
+	 * @uses strpos()
+	 * @uses sprintf()
+	 * @uses esc_html__()
+	 * @uses array_keys()
+	 * @uses substr()
+	 * @uses file_exists()
+	 * @uses is_writable()
+	 * @uses count()
+	 * @uses array_slice()
+	 * @uses implode()
+	 *
+	 * @return array|bool
+	 */
 	function test_all_files_writable() {
 		global $wp_filesystem;
 		include ABSPATH . WPINC . '/version.php'; // $wp_version; // x.y.z
@@ -286,6 +423,17 @@ class Health_Check_Auto_Updates {
 		}
 	}
 
+	/**
+	 * Check if the install is using a development branch and can use nightly packages.
+	 *
+	 * @uses strpos()
+	 * @uses defined()
+	 * @uses sprintf()
+	 * @uses esc_html__()
+	 * @uses apply_filters()
+	 *
+	 * @return array|bool
+	 */
 	function test_accepts_dev_updates() {
 		include ABSPATH . WPINC . '/version.php'; // $wp_version; // x.y.z
 		// Only for dev versions
@@ -314,6 +462,16 @@ class Health_Check_Auto_Updates {
 		}
 	}
 
+	/**
+	 * Check if the site supports automatic minor updates.
+	 *
+	 * @uses defined()
+	 * @uses sprintf()
+	 * @uses esc_html__()
+	 * @uses apply_filters()
+	 *
+	 * @return array
+	 */
 	function test_accepts_minor_updates() {
 		if ( defined( 'WP_AUTO_UPDATE_CORE' ) && false === WP_AUTO_UPDATE_CORE ) {
 			return array(

@@ -1,14 +1,33 @@
 <?php
+/**
+ * Perform tests to see if WP_Cron is operating as it should.
+ *
+ * @package Health Check
+ */
 
+/**
+ * Class Health_Check_WP_Cron
+ */
 class Health_Check_WP_Cron {
 	public $schedules;
 	public $crons;
 	public $last_missed_cron = null;
 
+	/**
+	 * Health_Check_WP_Cron constructor.
+	 */
 	public function __construct() {
 		$this->init();
 	}
 
+	/**
+	 * Initiate the class
+	 *
+	 * @uses wp_get_schedules()
+	 * @uses Health_Check_WP_Cron::get_cron_tasks()
+	 *
+	 * @return void
+	 */
 	public function init() {
 		$this->schedules = wp_get_schedules();
 		$this->get_cron_tasks();
@@ -18,7 +37,12 @@ class Health_Check_WP_Cron {
 	 * Populate our list of cron events and store them to a class-wide variable.
 	 *
 	 * Derived from `get_cron_events()` in WP Crontrol (https://plugins.svn.wordpress.org/wp-crontrol)
-	 * by John Blackburn
+	 * by John Blackburn.
+	 *
+	 * @uses _get_cron_array()
+	 * @uses WP_Error
+	 *
+	 * @return void
 	 */
 	private function get_cron_tasks() {
 		$cron_tasks = _get_cron_array();
@@ -53,6 +77,9 @@ class Health_Check_WP_Cron {
 	 *
 	 * Returns a boolean value of `true` if a scheduled task has been missed and ends processing.
 	 * If the list of crons is an instance of WP_Error, return the instance instead of a boolean value.
+	 *
+	 * @uses is_wp_error()
+	 * @uses time()
 	 *
 	 * @return bool|WP_Error
 	 */

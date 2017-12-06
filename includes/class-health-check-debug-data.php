@@ -1,6 +1,15 @@
 <?php
+/**
+ * Class for providing debug data based on a users WordPress environment.
+ *
+ * @package Health Check
+ */
 
+/**
+ * Class Health_Check_Debug_Data
+ */
 class Health_Check_Debug_Data {
+
 	static function debug_data( $locale = null ) {
 		if ( ! empty( $locale ) ) {
 			// Change the language used for translations

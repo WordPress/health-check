@@ -1,4 +1,9 @@
 <?php
+/**
+ * Tests to determine if the WOrdPress loopbacks are able to run unhindered.
+ *
+ * @package Health Check
+ */
 
 /**
  * Class Health_Check_Loopback
@@ -6,6 +11,18 @@
 class Health_Check_Loopback {
 	/**
 	 * Run a loopback test on our site.
+	 *
+	 * @uses wp_unslash()
+	 * @uses base64_encode()
+	 * @uses admin_url()
+	 * @uses add_query_arg()
+	 * @uses is_array()
+	 * @uses implode()
+	 * @uses wp_remote_get()
+	 * @uses compact()
+	 * @uses is_wp_error()
+	 * @uses wp_remote_retrieve_response_code()
+	 * @uses sprintf()
 	 *
 	 * @param null|string       $disable_plugin_hash Optional. A hash to send with our request to disable any plugins.
 	 * @param null|string|array $allowed_plugins     Optional. A string or array of approved plugin slugs that can run even when we globally ignore plugins.
@@ -63,6 +80,27 @@ class Health_Check_Loopback {
 		);
 	}
 
+	/**
+	 * Perform the loopback check, but ensure no plugins are enabled when we do so.
+	 *
+	 * @uses ob_start()
+	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
+	 * @uses Health_Check_Troubleshoot::get_filesystem_credentials()
+	 * @uses Health_Check_Troubleshoot::setup_must_use_plugin()
+	 * @uses ob_get_clean()
+	 * @uses wp_send_json_error()
+	 * @uses md5()
+	 * @uses rand()
+	 * @uses update_option()
+	 * @uses Health_Check_Loopback::can_perform_loopback()
+	 * @uses sprintf()
+	 * @uses esc_attr()
+	 * @uses esc_html__()
+	 * @uses esc_html()
+	 * @uses wp_send_json_success()
+	 *
+	 * @return void
+	 */
 	static function loopback_no_plugins() {
 		ob_start();
 
@@ -111,6 +149,32 @@ class Health_Check_Loopback {
 		die();
 	}
 
+	/**
+	 * Test individual plugins for loopback compatibility issues.
+	 *
+	 * This function will perform the loopback check, without any plugins, then conditionally enables one plugin at a time.
+	 *
+	 * @uses ob_start()
+	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
+	 * @uses Health_Check_Troubleshoot::get_filesystem_credentials()
+	 * @uses Health_Check_Troubleshoot::setup_must_use_plugin()
+	 * @uses ob_get_clean()
+	 * @uses wp_send_json_error()
+	 * @uses delete_option()
+	 * @uses get_option()
+	 * @uses md5()
+	 * @uses rand()
+	 * @uses update_option()
+	 * @uses explode()
+	 * @uses Health_Check_Loopback::can_perform_loopback()
+	 * @uses sprintf()
+	 * @uses esc_attr()
+	 * @uses esc_html__()
+	 * @uses esc_html()
+	 * @uses wp_send_json_success()
+	 *
+	 * @return void
+	 */
 	static function loopback_test_individual_plugins() {
 		ob_start();
 

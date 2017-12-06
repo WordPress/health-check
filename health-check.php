@@ -1,30 +1,67 @@
 <?php
-/*
-	Plugin Name: Health Check
-	Plugin URI: http://wordpress.org/plugins/health-check/
-	Description: Checks the health of your WordPress install.
-	Author: The WordPress.org community
-	Version: 0.7.0
-	Author URI: http://wordpress.org/plugins/health-check/
-	Text Domain: health-check
+/**
+ * Plugins primary file, in charge of including all other dependencies.
+ *
+ * @package Health Check
+ *
+ * Plugin Name: Health Check
+ * Plugin URI: http://wordpress.org/plugins/health-check/
+ * Description: Checks the health of your WordPress install.
+ * Author: The WordPress.org community
+ * Version: 0.7.0
+ * Author URI: http://wordpress.org/plugins/health-check/
+ * Text Domain: health-check
  */
+
+// Check that the file is nto accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
+// Set the minimum PHP version WordPress supports.
 define( 'HEALTH_CHECK_PHP_MIN_VERSION', '5.2.4' );
+
+// Set the PHP version WordPress recommends.
 define( 'HEALTH_CHECK_PHP_REC_VERSION', '7.2' );
+
+// Set the minimum MySQL version WordPress supports.
 define( 'HEALTH_CHECK_MYSQL_MIN_VERSION', '5.0' );
+
+// Set the MySQL version WordPress recommends.
 define( 'HEALTH_CHECK_MYSQL_REC_VERSION', '5.6' );
+
+// Set the plugin version.
 define( 'HEALTH_CHECK_PLUGIN_VERSION', '0.7.0' );
+
+// Set the absolute path for the plugin.
 define( 'HEALTH_CHECK_PLUGIN_DIRECTORY', plugin_dir_path( __FILE__ ) );
 
+/**
+ * Class HealthCheck
+ */
 class HealthCheck {
 
+	/**
+	 * HealthCheck constructor.
+	 *
+	 * @uses HealthCheck::init()
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 		$this->init();
 	}
 
+	/**
+	 * Plugin initiation.
+	 *
+	 * A helper function, called by `HealthCheck::__construct()` to initiate actions, hooks and other features needed.
+	 *
+	 * @uses add_action()
+	 * @uses add_filter()
+	 *
+	 * @return void
+	 */
 	public function init() {
 		add_action( 'plugins_loaded', array( $this, 'load_i18n' ) );
 
@@ -39,6 +76,18 @@ class HealthCheck {
 		add_action( 'wp_ajax_health-check-loopback-individual-plugins', array( 'Health_Check_Loopback', 'loopback_test_individual_plugins' ) );
 	}
 
+	/**
+	 * Initiate troubleshooting mode.
+	 *
+	 * Catch when the troubleshooting form has been submitted, and appropriately set required options and cookies.
+	 *
+	 * @uses md5()
+	 * @uses rand()
+	 * @uses update_option()
+	 * @uses setcookie()
+	 *
+	 * @return void
+	 */
 	public function start_troubleshoot_mode() {
 		if ( ! isset( $_POST['health-check-troubleshoot-mode'] ) || ! isset( $_POST['health-check-troubleshoot-mode-confirmed'] ) ) {
 			return;
@@ -50,10 +99,34 @@ class HealthCheck {
 		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
 	}
 
+	/**
+	 * Load translations.
+	 *
+	 * Loads the textdomain needed to get translations for our plugin.
+	 *
+	 * @uses load_plugin_textdomain()
+	 * @uses basename()
+	 * @uses dirname()
+	 *
+	 * @return void
+	 */
 	public function load_i18n() {
 		load_plugin_textdomain( 'health-check', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
+	/**
+	 * Enqueue assets.
+	 *
+	 * Conditionally enqueue our CSS and JavaScript when viewing plugin related pages in wp-admin.
+	 *
+	 * @uses wp_enqueue_style()
+	 * @uses plugins_url()
+	 * @uses wp_enqueue_script()
+	 * @uses wp_localize_script()
+	 * @uses esc_html__()
+	 *
+	 * @return void
+	 */
 	public function enqueues() {
 		// Don't enqueue anything unless we're on the health check page
 		if ( ! isset( $_GET['page'] ) || 'health-check' !== $_GET['page'] ) {
@@ -71,10 +144,30 @@ class HealthCheck {
 		) );
 	}
 
+	/**
+	 * Add item to the admin menu.
+	 *
+	 * @uses add_dashboard_page()
+	 * @uses __()
+	 *
+	 * @return void
+	 */
 	public function action_admin_menu() {
 		add_dashboard_page( __( 'Health Check', 'health-check' ), __( 'Health Check', 'health-check' ), 'manage_options', 'health-check', array( $this, 'dashboard_page' ) );
 	}
 
+	/**
+	 * Add a quick-access link under our plugin name on the plugins-list.
+	 *
+	 * @uses plugin_basename()
+	 * @uses sprintf()
+	 * @uses menu_page_url()
+	 *
+	 * @param array  $meta An array containing meta links.
+	 * @param string $name The plugin slug that these metas relate to.
+	 *
+	 * @return array
+	 */
 	public function settings_link( $meta, $name ) {
 		if ( plugin_basename( __FILE__ ) === $name ) {
 			$meta[] = sprintf( '<a href="%s">' . __( 'Health Check', 'health-check' ) . '</a>', menu_page_url( 'health-check', false ) );
@@ -83,6 +176,18 @@ class HealthCheck {
 		return $meta;
 	}
 
+	/**
+	 * Render our admin page.
+	 *
+	 * @uses _e()
+	 * @uses esc_html__()
+	 * @uses printf()
+	 * @uses sprintf()
+	 * @uses menu_page_url()
+	 * @uses dirname()
+	 *
+	 * @return void
+	 */
 	public function dashboard_page() {
 		?>
 		<div class="wrap">
@@ -138,6 +243,16 @@ class HealthCheck {
 		<?php
 	}
 
+	/**
+	 * Display styled admin notices.
+	 *
+	 * @uses printf()
+	 *
+	 * @param string $message A sanitized string containing our notice message.
+	 * @param string $status  A string representing the status type.
+	 *
+	 * @return void
+	 */
 	static function display_notice( $message, $status = 'success' ) {
 		printf(
 			'<div class="notice notice-%s inline">',
@@ -152,6 +267,15 @@ class HealthCheck {
 		echo '</div>';
 	}
 
+	/**
+	 * Perform a check to see is JSON is enabled.
+	 *
+	 * @uses extension_loaded()
+	 * @uses function_Exists()
+	 * @uses son_encode()
+	 *
+	 * @return bool
+	 */
 	static function json_check() {
 		$extension_loaded = extension_loaded( 'json' );
 		$functions_exist = function_exists( 'json_encode' ) && function_exists( 'json_decode' );
@@ -161,10 +285,10 @@ class HealthCheck {
 	}
 }
 
-/* Initialize ourselves */
+// Initialize our plugin.
 new HealthCheck();
 
-// Include classes used by our plugin
+// Include class-files used by our plugin.
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-auto-updates.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cron.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-debug-data.php' );

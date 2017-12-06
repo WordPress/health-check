@@ -1,4 +1,11 @@
 <?php
+/**
+ * The Troubleshooting tab contents.
+ *
+ * @package Health Check
+ */
+
+// Make sure the file is not directly accessible.
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
