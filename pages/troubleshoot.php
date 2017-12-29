@@ -6,16 +6,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="notice notice-warning inline">
 	<p>
-		<?php esc_html_e( 'When troubleshooting issues on your site, you are likely to be told to disable all plugins.', 'health-check' ); ?>
+		<?php esc_html_e( 'When troubleshooting issues on your site, you are likely to be told to disable all plugins and switch to the default theme.', 'health-check' ); ?>
 		<?php esc_html_e( 'Understandably, you do not wish to do so as it may affect your site visitors, leaving them with lost functionality.', 'health-check' ); ?>
 	</p>
 
 	<p>
-		<?php esc_html_e( 'By enabling the troubleshooting mode, all plugins will appear deactivated for your current logged in session, but all other users will see your site as usual.', 'health-check' ); ?>
+		<?php esc_html_e( 'By enabling the Troubleshooting Mode, all plugins will appear deactivated and your site will switch to the default theme only for you. All other users will see your site as usual.', 'health-check' ); ?>
 	</p>
 
 	<p>
-		<?php esc_html_e( 'A Troubleshooting Mode menu is added to your admin bar, this will allow you to enable individual plugins when looking for issues.', 'health-check' ); ?>
+		<?php esc_html_e( 'A Troubleshooting Mode menu is added to your admin bar, which will allow you to enable plugins individually, switch back to your current theme, and disable Troubleshooting Mode.', 'health-check' ); ?>
 	</p>
 
 	<p>
