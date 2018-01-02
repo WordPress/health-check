@@ -59,7 +59,16 @@ class Health_Check_Loopback {
 		if ( is_wp_error( $r ) ) {
 			return (object) array(
 				'status'  => 'error',
-				'message' => __( 'The loopback request to your site took too long to complete, this may prevent WP_Cron from working, along with theme and plugin editors.', 'health-check' )
+				'message' => sprintf(
+					'%s<br>%s',
+					esc_html__( 'The loopback request to your site failed, this may prevent WP_Cron from working, along with theme and plugin editors.', 'health-check' ),
+					sprintf(
+						/* translators: %1$d: The HTTP response code. %2$s: The error message returned. */
+						esc_html__( 'Error encountered: (%1$d) %2$s', 'health-check' ),
+						wp_remote_retrieve_response_code( $r ),
+						$r->get_error_message()
+					)
+				)
 			);
 		}
 
@@ -68,7 +77,7 @@ class Health_Check_Loopback {
 				'status'  => 'warning',
 				'message' => sprintf(
 					/* translators: %d: The HTTP response code returned. */
-					__( 'The loopback request returned an unexpected status code, %d, this may affect tools such as WP_Cron, or theme and plugin editors.', 'health-check' ),
+					esc_html__( 'The loopback request returned an unexpected status code, %d, this may affect tools such as WP_Cron, or theme and plugin editors.', 'health-check' ),
 					wp_remote_retrieve_response_code( $r )
 				)
 			);
@@ -133,7 +142,7 @@ class Health_Check_Loopback {
 			'<br><span class="%s"></span> %s: %s',
 			esc_attr( $no_plugin_test->status ),
 			esc_html__( 'Result from testing without any plugins active', 'health-check' ),
-			esc_html( $no_plugin_test->message )
+			$no_plugin_test->message
 		);
 
 		if ( 'error' !== $no_plugin_test->status ) {
@@ -218,7 +227,7 @@ class Health_Check_Loopback {
 					esc_html__( 'Testing %s', 'health-check' ),
 					$plugin_slug
 				),
-				esc_html( $single_test->message )
+				$single_test->message
 			);
 		}
 
