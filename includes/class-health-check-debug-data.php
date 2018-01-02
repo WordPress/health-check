@@ -394,7 +394,7 @@ class Health_Check_Debug_Data {
 			'private' => true
 		);
 		$info['wp-database']['fields'][] = array(
-			'label'   => __( 'Database table', 'health-check' ),
+			'label'   => __( 'Database name', 'health-check' ),
 			'value'   => $wpdb->dbname,
 			'private' => true
 		);
