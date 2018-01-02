@@ -169,7 +169,7 @@ class Health_Check_Troubleshoot {
 			if ( ! isset( $_POST['health-check-troubleshoot-mode-confirmed'] ) ) {
 				printf(
 					'<div class="notice notice-error inline"><p>%s</p></div>',
-					esc_html__( 'You did not check that you understand how to leave troubleshooter mode, please read the explanation and confirm that you understand the procedure first.', 'health-check' )
+					esc_html__( 'You did not check that you understand how to leave Troubleshooting Mode, please read the explanation and confirm that you understand the procedure first.', 'health-check' )
 				);
 			}
 			else {
@@ -197,7 +197,7 @@ class Health_Check_Troubleshoot {
 				<p>
 					<label>
 						<input type="checkbox" name="health-check-troubleshoot-mode-confirmed">
-						<?php esc_html_e( 'I understand that troubleshooter mode is active until the next time I log out', 'health-check' ); ?>
+						<?php esc_html_e( 'I understand that Troubleshooting Mode is active until I disable it', 'health-check' ); ?>
 					</label>
 
 				</p>
