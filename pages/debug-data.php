@@ -50,10 +50,23 @@ $info = Health_Check_Debug_Data::debug_data();
 									continue;
 								}
 
+								$values = $field['value'];
+								if ( is_array( $field['value'] ) ) {
+									$values = "";
+
+									foreach( $field['value'] as $name => $value ) {
+										$values .= sprintf(
+											"\n\t%s: %s",
+											$name,
+											$value
+										);
+									}
+								}
+
 								printf(
 									"%s: %s\n",
 									$field['label'],
-									$field['value']
+									$values
 								);
 							}
 							echo "\n";
@@ -89,10 +102,23 @@ $info = Health_Check_Debug_Data::debug_data();
 							continue;
 						}
 
+						$values = $field['value'];
+						if ( is_array( $field['value'] ) ) {
+							$values = "";
+
+							foreach( $field['value'] as $name => $value ) {
+								$values .= sprintf(
+									"\n\t%s: %s",
+									$name,
+									$value
+								);
+							}
+						}
+
 						printf(
 							"%s: %s\n",
 							$field['label'],
-							$field['value']
+							$values
 						);
 					}
 					echo "\n";
@@ -160,10 +186,22 @@ foreach ( $info AS $section => $details ) {
 		<tbody>
 		<?php
 		foreach ( $details['fields'] AS $field ) {
+			$values = esc_html( $field['value'] );
+			if ( is_array( $field['value'] ) ) {
+				$values = '';
+				foreach( $field['value'] as $name => $value ) {
+					$values .= sprintf(
+						'<li>%s: %s</li>',
+						esc_html( $name ),
+						esc_html( $value )
+					);
+				}
+			}
+
 			printf(
 				'<tr><td>%s</td><td>%s</td></tr>',
 				esc_html( $field['label'] ),
-				esc_html( $field['value'] )
+				$values
 			);
 		}
 		?>

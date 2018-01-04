@@ -100,6 +100,10 @@ class Health_Check_Debug_Data {
 				'show_count' => true,
 				'fields'     => array()
 			),
+			'wp-media'            => array(
+				'label'  => __( 'Media handling', 'health-check' ),
+				'fields' => array()
+			),
 			'wp-server'           => array(
 				'label'       => __( 'Server', 'health-check' ),
 				'description' => __( 'The options shown below relate to your server setup. If changes are required, you may need your web host\'s assistance.', 'health-check' ),
@@ -268,6 +272,71 @@ class Health_Check_Debug_Data {
 			);
 		}
 
+		// Populate the media fields.
+		$info['wp-media']['fields'][] = array(
+			'label' => __( 'Active editor', 'health-check' ),
+			'value' => _wp_image_editor_choose()
+		);
+
+		// Get ImageMagic information, if available.
+		if ( class_exists( 'Imagick' ) ) {
+			// Save the Imagick instance for later use.
+			$imagick = new Imagick();
+			$imagick_version = $imagick->getVersion();
+		} else {
+			$imagick_version = 'Imagick not available';
+		}
+		$info['wp-media']['fields'][] = array(
+			'label' => __( 'Imagick Module Number' ),
+			'value' => ( is_array( $imagick_version ) ? $imagick_version['versionNumber'] : $imagick_version )
+		);
+		$info['wp-media']['fields'][] = array(
+			'label' => __( 'ImageMagick Version' ),
+			'value' => ( is_array( $imagick_version )  ? $imagick_version['versionString'] : $imagick_version )
+		);
+
+		// If Imagick is used as our editor, provide some more information about its limitations.
+		if ( 'WP_Image_Editor_Imagick' === _wp_image_editor_choose() && isset( $imagick ) && $imagick instanceof Imagick ) {
+			$limits = array(
+				'area'   => ( defined( 'imagick::RESOURCETYPE_AREA' ) ? size_format( $imagick->getResourceLimit( imagick::RESOURCETYPE_AREA ) ) : 'Not Available' ),
+				'disk'   => ( defined( 'imagick::RESOURCETYPE_DISK' ) ? $imagick->getResourceLimit( imagick::RESOURCETYPE_DISK ) : 'Not Available' ),
+				'file'   => ( defined( 'imagick::RESOURCETYPE_FILE' ) ? $imagick->getResourceLimit( imagick::RESOURCETYPE_FILE ) : 'Not Available' ),
+				'map'    => ( defined( 'imagick::RESOURCETYPE_MAP' ) ? size_format( $imagick->getResourceLimit( imagick::RESOURCETYPE_MAP ) ) : 'Not Available' ),
+				'memory' => ( defined( 'imagick::RESOURCETYPE_MEMORY' ) ? size_format( $imagick->getResourceLimit( imagick::RESOURCETYPE_MEMORY ) ) : 'Not Available' ),
+				'thread' => ( defined( 'imagick::RESOURCETYPE_THREAD' ) ? $imagick->getResourceLimit( imagick::RESOURCETYPE_THREAD ) : 'Not Available' )
+			);
+
+			$info['wp-media']['fields'][] = array(
+				'label' => __( 'Imagick Resource Limits', 'health-check' ),
+				'value' => $limits
+			);
+		}
+
+		// Get GD information, if available.
+		if ( function_exists( 'gd_info' ) ) {
+			$gd = gd_info();
+		}
+		else {
+			$gd = false;
+		}
+		$info['wp-media']['fields'][] = array(
+			'label' => __( 'GD Version' ),
+			'value' => ( is_array( $gd ) ? $gd['GD Version'] : 'GD not available' )
+		);
+
+		// Get Ghostscript information, if available.
+		if ( function_exists( 'exec' ) ) {
+			$gs = exec( 'gs --version' );
+			$gs = ( ! empty( $gs ) ? $gs : 'Not available' );
+		}
+		else {
+			$gs = __( 'Unable to determine if Ghostscript is installed', 'health-check' );
+		}
+		$info['wp-media']['fields'][] = array(
+			'label' => __( 'Ghostscript Version' ),
+			'value' => $gs
+		);
+
 		// Populate the server debug fields.
 		$info['wp-server']['fields'][] = array(
 			'label' => __( 'Server architecture', 'health-check' ),
@@ -304,6 +373,10 @@ class Health_Check_Debug_Data {
 			$info['wp-server']['fields'][] = array(
 				'label' => __( 'PHP memory limit', 'health-check' ),
 				'value' => ini_get( 'memory_limit' )
+			);
+			$info['wp-server']['fields'][] = array(
+				'label' => __( 'Max input time', 'health-check' ),
+				'value' => ini_get( 'max_input_time' )
 			);
 			$info['wp-server']['fields'][] = array(
 				'label' => __( 'Upload max filesize', 'health-check' ),
