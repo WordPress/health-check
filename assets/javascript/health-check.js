@@ -98,4 +98,18 @@ jQuery(document).ready(function ($) {
 
 		health_check_failure_modal_close( modal );
 	});
+
+	$(".health-check-copy-field").click(function (e) {
+		e.preventDefault();
+
+		var $textarea = $( 'textarea', $(this).closest('div') ),
+			$button   = $(this);
+
+		$textarea.select();
+
+		var copied = document.execCommand( 'copy' );
+		if ( copied ) {
+			$button.text( health_check.string.copied );
+		}
+	});
 });

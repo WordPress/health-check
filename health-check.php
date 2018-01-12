@@ -174,7 +174,8 @@ class HealthCheck {
 
 		wp_localize_script( 'health-check', 'health_check', array(
 			'string' => array(
-				'please_wait' => esc_html__( 'Please wait...', 'health-check' )
+				'please_wait' => esc_html__( 'Please wait...', 'health-check' ),
+				'copied'      => esc_html__( 'Copied', 'health-check' )
 			)
 		) );
 	}

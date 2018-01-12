@@ -76,7 +76,7 @@ $info = Health_Check_Debug_Data::debug_data();
 			<p>
 				<?php esc_html_e( 'Some information may be filtered out from the list you are about to copy, this is information that may be considered private, and is not meant to be shared in a public forum.', 'health-check' ); ?>
 				<br>
-				<button type="button" class="button button-primary" onclick="document.getElementById('system-information-english-copy-field').select();"><?php esc_html_e( 'Mark field for copying', 'health-check' ); ?></button>
+				<button type="button" class="button button-primary health-check-copy-field"><?php esc_html_e( 'Mark field for copying', 'health-check' ); ?></button>
 			</p>
 		</div>
 
@@ -128,7 +128,7 @@ $info = Health_Check_Debug_Data::debug_data();
 			<p>
 				<?php esc_html_e( 'Some information may be filtered out from the list you are about to copy, this is information that may be considered private, and is not meant to be shared in a public forum.', 'health-check' ); ?>
 				<br>
-				<button type="button" class="button button-primary" onclick="document.getElementById('system-information-copy-field').select();"><?php esc_html_e( 'Mark field for copying', 'health-check' ); ?></button>
+				<button type="button" class="button button-primary health-check-copy-field"><?php esc_html_e( 'Mark field for copying', 'health-check' ); ?></button>
 			</p>
 		</div>
 	</div>
