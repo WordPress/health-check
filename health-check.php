@@ -68,9 +68,12 @@ class HealthCheck {
 		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'settings_link' ), 10, 2 );
 
+		add_filter( 'plugin_action_links', array( $this, 'troubeshoot_plugin_action' ), 20, 4 );
+
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ) );
 
 		add_action( 'init', array( $this, 'start_troubleshoot_mode' ) );
+		add_action( 'init', array( $this, 'start_troubleshoot_single_plugin_mode' ) );
 
 		add_action( 'wp_ajax_health-check-loopback-no-plugins', array( 'Health_Check_Loopback', 'loopback_no_plugins' ) );
 		add_action( 'wp_ajax_health-check-loopback-individual-plugins', array( 'Health_Check_Loopback', 'loopback_test_individual_plugins' ) );
@@ -89,7 +92,7 @@ class HealthCheck {
 	 * @return void
 	 */
 	public function start_troubleshoot_mode() {
-		if ( ! isset( $_POST['health-check-troubleshoot-mode'] ) || ! isset( $_POST['health-check-troubleshoot-mode-confirmed'] ) ) {
+		if ( ! isset( $_POST['health-check-troubleshoot-mode'] ) || ! isset( $_POST['health-check-troubleshoot-mode-confirmed'] ) || ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
@@ -97,6 +100,21 @@ class HealthCheck {
 		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
 
 		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
+	}
+
+	public function start_troubleshoot_single_plugin_mode() {
+		if ( ! isset( $_GET['health-check-troubleshoot-plugin'] ) || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$loopback_hash = md5( rand() );
+		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
+
+		update_option( 'health-check-allowed-plugins', array( $_GET['health-check-troubleshoot-plugin'] ) );
+
+		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
+
+		wp_redirect( admin_url( 'plugins.php' ) );
 	}
 
 	/**
@@ -174,6 +192,38 @@ class HealthCheck {
 		}
 
 		return $meta;
+	}
+
+	/**
+	 * Add a troubleshooting action link to plugins.
+	 *
+	 * @param $actions
+	 * @param $plugin_file
+	 * @param $plugin_data
+	 * @param $context
+	 *
+	 * @return array
+	 */
+	public function troubeshoot_plugin_action( $actions, $plugin_file, $plugin_data, $context ) {
+		// Don't add anything if this is a Must-Use plugin, we can't touch those.
+		if ( 'mustuse' === $context ) {
+			return $actions;
+		}
+
+		// Only add troubleshooting actions to active plugins.
+		if ( ! is_plugin_active( $plugin_data['plugin'] ) ) {
+			return $actions;
+		}
+
+		$actions['troubleshoot'] = sprintf(
+			'<a href="%s">%s</a>',
+			esc_url( add_query_arg( array(
+				'health-check-troubleshoot-plugin' => $plugin_data['slug']
+			), admin_url() ) ),
+			esc_html__( 'Troubleshoot', 'health-check' )
+		);
+
+		return $actions;
 	}
 
 	/**
