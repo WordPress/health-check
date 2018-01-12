@@ -3,7 +3,7 @@ Tags: health check
 Contributors: westi, pento, Clorith
 Requires at least: 3.8
 Tested up to: 4.9
-Stable tag: 0.7.0
+Stable tag: 0.8.0
 
 == Description ==
 
@@ -11,7 +11,11 @@ This plugin will perform a number of checks on your WordPress install to detect 
 
 It currently checks your PHP and MySQL versions, some extensions which are needed or may improve WordPress, and that the WordPress.org services are accessible to you.
 
-There is also a debug section, which allows you to gather information about your WordPress and server configuration that you may easily share with support personell for themes, plugins or on the official WordPress.org support forums.
+The debug section, which allows you to gather information about your WordPress and server configuration that you may easily share with support representatives for themes, plugins or on the official WordPress.org support forums.
+
+Troubleshooting allows you to have a vanilla WordPress session, where all plugins are disabled, and a default theme is used, but only for your user.
+
+For a more extensive example of how to efficiently use the Health Check plugin, check out the [WordPress.org support team handbook page about this plugin](https://make.wordpress.org/support/handbook/appendix/troubleshooting-using-the-health-check/).
 
 In the future we may introduce more checks, and welcome feedback both through the [WordPress.org forums](https://wordpress.org/support/plugin/health-check), and the [GitHub project page](https://github.com/WordPress/health-check).
 
@@ -23,19 +27,23 @@ In the future we may introduce more checks, and welcome feedback both through th
 
 == Screenshots ==
 
-1. This shows the plugin in action.  When you activate it you get a message at the top of the plugins page.
+1. The health check screen after the automated tests have gone over the system.
+2. The debug information, with the copy and paste field expanded.
+3. The generic PHP information tab, when more detailed information is required.
 
 == Changelog ==
+
+= v 0.8.0 =
+* Updated recommended PHP version to mirror WordPress.org.
+* Updated texts for troubleshooting mode.
+* Re-labeled database terms to be more user friendly.
+* Added media information to the debug tab.
+* Added individual `Trouleshoot` links for the list of active plugins.
+* Added automatic copy to clipboard with supported browsers in the debug tab.
 
 = v 0.7.0 =
 * Troubleshooting mode now also switches to a default theme.
 * Introduced a method for toggling default or active theme use when in troubleshooting mode.
 * Introduced a method for enabling/disabling plugins while in troubleshooting mode.
 * Introduced a method for disabling troubleshooting mode without needing to log out and back in again.
-
-= v 0.6.0 =
-* Improved loopback tests
-  * Check if loopbacks can be completed without plugins activated
-  * Test individual plugins to identify loopback blockers
-* Add troubleshooting mode, test your website without any plugins for your session without disabling functionality for visitors.
 

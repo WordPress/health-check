@@ -1,3 +1,8 @@
+= v 0.6.0 =
+* Improved loopback tests
+  * Check if loopbacks can be completed without plugins activated
+  * Test individual plugins to identify loopback blockers
+* Add troubleshooting mode, test your website without any plugins for your session without disabling functionality for visitors.
 
 = v 0.5.1 =
 * Introduced loopback check to the health checker status.
