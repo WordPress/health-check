@@ -84,6 +84,7 @@ class HealthCheck {
 	 *
 	 * Catch when the troubleshooting form has been submitted, and appropriately set required options and cookies.
 	 *
+	 * @uses current_user_can()
 	 * @uses md5()
 	 * @uses rand()
 	 * @uses update_option()
@@ -102,6 +103,22 @@ class HealthCheck {
 		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
 	}
 
+	/**
+	 * Initiate troubleshooting mode for a specific plugin.
+	 *
+	 * Catch when the troubleshooting link on an individual plugin has been clicked, and appropriately sets the
+	 * required options and cookies.
+	 *
+	 * @uses current_user_can()
+	 * @uses md5()
+	 * @uses rand()
+	 * @uses update_option()
+	 * @uses setcookie()
+	 * @uses wp_redirect()
+	 * @uses admin_url()
+	 *
+	 * @return void
+	 */
 	public function start_troubleshoot_single_plugin_mode() {
 		if ( ! isset( $_GET['health-check-troubleshoot-plugin'] ) || ! current_user_can( 'manage_options' ) ) {
 			return;
