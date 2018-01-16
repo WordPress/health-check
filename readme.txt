@@ -38,7 +38,7 @@ In the future we may introduce more checks, and welcome feedback both through th
 * Updated texts for troubleshooting mode.
 * Re-labeled database terms to be more user friendly.
 * Added media information to the debug tab.
-* Added individual `Trouleshoot` links for the list of active plugins.
+* Added individual `Troubleshoot` links for the list of active plugins.
 * Added automatic copy to clipboard with supported browsers in the debug tab.
 
 = v 0.7.0 =
