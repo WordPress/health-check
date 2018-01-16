@@ -488,7 +488,7 @@ class Health_Check_Debug_Data {
 
 			if ( ! empty( $plugin_version ) && ! empty( $plugin_author ) ) {
 				// translators: %1$s: Plugin version number. %2$s: Plugin author name.
-				$plugin_version_string = sprintf( __( 'version %1$s by %2$s', 'health-check' ), $plugin_version, $plugin_author );
+				$plugin_version_string = sprintf( __( 'Version %1$s by %2$s', 'health-check' ), $plugin_version, $plugin_author );
 			}
 			if ( empty( $plugin_version ) && ! empty( $plugin_author ) ) {
 				// translators: %s: Plugin author name.
@@ -519,7 +519,7 @@ class Health_Check_Debug_Data {
 
 			if ( ! empty( $plugin_version ) && ! empty( $plugin_author ) ) {
 				// translators: %1$s: Plugin version number. %2$s: Plugin author name.
-				$plugin_version_string = sprintf( __( 'version %1$s by %2$s', 'health-check' ), $plugin_version, $plugin_author );
+				$plugin_version_string = sprintf( __( 'Version %1$s by %2$s', 'health-check' ), $plugin_version, $plugin_author );
 			}
 			if ( empty( $plugin_version ) && ! empty( $plugin_author ) ) {
 				// translators: %s: Plugin author name.
@@ -591,7 +591,7 @@ class Health_Check_Debug_Data {
 
 			if ( ! empty( $theme_version ) && ! empty( $theme_author ) ) {
 				// translators: %1$s: Theme version number. %2$s: Theme author name.
-				$theme_version_string = sprintf( __( 'version %1$s by %2$s', 'health-check' ), $theme_version, wp_kses( $theme_author, array() ) );
+				$theme_version_string = sprintf( __( 'Version %1$s by %2$s', 'health-check' ), $theme_version, wp_kses( $theme_author, array() ) );
 			}
 			if ( empty( $theme_version ) && ! empty( $theme_author ) ) {
 				// translators: %s: Theme author name.
