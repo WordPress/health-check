@@ -144,7 +144,7 @@ class Health_Check_Troubleshoot {
 				sprintf(
 					'<a href="%1$s">%2$s</a><script type="text/javascript">window.location = "%1$s";</script>',
 					esc_url( admin_url( '/' ) ),
-					esc_html__( 'Return to the Dashboard' )
+					esc_html__( 'Return to the Dashboard', 'health-check' )
 				)
 			)
 		);
