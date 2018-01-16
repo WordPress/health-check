@@ -229,14 +229,14 @@ class HealthCheck {
 		}
 
 		// Only add troubleshooting actions to active plugins.
-		if ( ! is_plugin_active( $plugin_data['plugin'] ) ) {
+		if ( ! is_plugin_active( $plugin_file ) ) {
 			return $actions;
 		}
 
 		$actions['troubleshoot'] = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( add_query_arg( array(
-				'health-check-troubleshoot-plugin' => $plugin_data['slug']
+				'health-check-troubleshoot-plugin' => ( isset( $plugin_data['slug'] ) ? $plugin_data['slug'] : sanitize_title( $plugin_data['Name'] ) )
 			), admin_url() ) ),
 			esc_html__( 'Troubleshoot', 'health-check' )
 		);
