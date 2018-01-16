@@ -287,7 +287,7 @@ class Health_Check_Debug_Data {
 			$imagick_version = 'Imagick not available';
 		}
 		$info['wp-media']['fields'][] = array(
-			'label' => __( 'Imagick Module Number' ),
+			'label' => __( 'Imagick Module Version' ),
 			'value' => ( is_array( $imagick_version ) ? $imagick_version['versionNumber'] : $imagick_version )
 		);
 		$info['wp-media']['fields'][] = array(
