@@ -233,6 +233,11 @@ class HealthCheck {
 			return $actions;
 		}
 
+		// Set a slug if the plugin lives in the plugins directory root.
+		if ( ! stristr( $plugin_file, '/' ) ) {
+			$plugin_data['slug'] = $plugin_file;
+		}
+
 		$actions['troubleshoot'] = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( add_query_arg( array(
