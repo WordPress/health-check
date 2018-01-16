@@ -85,7 +85,7 @@ class Health_Check_Loopback {
 
 		return (object) array(
 			'status'  => 'good',
-			'message' => __( 'The loopback request to your site completed successfully.' )
+			'message' => __( 'The loopback request to your site completed successfully.', 'health-check' )
 		);
 	}
 
