@@ -267,7 +267,7 @@ class Health_Check_Troubleshooting_MU {
 
 		$wp_menu->add_node( array(
 			'id'     => 'health-check-disable',
-			'title'  => esc_html__( 'Disable troubleshooting mode', 'health-check' ),
+			'title'  => esc_html__( 'Disable Troubleshooting Mode', 'health-check' ),
 			'parent' => 'health-check-status',
 			'href'   => add_query_arg( array( 'health-check-disable-troubleshooting' => true ) )
 		) );

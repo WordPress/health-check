@@ -117,7 +117,7 @@ class Health_Check_Troubleshoot {
 			global $wp_filesystem;
 
 			if ( ! $wp_filesystem->copy( trailingslashit( HEALTH_CHECK_PLUGIN_DIRECTORY ) . 'assets/mu-plugin/health-check-disable-plugins.php', trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php', true ) ) {
-				HealthCheck::display_notice( esc_html__( 'We were unable to replace the plugin file required to run in troubleshooting mode.' ,'health-check' ), 'error' );
+				HealthCheck::display_notice( esc_html__( 'We were unable to replace the plugin file required to run in Troubleshooting Mode.' ,'health-check' ), 'error' );
 				return false;
 			}
 		}
@@ -140,7 +140,7 @@ class Health_Check_Troubleshoot {
 		HealthCheck::display_notice(
 			sprintf(
 				'%s<br>%s',
-				esc_html__( 'You have successfully started troubleshooting mode, all plugins will appear inactive until you log out and back in again.', 'health-check' ),
+				esc_html__( 'You have successfully enabled Troubleshooting Mode, all plugins will appear inactive until you log out and back in again.', 'health-check' ),
 				sprintf(
 					'<a href="%1$s">%2$s</a><script type="text/javascript">window.location = "%1$s";</script>',
 					esc_url( admin_url( '/' ) ),
@@ -169,7 +169,7 @@ class Health_Check_Troubleshoot {
 			if ( ! isset( $_POST['health-check-troubleshoot-mode-confirmed'] ) ) {
 				printf(
 					'<div class="notice notice-error inline"><p>%s</p></div>',
-					esc_html__( 'You did not check that you understand how to leave Troubleshooting Mode, please read the explanation and confirm that you understand the procedure first.', 'health-check' )
+					esc_html__( 'You did not check that you understand how to disable Troubleshooting Mode, please read the explanation and confirm that you understand the procedure first.', 'health-check' )
 				);
 			}
 			else {
@@ -197,14 +197,14 @@ class Health_Check_Troubleshoot {
 				<p>
 					<label>
 						<input type="checkbox" name="health-check-troubleshoot-mode-confirmed">
-						<?php esc_html_e( 'I understand that Troubleshooting Mode is active until I disable it', 'health-check' ); ?>
+						<?php esc_html_e( 'I understand that Troubleshooting Mode is enabled until I disable it', 'health-check' ); ?>
 					</label>
 
 				</p>
 
 				<p>
 					<button type="submit" class="button button-primary">
-						<?php esc_html_e( 'Enter troubleshooting mode', 'health-check' ); ?>
+						<?php esc_html_e( 'Enable Troubleshooting Mode', 'health-check' ); ?>
 					</button>
 				</p>
 			</form>
