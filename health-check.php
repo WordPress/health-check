@@ -189,7 +189,7 @@ class HealthCheck {
 	 * @return void
 	 */
 	public function action_admin_menu() {
-		add_dashboard_page( __( 'Health Check', 'health-check' ), __( 'Health Check', 'health-check' ), 'manage_options', 'health-check', array( $this, 'dashboard_page' ) );
+		add_dashboard_page( _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ), _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ), 'manage_options', 'health-check', array( $this, 'dashboard_page' ) );
 	}
 
 	/**
@@ -206,7 +206,7 @@ class HealthCheck {
 	 */
 	public function settings_link( $meta, $name ) {
 		if ( plugin_basename( __FILE__ ) === $name ) {
-			$meta[] = sprintf( '<a href="%s">' . __( 'Health Check', 'health-check' ) . '</a>', menu_page_url( 'health-check', false ) );
+			$meta[] = sprintf( '<a href="%s">' . _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ) . '</a>', menu_page_url( 'health-check', false ) );
 		}
 
 		return $meta;
@@ -265,12 +265,12 @@ class HealthCheck {
 		?>
 		<div class="wrap">
 			<h1>
-				<?php _e( 'Health Check', 'health-check' ); ?>
+				<?php _ex( 'Health Check', 'Menu, Section and Page Title', 'health-check' ); ?>
 			</h1>
 
 			<?php
 			$tabs = array(
-				'health-check' => esc_html__( 'Health Check', 'health-check' ),
+				'health-check' => esc_html_x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ),
 				'debug'        => esc_html__( 'Debug information', 'health-check' ),
 				'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
 				'phpinfo'      => esc_html__( 'PHP Information', 'health-check' )
