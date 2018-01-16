@@ -75,7 +75,7 @@ class Health_Check_Troubleshoot {
 		}
 
 		if ( ! $wp_filesystem->copy( trailingslashit( HEALTH_CHECK_PLUGIN_DIRECTORY ) . 'assets/mu-plugin/health-check-disable-plugins.php', trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php' ) ) {
-			HealthCheck::display_notice( esc_html__( 'We were unable to copy the plugin file required to run in troubleshooting mode.' ,'health-check' ), 'error' );
+			HealthCheck::display_notice( esc_html__( 'We were unable to copy the plugin file required to enable the Troubleshooting Mode.' ,'health-check' ), 'error' );
 			return false;
 		}
 
@@ -117,7 +117,7 @@ class Health_Check_Troubleshoot {
 			global $wp_filesystem;
 
 			if ( ! $wp_filesystem->copy( trailingslashit( HEALTH_CHECK_PLUGIN_DIRECTORY ) . 'assets/mu-plugin/health-check-disable-plugins.php', trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php', true ) ) {
-				HealthCheck::display_notice( esc_html__( 'We were unable to replace the plugin file required to run in Troubleshooting Mode.' ,'health-check' ), 'error' );
+				HealthCheck::display_notice( esc_html__( 'We were unable to replace the plugin file required to enable the Troubleshooting Mode.' ,'health-check' ), 'error' );
 				return false;
 			}
 		}
