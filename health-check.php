@@ -127,7 +127,7 @@ class HealthCheck {
 		$loopback_hash = md5( rand() );
 		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
 
-		update_option( 'health-check-allowed-plugins', array( $_GET['health-check-troubleshoot-plugin'] ) );
+		update_option( 'health-check-allowed-plugins', array( $_GET['health-check-troubleshoot-plugin'] => $_GET['health-check-troubleshoot-plugin'] ) );
 
 		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
 
