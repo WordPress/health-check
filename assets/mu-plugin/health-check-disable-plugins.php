@@ -287,7 +287,7 @@ class Health_Check_Troubleshooting_MU {
 				if ( in_array( $plugin_slug, $allowed_plugins ) ) {
 					$label = sprintf(
 					// Translators: %s: Plugin slug.
-						esc_html__( 'Click to disable %s', 'health-check' ),
+						esc_html__( 'Disable %s', 'health-check' ),
 						sprintf(
 							'<strong>%s</strong>',
 							$plugin_slug
@@ -298,7 +298,7 @@ class Health_Check_Troubleshooting_MU {
 					$enabled = false;
 					$label   = sprintf(
 					// Translators: %s: Plugin slug.
-						esc_html__( 'Click to enable %s', 'health-check' ),
+						esc_html__( 'Enable %s', 'health-check' ),
 						sprintf(
 							'<strong>%s</strong>',
 							$plugin_slug
