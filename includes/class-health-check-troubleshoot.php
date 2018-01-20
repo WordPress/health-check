@@ -197,7 +197,7 @@ class Health_Check_Troubleshoot {
 				<p>
 					<label>
 						<input type="checkbox" name="health-check-troubleshoot-mode-confirmed">
-						<?php esc_html_e( 'I understand that Troubleshooting Mode is enabled until I disable it', 'health-check' ); ?>
+						<?php esc_html_e( 'I understand that Troubleshooting Mode is enabled until I log out or disable it', 'health-check' ); ?>
 					</label>
 
 				</p>
