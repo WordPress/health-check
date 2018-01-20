@@ -54,13 +54,19 @@ class Health_Check_Troubleshooting_MU {
 			return $actions;
 		}
 
+		/*
+		 * Disable all plugin actions when in Troubleshooting Mode.
+		 *
+		 * We intentionally remove all plugin actions to avoid accidental clicking, activating or deactivating plugins
+		 * while our plugin is altering plugin data may lead to unexpected behaviors, so to keep things sane we do
+		 * not allow users to perform any actions during this time.
+		 */
+		$actions = array();
+
 		// This isn't an active plugin, so does not apply to our troubleshooting scenarios.
 		if ( ! in_array( $plugin_file, $this->active_plugins ) ) {
 			return $actions;
 		}
-
-		// Remove the delete action on plugins when troubleshooting, avoid accidental deletions.
-		unset( $actions['delete'] );
 
 		// Set a slug if the plugin lives in the plugins directory root.
 		if ( ! stristr( $plugin_file, '/' ) ) {
