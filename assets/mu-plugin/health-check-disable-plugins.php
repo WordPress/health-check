@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check Disable Plugins
 	Description: Conditionally disabled plugins on your site for a given session, used to rule out plugin interactions during troubleshooting.
-	Version: 1.0
+	Version: 1.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -36,6 +36,8 @@ class Health_Check_Troubleshooting_MU {
 		add_filter( 'stylesheet', array( $this, 'health_check_troubleshoot_theme' ) );
 		add_filter( 'template', array( $this, 'health_check_troubleshoot_theme' ) );
 
+		add_action( 'admin_notices', array( $this, 'plugin_list_admin_notice' ) );
+
 		add_action( 'plugin_action_links', array( $this, 'plugin_actions' ), 50, 4 );
 
 		add_action( 'wp_logout', array( $this, 'health_check_troubleshooter_mode_logout' ) );
@@ -43,6 +45,23 @@ class Health_Check_Troubleshooting_MU {
 
 		$this->default_theme  = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
 		$this->active_plugins = $this->get_unfiltered_plugin_list();
+	}
+
+	public function plugin_list_admin_notice() {
+		if ( ! $this->is_troubleshooting() ) {
+			return;
+		}
+		global $current_screen;
+
+		// Only output our notice on the plugins screen.
+		if ( 'plugins' !== $current_screen->base ) {
+			return;
+		}
+
+		printf(
+			'<div class="notice notice-warning"><p>%s</p></div>',
+			esc_html__( 'Plugin actions are not available while in Troubleshooting Mode.', 'health-check' )
+		);
 	}
 
 	public function plugin_actions( $actions, $plugin_file, $plugin_data, $context ) {
