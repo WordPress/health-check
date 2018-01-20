@@ -191,6 +191,7 @@ class Health_Check_Troubleshooting_MU {
 		if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
 			unset( $_COOKIE['health-check-disable-plugins'] );
 			setcookie( 'health-check-disable-plugins', null, 0, COOKIEPATH, COOKIE_DOMAIN );
+			delete_option( 'health-check-allowed-plugins' );
 		}
 	}
 
