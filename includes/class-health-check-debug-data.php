@@ -14,6 +14,7 @@ class Health_Check_Debug_Data {
 		if ( ! empty( $locale ) ) {
 			// Change the language used for translations
 			if ( version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) {
+				$original_locale = get_locale();
 				switch_to_locale( $locale );
 			}
 		}
@@ -37,7 +38,7 @@ class Health_Check_Debug_Data {
 					),
 					array(
 						'label' => __( 'Language', 'health-check' ),
-						'value' => get_locale()
+						'value' => ( ! empty( $locale ) ? $original_locale : get_locale() )
 					),
 					array(
 						'label'   => __( 'Home URL', 'health-check' ),
