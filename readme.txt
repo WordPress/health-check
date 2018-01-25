@@ -3,7 +3,7 @@ Tags: health check
 Contributors: westi, pento, Clorith
 Requires at least: 3.8
 Tested up to: 4.9
-Stable tag: 0.8.0
+Stable tag: 0.9.0
 
 == Description ==
 
