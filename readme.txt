@@ -33,6 +33,19 @@ In the future we may introduce more checks, and welcome feedback both through th
 
 == Changelog ==
 
+= v 0.9.0 =
+* Various string changes, typo fixes and translation enhancements.
+* Added conditional hiding of the plugins list from the admin bar, if there's too many plugins it becomes a bad experience. (Hidden if there are more than 20 active plugins)
+* Added ability to enable/disable plugins in Troubleshooting Mode from the plugins list.
+* Added filter to remove actions from the plugin list in Troubleshooting Mode.
+* Fixed notices on the plugin screen when plugin data may be inconsistent.
+* Fixed jumping directly to troubleshooting mode for single file plugins placed directly in the plugin directory root.
+* Fixed issue where troubleshooting a plugin directly made it impossible to disable it while in Troubleshooting Mode.
+* Fixed so that the original language is returned when translating the debug data for copying.
+* Fixed issue where the Debug screen would turn to half-English when using a non-English language.
+* Fixed an issue where plugins could become truly disabled on a site when in Troubleshooting Mode.
+* Fixed so that enabled/disabled plugins don't carry over between troubleshooting sessions.
+
 = v 0.8.0 =
 * Updated recommended PHP version to mirror WordPress.org.
 * Updated texts for troubleshooting mode.
