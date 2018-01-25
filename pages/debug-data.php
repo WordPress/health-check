@@ -29,6 +29,11 @@ $info = Health_Check_Debug_Data::debug_data();
 		if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) :
 
 			$english_info = Health_Check_Debug_Data::debug_data( 'en_US' );
+
+			// Workaround for locales not being properly loaded back, see issue #30 on GitHub.
+			if ( ! is_textdomain_loaded( 'health-check' ) && _get_path_to_translation( 'health-check' ) ) {
+				load_textdomain( 'health-check', _get_path_to_translation( 'health-check' ) );
+			}
 		?>
 			<div id="system-information-english-copy-wrapper" style="display: none;">
 					<textarea id="system-information-english-copy-field" class="widefat" rows="10">`

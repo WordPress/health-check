@@ -13,9 +13,9 @@ class Health_Check_Debug_Data {
 	static function debug_data( $locale = null ) {
 		if ( ! empty( $locale ) ) {
 			// Change the language used for translations
-			if ( version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) {
+			if ( function_exists( 'switch_to_locale' ) ) {
 				$original_locale = get_locale();
-				switch_to_locale( $locale );
+				$switched_locale = switch_to_locale( $locale );
 			}
 		}
 		global $wpdb;
@@ -662,7 +662,7 @@ class Health_Check_Debug_Data {
 
 		if ( ! empty( $locale ) ) {
 			// Change the language used for translations
-			if ( version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) {
+			if ( function_exists( 'restore_previous_locale' ) && $switched_locale ) {
 				restore_previous_locale();
 			}
 		}
