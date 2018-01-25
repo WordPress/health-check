@@ -43,8 +43,25 @@ class Health_Check_Troubleshooting_MU {
 		add_action( 'wp_logout', array( $this, 'health_check_troubleshooter_mode_logout' ) );
 		add_action( 'init', array( $this, 'health_check_troubleshoot_get_captures' ) );
 
+		/*
+		 * Plugin activations can be forced by other tools in things like themes, so let's
+		 * attempt to work around that by forcing plugin lists back and forth.
+		 *
+		 * This is not an ideal scenario, but one we must accept as reality.
+		 */
+		add_action( 'activated_plugin', array( $this, 'plugin_activated' ) );
+
 		$this->default_theme  = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
 		$this->active_plugins = $this->get_unfiltered_plugin_list();
+	}
+
+	public function plugin_activated() {
+		if ( ! $this->is_troubleshooting() ) {
+			return;
+		}
+
+		// Force the database entry for active plugins if someone tried changing plugins while in Troubleshooting Mode.
+		update_option( 'active_plugins', $this->active_plugins );
 	}
 
 	public function plugin_list_admin_notice() {
