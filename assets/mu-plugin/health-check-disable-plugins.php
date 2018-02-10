@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check Disable Plugins
 	Description: Conditionally disabled plugins on your site for a given session, used to rule out plugin interactions during troubleshooting.
-	Version: 1.1
+	Version: 1.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -256,21 +256,13 @@ class Health_Check_Troubleshooting_MU {
 	}
 
 	/**
-	 * Use a default theme.
+	 * Check if a default theme exists.
 	 *
-	 * Attempt to set one of the default themes as the active one
-	 * during Troubleshooting Mode, if one exists, if not fall
-	 * back to always showing the active theme.
+	 * If a default theme exists, return the most recent one, if not return `false`.
 	 *
-	 * @param string $theme The users active theme slug.
-	 *
-	 * @return string Theme slug to be perceived as the active theme.
+	 * @return bool|string
 	 */
-	function health_check_troubleshoot_theme( $theme ) {
-		if ( ! $this->is_troubleshooting() || ! $this->override_active || ! $this->default_theme ) {
-			return $theme;
-		}
-
+	function has_default_theme() {
 		$default_themes = array(
 			'twentyseventeen',
 			'twentysixteen',
@@ -286,6 +278,31 @@ class Health_Check_Troubleshooting_MU {
 			if ( is_dir( WP_CONTENT_DIR . '/themes/' . $default_theme ) ) {
 				return $default_theme;
 			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Use a default theme.
+	 *
+	 * Attempt to set one of the default themes as the active one
+	 * during Troubleshooting Mode, if one exists, if not fall
+	 * back to always showing the active theme.
+	 *
+	 * @param string $theme The users active theme slug.
+	 *
+	 * @return string Theme slug to be perceived as the active theme.
+	 */
+	function health_check_troubleshoot_theme( $theme ) {
+		if ( ! $this->is_troubleshooting() || ! $this->override_active || ! $this->default_theme ) {
+			return $theme;
+		}
+
+		// Check if a default theme exists, and if so use it.
+		$default_theme = $this->has_default_theme();
+		if ( $default_theme ) {
+			$theme = $default_theme;
 		}
 
 		return $theme;
@@ -467,13 +484,16 @@ class Health_Check_Troubleshooting_MU {
 			'parent' => 'health-check'
 		) );
 
-		// Add a link to switch between active themes.
-		$wp_menu->add_node( array(
-			'id'     => 'health-check-default-theme',
-			'title'  => ( $this->default_theme ? esc_html__( 'Use your current theme', 'health-check' ) : esc_html__( 'Use a default theme', 'health-check' ) ),
-			'parent' => 'health-check-theme',
-			'href'   => add_query_arg( array( 'health-check-toggle-default-theme' => true ) )
-		) );
+		// Check if a default theme exists before we add a menu item to toggle it.
+		if ( $this->has_default_theme() ) {
+			// Add a link to switch between active themes.
+			$wp_menu->add_node( array(
+				'id'     => 'health-check-default-theme',
+				'title'  => ( $this->default_theme ? esc_html__( 'Use your current theme', 'health-check' ) : esc_html__( 'Use a default theme', 'health-check' ) ),
+				'parent' => 'health-check-theme',
+				'href'   => add_query_arg( array( 'health-check-toggle-default-theme' => true ) )
+			) );
+		}
 
 		$wp_menu->add_group( array(
 			'id' => 'health-check-status',
