@@ -42,6 +42,15 @@ define( 'HEALTH_CHECK_PLUGIN_DIRECTORY', plugin_dir_path( __FILE__ ) );
 class HealthCheck {
 
 	/**
+	 * Notices to show at the head of the admin screen.
+	 *
+	 * @access public
+	 *
+	 * @var array
+	 */
+	public $admin_notices = array();
+
+	/**
 	 * HealthCheck constructor.
 	 *
 	 * @uses HealthCheck::init()
@@ -69,6 +78,8 @@ class HealthCheck {
 		add_filter( 'plugin_row_meta', array( $this, 'settings_link' ), 10, 2 );
 
 		add_filter( 'plugin_action_links', array( $this, 'troubeshoot_plugin_action' ), 20, 4 );
+
+		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ) );
 
@@ -123,6 +134,35 @@ class HealthCheck {
 		if ( ! isset( $_GET['health-check-troubleshoot-plugin'] ) || ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
+
+		ob_start();
+
+		if ( ! Health_Check_Troubleshoot::mu_plugin_exists() ) {
+			if ( ! Health_Check_Troubleshoot::get_filesystem_credentials() ) {
+				$needs_credentials = true;
+			} else {
+				$check_output = Health_Check_Troubleshoot::setup_must_use_plugin();
+				if ( false === $check_output ) {
+					$needs_credentials = true;
+				}
+			}
+		}
+		else {
+			if ( ! Health_Check_Troubleshoot::maybe_update_must_use_plugin() ) {
+				$needs_credentials = true;
+			}
+		}
+
+		$result = ob_get_clean();
+
+		if ( $needs_credentials ) {
+			$this->admin_notices[] = (object) array(
+				'message' => $result,
+				'type'    => 'warning'
+			);
+			return;
+		}
+
 
 		$loopback_hash = md5( rand() );
 		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
@@ -338,6 +378,21 @@ class HealthCheck {
 		);
 
 		echo '</div>';
+	}
+
+	/**
+	 * Display admin notices if we have any queued.
+	 *
+	 * @return void
+	 */
+	public function admin_notices() {
+		foreach( $this->admin_notices as $admin_notice ) {
+			printf(
+				'<div class="notice notice-%s"><p>%s</p></div>',
+				esc_attr( $admin_notice->type ),
+				$admin_notice->message
+			);
+		}
 	}
 
 	/**

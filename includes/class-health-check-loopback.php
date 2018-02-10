@@ -96,6 +96,7 @@ class Health_Check_Loopback {
 	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
 	 * @uses Health_Check_Troubleshoot::get_filesystem_credentials()
 	 * @uses Health_Check_Troubleshoot::setup_must_use_plugin()
+	 * @uses Health_Check_Troubleshoot::maybe_update_must_use_plugin()
 	 * @uses ob_get_clean()
 	 * @uses wp_send_json_error()
 	 * @uses md5()
@@ -123,6 +124,11 @@ class Health_Check_Loopback {
 				if ( false === $check_output ) {
 					$needs_creds = true;
 				}
+			}
+		}
+		else {
+			if ( ! Health_Check_Troubleshoot::maybe_update_must_use_plugin() ) {
+				$needs_creds = true;
 			}
 		}
 
