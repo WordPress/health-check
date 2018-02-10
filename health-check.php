@@ -87,7 +87,7 @@ class HealthCheck {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ) );
 
 		add_action( 'init', array( $this, 'start_troubleshoot_mode' ) );
-		add_action( 'init', array( $this, 'start_troubleshoot_single_plugin_mode' ) );
+		add_action( 'load-plugins.php', array( $this, 'start_troubleshoot_single_plugin_mode' ) );
 
 		add_action( 'wp_ajax_health-check-loopback-no-plugins', array( 'Health_Check_Loopback', 'loopback_no_plugins' ) );
 		add_action( 'wp_ajax_health-check-loopback-individual-plugins', array( 'Health_Check_Loopback', 'loopback_test_individual_plugins' ) );
@@ -140,11 +140,13 @@ class HealthCheck {
 
 		ob_start();
 
+		$needs_credentials = false;
+
 		if ( ! Health_Check_Troubleshoot::mu_plugin_exists() ) {
 			if ( ! Health_Check_Troubleshoot::get_filesystem_credentials() ) {
 				$needs_credentials = true;
 			} else {
-				$check_output = Health_Check_Troubleshoot::setup_must_use_plugin();
+				$check_output = Health_Check_Troubleshoot::setup_must_use_plugin( false );
 				if ( false === $check_output ) {
 					$needs_credentials = true;
 				}
@@ -285,7 +287,7 @@ class HealthCheck {
 			'<a href="%s">%s</a>',
 			esc_url( add_query_arg( array(
 				'health-check-troubleshoot-plugin' => ( isset( $plugin_data['slug'] ) ? $plugin_data['slug'] : sanitize_title( $plugin_data['Name'] ) )
-			), admin_url() ) ),
+			), admin_url( 'plugins.php' ) ) ),
 			esc_html__( 'Troubleshoot', 'health-check' )
 		);
 
@@ -416,12 +418,12 @@ class HealthCheck {
 	}
 }
 
-// Initialize our plugin.
-new HealthCheck();
-
 // Include class-files used by our plugin.
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-auto-updates.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cron.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-debug-data.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-loopback.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-troubleshoot.php' );
+
+// Initialize our plugin.
+new HealthCheck();
