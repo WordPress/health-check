@@ -64,7 +64,7 @@ class Health_Check_Troubleshoot {
 	 *
 	 * @return bool
 	 */
-	static function setup_must_use_plugin() {
+	static function setup_must_use_plugin( $redirect = true ) {
 		global $wp_filesystem;
 
 		if ( ! is_dir( WPMU_PLUGIN_DIR ) ) {
@@ -79,7 +79,9 @@ class Health_Check_Troubleshoot {
 			return false;
 		}
 
-		Health_Check_Troubleshoot::session_started();
+		if ( $redirect ) {
+			Health_Check_Troubleshoot::session_started();
+		}
 
 		return true;
 	}
