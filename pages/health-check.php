@@ -342,6 +342,43 @@ $db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 				</td>
 			</tr>
 
+			<?php if ( function_exists( 'curl_version' ) ) : ?>
+			<tr>
+				<td>
+					<?php
+						// translators: 'cURL' being a code library for communicating with other services.
+						esc_html_e( 'cURL version', 'health-check' );
+					?>
+				</td>
+				<td>
+					<?php
+						$cURL = curl_version();
+						if ( version_compare( $cURL['version'], HEALTH_CHECK_CURL_VERSION, '>=' ) ) {
+							printf(
+								'<span class="good"></span> %s',
+								sprintf(
+									// translators: %s: cURL version number.
+									esc_html__( 'Your version of cURL, %s, is up to date.', 'health-check' ),
+									$cURL['version']
+								)
+							);
+						}
+						else {
+							printf(
+								'<span class="warning"></span> %s',
+								sprintf(
+									// translators: %1$s: cURL version number running on the website. %2$s: The currently available cURL version.
+									esc_html__( 'Your version of cURL, %1$s, is out of date. The most recent version is %2$s. This may in some cases affect your sites ability to communicate with other services. If you are experiencing connectivity issues connecting to various services, please contact your host.', 'health-check' ),
+									$cURL['version'],
+									HEALTH_CHECK_CURL_VERSION
+								)
+							);
+						}
+					?>
+				</td>
+			</tr>
+			<?php endif; ?>
+
 			<tr>
 				<td><?php esc_html_e( 'Scheduled events', 'health-check' ); ?></td>
 				<td>
