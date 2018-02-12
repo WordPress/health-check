@@ -141,13 +141,14 @@ class Health_Check_Loopback {
 
 		$loopback_hash = md5( rand() );
 		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
+		update_option( 'health-check-default-theme', 'yes' );
 
 		$no_plugin_test = Health_Check_Loopback::can_perform_loopback( $loopback_hash );
 
 		$message = sprintf(
 			'<br><span class="%s"></span> %s: %s',
 			esc_attr( $no_plugin_test->status ),
-			esc_html__( 'Result from testing without any plugins active', 'health-check' ),
+			esc_html__( 'Result from testing without any plugins active and a default theme', 'health-check' ),
 			$no_plugin_test->message
 		);
 
@@ -158,6 +159,8 @@ class Health_Check_Loopback {
 		$response = array(
 			'message' => $message
 		);
+
+		delete_option( 'health-check-default-theme' );
 
 		wp_send_json_success( $response );
 
@@ -236,6 +239,20 @@ class Health_Check_Loopback {
 				$single_test->message
 			);
 		}
+
+		// Test without a theme active.
+		update_option( 'health-check-default-theme', 'yes' );
+
+		$theme_test = Health_Check_Loopback::can_perform_loopback( $loopback_hash, '' );
+
+		$message .= sprintf(
+			'<br><span class="%s"></span> %s: %s',
+			esc_attr( $theme_test->status ),
+			esc_html__( 'Testing a default theme', 'health-check' ),
+			$theme_test->message
+		);
+
+		delete_option( 'health-check-default-theme' );
 
 		$response = array(
 			'message' => $message
