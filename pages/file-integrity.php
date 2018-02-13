@@ -42,7 +42,7 @@ if ( isset( $_GET['check'] ) ) {
 	// Setup variables.
 	$wpversion = get_bloginfo( 'version' );
 	$wplocale  = get_locale();
-	$filepath  = get_home_path();
+	$filepath  = ABSPATH;
 	$files     = array();
 
 	// Setup API Call.
