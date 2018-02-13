@@ -1,4 +1,4 @@
-body.dashboard_page_health-check .health-check-table tbody td {
+body.dashboard_page_health-check .health-check-table tbody td, {
 	width: 80%;
 }
 
@@ -10,6 +10,17 @@ body.dashboard_page_health-check .health-check-table tbody td ol {
 body.dashboard_page_health-check .health-check-table thead th:first-child,
 body.dashboard_page_health-check .health-check-table tbody td:first-child {
 	width: 20%;
+}
+
+body.dashboard_page_health-check .file-integrity-table thead th:first-child,
+body.dashboard_page_health-check .file-integrity-table tbody td:first-child,
+body.dashboard_page_health-check .file-integrity-table tfoot td:first-child {
+	text-align: center;
+	width: 80px;
+}
+
+body.dashboard_page_health-check #health-check-file-integrity {
+	margin-bottom: 15px;
 }
 
 body.dashboard_page_health-check .pass:before,

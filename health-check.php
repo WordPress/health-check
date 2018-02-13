@@ -321,7 +321,8 @@ class HealthCheck {
 				'health-check' => esc_html_x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ),
 				'debug'        => esc_html__( 'Debug information', 'health-check' ),
 				'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
-				'phpinfo'      => esc_html__( 'PHP Information', 'health-check' )
+				'phpinfo'      => esc_html__( 'PHP Information', 'health-check' ),
+				'file-integrity'      => esc_html__( 'File Integrity', 'health-check' )
 			);
 
 			$current_tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'health-check' );
@@ -354,6 +355,9 @@ class HealthCheck {
 					break;
 				case 'troubleshoot':
 					include_once( dirname( __FILE__ ) . '/pages/troubleshoot.php' );
+					break;
+				case 'file-integrity':
+					include_once( dirname( __FILE__ ) . '/pages/file-integrity.php' );
 					break;
 				case 'health-check':
 				default:
