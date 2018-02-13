@@ -1,4 +1,4 @@
-body.dashboard_page_health-check .health-check-table tbody td, {
+body.dashboard_page_health-check .health-check-table tbody td {
 	width: 80%;
 }
 
