@@ -56,9 +56,9 @@ if ( isset( $_GET['check'] ) ) {
 		// Check the files.
 		if ( md5_file( $filepath . $file ) !== $checksum ) {
 			if ( file_exists( $filepath . $file ) ) {
-				$reason = esc_html( 'Content changed', 'health-check' );
+				$reason = esc_html__( 'Content changed', 'health-check' );
 			} else {
-				$reason = esc_html( 'File not found', 'health-check' );
+				$reason = esc_html__( 'File not found', 'health-check' );
 			}
 			array_push( $files, array( $file, $reason ) );
 		}
