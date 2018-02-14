@@ -19,7 +19,7 @@ function health_check_file_integrity_ajax() {
 		jQuery( document ).ready( function($) {
 			jQuery( '#health-check-file-integrity' ).submit( function( e ) {
 				e.preventDefault();
-				window.location.href = window.location.href + "&check";
+				window.location.href = window.location.href + "&fileintegrity";
 			} );
 		} );
 	</script>
@@ -29,16 +29,26 @@ add_action( 'admin_footer', 'health_check_file_integrity_ajax' );
 ?>
 
 	<div class="notice notice-info inline">
+		<h2><?php esc_html_e( 'File Integrity' ); ?></h2>
 		<p>
-			<?php esc_html_e( 'The File Integrity checks all the core files with the Checksums provided by the WordPress API to see if they are intact.', 'health-check' ); ?>
+			<?php _e( 'The File Integrity checks all the core files with the <code>checksums</code> provided by the WordPress API to see if they are intact.', 'health-check' ); ?>
 		</p>
+		<form action="#" id="health-check-file-integrity" method="POST">
+			<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the Files Integrity', 'health-check' ); ?>">
+		</form>
 	</div>
-	<form action="#" id="health-check-file-integrity" method="POST">
-		<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the Files Integrity', 'health-check' ); ?>">
-	</form>
+	<div class="notice notice-info inline">
+		<h2><?php esc_html_e( 'Mail Check' ); ?></h2>
+		<p>
+			<?php _e( 'The Mail Check will invoke the <code>wp_mail()</code> function and check if it success.', 'health-check' ); ?>
+		</p>
+		<form action="#" id="health-check-file-integrity" method="POST">
+			<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the Files Integrity', 'health-check' ); ?>">
+		</form>
+	</div>
 
 <?php
-if ( isset( $_GET['check'] ) ) {
+if ( isset( $_GET['fileintegrity'] ) ) {
 	// Setup variables.
 	$wpversion = get_bloginfo( 'version' );
 	$wplocale  = get_locale();
@@ -80,7 +90,7 @@ if ( isset( $_GET['check'] ) ) {
 
 	<div class="notice notice-error inline">
 		<p>
-			<?php	esc_html_e( 'It appears that some files have been tampered with. Please either updated WordPress or manually replace them and run the File Integrity check again.', 'health-check' ); ?>
+			<?php	_e( 'It appears that some files have been tampered with. Please either update WordPress or manually replace the files you see on the list and run the <code>File Integrity</code> check again.', 'health-check' ); ?>
 		</p>
 	</div>
 	<table class="widefat striped file-integrity-table">
