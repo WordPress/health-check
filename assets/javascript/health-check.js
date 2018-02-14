@@ -118,8 +118,6 @@ jQuery(document).ready(function ($) {
 		$( '#tools-response-holder' ).html( '<span class="spinner"></span>' );
 		$( '#tools-response-holder .spinner' ).addClass( 'is-active' );
 
-		// TODO : give vars and pass the code to class
-
 		var data = {
 			'action': 'health-check-files-integrity-check'
 		};
@@ -128,6 +126,27 @@ jQuery(document).ready(function ($) {
 			ajaxurl,
 			data,
 			function( response ) {
+				$( '#tools-response-holder .spinner' ).removeClass( 'is-active' );
+				$( '#tools-response-holder').html( response.data.message );
+		});
+	});
+
+	$( '#health-check-mail-check' ).submit( function( e ) {
+		e.preventDefault();
+		var email = $('#health-check-mail-check #email').val();
+		$( '#tools-response-holder' ).html( '<span class="spinner"></span>' );
+		$( '#tools-response-holder .spinner' ).addClass( 'is-active' );
+
+		var data = {
+			'action': 'health-check-mail-check',
+			'email' : email
+		};
+
+		$.post(
+			ajaxurl,
+			data,
+			function( response ) {
+				console.log(response.data.message);
 				$( '#tools-response-holder .spinner' ).removeClass( 'is-active' );
 				$( '#tools-response-holder').html( response.data.message );
 		});

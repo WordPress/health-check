@@ -19,6 +19,7 @@ body.dashboard_page_health-check .file-integrity-table tfoot td:first-child {
 	width: 80px;
 }
 
+body.dashboard_page_health-check #health-check-mail-check,
 body.dashboard_page_health-check #health-check-file-integrity {
 	margin-bottom: 15px;
 }

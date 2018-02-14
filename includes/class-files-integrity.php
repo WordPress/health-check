@@ -98,14 +98,6 @@ class Files_Integrity {
 			$output .= '<div class="notice notice-success inline"><p>';
 			$output .= esc_html__( 'All files passed the check. Everything seems to be ok!', 'health-check' );
 			$output .= '</p></div>';
-
-			$response = array(
-				'message' => $output,
-			);
-
-			wp_send_json_success( $response );
-
-			wp_die();
 		} else {
 			$output .= '<div class="notice notice-error inline"><p>';
 			$output .= __( 'It appears that some files have been tampered with. Please either update WordPress or manually replace the files you see on the list and run the <code>File Integrity</code> check again.', 'health-check' );
@@ -131,15 +123,15 @@ class Files_Integrity {
 			}
 			$output .= '</tbody>';
 			$output .= '</table>';
-
-			$response = array(
-				'message' => $output,
-			);
-
-			wp_send_json_success( $response );
-
-			wp_die();
 		}
+
+		$response = array(
+			'message' => $output,
+		);
+
+		wp_send_json_success( $response );
+
+		wp_die();
 	}
 
 }
