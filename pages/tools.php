@@ -23,9 +23,35 @@ function health_check_file_integrity_ajax() {
 			} );
 		} );
 	</script>
+
+	<!-- TEST AJAX CALL -->
+	<script type="text/javascript" >
+		jQuery(document).ready(function($) {
+
+			var data = {
+				'action': 'integrity_check',
+				'something': 123
+			};
+
+			jQuery.post(ajaxurl, data, function( response ) {
+				alert('Got this from the server: ' + response);
+			});
+		});
+	</script>
 <?php
 }
 add_action( 'admin_footer', 'health_check_file_integrity_ajax' );
+
+
+
+// TEST AJAX FUNCTIONS
+function integrity_check() {
+
+	echo 'checking the integrity! with' . $_POST['whatever'];
+
+	wp_die();
+}
+add_action( 'wp_ajax_integrity_check', 'integrity_check' );
 ?>
 
 	<div class="notice notice-info inline">
