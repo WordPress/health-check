@@ -95,3 +95,7 @@ body.dashboard_page_health-check .health-check-modal .modal-close:focus {
 	font-size: 28px;
 	font-weight: bold;
 }
+
+body.dashboard_page_health-check #tools-response-holder .spinner {
+	float: left;
+}

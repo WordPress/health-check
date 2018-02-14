@@ -112,4 +112,25 @@ jQuery(document).ready(function ($) {
 			$button.text( health_check.string.copied );
 		}
 	});
+
+	$( '#health-check-file-integrity' ).submit( function( e ) {
+		e.preventDefault();
+		$( '#tools-response-holder' ).html( '<span class="spinner"></span>' );
+		$( '#tools-response-holder .spinner' ).addClass( 'is-active' );
+
+		// TODO : give vars and pass the code to class
+
+		var data = {
+			'action': 'health-check-files-integrity-check'
+		};
+
+		$.post(
+			ajaxurl,
+			data,
+			function( response ) {
+				$( '#tools-response-holder .spinner' ).removeClass( 'is-active' );
+				$( '#tools-response-holder').html( response.data.message );
+		});
+	});
+
 });
