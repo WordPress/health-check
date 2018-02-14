@@ -34,7 +34,7 @@ add_action( 'admin_footer', 'health_check_file_integrity_ajax' );
 		</p>
 	</div>
 	<form action="#" id="health-check-file-integrity" method="POST">
-		<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the Files Integrity' ); ?>">
+		<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the Files Integrity', 'health-check' ); ?>">
 	</form>
 
 <?php
@@ -55,7 +55,12 @@ if ( isset( $_GET['check'] ) ) {
 	foreach ( $checksumapibody['checksums'] as $file => $checksum ) {
 		// Check the files.
 		if ( md5_file( $filepath . $file ) !== $checksum ) {
-			array_push( $files, $file );
+			if ( file_exists( $filepath . $file ) ) {
+				$reason = esc_html( 'Content changed', 'health-check' );
+			} else {
+				$reason = esc_html( 'File not found', 'health-check' );
+			}
+			array_push( $files, array( $file, $reason ) );
 		}
 	}
 
@@ -83,27 +88,37 @@ if ( isset( $_GET['check'] ) ) {
 		<thead>
 			<tr>
 				<th>
-					<?php esc_html_e( 'Status' ); ?>
+					<?php esc_html_e( 'Status', 'health-check' ); ?>
 				</th>
 				<th>
-					<?php esc_html_e( 'File' ); ?>
+					<?php esc_html_e( 'File', 'health-check' ); ?>
+				</th>
+				<th>
+					<?php esc_html_e( 'Reason', 'health-check' ); ?>
 				</th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
 				<td>
-					<?php esc_html_e( 'Status' ); ?>
+					<?php esc_html_e( 'Status', 'health-check' ); ?>
 				</td>
 				<td>
-					<?php esc_html_e( 'File' ); ?>
+					<?php esc_html_e( 'File', 'health-check' ); ?>
+				</td>
+				<td>
+					<?php esc_html_e( 'Reason', 'health-check' ); ?>
 				</td>
 			</tr>
 		</tfoot>
 		<tbody>
 			<?php
 			foreach ( $files as $tampered ) {
-				echo '<tr><td><span class="error"></span></td><td>' . esc_attr( $filepath ) . esc_attr( $tampered ) . '</td></tr>';
+				echo '<tr>';
+				echo '<td><span class="error"></span></td>';
+				echo '<td>' . esc_attr( $filepath ) . esc_attr( $tampered[0] ) . '</td>';
+				echo '<td>' . esc_attr( $tampered[1] ) . '</td>';
+				echo '</tr>';
 			}
 			?>
 		</tbody>
