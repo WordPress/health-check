@@ -152,4 +152,30 @@ jQuery(document).ready(function ($) {
 		});
 	});
 
+	$( '#tools-response-holder' ).on( 'click', 'a[href="#health-check-diff"]', function( e ) {
+		e.preventDefault();
+		var file = $( this ).data('file');
+		$( '#health-check-diff-modal' ).toggle();
+		$( '#health-check-diff-modal #health-check-diff-modal-content .spinner' ).addClass( 'is-active' );
+
+		var data = {
+			'action': 'health-check-view-file-diff',
+			'file' : file
+		};
+
+		$.post(
+			ajaxurl,
+			data,
+			function( response ) {
+				$( '#health-check-diff-modal #health-check-diff-modal-content' ).html( response.data.message );
+				$( '#health-check-diff-modal #health-check-diff-modal-content' ).prepend( '<h3>' + file + '</h3>' );
+				$( '#health-check-diff-modal #health-check-diff-modal-content' ).prepend( '<a id="health-check-diff-modal-close-ref" href="#health-check-diff-modal-close"><span class="dashicons dashicons-no"></span></a>' );
+		});
+	});
+
+	$( '#health-check-diff-modal' ).on ('click', 'a[href="#health-check-diff-modal-close"]', function( e ) {
+		e.preventDefault();
+		$( '#health-check-diff-modal' ).toggle();
+	});
+
 });

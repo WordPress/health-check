@@ -69,7 +69,7 @@ class Files_Integrity {
 		foreach ( $checksums['checksums'] as $file => $checksum ) {
 			// Check the files.
 			if ( file_exists( $filepath . $file ) && md5_file( $filepath . $file ) !== $checksum ) {
-				$reason = esc_html__( 'Content changed', 'health-check' );
+				$reason = esc_html__( 'Content changed', 'health-check' ) . ' <a href="#health-check-diff" data-file="' . $file . '">' . esc_html__( '(View Diff)', 'health-check' ) . '</a>';
 				array_push( $files, array( $file, $reason ) );
 			} elseif ( ! file_exists( $filepath . $file ) ) {
 				$reason = esc_html__( 'File not found', 'health-check' );
@@ -117,13 +117,49 @@ class Files_Integrity {
 			foreach ( $files as $tampered ) {
 				$output .= '<tr>';
 				$output .= '<td><span class="error"></span></td>';
-				$output .= '<td>' . esc_attr( $filepath ) . esc_attr( $tampered[0] ) . '</td>';
-				$output .= '<td>' . esc_attr( $tampered[1] ) . '</td>';
+				$output .= '<td>' . $filepath . $tampered[0] . '</td>';
+				$output .= '<td>' . $tampered[1] . '</td>';
 				$output .= '</tr>';
 			}
 			$output .= '</tbody>';
 			$output .= '</table>';
 		}
+
+		$response = array(
+			'message' => $output,
+		);
+
+		wp_send_json_success( $response );
+
+		wp_die();
+	}
+
+	/**
+	* Generates Diff view
+	*
+	* @uses get_bloginfo()
+	* @uses wp_remote_get()
+	* @uses wp_remote_retrieve_body()
+	* @uses wp_send_json_success()
+	* @uses wp_die()
+	* @uses ABSPATH
+	* @uses FILE_USE_INCLUDE_PATH
+	*
+	*
+	* @return array
+	*/
+	static function view_file_diff() {
+		$filepath            = ABSPATH;
+		$file                = $_POST['file'];
+		$wpversion           = get_bloginfo( 'version' );
+		$local_file_body     = explode( "\n", file_get_contents( $filepath . $file, FILE_USE_INCLUDE_PATH ) );
+		$remote_file         = wp_remote_get( 'https://core.svn.wordpress.org/tags/' . $wpversion . '/' . $file );
+		$remote_file_body    = wp_remote_retrieve_body( $remote_file );
+		$remote_file_explode = explode( "\n", $remote_file_body );
+		$options             = array();
+		$diff                = new Diff( $remote_file_explode, $local_file_body, $options );
+		$renderer            = new Diff_Renderer_Html_Inline;
+		$output              = $diff->render( $renderer );
 
 		$response = array(
 			'message' => $output,

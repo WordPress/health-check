@@ -13,6 +13,10 @@
  * Text Domain: health-check
  */
 
+/** Accompanied Libraries Licenses:
+ * php-diff - License (BSD License) - Copyright (c) 2009 Chris Boulton chris.boulton@interspire.com All rights reserved.
+ */
+
 // Check that the file is nto accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
@@ -95,6 +99,7 @@ class HealthCheck {
 		add_action( 'wp_ajax_health-check-loopback-no-plugins', array( 'Health_Check_Loopback', 'loopback_no_plugins' ) );
 		add_action( 'wp_ajax_health-check-loopback-individual-plugins', array( 'Health_Check_Loopback', 'loopback_test_individual_plugins' ) );
 		add_action( 'wp_ajax_health-check-files-integrity-check', array( 'Files_Integrity', 'run_files_integrity_check' ) );
+		add_action( 'wp_ajax_health-check-view-file-diff', array( 'Files_Integrity', 'view_file_diff' ) );
 		add_action( 'wp_ajax_health-check-mail-check', array( 'Mail_Check', 'run_mail_check' ) );
 	}
 
@@ -435,6 +440,8 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-loopback.php' 
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-troubleshoot.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-files-integrity.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-mail-check.php' );
+require_once( dirname( __FILE__ ) . '/libs/php-diff/Diff.php' );
+require_once( dirname( __FILE__ ) . '/libs/php-diff/Diff/Renderer/Html/Inline.php' );
 
 // Initialize our plugin.
 new HealthCheck();
