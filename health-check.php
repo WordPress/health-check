@@ -13,10 +13,6 @@
  * Text Domain: health-check
  */
 
-/** Accompanied Libraries Licenses:
- * php-diff - License (BSD License) - Copyright (c) 2009 Chris Boulton chris.boulton@interspire.com All rights reserved.
- */
-
 // Check that the file is nto accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
@@ -440,8 +436,6 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-loopback.php' 
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-troubleshoot.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-files-integrity.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-mail-check.php' );
-require_once( dirname( __FILE__ ) . '/libs/php-diff/Diff.php' );
-require_once( dirname( __FILE__ ) . '/libs/php-diff/Diff/Renderer/Html/Inline.php' );
 
 // Initialize our plugin.
 new HealthCheck();

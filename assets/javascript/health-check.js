@@ -167,9 +167,9 @@ jQuery(document).ready(function ($) {
 			ajaxurl,
 			data,
 			function( response ) {
-				$( '#health-check-diff-modal #health-check-diff-modal-content' ).html( response.data.message );
-				$( '#health-check-diff-modal #health-check-diff-modal-content' ).prepend( '<h3>' + file + '</h3>' );
-				$( '#health-check-diff-modal #health-check-diff-modal-content' ).prepend( '<a id="health-check-diff-modal-close-ref" href="#health-check-diff-modal-close"><span class="dashicons dashicons-no"></span></a>' );
+				$( '#health-check-diff-modal #health-check-diff-modal-diff' ).html( response.data.message );
+				$( '#health-check-diff-modal #health-check-diff-modal-content h3' ).html( file );
+				$( '#health-check-diff-modal #health-check-diff-modal-content .spinner' ).removeClass( 'is-active' );
 		});
 	});
 

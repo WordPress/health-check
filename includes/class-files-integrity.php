@@ -144,23 +144,28 @@ class Files_Integrity {
 	* @uses wp_die()
 	* @uses ABSPATH
 	* @uses FILE_USE_INCLUDE_PATH
+	* @uses wp_text_diff()
 	*
 	*
 	* @return array
 	*/
 	static function view_file_diff() {
-		$filepath            = ABSPATH;
-		$file                = $_POST['file'];
-		$wpversion           = get_bloginfo( 'version' );
-		$local_file_body     = explode( "\n", file_get_contents( $filepath . $file, FILE_USE_INCLUDE_PATH ) );
-		$remote_file         = wp_remote_get( 'https://core.svn.wordpress.org/tags/' . $wpversion . '/' . $file );
-		$remote_file_body    = wp_remote_retrieve_body( $remote_file );
-		$remote_file_explode = explode( "\n", $remote_file_body );
-		$options             = array();
-		$diff                = new Diff( $remote_file_explode, $local_file_body, $options );
-		$renderer            = new Diff_Renderer_Html_Inline;
-		$output              = $diff->render( $renderer );
+		$filepath         = ABSPATH;
+		$file             = $_POST['file'];
+		$wpversion        = get_bloginfo( 'version' );
+		$local_file_body  = file_get_contents( $filepath . $file, FILE_USE_INCLUDE_PATH );
+		$remote_file      = wp_remote_get( 'https://core.svn.wordpress.org/tags/' . $wpversion . '/' . $file );
+		$remote_file_body = wp_remote_retrieve_body( $remote_file );
+		$diff_args        = array(
+			'show_split_view' => true,
+		);
 
+		$output   = '<table class="diff"><thead><tr class="diff-sub-title"><th>';
+		$output  .= 'Original';
+		$output  .= '</th><th>';
+		$output  .= 'Modified';
+		$output  .= '</th></tr></table>';
+		$output  .= wp_text_diff( $remote_file_body, $local_file_body, $diff_args );
 		$response = array(
 			'message' => $output,
 		);

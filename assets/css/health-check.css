@@ -115,10 +115,22 @@ body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-mod
 	width: calc( 100% - 120px );
 	margin-top: 40px;
 	margin-left: 40px;
-	overflow-y: auto;
 	padding: 20px;
 	display: block;
 }
+
+body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-diff {
+	width: 100%;
+	height: calc( 100% - 80px );
+	overflow-y: auto;
+	display: block;
+	position: relative;
+}
+
+body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-diff table.diff td:nth-child(2) {
+	background: #f3f3f3;
+}
+
 
 body.dashboard_page_health-check #health-check-diff-modal-close-ref {
 	position: relative;
@@ -131,107 +143,4 @@ body.dashboard_page_health-check #health-check-diff-modal-close-ref {
 body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .spinner,
 body.dashboard_page_health-check #tools-response-holder .spinner {
 	float: none;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .Differences {
-	width: 100%;
-	border-collapse: collapse;
-	border-spacing: 0;
-	empty-cells: show;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .Differences thead th {
-	text-align: left;
-	border-bottom: 1px solid #000;
-	border-right: 1px solid #000;
-	color: #000;
-	padding: 4px;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .Differences thead th:last-child {
-	border-right: 0;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .Differences tbody th {
-	text-align: right;
-	width: 4em;
-	padding: 1px 2px;
-	border-right: 1px solid #000;
-	vertical-align: top;
-	font-size: 13px;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .Differences thead th:first-child,
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .Differences tbody th:first-child {
-		background: #f3f3f3;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .Differences thead th:last-child,
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .Differences tbody th:last-child {
-		background: #fff;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .Differences td {
-	padding: 1px 2px;
-	font-family: Consolas, monospace;
-	font-size: 13px;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesSideBySide .ChangeInsert td.Left {
-	background: #dfd;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesSideBySide .ChangeInsert td.Right {
-	background: #cfc;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesSideBySide .ChangeDelete td.Left {
-	background: #f88;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesSideBySide .ChangeDelete td.Right {
-	background: #faa;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesSideBySide .ChangeReplace .Left {
-	background: #fe9;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesSideBySide .ChangeReplace .Right {
-	background: #fd8;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .Differences ins, .Differences del {
-	text-decoration: none;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesSideBySide .ChangeReplace ins, .DifferencesSideBySide .ChangeReplace del {
-	background: #fc0;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .Differences .Skipped {
-	background: #f7f7f7;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesInline .ChangeReplace .Left,
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesInline .ChangeDelete .Left {
-	background: #fdd;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesInline .ChangeReplace .Right,
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesInline .ChangeInsert .Right {
-	background: #dfd;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesInline .ChangeReplace ins {
-	background: #9e9;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content .DifferencesInline .ChangeReplace del {
-	background: #e99;
-}
-
-body.dashboard_page_health-check #health-check-diff-modal #health-check-diff-modal-content pre {
-	width: 100%;
-	overflow: auto;
 }

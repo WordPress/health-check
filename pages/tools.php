@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<?php
 					$current_user = wp_get_current_user();
 				?>
-				<label for="email"><?php  _e( 'E-mail', 'health-check' ); ?></label>
+				<label for="email"><?php _e( 'E-mail', 'health-check' ); ?></label>
 				<input type="text" name="email" id="email" value="<?php echo $current_user->user_email; ?>">
 			</p>
 			<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check Mail', 'health-check' ); ?>">
@@ -46,5 +46,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div id="health-check-diff-modal-content">
 			<a id="health-check-diff-modal-close-ref" href="#health-check-diff-modal-close"><span class="dashicons dashicons-no"></span></a>
 			<span class="spinner"></span>
+			<h3></h3>
+			<div id="health-check-diff-modal-diff">
+			</div>
 		</div>
 	</div>
