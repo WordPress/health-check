@@ -88,7 +88,7 @@ class Health_Check_WP_Cron {
 			return $this->crons;
 		}
 
-		foreach( $this->crons as $id => $cron ) {
+		foreach ( $this->crons as $id => $cron ) {
 			if ( ( $cron->time - time() ) < 0 ) {
 				$this->last_missed_cron = $cron->hook;
 				return true;

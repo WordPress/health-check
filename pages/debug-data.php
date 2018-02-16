@@ -37,8 +37,8 @@ $info = Health_Check_Debug_Data::debug_data();
 		?>
 			<div id="system-information-english-copy-wrapper" style="display: none;">
 					<textarea id="system-information-english-copy-field" class="widefat" rows="10">`
-<?php
-						foreach ( $english_info AS $section => $details ) {
+						<?php
+						foreach ( $english_info as $section => $details ) {
 							// Skip this section if there are no fields, or the section has been declared as private.
 							if ( empty( $details['fields'] ) || ( isset( $details['private'] ) && $details['private'] ) ) {
 								continue;
@@ -50,16 +50,16 @@ $info = Health_Check_Debug_Data::debug_data();
 								( isset( $details['show_count'] ) && $details['show_count'] ? sprintf( ' (%d)', count( $details['fields'] ) ) : '' )
 							);
 
-							foreach ( $details['fields'] AS $field ) {
+							foreach ( $details['fields'] as $field ) {
 								if ( isset( $field['private'] ) && true === $field['private'] ) {
 									continue;
 								}
 
 								$values = $field['value'];
 								if ( is_array( $field['value'] ) ) {
-									$values = "";
+									$values = '';
 
-									foreach( $field['value'] as $name => $value ) {
+									foreach ( $field['value'] as $name => $value ) {
 										$values .= sprintf(
 											"\n\t%s: %s",
 											$name,
@@ -89,8 +89,8 @@ $info = Health_Check_Debug_Data::debug_data();
 
 		<div id="system-information-copy-wrapper" style="display: none;">
 			<textarea id="system-information-copy-field" class="widefat" rows="10">`
-<?php
-				foreach ( $info AS $section => $details ) {
+				<?php
+				foreach ( $info as $section => $details ) {
 					// Skip this section if there are no fields, or the section has been declared as private.
 					if ( empty( $details['fields'] ) || ( isset( $details['private'] ) && $details['private'] ) ) {
 						continue;
@@ -102,16 +102,16 @@ $info = Health_Check_Debug_Data::debug_data();
 						( isset( $details['show_count'] ) && $details['show_count'] ? sprintf( ' (%d)', count( $details['fields'] ) ) : '' )
 					);
 
-					foreach ( $details['fields'] AS $field ) {
+					foreach ( $details['fields'] as $field ) {
 						if ( isset( $field['private'] ) && true === $field['private'] ) {
 							continue;
 						}
 
 						$values = $field['value'];
 						if ( is_array( $field['value'] ) ) {
-							$values = "";
+							$values = '';
 
-							foreach( $field['value'] as $name => $value ) {
+							foreach ( $field['value'] as $name => $value ) {
 								$values .= sprintf(
 									"\n\t%s: %s",
 									$name,
@@ -145,7 +145,7 @@ $info = Health_Check_Debug_Data::debug_data();
 		<?php
 		$toc = array();
 
-		foreach ( $info AS $section => $details ) {
+		foreach ( $info as $section => $details ) {
 			if ( empty( $details['fields'] ) ) {
 				continue;
 			}
@@ -162,7 +162,7 @@ $info = Health_Check_Debug_Data::debug_data();
 	</div>
 
 <?php
-foreach ( $info AS $section => $details ) {
+foreach ( $info as $section => $details ) {
 	if ( ! isset( $details['fields'] ) || empty( $details['fields'] ) ) {
 		continue;
 	}
@@ -179,7 +179,7 @@ foreach ( $info AS $section => $details ) {
 			'<p>%s</p>',
 			wp_kses( $details['description'], array(
 				'a'      => array(
-					'href' => true
+					'href' => true,
 				),
 				'strong' => true,
 				'em'     => true,
@@ -190,11 +190,11 @@ foreach ( $info AS $section => $details ) {
 	<table class="widefat striped health-check-table">
 		<tbody>
 		<?php
-		foreach ( $details['fields'] AS $field ) {
+		foreach ( $details['fields'] as $field ) {
 			$values = esc_html( $field['value'] );
 			if ( is_array( $field['value'] ) ) {
 				$values = '';
-				foreach( $field['value'] as $name => $value ) {
+				foreach ( $field['value'] as $name => $value ) {
 					$values .= sprintf(
 						'<li>%s: %s</li>',
 						esc_html( $name ),

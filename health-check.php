@@ -154,8 +154,7 @@ class HealthCheck {
 					$needs_credentials = true;
 				}
 			}
-		}
-		else {
+		} else {
 			if ( ! Health_Check_Troubleshoot::maybe_update_must_use_plugin() ) {
 				$needs_credentials = true;
 			}
@@ -166,11 +165,10 @@ class HealthCheck {
 		if ( $needs_credentials ) {
 			$this->admin_notices[] = (object) array(
 				'message' => $result,
-				'type'    => 'warning'
+				'type'    => 'warning',
 			);
 			return;
 		}
-
 
 		$loopback_hash = md5( rand() );
 		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
@@ -194,7 +192,7 @@ class HealthCheck {
 	 * @return void
 	 */
 	public function load_i18n() {
-		load_plugin_textdomain( 'health-check', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'health-check', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
@@ -223,8 +221,8 @@ class HealthCheck {
 		wp_localize_script( 'health-check', 'health_check', array(
 			'string' => array(
 				'please_wait' => esc_html__( 'Please wait...', 'health-check' ),
-				'copied'      => esc_html__( 'Copied', 'health-check' )
-			)
+				'copied'      => esc_html__( 'Copied', 'health-check' ),
+			),
 		) );
 	}
 
@@ -289,7 +287,7 @@ class HealthCheck {
 		$actions['troubleshoot'] = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( add_query_arg( array(
-				'health-check-troubleshoot-plugin' => ( isset( $plugin_data['slug'] ) ? $plugin_data['slug'] : sanitize_title( $plugin_data['Name'] ) )
+				'health-check-troubleshoot-plugin' => ( isset( $plugin_data['slug'] ) ? $plugin_data['slug'] : sanitize_title( $plugin_data['Name'] ) ),
 			), admin_url( 'plugins.php' ) ) ),
 			esc_html__( 'Troubleshoot', 'health-check' )
 		);
@@ -321,7 +319,7 @@ class HealthCheck {
 				'health-check' => esc_html_x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ),
 				'debug'        => esc_html__( 'Debug information', 'health-check' ),
 				'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
-				'phpinfo'      => esc_html__( 'PHP Information', 'health-check' )
+				'phpinfo'      => esc_html__( 'PHP Information', 'health-check' ),
 			);
 
 			$current_tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'health-check' );
@@ -329,7 +327,7 @@ class HealthCheck {
 
 			<h2 class="nav-tab-wrapper wp-clearfix">
 				<?php
-				foreach( $tabs as $tab => $label ) {
+				foreach ( $tabs as $tab => $label ) {
 					printf(
 						'<a href="%s" class="nav-tab %s">%s</a>',
 						sprintf(
@@ -394,7 +392,7 @@ class HealthCheck {
 	 * @return void
 	 */
 	public function admin_notices() {
-		foreach( $this->admin_notices as $admin_notice ) {
+		foreach ( $this->admin_notices as $admin_notice ) {
 			printf(
 				'<div class="notice notice-%s"><p>%s</p></div>',
 				esc_attr( $admin_notice->type ),
@@ -414,8 +412,8 @@ class HealthCheck {
 	 */
 	static function json_check() {
 		$extension_loaded = extension_loaded( 'json' );
-		$functions_exist = function_exists( 'json_encode' ) && function_exists( 'json_decode' );
-		$functions_work = function_exists( 'json_encode' ) && ( '' != json_encode( 'my test string' ) );
+		$functions_exist  = function_exists( 'json_encode' ) && function_exists( 'json_decode' );
+		$functions_work   = function_exists( 'json_encode' ) && ( '' != json_encode( 'my test string' ) );
 
 		return $extension_loaded && $functions_exist && $functions_work;
 	}

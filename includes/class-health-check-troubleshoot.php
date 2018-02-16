@@ -22,7 +22,12 @@ class Health_Check_Troubleshoot {
 	 * @return bool
 	 */
 	static function get_filesystem_credentials() {
-		$url = wp_nonce_url( add_query_arg( array( 'page' => 'health-check', 'tab' => 'troubleshoot' ), admin_url() ) );
+		$url   = wp_nonce_url( add_query_arg(
+			array(
+				'page' => 'health-check',
+				'tab'  => 'troubleshoot',
+			),
+		admin_url() ) );
 		$creds = request_filesystem_credentials( $url, '', false, WP_CONTENT_DIR, array( 'health-check-troubleshoot-mode-confirmed', 'health-check-troubleshoot-mode', 'action' ) );
 		if ( false === $creds ) {
 			return false;
@@ -75,7 +80,7 @@ class Health_Check_Troubleshoot {
 		}
 
 		if ( ! $wp_filesystem->copy( trailingslashit( HEALTH_CHECK_PLUGIN_DIRECTORY ) . 'assets/mu-plugin/health-check-disable-plugins.php', trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php' ) ) {
-			HealthCheck::display_notice( esc_html__( 'We were unable to copy the plugin file required to enable the Troubleshooting Mode.' ,'health-check' ), 'error' );
+			HealthCheck::display_notice( esc_html__( 'We were unable to copy the plugin file required to enable the Troubleshooting Mode.', 'health-check' ), 'error' );
 			return false;
 		}
 
@@ -119,7 +124,7 @@ class Health_Check_Troubleshoot {
 			global $wp_filesystem;
 
 			if ( ! $wp_filesystem->copy( trailingslashit( HEALTH_CHECK_PLUGIN_DIRECTORY ) . 'assets/mu-plugin/health-check-disable-plugins.php', trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php', true ) ) {
-				HealthCheck::display_notice( esc_html__( 'We were unable to replace the plugin file required to enable the Troubleshooting Mode.' ,'health-check' ), 'error' );
+				HealthCheck::display_notice( esc_html__( 'We were unable to replace the plugin file required to enable the Troubleshooting Mode.', 'health-check' ), 'error' );
 				return false;
 			}
 		}
@@ -173,15 +178,13 @@ class Health_Check_Troubleshoot {
 					'<div class="notice notice-error inline"><p>%s</p></div>',
 					esc_html__( 'You did not check that you understand how to disable Troubleshooting Mode, please read the explanation and confirm that you understand the procedure first.', 'health-check' )
 				);
-			}
-			else {
+			} else {
 				if ( Health_Check_Troubleshoot::mu_plugin_exists() ) {
 					if ( ! Health_Check_Troubleshoot::maybe_update_must_use_plugin() ) {
 						return;
 					}
 					Health_Check_Troubleshoot::session_started();
-				}
-				else {
+				} else {
 					if ( ! Health_Check_Troubleshoot::get_filesystem_credentials() ) {
 						return;
 					} else {
