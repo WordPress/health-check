@@ -146,7 +146,6 @@ jQuery(document).ready(function ($) {
 			ajaxurl,
 			data,
 			function( response ) {
-				console.log(response.data.message);
 				$( '#tools-response-holder .spinner' ).removeClass( 'is-active' );
 				$( '#tools-response-holder').html( response.data.message );
 		});
