@@ -45,6 +45,7 @@ class Health_Check_Troubleshooting_MU {
 		add_filter( 'template', array( $this, 'health_check_troubleshoot_theme' ) );
 
 		add_action( 'admin_notices', array( $this, 'plugin_list_admin_notice' ) );
+		add_filter( 'user_has_cap', array( $this, 'remove_plugin_theme_install' ) );
 
 		add_action( 'plugin_action_links', array( $this, 'plugin_actions' ), 50, 4 );
 
@@ -61,6 +62,29 @@ class Health_Check_Troubleshooting_MU {
 
 		$this->default_theme  = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
 		$this->active_plugins = $this->get_unfiltered_plugin_list();
+	}
+
+	/**
+	 * Remove the `Add` option for plugins and themes.
+	 *
+	 * When troubleshooting, adding or changing themes and plugins can
+	 * lead to unexpected results. Remove these menu items to make it less
+	 * likely that a user breaks their site through these.
+	 *
+	 * @param  array $caps Array containing the current users capabilities.
+	 *
+	 * @return array
+	 */
+	public function remove_plugin_theme_install( $caps ) {
+		if ( ! $this->is_troubleshooting() ) {
+			return $caps;
+		}
+
+		$caps['install_plugins'] = false;
+		$caps['install_themes']  = false;
+		$caps['switch_themes']   = false;
+
+		return $caps;
 	}
 
 	/**
