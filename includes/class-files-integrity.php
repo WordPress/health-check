@@ -34,6 +34,8 @@ class Files_Integrity {
 	* @uses ABSPATH
 	* @uses wp_remote_get()
 	* @uses get_bloginfo()
+	* @uses strpos()
+	* @uses unset()
 	*
 	* @return array
 	*/
@@ -47,6 +49,13 @@ class Files_Integrity {
 
 		// Encode the API response body.
 		$checksumapibody = json_decode( wp_remote_retrieve_body( $checksumapi ), true );
+
+		// Remove the wp-content/ files from checking
+		foreach ( $checksumapibody['checksums'] as $file => $checksum ) {
+			if ( false !== strpos( $file, 'wp-content/' ) ) {
+				unset( $checksumapibody['checksums'][ $file ] );
+			}
+		}
 
 		return $checksumapibody;
 	}
