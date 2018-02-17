@@ -80,9 +80,8 @@ class Health_Check_Troubleshooting_MU {
 			return $caps;
 		}
 
-		$caps['install_plugins'] = false;
-		$caps['install_themes']  = false;
-		$caps['switch_themes']   = false;
+		$caps['activate_plugins'] = false;
+		$caps['switch_themes']    = false;
 
 		return $caps;
 	}
