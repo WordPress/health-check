@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests to determine if the WOrdPress loopbacks are able to run unhindered.
+ * Tests to determine if the WordPress loopbacks are able to run unhindered.
  *
  * @package Health Check
  */
@@ -68,7 +68,7 @@ class Health_Check_Loopback {
 						wp_remote_retrieve_response_code( $r ),
 						$r->get_error_message()
 					)
-				)
+				),
 			);
 		}
 
@@ -79,13 +79,13 @@ class Health_Check_Loopback {
 					/* translators: %d: The HTTP response code returned. */
 					esc_html__( 'The loopback request returned an unexpected status code, %d, this may affect tools such as WP_Cron, or theme and plugin editors.', 'health-check' ),
 					wp_remote_retrieve_response_code( $r )
-				)
+				),
 			);
 		}
 
 		return (object) array(
 			'status'  => 'good',
-			'message' => __( 'The loopback request to your site completed successfully.', 'health-check' )
+			'message' => __( 'The loopback request to your site completed successfully.', 'health-check' ),
 		);
 	}
 
@@ -125,8 +125,7 @@ class Health_Check_Loopback {
 					$needs_creds = true;
 				}
 			}
-		}
-		else {
+		} else {
 			if ( ! Health_Check_Troubleshoot::maybe_update_must_use_plugin() ) {
 				$needs_creds = true;
 			}
@@ -157,7 +156,7 @@ class Health_Check_Loopback {
 		}
 
 		$response = array(
-			'message' => $message
+			'message' => $message,
 		);
 
 		delete_option( 'health-check-default-theme' );
@@ -222,7 +221,7 @@ class Health_Check_Loopback {
 
 		$message = '';
 
-		foreach( $all_plugins as $single_plugin ) {
+		foreach ( $all_plugins as $single_plugin ) {
 			$plugin_slug = explode( '/', $single_plugin );
 			$plugin_slug = $plugin_slug[0];
 
@@ -255,7 +254,7 @@ class Health_Check_Loopback {
 		delete_option( 'health-check-default-theme' );
 
 		$response = array(
-			'message' => $message
+			'message' => $message,
 		);
 
 		wp_send_json_success( $response );

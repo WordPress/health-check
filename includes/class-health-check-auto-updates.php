@@ -41,8 +41,8 @@ class Health_Check_Auto_Updates {
 	public function run_tests() {
 		$tests = array();
 
-		foreach( get_class_methods( $this ) AS $method ) {
-			if ( 'test_' !== substr( $method, 0,5 ) ) {
+		foreach ( get_class_methods( $this ) as $method ) {
+			if ( 'test_' !== substr( $method, 0, 5 ) ) {
 				continue;
 			}
 
@@ -76,7 +76,8 @@ class Health_Check_Auto_Updates {
 	function test_constant_FILE_MODS() {
 		if ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) {
 			return array(
-				'desc' => sprintf(
+				'desc'     => sprintf(
+					/* translators: %s: Name of the constant used. */
 					esc_html__( 'The %s constant is defined and enabled.', 'health-check' ),
 					'<code>DISALLOW_FILE_MODS</code>'
 				),
@@ -97,7 +98,8 @@ class Health_Check_Auto_Updates {
 	function test_constant_AUTOMATIC_UPDATER_DISABLED() {
 		if ( defined( 'AUTOMATIC_UPDATER_DISABLED' ) && AUTOMATIC_UPDATER_DISABLED ) {
 			return array(
-				'desc' => sprintf(
+				'desc'     => sprintf(
+					/* translators: %s: Name of the constant used. */
 					esc_html__( 'The %s constant is defined and enabled.', 'health-check' ),
 					'<code>AUTOMATIC_UPDATER_DISABLED</code>'
 				),
@@ -118,7 +120,8 @@ class Health_Check_Auto_Updates {
 	function test_constant_WP_AUTO_UPDATE_CORE() {
 		if ( defined( 'WP_AUTO_UPDATE_CORE' ) && false === WP_AUTO_UPDATE_CORE ) {
 			return array(
-				'desc' => sprintf(
+				'desc'     => sprintf(
+					/* translators: %s: Name of the constant used. */
 					esc_html__( 'The %s constant is defined and enabled.', 'health-check' ),
 					'<code>WP_AUTO_UPDATE_CORE</code>'
 				),
@@ -139,7 +142,8 @@ class Health_Check_Auto_Updates {
 	function test_wp_version_check_attached() {
 		if ( ! has_filter( 'wp_version_check', 'wp_version_check' ) ) {
 			return array(
-				'desc' => sprintf(
+				'desc'     => sprintf(
+					/* translators: %s: Name of the filter used. */
 					esc_html__( 'A plugin has prevented updates by disabling %s.', 'health-check' ),
 					'<code>wp_version_check()</code>'
 				),
@@ -160,7 +164,8 @@ class Health_Check_Auto_Updates {
 	function test_filters_automatic_updater_disabled() {
 		if ( apply_filters( 'automatic_updater_disabled', false ) ) {
 			return array(
-				'desc' => sprintf(
+				'desc'     => sprintf(
+					/* translators: %s: Name of the filter used. */
 					esc_html__( 'The %s filter is enabled.', 'health-check' ),
 					'<code>automatic_updater_disabled</code>'
 				),
@@ -186,32 +191,34 @@ class Health_Check_Auto_Updates {
 		}
 
 		if ( ! empty( $failed['critical'] ) ) {
-			$desc = esc_html__( "A previous automatic background update ended with a critical failure, so updates are now disabled." , 'health-check' );
-			$desc .= ' ' . esc_html__( "You would have received an email because of this." , 'health-check' );
-			$desc .= ' ' . esc_html__( "When you've been able to update using the \"Update Now\" button on Dashboard > Updates, we'll clear this error for future update attempts." , 'health-check' );
+			$desc  = esc_html__( 'A previous automatic background update ended with a critical failure, so updates are now disabled.', 'health-check' );
+			$desc .= ' ' . esc_html__( 'You would have received an email because of this.', 'health-check' );
+			$desc .= ' ' . esc_html__( "When you've been able to update using the \"Update Now\" button on Dashboard > Updates, we'll clear this error for future update attempts.", 'health-check' );
 			$desc .= ' ' . sprintf(
-				esc_html__( "The error code was %s." , 'health-check' ),
+				/* translators: %s: Code of error shown. */
+				esc_html__( 'The error code was %s.', 'health-check' ),
 				'<code>' . $failed['error_code'] . '</code>'
 			);
 			return array(
-				'desc' => $desc,
+				'desc'     => $desc,
 				'severity' => 'warning',
 			);
 		}
 
-		$desc = esc_html__( "A previous automatic background update could not occur." , 'health-check' );
+		$desc = esc_html__( 'A previous automatic background update could not occur.', 'health-check' );
 		if ( empty( $failed['retry'] ) ) {
-			$desc .= ' ' . esc_html__( "You would have received an email because of this.", 'health-check' );
+			$desc .= ' ' . esc_html__( 'You would have received an email because of this.', 'health-check' );
 		}
 
-		$desc .= ' ' . esc_html__( "We'll try again with the next release." , 'health-check' );
+		$desc .= ' ' . esc_html__( "We'll try again with the next release.", 'health-check' );
 		$desc .= ' ' . sprintf(
-			esc_html__( "The error code was %s." , 'health-check' ),
+			/* translators: %s: Code of error shown. */
+			esc_html__( 'The error code was %s.', 'health-check' ),
 			'<code>' . $failed['error_code'] . '</code>'
 		);
 		return array(
-			'desc' => $desc,
-			'severity' => 'warning'
+			'desc'     => $desc,
+			'severity' => 'warning',
 		);
 	}
 
@@ -232,8 +239,8 @@ class Health_Check_Auto_Updates {
 	 */
 	function _test_is_vcs_checkout( $context ) {
 		$context_dirs = array( ABSPATH );
-		$vcs_dirs = array( '.svn', '.git', '.hg', '.bzr' );
-		$check_dirs = array();
+		$vcs_dirs     = array( '.svn', '.git', '.hg', '.bzr' );
+		$check_dirs   = array();
 
 		foreach ( $context_dirs as $context_dir ) {
 			// Walk up from $context_dir to the root.
@@ -241,8 +248,9 @@ class Health_Check_Auto_Updates {
 				$check_dirs[] = $context_dir;
 
 				// Once we've hit '/' or 'C:\', we need to stop. dirname will keep returning the input here.
-				if ( $context_dir == dirname( $context_dir ) )
+				if ( dirname( $context_dir ) == $context_dir ) {
 					break;
+				}
 
 				// Continue one level at a time.
 			} while ( $context_dir = dirname( $context_dir ) );
@@ -261,9 +269,9 @@ class Health_Check_Auto_Updates {
 
 		if ( $checkout && ! apply_filters( 'automatic_updates_is_vcs_checkout', true, $context ) ) {
 			return array(
-				'desc' => sprintf(
+				'desc'     => sprintf(
 					// translators: %1$s: Folder name. %2$s: Version control directory. %3$s: Filter name.
-					esc_html__( 'The folder %1$s was detected as being under version control (%2$s), but the %3$s filter is allowing updates.' , 'health-check' ),
+					esc_html__( 'The folder %1$s was detected as being under version control (%2$s), but the %3$s filter is allowing updates.', 'health-check' ),
 					'<code>' . $check_dir . '</code>',
 					"<code>$vcs_dir</code>",
 					'<code>automatic_updates_is_vcs_checkout</code>'
@@ -274,9 +282,9 @@ class Health_Check_Auto_Updates {
 
 		if ( $checkout ) {
 			return array(
-				'desc' => sprintf(
+				'desc'     => sprintf(
 					// translators: %1$s: Folder name. %2$s: Version control directory.
-					esc_html__( 'The folder %1$s was detected as being under version control (%2$s).' , 'health-check' ),
+					esc_html__( 'The folder %1$s was detected as being under version control (%2$s).', 'health-check' ),
 					'<code>' . $check_dir . '</code>',
 					"<code>$vcs_dir</code>"
 				),
@@ -285,8 +293,8 @@ class Health_Check_Auto_Updates {
 		}
 
 		return array(
-			'desc' => esc_html__( 'No version control systems were detected.' , 'health-check' ),
-			'severity' => 'pass'
+			'desc'     => esc_html__( 'No version control systems were detected.', 'health-check' ),
+			'severity' => 'pass',
 		);
 	}
 
@@ -312,21 +320,21 @@ class Health_Check_Auto_Updates {
 	 * @return array
 	 */
 	function test_check_wp_filesystem_method() {
-		$skin = new Automatic_Upgrader_Skin;
+		$skin    = new Automatic_Upgrader_Skin;
 		$success = $skin->request_filesystem_credentials( false, ABSPATH );
 
 		if ( ! $success ) {
-			$desc = esc_html__( 'Your installation of WordPress prompts for FTP credentials to perform updates.' , 'health-check' );
-			$desc .= ' ' . esc_html__( '(Your site is performing updates over FTP due to file ownership. Talk to your hosting company.)' , 'health-check' );
+			$desc  = esc_html__( 'Your installation of WordPress prompts for FTP credentials to perform updates.', 'health-check' );
+			$desc .= ' ' . esc_html__( '(Your site is performing updates over FTP due to file ownership. Talk to your hosting company.)', 'health-check' );
 
 			return array(
-				'desc' => $desc,
+				'desc'     => $desc,
 				'severity' => 'fail',
 			);
 		}
 
 		return array(
-			'desc' => esc_html__( "Your installation of WordPress doesn't require FTP credentials to perform updates." , 'health-check' ),
+			'desc'     => esc_html__( "Your installation of WordPress doesn't require FTP credentials to perform updates.", 'health-check' ),
 			'severity' => 'pass',
 		);
 	}
@@ -358,7 +366,7 @@ class Health_Check_Auto_Updates {
 		global $wp_filesystem;
 		include ABSPATH . WPINC . '/version.php'; // $wp_version; // x.y.z
 
-		$skin = new Automatic_Upgrader_Skin;
+		$skin    = new Automatic_Upgrader_Skin;
 		$success = $skin->request_filesystem_credentials( false, ABSPATH );
 
 		if ( ! $success ) {
@@ -367,28 +375,31 @@ class Health_Check_Auto_Updates {
 
 		WP_Filesystem();
 
-		if ( 'direct' != $wp_filesystem->method )
+		if ( 'direct' != $wp_filesystem->method ) {
 			return false;
+		}
 
 		$checksums = get_core_checksums( $wp_version, 'en_US' );
-		$dev = ( false !== strpos( $wp_version, '-' ) );
+		$dev       = ( false !== strpos( $wp_version, '-' ) );
 		// Get the last stable version's files and test against that
-		if ( ! $checksums && $dev )
+		if ( ! $checksums && $dev ) {
 			$checksums = get_core_checksums( (float) $wp_version - 0.1, 'en_US' );
+		}
 
 		// There aren't always checksums for development releases, so just skip the test if we still can't find any
-		if ( ! $checksums && $dev )
+		if ( ! $checksums && $dev ) {
 			return false;
+		}
 
 		if ( ! $checksums ) {
 			$desc = sprintf(
 				// translators: %s: WordPress version
-				esc_html__( "Couldn't retrieve a list of the checksums for WordPress %s." , 'health-check' ),
+				esc_html__( "Couldn't retrieve a list of the checksums for WordPress %s.", 'health-check' ),
 				$wp_version
 			);
-			$desc .= ' ' . esc_html__( 'This could mean that connections are failing to WordPress.org.' , 'health-check' );
+			$desc .= ' ' . esc_html__( 'This could mean that connections are failing to WordPress.org.', 'health-check' );
 			return array(
-				'desc' => $desc,
+				'desc'     => $desc,
 				'severity' => 'warning',
 			);
 		}
@@ -401,23 +412,23 @@ class Health_Check_Auto_Updates {
 			if ( ! file_exists( ABSPATH . '/' . $file ) ) {
 				continue;
 			}
-			if (  ! is_writable( ABSPATH . '/' . $file ) ) {
+			if ( ! is_writable( ABSPATH . '/' . $file ) ) {
 				$unwritable_files[] = $file;
 			}
 		}
 
 		if ( $unwritable_files ) {
 			if ( count( $unwritable_files ) > 20 ) {
-				$unwritable_files = array_slice( $unwritable_files, 0, 20 );
+				$unwritable_files   = array_slice( $unwritable_files, 0, 20 );
 				$unwritable_files[] = '...';
 			}
 			return array(
-				'desc' => esc_html__( 'Some files are not writable by WordPress:' , 'health-check' ) . ' <ul><li>' . implode( '</li><li>', $unwritable_files ) . '</li></ul>',
+				'desc'     => esc_html__( 'Some files are not writable by WordPress:', 'health-check' ) . ' <ul><li>' . implode( '</li><li>', $unwritable_files ) . '</li></ul>',
 				'severity' => 'fail',
 			);
 		} else {
 			return array(
-				'desc' => esc_html__( 'All of your WordPress files are writable.' , 'health-check' ),
+				'desc'     => esc_html__( 'All of your WordPress files are writable.', 'health-check' ),
 				'severity' => 'pass',
 			);
 		}
@@ -443,8 +454,9 @@ class Health_Check_Auto_Updates {
 
 		if ( defined( 'WP_AUTO_UPDATE_CORE' ) && ( 'minor' === WP_AUTO_UPDATE_CORE || false === WP_AUTO_UPDATE_CORE ) ) {
 			return array(
-				'desc' => sprintf(
-					esc_html__( 'WordPress development updates are blocked by the %s constant.' , 'health-check' ),
+				'desc'     => sprintf(
+					/* translators: %s: Name of the constant used. */
+					esc_html__( 'WordPress development updates are blocked by the %s constant.', 'health-check' ),
 					'<code>WP_AUTO_UPDATE_CORE</code>'
 				),
 				'severity' => 'fail',
@@ -453,8 +465,9 @@ class Health_Check_Auto_Updates {
 
 		if ( ! apply_filters( 'allow_dev_auto_core_updates', $wp_version ) ) {
 			return array(
-				'desc' => sprintf(
-					esc_html__( 'WordPress development updates are blocked by the %s filter.' , 'health-check' ),
+				'desc'     => sprintf(
+					/* translators: %s: Name of the filter used. */
+					esc_html__( 'WordPress development updates are blocked by the %s filter.', 'health-check' ),
 					'<code>allow_dev_auto_core_updates</code>'
 				),
 				'severity' => 'fail',
@@ -475,8 +488,9 @@ class Health_Check_Auto_Updates {
 	function test_accepts_minor_updates() {
 		if ( defined( 'WP_AUTO_UPDATE_CORE' ) && false === WP_AUTO_UPDATE_CORE ) {
 			return array(
-				'desc' => sprintf(
-					esc_html__( 'WordPress security and maintenance releases are blocked by %s.' , 'health-check' ),
+				'desc'     => sprintf(
+					/* translators: %s: Name of the constant used. */
+					esc_html__( 'WordPress security and maintenance releases are blocked by %s.', 'health-check' ),
 					"<code>define( 'WP_AUTO_UPDATE_CORE', false );</code>"
 				),
 				'severity' => 'fail',
@@ -485,8 +499,9 @@ class Health_Check_Auto_Updates {
 
 		if ( ! apply_filters( 'allow_minor_auto_core_updates', true ) ) {
 			return array(
-				'desc' => sprintf(
-					esc_html__( 'WordPress security and maintenance releases are blocked by the %s filter.' , 'health-check' ),
+				'desc'     => sprintf(
+					/* translators: %s: Name of the filter used. */
+					esc_html__( 'WordPress security and maintenance releases are blocked by the %s filter.', 'health-check' ),
 					'<code>allow_minor_auto_core_updates</code>'
 				),
 				'severity' => 'fail',
