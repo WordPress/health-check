@@ -348,23 +348,35 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 				<td>
 					<?php
 					$cURL = curl_version();
-					if ( version_compare( $cURL['version'], HEALTH_CHECK_CURL_VERSION, '>=' ) ) {
+					if ( version_compare( $cURL['version'], HEALTH_CHECK_CURL_MIN_VERSION, '<' ) ) {
+						printf(
+							'<span class="error"></span> %s',
+							sprintf(
+								// translators: %1$s: Current cURL version number. %2$s: Recommended minimum cURL version.
+								esc_html__( 'Your version of cURL, %1$s, is lower than the recommended minimum version of %2$s. Your site may experience connection problems with other services and WordPress.org', 'health-check' ),
+								$cURL['version'],
+								HEALTH_CHECK_CURL_MIN_VERSION
+							)
+						);
+					}
+					elseif ( version_compare( $cURL['version'], HEALTH_CHECK_CURL_VERSION, '<' ) ) {
+						printf(
+							'<span class="warning"></span> %s',
+							sprintf(
+								// translators: %1$s: cURL version number running on the website. %2$s: The currently available cURL version.
+								esc_html__( 'Your version of cURL, %1$s, is slightly out of date. The most recent version is %2$s. This may in some cases affect your sites ability to communicate with other services. If you are experiencing connectivity issues connecting to various services, please contact your host.', 'health-check' ),
+								$cURL['version'],
+								HEALTH_CHECK_CURL_VERSION
+							)
+						);
+					}
+					else {
 						printf(
 							'<span class="good"></span> %s',
 							sprintf(
 								// translators: %s: cURL version number.
 								esc_html__( 'Your version of cURL, %s, is up to date.', 'health-check' ),
 								$cURL['version']
-							)
-						);
-					} else {
-						printf(
-							'<span class="warning"></span> %s',
-							sprintf(
-								// translators: %1$s: cURL version number running on the website. %2$s: The currently available cURL version.
-								esc_html__( 'Your version of cURL, %1$s, is out of date. The most recent version is %2$s. This may in some cases affect your sites ability to communicate with other services. If you are experiencing connectivity issues connecting to various services, please contact your host.', 'health-check' ),
-								$cURL['version'],
-								HEALTH_CHECK_CURL_VERSION
 							)
 						);
 					}
