@@ -109,7 +109,7 @@ class Files_Integrity {
 			$output .= '</p></div>';
 		} else {
 			$output .= '<div class="notice notice-error inline"><p>';
-			$output .= __( 'It appears that some files have been tampered with. Please either update WordPress or manually replace the files you see on the list and run the <code>File Integrity</code> check again.', 'health-check' );
+			$output .= __( 'It appears that some files may have been modified.', 'health-check' );
 			$output .= '</p></div><table class="widefat striped file-integrity-table"><thead><tr><th>';
 			$output .= esc_html__( 'Status', 'health-check' );
 			$output .= '</th><th>';
