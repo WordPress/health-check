@@ -23,6 +23,17 @@ class Health_Check_Troubleshooting_MU {
 		'health-check-troubleshoot-disable-plugin',
 	);
 
+	private $default_themes = array(
+		'twentyseventeen',
+		'twentysixteen',
+		'twentyfifteen',
+		'twentyfourteen',
+		'twentythirteen',
+		'twentytwelve',
+		'twentyeleven',
+		'twentyten',
+	);
+
 	/**
 	 * Health_Check_Troubleshooting_MU constructor.
 	 */
@@ -45,6 +56,7 @@ class Health_Check_Troubleshooting_MU {
 		add_filter( 'template', array( $this, 'health_check_troubleshoot_theme' ) );
 
 		add_action( 'admin_notices', array( $this, 'plugin_list_admin_notice' ) );
+		add_action( 'admin_notices', array( $this, 'prompt_install_default_theme' ) );
 		add_filter( 'user_has_cap', array( $this, 'remove_plugin_theme_install' ) );
 
 		add_action( 'plugin_action_links', array( $this, 'plugin_actions' ), 50, 4 );
@@ -62,6 +74,31 @@ class Health_Check_Troubleshooting_MU {
 
 		$this->default_theme  = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
 		$this->active_plugins = $this->get_unfiltered_plugin_list();
+	}
+
+	/**
+	 * Add a prompt to install a default theme.
+	 *
+	 * If no default theme exists, we can't reliably assert if an issue is
+	 * caused by the theme. In these cases we should provide an easy step
+	 * to get to, and install, one of the default themes.
+	 *
+	 * @return void
+	 */
+	public function prompt_install_default_theme() {
+		if ( ! $this->is_troubleshooting() || $this->has_default_theme() ) {
+			return;
+		}
+
+		printf(
+			'<div class="notice notice-warning dismissable"><p>%s</p><p><a href="%s" class="button button-primary">%s</a></p></div>',
+			esc_html__( 'You don\'t have any of the default themes installed. A default theme helps you determine if your current theme is causing conflicts.', 'health-check' ),
+			esc_url( admin_url( sprintf(
+				'theme-install.php?theme=%s',
+				$this->default_themes[0]
+			) ) ),
+			esc_html__( 'Install a default theme', 'health-check' )
+		);
 	}
 
 	/**
@@ -284,18 +321,7 @@ class Health_Check_Troubleshooting_MU {
 	 * @return bool|string
 	 */
 	function has_default_theme() {
-		$default_themes = array(
-			'twentyseventeen',
-			'twentysixteen',
-			'twentyfifteen',
-			'twentyfourteen',
-			'twentythirteen',
-			'twentytwelve',
-			'twentyeleven',
-			'twentyten',
-		);
-
-		foreach ( $default_themes as $default_theme ) {
+		foreach ( $this->default_themes as $default_theme ) {
 			if ( is_dir( WP_CONTENT_DIR . '/themes/' . $default_theme ) ) {
 				return $default_theme;
 			}
