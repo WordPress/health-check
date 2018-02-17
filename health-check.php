@@ -39,8 +39,11 @@ define( 'HEALTH_CHECK_PLUGIN_VERSION', '0.9.0' );
 // Set the absolute path for the plugin.
 define( 'HEALTH_CHECK_PLUGIN_DIRECTORY', plugin_dir_path( __FILE__ ) );
 
-// Set the current cURL cversion.
+// Set the current cURL version.
 define( 'HEALTH_CHECK_CURL_VERSION', '7.58' );
+
+// Set the minimum cURL version that we've tested that core works with.
+define( 'HEALTH_CHECK_CURL_MIN_VERSION', '7.38' );
 
 /**
  * Class HealthCheck
