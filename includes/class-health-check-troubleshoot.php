@@ -28,13 +28,13 @@ class Health_Check_Troubleshoot {
 				'tab'  => 'troubleshoot',
 			),
 		admin_url() ) );
-		$creds = request_filesystem_credentials( $url, '', false, WP_CONTENT_DIR, array( 'health-check-troubleshoot-mode-confirmed', 'health-check-troubleshoot-mode', 'action' ) );
+		$creds = request_filesystem_credentials( $url, '', false, WP_CONTENT_DIR, array( 'health-check-troubleshoot-mode', 'action' ) );
 		if ( false === $creds ) {
 			return false;
 		}
 
 		if ( ! WP_Filesystem( $creds ) ) {
-			request_filesystem_credentials( $url, '', true, WPMU_PLUGIN_DIR, array( 'health-check-troubleshoot-mode-confirmed', 'health-check-troubleshoot-mode', 'action' ) );
+			request_filesystem_credentials( $url, '', true, WPMU_PLUGIN_DIR, array( 'health-check-troubleshoot-mode', 'action' ) );
 			return false;
 		}
 
@@ -216,23 +216,16 @@ class Health_Check_Troubleshoot {
 	 */
 	static function show_enable_troubleshoot_form() {
 		if ( isset( $_POST['health-check-troubleshoot-mode'] ) ) {
-			if ( ! isset( $_POST['health-check-troubleshoot-mode-confirmed'] ) ) {
-				printf(
-					'<div class="notice notice-error inline"><p>%s</p></div>',
-					esc_html__( 'You did not check that you understand how to disable Troubleshooting Mode, please read the explanation and confirm that you understand the procedure first.', 'health-check' )
-				);
+			if ( Health_Check_Troubleshoot::mu_plugin_exists() ) {
+				if ( ! Health_Check_Troubleshoot::maybe_update_must_use_plugin() ) {
+					return;
+				}
+				Health_Check_Troubleshoot::session_started();
 			} else {
-				if ( Health_Check_Troubleshoot::mu_plugin_exists() ) {
-					if ( ! Health_Check_Troubleshoot::maybe_update_must_use_plugin() ) {
-						return;
-					}
-					Health_Check_Troubleshoot::session_started();
+				if ( ! Health_Check_Troubleshoot::get_filesystem_credentials() ) {
+					return;
 				} else {
-					if ( ! Health_Check_Troubleshoot::get_filesystem_credentials() ) {
-						return;
-					} else {
-						Health_Check_Troubleshoot::setup_must_use_plugin();
-					}
+					Health_Check_Troubleshoot::setup_must_use_plugin();
 				}
 			}
 		}
@@ -241,14 +234,6 @@ class Health_Check_Troubleshoot {
 		<div class="notice inline">
 			<form action="" method="post" class="form" style="text-align: center;">
 				<input type="hidden" name="health-check-troubleshoot-mode" value="true">
-
-				<p>
-					<label>
-						<input type="checkbox" name="health-check-troubleshoot-mode-confirmed">
-						<?php esc_html_e( 'I understand that Troubleshooting Mode is enabled until I log out or disable it', 'health-check' ); ?>
-					</label>
-
-				</p>
 
 				<p>
 					<button type="submit" class="button button-primary">
