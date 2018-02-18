@@ -97,6 +97,9 @@ class HealthCheck {
 
 		add_action( 'wp_ajax_health-check-loopback-no-plugins', array( 'Health_Check_Loopback', 'loopback_no_plugins' ) );
 		add_action( 'wp_ajax_health-check-loopback-individual-plugins', array( 'Health_Check_Loopback', 'loopback_test_individual_plugins' ) );
+		add_action( 'wp_ajax_health-check-files-integrity-check', array( 'Files_Integrity', 'run_files_integrity_check' ) );
+		add_action( 'wp_ajax_health-check-view-file-diff', array( 'Files_Integrity', 'view_file_diff' ) );
+		add_action( 'wp_ajax_health-check-mail-check', array( 'Mail_Check', 'run_mail_check' ) );
 	}
 
 	/**
@@ -323,6 +326,7 @@ class HealthCheck {
 				'debug'        => esc_html__( 'Debug information', 'health-check' ),
 				'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
 				'phpinfo'      => esc_html__( 'PHP Information', 'health-check' ),
+				'tools'        => esc_html__( 'Tools', 'health-check' ),
 			);
 
 			$current_tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'health-check' );
@@ -355,6 +359,9 @@ class HealthCheck {
 					break;
 				case 'troubleshoot':
 					include_once( dirname( __FILE__ ) . '/pages/troubleshoot.php' );
+					break;
+				case 'tools':
+					include_once( dirname( __FILE__ ) . '/pages/tools.php' );
 					break;
 				case 'health-check':
 				default:
@@ -428,6 +435,8 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cron.php' )
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-debug-data.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-loopback.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-troubleshoot.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-files-integrity.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-mail-check.php' );
 
 // Initialize our plugin.
 new HealthCheck();

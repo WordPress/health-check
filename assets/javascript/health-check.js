@@ -112,4 +112,69 @@ jQuery(document).ready(function ($) {
 			$button.text( health_check.string.copied );
 		}
 	});
+
+	$( '#health-check-file-integrity' ).submit( function( e ) {
+		e.preventDefault();
+		$( '#tools-response-holder' ).html( '<span class="spinner"></span>' );
+		$( '#tools-response-holder .spinner' ).addClass( 'is-active' );
+
+		var data = {
+			'action': 'health-check-files-integrity-check'
+		};
+
+		$.post(
+			ajaxurl,
+			data,
+			function( response ) {
+				$( '#tools-response-holder .spinner' ).removeClass( 'is-active' );
+				$( '#tools-response-holder').html( response.data.message );
+		});
+	});
+
+	$( '#health-check-mail-check' ).submit( function( e ) {
+		e.preventDefault();
+		var email = $('#health-check-mail-check #email').val();
+		$( '#tools-response-holder' ).html( '<span class="spinner"></span>' );
+		$( '#tools-response-holder .spinner' ).addClass( 'is-active' );
+
+		var data = {
+			'action': 'health-check-mail-check',
+			'email' : email
+		};
+
+		$.post(
+			ajaxurl,
+			data,
+			function( response ) {
+				$( '#tools-response-holder .spinner' ).removeClass( 'is-active' );
+				$( '#tools-response-holder').html( response.data.message );
+		});
+	});
+
+	$( '#tools-response-holder' ).on( 'click', 'a[href="#health-check-diff"]', function( e ) {
+		e.preventDefault();
+		var file = $( this ).data('file');
+		$( '#health-check-diff-modal' ).toggle();
+		$( '#health-check-diff-modal #health-check-diff-modal-content .spinner' ).addClass( 'is-active' );
+
+		var data = {
+			'action': 'health-check-view-file-diff',
+			'file' : file
+		};
+
+		$.post(
+			ajaxurl,
+			data,
+			function( response ) {
+				$( '#health-check-diff-modal #health-check-diff-modal-diff' ).html( response.data.message );
+				$( '#health-check-diff-modal #health-check-diff-modal-content h3' ).html( file );
+				$( '#health-check-diff-modal #health-check-diff-modal-content .spinner' ).removeClass( 'is-active' );
+		});
+	});
+
+	$( '#health-check-diff-modal' ).on ('click', 'a[href="#health-check-diff-modal-close"]', function( e ) {
+		e.preventDefault();
+		$( '#health-check-diff-modal' ).toggle();
+	});
+
 });
