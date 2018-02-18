@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check Disable Plugins
 	Description: Conditionally disabled plugins on your site for a given session, used to rule out plugin interactions during troubleshooting.
-	Version: 1.2
+	Version: 1.3
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
