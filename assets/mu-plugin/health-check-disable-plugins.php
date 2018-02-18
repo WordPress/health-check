@@ -322,12 +322,44 @@ class Health_Check_Troubleshooting_MU {
 	 */
 	function has_default_theme() {
 		foreach ( $this->default_themes as $default_theme ) {
-			if ( is_dir( WP_CONTENT_DIR . '/themes/' . $default_theme ) ) {
+			if ( $this->theme_exists( $default_theme ) ) {
 				return $default_theme;
 			}
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check if a theme exists by looking for the slug.
+	 *
+	 * @param string $theme_slug
+	 *
+	 * @return bool
+	 */
+	function theme_exists( $theme_slug ) {
+		return is_dir( WP_CONTENT_DIR . '/themes/' . $theme_slug );
+	}
+
+	/**
+	 * Check if theme overrides are active.
+	 *
+	 * @return bool
+	 */
+	function override_theme() {
+		if ( ! $this->is_troubleshooting() ) {
+			return false;
+		}
+
+		if ( ! $this->override_active ) {
+			return false;
+		}
+
+		if ( ! $this->default_theme ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -342,7 +374,8 @@ class Health_Check_Troubleshooting_MU {
 	 * @return string Theme slug to be perceived as the active theme.
 	 */
 	function health_check_troubleshoot_theme( $theme ) {
-		if ( ! $this->is_troubleshooting() || ! $this->override_active || ! $this->default_theme ) {
+		// Check if overrides are triggered if not break out.
+		if ( ! $this->override_theme() ) {
 			return $theme;
 		}
 
