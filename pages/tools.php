@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="notice notice-info inline">
 		<h2><?php esc_html_e( 'Mail Check' ); ?></h2>
 		<p>
-			<?php _e( 'The Mail Check will invoke the <code>wp_mail()</code> function and check if it succeeds. We will use the E-mail address you have set up, but you can change it bellow if you like.', 'health-check' ); ?>
+			<?php _e( 'The Mail Check will invoke the <code>wp_mail()</code> function and check if it succeeds. We will use the E-mail address you have set up, but you can change it below if you like.', 'health-check' ); ?>
 		</p>
 		<form action="#" id="health-check-mail-check" method="POST">
 			<p>
