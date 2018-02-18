@@ -9,7 +9,7 @@
 /**
  * Class Mail Check
  */
-class Mail_Check {
+class Health_Check_Mail_Check {
 
 	/**
 	 * Checks if wp_mail() works.

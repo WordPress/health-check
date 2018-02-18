@@ -97,8 +97,8 @@ class HealthCheck {
 
 		add_action( 'wp_ajax_health-check-loopback-no-plugins', array( 'Health_Check_Loopback', 'loopback_no_plugins' ) );
 		add_action( 'wp_ajax_health-check-loopback-individual-plugins', array( 'Health_Check_Loopback', 'loopback_test_individual_plugins' ) );
-		add_action( 'wp_ajax_health-check-files-integrity-check', array( 'Files_Integrity', 'run_files_integrity_check' ) );
-		add_action( 'wp_ajax_health-check-view-file-diff', array( 'Files_Integrity', 'view_file_diff' ) );
+		add_action( 'wp_ajax_health-check-files-integrity-check', array( 'Health_Check_Files_Integrity', 'run_files_integrity_check' ) );
+		add_action( 'wp_ajax_health-check-view-file-diff', array( 'Health_Check_Files_Integrity', 'view_file_diff' ) );
 		add_action( 'wp_ajax_health-check-mail-check', array( 'Mail_Check', 'run_mail_check' ) );
 	}
 
@@ -435,8 +435,8 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cron.php' )
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-debug-data.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-loopback.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-troubleshoot.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-files-integrity.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-mail-check.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-health-check-files-integrity.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-health-check-mail-check.php' );
 
 // Initialize our plugin.
 new HealthCheck();

@@ -9,7 +9,7 @@
 /**
  * Class Files_Integrity
  */
-class Files_Integrity {
+class Health_Check_Files_Integrity {
 
 	/**
 	 * Gathers checksums from WordPress API and cross checks the core files in the current installation.
@@ -18,11 +18,11 @@ class Files_Integrity {
 	 */
 	static function run_files_integrity_check() {
 
-		$checksums = Files_Integrity::call_checksum_api();
+		$checksums = Health_Check_Files_Integrity::call_checksum_api();
 
-		$files = Files_Integrity::parse_checksum_results( $checksums );
+		$files = Health_Check_Files_Integrity::parse_checksum_results( $checksums );
 
-		Files_Integrity::create_the_response( $files );
+		Health_Check_Files_Integrity::create_the_response( $files );
 
 	}
 
@@ -97,7 +97,7 @@ class Files_Integrity {
 	*
 	* @param null|array $files
 	*
-	* @return array
+	* @return void
 	*/
 	static function create_the_response( $files ) {
 		$filepath = ABSPATH;
@@ -156,7 +156,7 @@ class Files_Integrity {
 	* @uses wp_text_diff()
 	*
 	*
-	* @return array
+	* @return void
 	*/
 	static function view_file_diff() {
 		$filepath         = ABSPATH;
