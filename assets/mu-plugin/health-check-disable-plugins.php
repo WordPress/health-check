@@ -117,8 +117,15 @@ class Health_Check_Troubleshooting_MU {
 			return $caps;
 		}
 
-		$caps['activate_plugins'] = false;
-		$caps['switch_themes']    = false;
+		$caps['switch_themes'] = false;
+
+		/*
+		 * This is to early for `get_current_screen()`, so we have to do it the
+		 * old fashioned way with `$_SERVER`.
+		 */
+		if ( 'plugin-install.php' === substr( $_SERVER['REQUEST_URI'], -18 ) ) {
+			$caps['activate_plugins'] = false;
+		}
 
 		return $caps;
 	}
