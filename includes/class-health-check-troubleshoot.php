@@ -53,6 +53,49 @@ class Health_Check_Troubleshoot {
 	}
 
 	/**
+	 * Check if the user has been shown the backup warning.
+	 *
+	 * @uses get_user_meta()
+	 * @uses get_current_user_id()
+	 *
+	 * @return bool
+	 */
+	static function has_seen_warning() {
+		$meta = get_user_meta( get_current_user_id(), 'health-check', true );
+		if ( empty( $meta ) ) {
+			return false;
+		}
+
+		if ( 'seen' === $meta['warning']['backup'] ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Save the confirmation of having seen a warning.
+	 *
+	 * @uses get_user_meta()
+	 * @uses get_current_user_id()
+	 * @uses update_user_meta()
+	 *
+	 * @return void
+	 */
+	static function confirm_warning() {
+		$user_meta = get_user_meta( get_current_user_id(), 'health-check', true );
+		if ( empty( $user_meta ) ) {
+			$user_meta = array(
+				'warning'
+			);
+		}
+
+		$user_meta['warning'][ $_POST['warning'] ] = 'seen';
+
+		update_user_meta( get_current_user_id(), 'health-check', $user_meta );
+	}
+
+	/**
 	 * Introduce our Must-Use plugin.
 	 *
 	 * Move the Must-Use plugin out to the correct directory, and prompt for credentials if required.

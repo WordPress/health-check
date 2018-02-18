@@ -30,4 +30,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</p>
 </div>
 
-<?php Health_Check_Troubleshoot::show_enable_troubleshoot_form(); ?>
+<?php
+Health_Check_Troubleshoot::show_enable_troubleshoot_form();
+
+if ( ! Health_Check_Troubleshoot::has_seen_warning() ) {
+	include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/modals/backup-warning.php' );
+}

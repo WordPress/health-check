@@ -172,7 +172,7 @@ jQuery(document).ready(function ($) {
 		});
 	});
 
-	$( '#health-check-diff-modal' ).on ('click', 'a[href="#health-check-diff-modal-close"]', function( e ) {
+	$( '#health-check-diff-modal' ).on( 'click', 'a[href="#health-check-diff-modal-close"]', function( e ) {
 		e.preventDefault();
 		$( '#health-check-diff-modal' ).toggle();
 	});
