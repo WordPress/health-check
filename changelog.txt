@@ -1,3 +1,9 @@
+= v 0.7.0 =
+* Troubleshooting mode now also switches to a default theme.
+* Introduced a method for toggling default or active theme use when in troubleshooting mode.
+* Introduced a method for enabling/disabling plugins while in troubleshooting mode.
+* Introduced a method for disabling troubleshooting mode without needing to log out and back in again.
+
 = v 0.6.0 =
 * Improved loopback tests
   * Check if loopbacks can be completed without plugins activated

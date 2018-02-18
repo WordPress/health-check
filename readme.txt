@@ -33,6 +33,20 @@ In the future we may introduce more checks, and welcome feedback both through th
 
 == Changelog ==
 
+= v 1.0.0 =
+* Added minimum PHP version checks with documentation links.
+* Added testing with a default theme to the loopback checker.
+* Added cURL version checker to the health check tab.
+* Added simple e-mail tester.
+* Added core file integrity checker.
+* Added capability checks, to avoid installing things that may modify the database while troubleshooting.
+* Added a prompt to install a default theme if none exist.
+* Added a warning encouraging users to maintain up to date backups when troubleshooting.
+* Fixed MU plugin not always updating (if available) when a user tries to troubleshoot.
+* Fixed fatal error when trying to troubleshoot "too early".
+* Updated troubleshooting drop down, it no longer shows theme switching if no default theme exists.
+* Removed the checkbox requirement from the Troubleshooting tab, it wasn't needed any more, and added pointless complexity now.
+
 = v 0.9.0 =
 * Various string changes, typo fixes and translation enhancements.
 * Added conditional hiding of the plugins list from the admin bar, if there's too many plugins it becomes a bad experience. (Hidden if there are more than 20 active plugins)
@@ -53,10 +67,4 @@ In the future we may introduce more checks, and welcome feedback both through th
 * Added media information to the debug tab.
 * Added individual `Troubleshoot` links for the list of active plugins.
 * Added automatic copy to clipboard with supported browsers in the debug tab.
-
-= v 0.7.0 =
-* Troubleshooting mode now also switches to a default theme.
-* Introduced a method for toggling default or active theme use when in troubleshooting mode.
-* Introduced a method for enabling/disabling plugins while in troubleshooting mode.
-* Introduced a method for disabling troubleshooting mode without needing to log out and back in again.
 
