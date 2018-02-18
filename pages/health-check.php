@@ -458,11 +458,5 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 		</tbody>
 	</table>
 
-	<div class="health-check-modal" data-modal-action="" data-parent-field="">
-		<div class="modal-content">
-			<span class="modal-close">&times;</span>
-			<div id="dynamic-content">
-				&nbsp;
-			</div>
-		</div>
-	</div>
+	<?php
+	include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/modals/js-result-warnings.php' );
