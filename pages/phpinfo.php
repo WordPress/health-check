@@ -33,20 +33,20 @@ if ( ! function_exists( 'phpinfo' ) ) {
 	$phpinfo_raw = ob_get_clean();
 
 	// Extract the body of the `phpinfo()` call, to avoid all the styles they introduce.
-	preg_match_all("/<body[^>]*>(.*)<\/body>/siU", $phpinfo_raw, $phpinfo );
+	preg_match_all( '/<body[^>]*>(.*)<\/body>/siU', $phpinfo_raw, $phpinfo );
 
 	// Extract the styles `phpinfo()` creates for this page.
-	preg_match_all( "/<style[^>]*>(.*)<\/style>/siU", $phpinfo_raw, $styles );
+	preg_match_all( '/<style[^>]*>(.*)<\/style>/siU', $phpinfo_raw, $styles );
 
 	// We remove various styles that break the visual flow of wp-admin.
 	$remove_patterns = array(
 		"/a:.+?\n/si",
-		"/body.+?\n/si"
+		"/body.+?\n/si",
 	);
 
 	// Output the styles as an inline style block.
 	if ( isset( $styles[1][0] ) ) {
-		$styles = preg_replace( $remove_patterns, "", $styles[1][0] );
+		$styles = preg_replace( $remove_patterns, '', $styles[1][0] );
 
 		echo '<style type="text/css">' . $styles . '</style>';
 	}
