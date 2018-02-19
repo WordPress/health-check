@@ -526,14 +526,14 @@ class Health_Check_Debug_Data {
 
 			if ( array_key_exists( $plugin_path, $plugin_updates ) ) {
 				// translators: %s: Latest plugin version number.
-				$update_needed = ' ' . sprintf( __( '( Latest version: %s )', 'health-check' ), $plugin_updates[ $plugin_path ]->update->new_version );
+				$plugin_update_needed = ' ' . sprintf( __( '( Latest version: %s )', 'health-check' ), $plugin_updates[ $plugin_path ]->update->new_version );
 			} else {
-				$update_needed = '';
+				$plugin_update_needed = '';
 			}
 
 			$info[ $plugin_part ]['fields'][] = array(
 				'label' => $plugin['Name'],
-				'value' => $plugin_version_string . $update_needed,
+				'value' => $plugin_version_string . $plugin_update_needed,
 			);
 		}
 
