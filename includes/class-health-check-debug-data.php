@@ -539,6 +539,16 @@ class Health_Check_Debug_Data {
 		}
 
 		$active_theme                      = wp_get_theme();
+
+		$theme_updates = get_theme_updates();
+
+		if ( array_key_exists( $active_theme->stylesheet, $theme_updates ) ) {
+			// translators: %s: Latest theme version number.
+			$theme_update_needed_active = ' ' . sprintf( __( '( Latest version: %s )', 'health-check' ), $theme_updates[ $active_theme->stylesheet ]->update['new_version'] );
+		} else {
+			$theme_update_needed_active = '';
+		}
+
 		$info['wp-active-theme']['fields'] = array(
 			array(
 				'label' => __( 'Name', 'health-check' ),
@@ -546,7 +556,7 @@ class Health_Check_Debug_Data {
 			),
 			array(
 				'label' => __( 'Version', 'health-check' ),
-				'value' => $active_theme->Version,
+				'value' => $active_theme->Version . $theme_update_needed_active,
 			),
 			array(
 				'label' => __( 'Author', 'health-check' ),
@@ -593,10 +603,17 @@ class Health_Check_Debug_Data {
 				$theme_version_string = sprintf( __( 'Version %s', 'health-check' ), $theme_version );
 			}
 
+			if ( array_key_exists( $theme_slug, $theme_updates ) ) {
+				// translators: %s: Latest theme version number.
+				$theme_update_needed = ' ' . sprintf( __( '( Latest version: %s )', 'health-check' ), $theme_updates[ $theme_slug ]->update['new_version'] );
+			} else {
+				$theme_update_needed = '';
+			}
+
 			$info['wp-themes']['fields'][] = array(
 				// translators: %1$s: Theme name. %2$s: Theme slug.
 				'label' => sprintf( __( '%1$s (%2$s)', 'health-check' ), $theme->Name, $theme_slug ),
-				'value' => $theme_version_string,
+				'value' => $theme_version_string . $theme_update_needed,
 			);
 		}
 
