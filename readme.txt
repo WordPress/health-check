@@ -3,7 +3,7 @@ Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 3.8
 Tested up to: 4.9
-Stable tag: 0.9.0
+Stable tag: 1.0.0
 
 == Description ==
 
