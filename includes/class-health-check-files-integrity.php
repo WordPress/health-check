@@ -110,6 +110,7 @@ class Health_Check_Files_Integrity {
 		} else {
 			$output .= '<div class="notice notice-error inline"><p>';
 			$output .= __( 'It appears that some files may have been modified.', 'health-check' );
+			$output .= '<br/>' . __( 'Files such as versions.php, wp-config-sample.php, license.txt, readme.html, might have been modified by translations.', 'health-check' );
 			$output .= '</p></div><table class="widefat striped file-integrity-table"><thead><tr><th>';
 			$output .= esc_html__( 'Status', 'health-check' );
 			$output .= '</th><th>';
