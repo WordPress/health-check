@@ -385,10 +385,10 @@ class Health_Check_Debug_Data {
 		}
 
 		if ( function_exists( 'curl_version' ) ) {
-			$cURL                          = curl_version();
+			$curl                          = curl_version();
 			$info['wp-server']['fields'][] = array(
 				'label' => __( 'cURL Version', 'health-check' ),
-				'value' => sprintf( '%s %s', $cURL['version'], $cURL['ssl_version'] ),
+				'value' => sprintf( '%s %s', $curl['version'], $curl['ssl_version'] ),
 			);
 		} else {
 			$info['wp-server']['fields'][] = array(
