@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 	<div class="notice notice-info inline">
-		<h2><?php esc_html_e( 'File Integrity' ); ?></h2>
+		<h2><?php esc_html_e( 'File Integrity', 'health-check' ); ?></h2>
 		<p>
 			<?php _e( 'The File Integrity checks all the core files with the <code>checksums</code> provided by the WordPress API to see if they are intact. If there are changes you will be able to make a Diff between the files hosted on WordPress.org and your installation to see what has been changed.', 'health-check' ); ?>
 		</p>
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</form>
 	</div>
 	<div class="notice notice-info inline">
-		<h2><?php esc_html_e( 'Mail Check' ); ?></h2>
+		<h2><?php esc_html_e( 'Mail Check', 'health-check' ); ?></h2>
 		<p>
 			<?php _e( 'The Mail Check will invoke the <code>wp_mail()</code> function and check if it succeeds. We will use the E-mail address you have set up, but you can change it below if you like.', 'health-check' ); ?>
 		</p>
