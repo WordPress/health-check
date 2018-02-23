@@ -20,8 +20,10 @@ $mariadb              = false;
 $mysql_server_version = null;
 if ( method_exists( $wpdb, 'db_version' ) ) {
 	if ( $wpdb->use_mysqli ) {
+		// phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_server_info
 		$mysql_server_type = mysqli_get_server_info( $wpdb->dbh );
 	} else {
+		// phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysql_get_server_info
 		$mysql_server_type = mysql_get_server_info( $wpdb->dbh );
 	}
 
@@ -156,7 +158,16 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 
 					if ( $db_dropin ) {
 						// translators: %s: The database engine in use (MySQL or MariaDB).
-						$notice[] = wp_kses( sprintf( __( 'You are using a <code>wp-content/db.php</code> drop-in which might mean that a %s database is not being used.', 'health-check' ), ( $mariadb ? 'MariaDB' : 'MySQL' ) ), array( 'code' => true ) );
+						$notice[] = wp_kses(
+							sprintf(
+								// translators: %s: The name of the database engine being used.
+								__( 'You are using a <code>wp-content/db.php</code> drop-in which might mean that a %s database is not being used.', 'health-check' ),
+								( $mariadb ? 'MariaDB' : 'MySQL' )
+							),
+							array(
+								'code' => true,
+							)
+						);
 					}
 
 					printf(
@@ -233,8 +244,10 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 					}
 
 					if ( $wpdb->use_mysqli ) {
+						// phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_client_info
 						$mysql_client_version = mysqli_get_client_info();
 					} else {
+						// phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysql_get_client_info
 						$mysql_client_version = mysql_get_client_info();
 					}
 
@@ -276,7 +289,9 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 				<td><?php esc_html_e( 'Communication with WordPress.org', 'health-check' ); ?></td>
 				<td>
 					<?php
-					$wp_dotorg = wp_remote_get( 'https://wordpress.org', array( 'timeout' => 10 ) );
+					$wp_dotorg = wp_remote_get( 'https://wordpress.org', array(
+						'timeout' => 10,
+					) );
 					if ( ! is_wp_error( $wp_dotorg ) ) {
 						printf(
 							'<span class="good"></span> %s',

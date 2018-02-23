@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Coding Standards">
+    <description>Apply WordPress Coding Standards to all HelpHub files.</description>
+
+    <config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
+
+    <rule ref="WordPress-Core"/>
+
+    <arg name="extensions" value="php"/>
+
+    <!-- Show sniff codes in all reports -->
+    <arg value="s"/>
+
+    <file>.</file>
+
+    <rule ref="Internal.NoCodeFound">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Our MU plugin uses a different file-name scheme from what is expected for the sake of simplicity. -->
+    <rule ref="WordPress.Files.FileName.InvalidClassFileName">
+        <exclude-pattern>*/mu-plugin/health-check-disable-plugins.php</exclude-pattern>
+    </rule>
+
+    <!-- Some class functions in the auto update tester do not follwo conventions, as they instead
+    directly represent constants being used, this makes them easier to glance over -->
+    <rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
+        <exclude-pattern>*/class-health-check-auto-updates.php</exclude-pattern>
+    </rule>
+
+</ruleset>

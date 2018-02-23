@@ -261,6 +261,7 @@ class Health_Check_Auto_Updates {
 		// Search all directories we've found for evidence of version control.
 		foreach ( $vcs_dirs as $vcs_dir ) {
 			foreach ( $check_dirs as $check_dir ) {
+				// phpcs:ignore
 				if ( $checkout = @is_dir( rtrim( $check_dir, '\\/' ) . "/$vcs_dir" ) ) {
 					break 2;
 				}
