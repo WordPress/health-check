@@ -544,8 +544,7 @@ class Health_Check_Debug_Data {
 			}
 		}
 
-		$active_theme                      = wp_get_theme();
-
+		$active_theme  = wp_get_theme();
 		$theme_updates = get_theme_updates();
 
 		if ( array_key_exists( $active_theme->stylesheet, $theme_updates ) ) {
