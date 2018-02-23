@@ -73,7 +73,7 @@ class Health_Check_Auto_Updates {
 	 *
 	 * @return array
 	 */
-	function test_constant_FILE_MODS() {
+	function test_constant_file_mods() {
 		if ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) {
 			return array(
 				'desc'     => sprintf(
@@ -95,7 +95,7 @@ class Health_Check_Auto_Updates {
 	 *
 	 * @return array
 	 */
-	function test_constant_AUTOMATIC_UPDATER_DISABLED() {
+	function test_constant_automatic_updater_disabled() {
 		if ( defined( 'AUTOMATIC_UPDATER_DISABLED' ) && AUTOMATIC_UPDATER_DISABLED ) {
 			return array(
 				'desc'     => sprintf(
@@ -117,7 +117,7 @@ class Health_Check_Auto_Updates {
 	 *
 	 * @return array
 	 */
-	function test_constant_WP_AUTO_UPDATE_CORE() {
+	function test_constant_wp_auto_update_core() {
 		if ( defined( 'WP_AUTO_UPDATE_CORE' ) && false === WP_AUTO_UPDATE_CORE ) {
 			return array(
 				'desc'     => sprintf(
@@ -306,7 +306,7 @@ class Health_Check_Auto_Updates {
 	 *
 	 * @return array
 	 */
-	function test_vcs_ABSPATH() {
+	function test_vcs_abspath() {
 		$result = $this->_test_is_vcs_checkout( ABSPATH );
 		return $result;
 	}
