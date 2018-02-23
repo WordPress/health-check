@@ -44,14 +44,21 @@ class Health_Check_Loopback {
 		$url = admin_url();
 
 		if ( ! empty( $disable_plugin_hash ) ) {
-			$url = add_query_arg( array( 'health-check-disable-plugin-hash' => $disable_plugin_hash ), $url );
+			$url = add_query_arg( array(
+				'health-check-disable-plugin-hash' => $disable_plugin_hash,
+			), $url );
 		}
 		if ( ! empty( $allowed_plugins ) ) {
 			if ( ! is_array( $allowed_plugins ) ) {
 				$allowed_plugins = (array) $allowed_plugins;
 			}
 
-			$url = add_query_arg( array( 'health-check-allowed-plugins' => implode( ',', $allowed_plugins ) ), $url );
+			$url = add_query_arg(
+				array(
+					'health-check-allowed-plugins' => implode( ',', $allowed_plugins ),
+				),
+				$url
+			);
 		}
 
 		$r = wp_remote_get( $url, compact( 'cookies', 'headers', 'timeout' ) );

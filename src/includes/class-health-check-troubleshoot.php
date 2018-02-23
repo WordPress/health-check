@@ -86,7 +86,7 @@ class Health_Check_Troubleshoot {
 		$user_meta = get_user_meta( get_current_user_id(), 'health-check', true );
 		if ( empty( $user_meta ) ) {
 			$user_meta = array(
-				'warning'
+				'warning',
 			);
 		}
 

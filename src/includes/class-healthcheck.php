@@ -1,49 +1,9 @@
 <?php
 /**
- * Plugins primary file, in charge of including all other dependencies.
+ * Primary class file for the Health Check plugin.
  *
  * @package Health Check
- *
- * Plugin Name: Health Check
- * Plugin URI: http://wordpress.org/plugins/health-check/
- * Description: Checks the health of your WordPress install.
- * Author: The WordPress.org community
- * Version: 1.0.0
- * Author URI: http://wordpress.org/plugins/health-check/
- * Text Domain: health-check
  */
-
-// Check that the file is nto accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
-	die( 'We\'re sorry, but you can not directly access this file.' );
-}
-
-// Set the minimum PHP version WordPress supports.
-define( 'HEALTH_CHECK_PHP_MIN_VERSION', '5.2.4' );
-
-// Set the lowest PHP version still receiving security updates.
-define( 'HEALTH_CHECK_PHP_SUPPORTED_VERSION', '5.6' );
-
-// Set the PHP version WordPress recommends.
-define( 'HEALTH_CHECK_PHP_REC_VERSION', '7.2' );
-
-// Set the minimum MySQL version WordPress supports.
-define( 'HEALTH_CHECK_MYSQL_MIN_VERSION', '5.0' );
-
-// Set the MySQL version WordPress recommends.
-define( 'HEALTH_CHECK_MYSQL_REC_VERSION', '5.6' );
-
-// Set the plugin version.
-define( 'HEALTH_CHECK_PLUGIN_VERSION', '1.0.0' );
-
-// Set the absolute path for the plugin.
-define( 'HEALTH_CHECK_PLUGIN_DIRECTORY', plugin_dir_path( __FILE__ ) );
-
-// Set the current cURL version.
-define( 'HEALTH_CHECK_CURL_VERSION', '7.58' );
-
-// Set the minimum cURL version that we've tested that core works with.
-define( 'HEALTH_CHECK_CURL_MIN_VERSION', '7.38' );
 
 /**
  * Class HealthCheck
@@ -197,7 +157,9 @@ class HealthCheck {
 		$loopback_hash = md5( rand() );
 		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
 
-		update_option( 'health-check-allowed-plugins', array( $_GET['health-check-troubleshoot-plugin'] => $_GET['health-check-troubleshoot-plugin'] ) );
+		update_option( 'health-check-allowed-plugins', array(
+			$_GET['health-check-troubleshoot-plugin'] => $_GET['health-check-troubleshoot-plugin'],
+		) );
 
 		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
 
@@ -241,19 +203,19 @@ class HealthCheck {
 			 * our modal, and thus require our styles, in other locations, before bailing.
 			 */
 			if ( ! Health_Check_Troubleshoot::has_seen_warning() ) {
-				wp_enqueue_style( 'health-check', plugins_url( '/assets/css/health-check.css', __FILE__ ), array(), HEALTH_CHECK_PLUGIN_VERSION );
+				wp_enqueue_style( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/css/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
 			}
 			return;
 		}
 
-		wp_enqueue_style( 'health-check', plugins_url( '/assets/css/health-check.css', __FILE__ ), array(), HEALTH_CHECK_PLUGIN_VERSION );
+		wp_enqueue_style( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/css/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
 
-		wp_enqueue_script( 'health-check', plugins_url( '/assets/javascript/health-check.js', __FILE__ ), array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION, true );
+		wp_enqueue_script( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/javascript/health-check.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION, true );
 
-		wp_localize_script( 'health-check', 'health_check', array(
-			'string' => array(
-				'please_wait'  => esc_html__( 'Please wait...', 'health-check' ),
-				'copied'       => esc_html__( 'Copied', 'health-check' ),
+		wp_localize_script( 'health-check', 'HealthCheck', array(
+			'string'  => array(
+				'please_wait' => esc_html__( 'Please wait...', 'health-check' ),
+				'copied'      => esc_html__( 'Copied', 'health-check' ),
 			),
 			'warning' => array(
 				'seen_backup' => Health_Check_Troubleshoot::has_seen_warning(),
@@ -381,20 +343,20 @@ class HealthCheck {
 			<?php
 			switch ( $current_tab ) {
 				case 'debug':
-					include_once( dirname( __FILE__ ) . '/pages/debug-data.php' );
+					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/debug-data.php' );
 					break;
 				case 'phpinfo':
-					include_once( dirname( __FILE__ ) . '/pages/phpinfo.php' );
+					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/phpinfo.php' );
 					break;
 				case 'troubleshoot':
-					include_once( dirname( __FILE__ ) . '/pages/troubleshoot.php' );
+					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php' );
 					break;
 				case 'tools':
-					include_once( dirname( __FILE__ ) . '/pages/tools.php' );
+					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php' );
 					break;
 				case 'health-check':
 				default:
-					include_once( dirname( __FILE__ ) . '/pages/health-check.php' );
+					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/health-check.php' );
 			}
 			?>
 		</div>
@@ -457,15 +419,3 @@ class HealthCheck {
 		return $extension_loaded && $functions_exist && $functions_work;
 	}
 }
-
-// Include class-files used by our plugin.
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-auto-updates.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cron.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-debug-data.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-loopback.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-troubleshoot.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-files-integrity.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-mail-check.php' );
-
-// Initialize our plugin.
-new HealthCheck();
