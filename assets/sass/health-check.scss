@@ -48,8 +48,36 @@ body {
 			}
 		}
 
+		.tools-email-table {
+
+			border: 0;
+			box-shadow: none;
+
+			td {
+				
+				&:first-child {
+					width: 280px;
+				}
+
+				@media (max-width: 768px) {
+					display: block;
+				}
+
+			}
+
+			input {
+				width: 100%;
+			}
+
+			label {
+				display: block;
+				clear: both;
+			}
+
+		}
+
 		#health-check-mail-check,
-		#health-check-file-integritu {
+		#health-check-file-integrity {
 
 			margin-bottom: 15px;
 		}

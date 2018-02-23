@@ -22,12 +22,30 @@ class Health_Check_Mail_Check {
 	 * @return void
 	 */
 	static function run_mail_check() {
-		$output       = '';
-		$sendmail     = false;
-		$email        = sanitize_email( $_POST['email'] );
-		$emailsubject = __( 'This is a test message from Health Check.', 'health-check' );
-		$emailbody    = __( 'This is a test message from Health Check.', 'health-check' );
-		$sendmail     = wp_mail( $email, $emailsubject, $emailbody );
+		$output        = '';
+		$sendmail      = false;
+		$email         = sanitize_email( $_POST['email'] );
+		$email_message = sanitize_text_field( $_POST['email_message'] );
+		$wp_address    = get_bloginfo( 'url' );
+		$wp_name       = get_bloginfo( 'name' );
+		$date          = date( 'F j, Y' );
+		$time          = date( 'g:i a' );
+		$email_headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+		// translators: %s: website url.
+		$email_subject = sprintf( esc_html__( 'Health Check – Test Message from %s', 'health-check' ), $wp_address );
+
+		$email_body = sprintf(
+			// translators: %1$s: website name. %2$s: website url. %3$s: additional message from user.
+			__( '<p>Hi!</p><p>This test message was sent by the Health Check plugin from <strong>%1$s</strong> (%2$s) on %3$s at %4$s. Since you’re reading this, it obviously works.</p><p>Additional message from admin: %5$s</p>', 'health-check' ),
+			$wp_name,
+			$wp_address,
+			$date,
+			$time,
+			$email_message
+		);
+
+		$sendmail  = wp_mail( $email, $email_subject, $email_body, $email_headers );
 
 		if ( ! empty( $sendmail ) ) {
 			$output .= '<div class="notice notice-success inline"><p>';
