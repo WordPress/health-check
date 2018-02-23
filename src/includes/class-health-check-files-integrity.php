@@ -109,7 +109,8 @@ class Health_Check_Files_Integrity {
 			$output .= '</p></div>';
 		} else {
 			$output .= '<div class="notice notice-error inline"><p>';
-			$output .= __( 'It appears that some files may have been modified.', 'health-check' );
+			$output .= esc_html__( 'It appears as if some files may have been modified.', 'health-check' );
+			$output .= '<br>' . esc_html__( 'One possible reason for this may be that your installation contains translated versions. An easy way to clear this is to reinstall WordPress. Don\'t worry. This will only affect WordPress\' own files, not your themes, plugins or uploaded media.', 'health-check' );
 			$output .= '</p></div><table class="widefat striped file-integrity-table"><thead><tr><th>';
 			$output .= esc_html__( 'Status', 'health-check' );
 			$output .= '</th><th>';
