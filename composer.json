@@ -1,0 +1,5 @@
+{
+  "require" : {
+    "wp-coding-standards/wpcs"  : "^0.14.0"
+  }
+}

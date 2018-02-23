@@ -23,6 +23,7 @@ class Health_Check_Debug_Data {
 		$upload_dir = wp_upload_dir();
 		if ( file_exists( ABSPATH . 'wp-config.php' ) ) {
 			$wp_config_path = ABSPATH . 'wp-config.php';
+			// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 		} elseif ( @file_exists( dirname( ABSPATH ) . '/wp-config.php' ) && ! @file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
 			$wp_config_path = dirname( ABSPATH ) . '/wp-config.php';
 		}
@@ -55,7 +56,7 @@ class Health_Check_Debug_Data {
 					),
 					array(
 						'label' => __( 'Is this site using HTTPS?', 'health-check' ),
-						'value' => ( is_ssl() ? __( 'Yes' ) : __( 'No' ) ),
+						'value' => ( is_ssl() ? __( 'Yes', 'health-check' ) : __( 'No', 'health-check' ) ),
 					),
 					array(
 						'label' => __( 'Can anyone register on this site?', 'health-check' ),
@@ -234,7 +235,9 @@ class Health_Check_Debug_Data {
 		}
 
 		// WordPress features requiring processing.
-		$wp_dotorg = wp_remote_get( 'https://wordpress.org', array( 'timeout' => 10 ) );
+		$wp_dotorg = wp_remote_get( 'https://wordpress.org', array(
+			'timeout' => 10,
+		) );
 		if ( ! is_wp_error( $wp_dotorg ) ) {
 			$info['wp-core']['fields'][] = array(
 				'label' => __( 'Communication with WordPress.org', 'health-check' ),
@@ -285,11 +288,11 @@ class Health_Check_Debug_Data {
 			$imagick_version = 'Imagick not available';
 		}
 		$info['wp-media']['fields'][] = array(
-			'label' => __( 'Imagick Module Version' ),
+			'label' => __( 'Imagick Module Version', 'health-check' ),
 			'value' => ( is_array( $imagick_version ) ? $imagick_version['versionNumber'] : $imagick_version ),
 		);
 		$info['wp-media']['fields'][] = array(
-			'label' => __( 'ImageMagick Version' ),
+			'label' => __( 'ImageMagick Version', 'health-check' ),
 			'value' => ( is_array( $imagick_version ) ? $imagick_version['versionString'] : $imagick_version ),
 		);
 
@@ -317,19 +320,19 @@ class Health_Check_Debug_Data {
 			$gd = false;
 		}
 		$info['wp-media']['fields'][] = array(
-			'label' => __( 'GD Version' ),
-			'value' => ( is_array( $gd ) ? $gd['GD Version'] : 'GD not available' ),
+			'label' => __( 'GD Version', 'health-check' ),
+			'value' => ( is_array( $gd ) ? $gd['GD Version'] : __( 'GD not available', 'health-check' ) ),
 		);
 
 		// Get Ghostscript information, if available.
 		if ( function_exists( 'exec' ) ) {
 			$gs = exec( 'gs --version' );
-			$gs = ( ! empty( $gs ) ? $gs : 'Not available' );
+			$gs = ( ! empty( $gs ) ? $gs : __( 'Not available', 'health-check' ) );
 		} else {
 			$gs = __( 'Unable to determine if Ghostscript is installed', 'health-check' );
 		}
 		$info['wp-media']['fields'][] = array(
-			'label' => __( 'Ghostscript Version' ),
+			'label' => __( 'Ghostscript Version', 'health-check' ),
 			'value' => $gs,
 		);
 
@@ -385,10 +388,10 @@ class Health_Check_Debug_Data {
 		}
 
 		if ( function_exists( 'curl_version' ) ) {
-			$cURL                          = curl_version();
+			$curl                          = curl_version();
 			$info['wp-server']['fields'][] = array(
 				'label' => __( 'cURL Version', 'health-check' ),
-				'value' => sprintf( '%s %s', $cURL['version'], $cURL['ssl_version'] ),
+				'value' => sprintf( '%s %s', $curl['version'], $curl['ssl_version'] ),
 			);
 		} else {
 			$info['wp-server']['fields'][] = array(
@@ -421,8 +424,10 @@ class Health_Check_Debug_Data {
 
 		if ( method_exists( $wpdb, 'db_version' ) ) {
 			if ( $wpdb->use_mysqli ) {
+				// phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_server_info
 				$server = mysqli_get_server_info( $wpdb->dbh );
 			} else {
+				// phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysql_get_server_info
 				$server = mysql_get_server_info( $wpdb->dbh );
 			}
 		} else {
@@ -432,6 +437,7 @@ class Health_Check_Debug_Data {
 		if ( isset( $wpdb->use_mysqli ) && $wpdb->use_mysqli ) {
 			$client_version = $wpdb->dbh->client_info;
 		} else {
+			// phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysql_get_client_info
 			if ( preg_match( '|[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}|', mysql_get_client_info(), $matches ) ) {
 				$client_version = $matches[0];
 			} else {
@@ -542,14 +548,17 @@ class Health_Check_Debug_Data {
 		$info['wp-active-theme']['fields'] = array(
 			array(
 				'label' => __( 'Name', 'health-check' ),
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 				'value' => $active_theme->Name,
 			),
 			array(
 				'label' => __( 'Version', 'health-check' ),
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 				'value' => $active_theme->Version,
 			),
 			array(
 				'label' => __( 'Author', 'health-check' ),
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 				'value' => wp_kses( $active_theme->Author, array() ),
 			),
 			array(
@@ -574,9 +583,10 @@ class Health_Check_Debug_Data {
 			if ( $active_theme->stylesheet == $theme_slug ) {
 				continue;
 			}
-
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 			$theme_version = $theme->Version;
-			$theme_author  = $theme->Author;
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+			$theme_author = $theme->Author;
 
 			$theme_version_string = __( 'No version or author information available', 'health-check' );
 
@@ -594,8 +604,13 @@ class Health_Check_Debug_Data {
 			}
 
 			$info['wp-themes']['fields'][] = array(
-				// translators: %1$s: Theme name. %2$s: Theme slug.
-				'label' => sprintf( __( '%1$s (%2$s)', 'health-check' ), $theme->Name, $theme_slug ),
+				'label' => sprintf(
+					// translators: %1$s: Theme name. %2$s: Theme slug.
+					__( '%1$s (%2$s)', 'health-check' ),
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+					$theme->Name,
+					$theme_slug
+				),
 				'value' => $theme_version_string,
 			);
 		}
