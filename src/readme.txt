@@ -33,6 +33,10 @@ In the future we may introduce more checks, and welcome feedback both through th
 
 == Changelog ==
 
+= v 1.0.1 =
+* Fixed email tester having the wrong class reference, preventing it from running.
+* Add some missing text domains preventing full translations.
+
 = v 1.0.0 =
 * Added minimum PHP version checks with documentation links.
 * Added testing with a default theme to the loopback checker.
