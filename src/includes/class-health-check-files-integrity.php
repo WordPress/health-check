@@ -170,9 +170,9 @@ class Health_Check_Files_Integrity {
 		);
 
 		$output   = '<table class="diff"><thead><tr class="diff-sub-title"><th>';
-		$output  .= 'Original';
+		$output  .= esc_html__( 'Original', 'health-check' );
 		$output  .= '</th><th>';
-		$output  .= 'Modified';
+		$output  .= esc_html__( 'Modified', 'health-check' );
 		$output  .= '</th></tr></table>';
 		$output  .= wp_text_diff( $remote_file_body, $local_file_body, $diff_args );
 		$response = array(

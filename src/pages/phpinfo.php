@@ -15,7 +15,7 @@ if ( ! function_exists( 'phpinfo' ) ) {
 
 	<div class="notice notice-error inline">
 		<p>
-			<?php esc_html_e( 'The phpinfo() function has been disabled by your host. Please contact the host if you need more information about your setup.' ); ?>
+			<?php esc_html_e( 'The phpinfo() function has been disabled by your host. Please contact the host if you need more information about your setup.', 'health-check' ); ?>
 		</p>
 	</div>
 
@@ -23,7 +23,7 @@ if ( ! function_exists( 'phpinfo' ) ) {
 
 	<div class="notice notice-warning inline">
 		<p>
-			<?php esc_html_e( 'Some scenarios require you to look up more detailed server configurations than what is normally required. This page allows you to view all available configuration options for your PHP setup. Please be advised that WordPress does not guarantee that any information shown on this page may not be considered private.' ); ?>
+			<?php esc_html_e( 'Some scenarios require you to look up more detailed server configurations than what is normally required. This page allows you to view all available configuration options for your PHP setup. Please be advised that WordPress does not guarantee that any information shown on this page may not be considered private.', 'health-check' ); ?>
 		</p>
 	</div>
 

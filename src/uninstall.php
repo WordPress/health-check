@@ -22,7 +22,7 @@ delete_option( 'health-check-disable-plugin-hash' );
 $wpdb->delete(
 	$wpdb->usermeta,
 	array(
-		'meta_key' => 'health-check'
+		'meta_key' => 'health-check',
 	)
 );
 
