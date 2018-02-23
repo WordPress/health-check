@@ -43,8 +43,11 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
-  - npm prune
-  - npm update
+  - |
+    if [[ "$WP_HC_CS_TEST" == "true" ]]; then
+      npm prune
+      npm update
+    fi
 
 # Use this to prepare your build for testing.
 # e.g. copy database configurations, environment variables, etc.
@@ -65,7 +68,6 @@ before_script:
   # - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   - |
     if [[ "$WP_HC_CS_TEST" == "true" ]]; then
-      # The WordPress Coding Standards with checks and dependencies are pulled in with composer.
       composer update
     fi
 
@@ -83,17 +85,12 @@ script:
   # as any failure will be reported any way. This saves a fair amount of time during test runs.
   - |
     if [[ "$WP_HC_CS_TEST" == "true" ]]; then
-      # Setup NodeJS version using NVM
-      - node --version
-      - npm --version
-      - nvm install 6
-      - npm --version
-      - node --version
-      # Install NPM modules
-      - npm install
-      - npm install -g grunt-cli
-      # Run CSS, JS, & PHP Grunt tasks
-      - grunt travis
-      # PHPUnit
-      # - cd .. && phpunit
+      node --version
+      npm --version
+      nvm install 6
+      npm --version
+      node --version
+      npm install
+      npm install -g grunt-cli
+      grunt travis
     fi
