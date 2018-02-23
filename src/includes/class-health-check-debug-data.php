@@ -506,7 +506,8 @@ class Health_Check_Debug_Data {
 		}
 
 		// List all available plugins.
-		$plugins = get_plugins();
+		$plugins        = get_plugins();
+		$plugin_updates = get_plugin_updates();
 
 		foreach ( $plugins as $plugin_path => $plugin ) {
 			$plugin_part = ( is_plugin_active( $plugin_path ) ) ? 'wp-plugins-active' : 'wp-plugins-inactive';
@@ -529,9 +530,16 @@ class Health_Check_Debug_Data {
 				$plugin_version_string = sprintf( __( 'Version %s', 'health-check' ), $plugin_version );
 			}
 
+			if ( array_key_exists( $plugin_path, $plugin_updates ) ) {
+				// translators: %s: Latest plugin version number.
+				$plugin_update_needed = ' ' . sprintf( __( '( Latest version: %s )', 'health-check' ), $plugin_updates[ $plugin_path ]->update->new_version );
+			} else {
+				$plugin_update_needed = '';
+			}
+
 			$info[ $plugin_part ]['fields'][] = array(
 				'label' => $plugin['Name'],
-				'value' => $plugin_version_string,
+				'value' => $plugin_version_string . $plugin_update_needed,
 			);
 		}
 
