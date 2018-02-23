@@ -9,7 +9,7 @@
 		</p>
 
 		<p>
-			<?php _e( 'We therefore strongly recommend <a href="https://codex.wordpress.org/WordPress_Backups">making a backup of your site</a> before you enter troubleshooting mode.', 'health-check' ); ?>
+			<?php _e( 'We therefore strongly recommend <a href="https://codex.wordpress.org/WordPress_Backups">making a backup of your site</a> before you enable troubleshooting mode.', 'health-check' ); ?>
 		</p>
 
 		<p>
