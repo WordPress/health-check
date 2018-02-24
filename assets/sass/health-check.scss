@@ -22,6 +22,11 @@ body {
 
 					width: 80%;
 
+					&:first-child {
+
+						width: 20%;
+					}
+
 					ul,
 					ol {
 						margin: 0;
