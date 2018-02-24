@@ -1,7 +1,5 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-
 class AssertionTest extends TestCase {
 
 	public function setUp() {
