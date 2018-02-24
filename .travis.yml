@@ -45,7 +45,7 @@ cache:
 
 before_install:
   - |
-    if [ env(WP_HC_CS_TEST) == "yes" ]; then
+    if [ "${WP_HC_CS_TEST}" == "yes" ]; then
       npm prune
       npm update
     fi
