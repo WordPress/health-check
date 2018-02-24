@@ -129,7 +129,7 @@ jQuery( document ).ready(function( $ ) {
 			data,
 			function( response ) {
 				$( '#tools-file-integrity-response-holder .spinner' ).removeClass( 'is-active' );
-				$( '#tools-file-integrity-response-holder' ).parent().css('height', 'auto');
+				$( '#tools-file-integrity-response-holder' ).parent().css( 'height', 'auto' );
 				$( '#tools-file-integrity-response-holder' ).html( response.data.message );
 		});
 	});
@@ -153,7 +153,7 @@ jQuery( document ).ready(function( $ ) {
 			data,
 			function( response ) {
 				$( '#tools-mail-check-response-holder .spinner' ).removeClass( 'is-active' );
-				$( '#tools-mail-check-response-holder' ).parent().css('height', 'auto');
+				$( '#tools-mail-check-response-holder' ).parent().css( 'height', 'auto' );
 				$( '#tools-mail-check-response-holder' ).html( response.data.message );
 		});
 	});
@@ -187,6 +187,6 @@ jQuery( document ).ready(function( $ ) {
 		$( '#health-check-diff-modal' ).toggle();
 	});
 
-	$('.health-check-tools-accordion').accordion({ header: 'h3' });
+	$( '.health-check-tools-accordion' ).accordion( { header: 'h3' } );
 
 });
