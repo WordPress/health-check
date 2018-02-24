@@ -12,12 +12,18 @@ sudo: false
 # Tell Travis CI which distro to use
 dist: trusty
 
+env:
+  global:
+    # WordPress Health Check Coding Standard test indicator.
+    WP_HC_CS_TEST=no
+
 # Create a matrix for testing against multiple PHP versions.
 # We do this as the Health Check plugin should be available
 # to all versions core supports.
 matrix:
   include:
     - php: 7.2
+      WP_HC_CS_TEST: yes
     - php: 7.1
     - php: 7.0
     - php: 5.6
@@ -38,8 +44,11 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
-  - npm prune
-  - npm update
+  - |
+    if [ env(WP_HC_CS_TEST) == "yes" ]; then
+      npm prune
+      npm update
+    fi
 
 # Use this to prepare your build for testing.
 # e.g. copy database configurations, environment variables, etc.
@@ -58,7 +67,10 @@ before_script:
   # - phpunit --version
   # Install phpunuit test suite
   # - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-  - composer update
+  - |
+    if [ env(WP_HC_CS_TEST) == "yes" ]; then
+      composer update
+    fi
 
 # Run test script commands.
 # Default is specific to project language.
@@ -72,11 +84,22 @@ script:
   - cd ..
   # We really only need to run coding standards and linting tests once, on the most recent PHP build
   # as any failure will be reported any way. This saves a fair amount of time during test runs.
-  - node --version
-  - npm --version
-  - nvm install 6
-  - npm --version
-  - node --version
-  - npm install
-  - npm install -g grunt-cli
-  - grunt travis
+  - |
+    if [ env(WP_HC_CS_TEST) == "yes" ]; then
+      node --version
+      npm --version
+      nvm install 6
+      npm --version
+      node --version
+      npm install
+      npm install -g grunt-cli
+      grunt travis
+    fi
+  #- node --version
+  #- npm --version
+  #- nvm install 6
+  #- npm --version
+  #- node --version
+  #- npm install
+  #- npm install -g grunt-cli
+  #- grunt travis
