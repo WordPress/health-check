@@ -23,7 +23,7 @@ env:
 matrix:
   include:
     - php: 7.2
-      WP_HC_CS_TEST: yes
+      env: WP_HC_CS_TEST=yes
     - php: 7.1
     - php: 7.0
     - php: 5.6
