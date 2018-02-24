@@ -5,22 +5,34 @@
 # @link http://about.travis-ci.org/docs/user/languages/php/
 language: php
 
-# Declare versions of PHP to use
-php:
-  - 7.0
-
-
 # Ditch sudo and use containers.
 # @link https://docs.travis-ci.com/user/ci-environment/
 sudo: false
 
 # Tell Travis CI which distro to use
 dist: trusty
-# Travis CI environment matrix
+
 env:
-  matrix:
-    - WP_VERSION=latest WP_MULTISITE=0
-    - WP_VERSION=nightly WP_MULTISITE=0
+  global:
+    # WordPress Health Check Coding Standard test indicator.
+    WP_HC_CS_TEST=no
+
+# Create a matrix for testing against multiple PHP versions.
+# We do this as the Health Check plugin should be available
+# to all versions core supports.
+matrix:
+  include:
+    - php: 7.2
+      env: WP_HC_CS_TEST=yes
+    - php: 7.1
+    - php: 7.0
+    - php: 5.6
+    - php: 5.5
+    - php: 5.4
+    - php: 5.3
+      dist: precise
+    - php: 5.2
+      dist: precise
 
 # Setup NPM modules for Travis CI cache maintanence.
 cache:
@@ -32,8 +44,11 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
-  - npm prune
-  - npm update
+  - |
+    if [ "${WP_HC_CS_TEST}" == "yes" ]; then
+      npm prune
+      npm update
+    fi
 
 # Use this to prepare your build for testing.
 # e.g. copy database configurations, environment variables, etc.
@@ -52,8 +67,10 @@ before_script:
   # - phpunit --version
   # Install phpunuit test suite
   # - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-  # The WordPress Coding Standards with checks and dependencies are pulled in with composer.
-  - composer update
+  - |
+    if [ "${WP_HC_CS_TEST}" == "yes" ]; then
+      composer update
+    fi
 
 # Run test script commands.
 # Default is specific to project language.
@@ -65,16 +82,16 @@ script:
   - find . \( -name '*.php' \) -exec php -lf {} \;
   # Go back to the root before running further tests.
   - cd ..
-  # Setup NodeJS version using NVM
-  - node --version
-  - npm --version
-  - nvm install 6
-  - npm --version
-  - node --version
-  # Install NPM modules
-  - npm install
-  - npm install -g grunt-cli
-  # Run CSS, JS, & PHP Grunt tasks
-  - grunt travis
-  # PHPUnit
-  # - cd .. && phpunit
+  # We really only need to run coding standards and linting tests once, on the most recent PHP build
+  # as any failure will be reported any way. This saves a fair amount of time during test runs.
+  - |
+    if [ "${WP_HC_CS_TEST}" == "yes" ]; then
+      node --version
+      npm --version
+      nvm install 6
+      npm --version
+      node --version
+      npm install
+      npm install -g grunt-cli
+      grunt travis
+    fi
