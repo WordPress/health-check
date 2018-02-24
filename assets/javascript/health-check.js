@@ -135,7 +135,7 @@ jQuery( document ).ready(function( $ ) {
 
 	$( '#health-check-mail-check' ).submit( function( e ) {
 		var email = $( '#health-check-mail-check #email' ).val(),
-		    email_message = $( '#health-check-mail-check #email_message' ).val(),
+		    emailMessage = $( '#health-check-mail-check #email_message' ).val(),
 			data;
 
 		e.preventDefault();
@@ -146,7 +146,7 @@ jQuery( document ).ready(function( $ ) {
 		data = {
 			'action': 'health-check-mail-check',
 			'email': email,
-			'email_message': email_message
+			'email_message': emailMessage
 		};
 
 		$.post(
