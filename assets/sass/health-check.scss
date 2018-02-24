@@ -47,14 +47,14 @@ body {
 					&:first-child {
 
 						text-align: center;
-						width: 80%;
+						width: 60px;
 					}
 				}
 			}
 		}
 
 		#health-check-mail-check,
-		#health-check-file-integritu {
+		#health-check-file-integrity {
 
 			margin-bottom: 15px;
 		}
@@ -164,6 +164,24 @@ body {
 		.spinner {
 			float: none;
 		}
+
+		.accordion-section {
+			border: 0;
+		}
+
+		.accordion-section-title {
+			background: #fff;
+			margin-top: 5px;
+			border-left: 0;
+			border-right: 0;
+		}
+
+		.ui-accordion-header-active:after {
+
+			content: "\f142";
+
+		}
+
 	}
 }
 

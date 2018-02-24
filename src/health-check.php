@@ -48,6 +48,9 @@ define( 'HEALTH_CHECK_CURL_VERSION', '7.58' );
 // Set the minimum cURL version that we've tested that core works with.
 define( 'HEALTH_CHECK_CURL_MIN_VERSION', '7.38' );
 
+// Enqueue accordion script only for this page.
+wp_enqueue_script( 'jquery-ui-accordion' );
+
 // Include class-files used by our plugin.
 require_once( dirname( __FILE__ ) . '/includes/class-healthcheck.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-auto-updates.php' );
