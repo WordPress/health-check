@@ -10,6 +10,23 @@
  */
 class Health_Check_Debug_Data {
 
+	/**
+	 * Calls all core funtions to check for updates
+	 *
+	 * @uses wp_version_check()
+	 * @uses wp_update_plugins()
+	 * @uses wp_update_themes()
+	 *
+	 * @return void
+	 */
+	static function check_for_updates() {
+
+		wp_version_check();
+		wp_update_plugins();
+		wp_update_themes();
+
+	}
+
 	static function debug_data( $locale = null ) {
 		if ( ! empty( $locale ) ) {
 			// Change the language used for translations
@@ -78,11 +95,11 @@ class Health_Check_Debug_Data {
 				'fields'      => array(),
 			),
 			'wp-active-theme'     => array(
-				'label'  => __( 'Active theme', 'health-check' ),
+				'label'  => __( 'Active Theme', 'health-check' ),
 				'fields' => array(),
 			),
 			'wp-themes'           => array(
-				'label'      => __( 'Other themes', 'health-check' ),
+				'label'      => __( 'Other Themes', 'health-check' ),
 				'show_count' => true,
 				'fields'     => array(),
 			),
@@ -102,7 +119,7 @@ class Health_Check_Debug_Data {
 				'fields'     => array(),
 			),
 			'wp-media'            => array(
-				'label'  => __( 'Media handling', 'health-check' ),
+				'label'  => __( 'Media Handling', 'health-check' ),
 				'fields' => array(),
 			),
 			'wp-server'           => array(
@@ -115,7 +132,7 @@ class Health_Check_Debug_Data {
 				'fields' => array(),
 			),
 			'wp-constants'        => array(
-				'label'       => __( 'WordPress constants', 'health-check' ),
+				'label'       => __( 'WordPress Constants', 'health-check' ),
 				'description' => __( 'These values represent values set in your websites code which affect WordPress in various ways that may be of importance when seeking help with your site.', 'health-check' ),
 				'fields'      => array(
 					array(
@@ -214,22 +231,22 @@ class Health_Check_Debug_Data {
 			}
 
 			$info['wp-core']['fields'][] = array(
-				'label' => __( 'User Count', 'health-check' ),
+				'label' => __( 'User count', 'health-check' ),
 				'value' => get_user_count(),
 			);
 			$info['wp-core']['fields'][] = array(
-				'label' => __( 'Site Count', 'health-check' ),
+				'label' => __( 'Site count', 'health-check' ),
 				'value' => $site_count,
 			);
 			$info['wp-core']['fields'][] = array(
-				'label' => __( 'Network Count', 'health-check' ),
+				'label' => __( 'Network count', 'health-check' ),
 				'value' => $network_query->found_networks,
 			);
 		} else {
 			$user_count = count_users();
 
 			$info['wp-core']['fields'][] = array(
-				'label' => __( 'User Count', 'health-check' ),
+				'label' => __( 'User count', 'health-check' ),
 				'value' => $user_count['total_users'],
 			);
 		}
@@ -288,11 +305,11 @@ class Health_Check_Debug_Data {
 			$imagick_version = 'Imagick not available';
 		}
 		$info['wp-media']['fields'][] = array(
-			'label' => __( 'Imagick Module Version', 'health-check' ),
+			'label' => __( 'Imagick module version', 'health-check' ),
 			'value' => ( is_array( $imagick_version ) ? $imagick_version['versionNumber'] : $imagick_version ),
 		);
 		$info['wp-media']['fields'][] = array(
-			'label' => __( 'ImageMagick Version', 'health-check' ),
+			'label' => __( 'ImageMagick version', 'health-check' ),
 			'value' => ( is_array( $imagick_version ) ? $imagick_version['versionString'] : $imagick_version ),
 		);
 
@@ -308,7 +325,7 @@ class Health_Check_Debug_Data {
 			);
 
 			$info['wp-media']['fields'][] = array(
-				'label' => __( 'Imagick Resource Limits', 'health-check' ),
+				'label' => __( 'Imagick resource limits', 'health-check' ),
 				'value' => $limits,
 			);
 		}
@@ -320,7 +337,7 @@ class Health_Check_Debug_Data {
 			$gd = false;
 		}
 		$info['wp-media']['fields'][] = array(
-			'label' => __( 'GD Version', 'health-check' ),
+			'label' => __( 'GD version', 'health-check' ),
 			'value' => ( is_array( $gd ) ? $gd['GD Version'] : __( 'GD not available', 'health-check' ) ),
 		);
 
@@ -332,7 +349,7 @@ class Health_Check_Debug_Data {
 			$gs = __( 'Unable to determine if Ghostscript is installed', 'health-check' );
 		}
 		$info['wp-media']['fields'][] = array(
-			'label' => __( 'Ghostscript Version', 'health-check' ),
+			'label' => __( 'Ghostscript version', 'health-check' ),
 			'value' => $gs,
 		);
 
@@ -342,7 +359,7 @@ class Health_Check_Debug_Data {
 			'value' => ( ! function_exists( 'php_uname' ) ? __( 'Unable to determine server architecture', 'health-check' ) : sprintf( '%s %s %s', php_uname( 's' ), php_uname( 'r' ), php_uname( 'm' ) ) ),
 		);
 		$info['wp-server']['fields'][] = array(
-			'label' => __( 'PHP Version', 'health-check' ),
+			'label' => __( 'PHP version', 'health-check' ),
 			'value' => ( ! function_exists( 'phpversion' ) ? __( 'Unable to determine PHP version', 'health-check' ) : sprintf(
 				'%s %s',
 				phpversion(),
@@ -390,12 +407,12 @@ class Health_Check_Debug_Data {
 		if ( function_exists( 'curl_version' ) ) {
 			$curl                          = curl_version();
 			$info['wp-server']['fields'][] = array(
-				'label' => __( 'cURL Version', 'health-check' ),
+				'label' => __( 'cURL version', 'health-check' ),
 				'value' => sprintf( '%s %s', $curl['version'], $curl['ssl_version'] ),
 			);
 		} else {
 			$info['wp-server']['fields'][] = array(
-				'label' => __( 'cURL Version', 'health-check' ),
+				'label' => __( 'cURL version', 'health-check' ),
 				'value' => __( 'Your server does not support cURL', 'health-check' ),
 			);
 		}
