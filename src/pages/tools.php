@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php _e( 'The File Integrity checks all the core files with the <code>checksums</code> provided by the WordPress API to see if they are intact. If there are changes you will be able to make a Diff between the files hosted on WordPress.org and your installation to see what has been changed.', 'health-check' ); ?>
 		</p>
 		<form action="#" id="health-check-file-integrity" method="POST">
-			<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the Files Integrity', 'health-check' ); ?>">
+			<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the files integrity', 'health-check' ); ?>">
 		</form>
 	</div>
 	<div class="notice notice-info inline">
@@ -46,7 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</td>
 				</tr>
 			</table>
-			<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check Mail', 'health-check' ); ?>">
+			<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Send test mail', 'health-check' ); ?>">
 		</form>
 	</div>
 
