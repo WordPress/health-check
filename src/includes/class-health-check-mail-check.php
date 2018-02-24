@@ -45,7 +45,7 @@ class Health_Check_Mail_Check {
 			$email_message
 		);
 
-		$sendmail  = wp_mail( $email, $email_subject, $email_body, $email_headers );
+		$sendmail = wp_mail( $email, $email_subject, $email_body, $email_headers );
 
 		if ( ! empty( $sendmail ) ) {
 			$output .= '<div class="notice notice-success inline"><p>';
