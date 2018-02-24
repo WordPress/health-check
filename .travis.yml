@@ -68,7 +68,7 @@ before_script:
   # Install phpunuit test suite
   # - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   - |
-    if [ env(WP_HC_CS_TEST) == "yes" ]; then
+    if [ "${WP_HC_CS_TEST}" == "yes" ]; then
       composer update
     fi
 
@@ -85,7 +85,7 @@ script:
   # We really only need to run coding standards and linting tests once, on the most recent PHP build
   # as any failure will be reported any way. This saves a fair amount of time during test runs.
   - |
-    if [ env(WP_HC_CS_TEST) == "yes" ]; then
+    if [ "${WP_HC_CS_TEST}" == "yes" ]; then
       node --version
       npm --version
       nvm install 6
