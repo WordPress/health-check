@@ -314,7 +314,7 @@ class HealthCheck {
 			<?php
 			$tabs = array(
 				'health-check' => esc_html_x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ),
-				'debug'        => esc_html__( 'Debug information', 'health-check' ),
+				'debug'        => esc_html__( 'Debug Information', 'health-check' ),
 				'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
 				'phpinfo'      => esc_html__( 'PHP Information', 'health-check' ),
 				'tools'        => esc_html__( 'Tools', 'health-check' ),
