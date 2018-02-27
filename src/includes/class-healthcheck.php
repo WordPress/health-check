@@ -248,7 +248,6 @@ class HealthCheck {
 	 *
 	 * @uses add_dashboard_page()
 	 * @uses __()
-	 * @uses add_action()
 	 *
 	 * @return void
 	 */
