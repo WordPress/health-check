@@ -224,15 +224,38 @@ class HealthCheck {
 	}
 
 	/**
+	 * Enqueue the Accordion script only on health-check pages.
+	 *
+	 * @uses wp_enqueue_script()
+	 *
+	 * @return void
+	 */
+
+	public function enqueue_accordion_ui( $hook_suffix ) {
+		global $health_check_page;
+
+		if ( $hook_suffix !== $health_check_page ) {
+			return;
+		}
+
+		wp_enqueue_script( 'jquery-ui-accordion' );
+	}
+
+	/**
 	 * Add item to the admin menu.
 	 *
 	 * @uses add_dashboard_page()
 	 * @uses __()
+	 * @uses add_action()
 	 *
 	 * @return void
 	 */
 	public function action_admin_menu() {
-		add_dashboard_page( _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ), _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ), 'manage_options', 'health-check', array( $this, 'dashboard_page' ) );
+		global $health_check_page;
+
+		$health_check_page = add_dashboard_page( _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ), _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ), 'manage_options', 'health-check', array( $this, 'dashboard_page' ) );
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_accordion_ui' ) );
 	}
 
 	/**
