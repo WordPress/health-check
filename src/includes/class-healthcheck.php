@@ -44,6 +44,9 @@ class HealthCheck {
 		add_action( 'plugins_loaded', array( $this, 'load_i18n' ) );
 
 		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_accordion_ui' ) );
+
 		add_filter( 'plugin_row_meta', array( $this, 'settings_link' ), 10, 2 );
 
 		add_filter( 'plugin_action_links', array( $this, 'troubeshoot_plugin_action' ), 20, 4 );
@@ -231,10 +234,9 @@ class HealthCheck {
 	 * @return void
 	 */
 
-	public function enqueue_accordion_ui( $hook_suffix ) {
-		global $health_check_page;
+	public function enqueue_accordion_ui( $hook ) {
 
-		if ( $hook_suffix !== $health_check_page ) {
+		if ( 'dashboard_page_health-check' !== $hook ) {
 			return;
 		}
 
@@ -251,11 +253,7 @@ class HealthCheck {
 	 * @return void
 	 */
 	public function action_admin_menu() {
-		global $health_check_page;
-
-		$health_check_page = add_dashboard_page( _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ), _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ), 'manage_options', 'health-check', array( $this, 'dashboard_page' ) );
-
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_accordion_ui' ) );
+		add_dashboard_page( _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ), _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ), 'manage_options', 'health-check', array( $this, 'dashboard_page' ) );
 	}
 
 	/**
