@@ -185,8 +185,18 @@ jQuery( document ).ready(function( $ ) {
 	$( '#health-check-diff-modal' ).on( 'click', 'a[href="#health-check-diff-modal-close"]', function( e ) {
 		e.preventDefault();
 		$( '#health-check-diff-modal' ).toggle();
+        $( '#health-check-diff-modal #health-check-diff-modal-diff' ).html( '' );
+        $( '#health-check-diff-modal #health-check-diff-modal-content h3' ).html( '' );
 	});
 
 	$( '.health-check-tools-accordion' ).accordion( { header: 'h3' } );
+
+    $( document ).keyup(function( e ) {
+        if ( e.which == 27 ) {
+            $( '#health-check-diff-modal' ).css( 'display', 'none' );
+            $( '#health-check-diff-modal #health-check-diff-modal-diff' ).html( '' );
+            $( '#health-check-diff-modal #health-check-diff-modal-content h3' ).html( '' );
+        }
+    });
 
 });
