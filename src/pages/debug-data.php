@@ -202,8 +202,7 @@ foreach ( $info as $section => $details ) {
 						esc_html( $value )
 					);
 				}
-			}
-			else {
+			} else {
 				$values = esc_html( $field['value'] );
 			}
 
