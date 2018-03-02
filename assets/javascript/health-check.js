@@ -192,7 +192,7 @@ jQuery( document ).ready(function( $ ) {
 	$( '.health-check-tools-accordion' ).accordion( { header: 'h3' } );
 
     $( document ).keyup(function( e ) {
-        if ( e.which == 27 ) {
+        if ( 27 === e.which  ) {
             $( '#health-check-diff-modal' ).css( 'display', 'none' );
             $( '#health-check-diff-modal #health-check-diff-modal-diff' ).html( '' );
             $( '#health-check-diff-modal #health-check-diff-modal-content h3' ).html( '' );
