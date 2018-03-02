@@ -193,7 +193,6 @@ foreach ( $info as $section => $details ) {
 		<tbody>
 		<?php
 		foreach ( $details['fields'] as $field ) {
-			$values = esc_html( $field['value'] );
 			if ( is_array( $field['value'] ) ) {
 				$values = '';
 				foreach ( $field['value'] as $name => $value ) {
@@ -203,6 +202,8 @@ foreach ( $info as $section => $details ) {
 						esc_html( $value )
 					);
 				}
+			} else {
+				$values = esc_html( $field['value'] );
 			}
 
 			printf(
