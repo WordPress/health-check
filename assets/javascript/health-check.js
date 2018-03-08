@@ -189,8 +189,6 @@ jQuery( document ).ready(function( $ ) {
         $( '#health-check-diff-modal #health-check-diff-modal-content h3' ).html( '' );
 	});
 
-	$( '.health-check-tools-accordion' ).accordion( { header: 'h3' } );
-
     $( document ).keyup(function( e ) {
         if ( 27 === e.which  ) {
             $( '#health-check-diff-modal' ).css( 'display', 'none' );

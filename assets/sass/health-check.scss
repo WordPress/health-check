@@ -165,21 +165,18 @@ body {
 			float: none;
 		}
 
-		.accordion-section {
-			border: 0;
+		.tool {
+			background:#fff;
+			margin-top: 15px;
+			padding: 15px;
+
+			h3 {
+				margin-top: 0;
+			}
 		}
 
-		.accordion-section-title {
-			background: #fff;
+		.tool-first {
 			margin-top: 5px;
-			border-left: 0;
-			border-right: 0;
-		}
-
-		.ui-accordion-header-active:after {
-
-			content: "\f142";
-
 		}
 
 	}
