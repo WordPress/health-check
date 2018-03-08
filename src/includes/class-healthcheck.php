@@ -45,8 +45,6 @@ class HealthCheck {
 
 		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_accordion_ui' ) );
-
 		add_filter( 'plugin_row_meta', array( $this, 'settings_link' ), 10, 2 );
 
 		add_filter( 'plugin_action_links', array( $this, 'troubeshoot_plugin_action' ), 20, 4 );
@@ -224,23 +222,6 @@ class HealthCheck {
 				'seen_backup' => Health_Check_Troubleshoot::has_seen_warning(),
 			),
 		) );
-	}
-
-	/**
-	 * Enqueue the Accordion script only on health-check pages.
-	 *
-	 * @uses wp_enqueue_script()
-	 *
-	 * @return void
-	 */
-
-	public function enqueue_accordion_ui( $hook ) {
-
-		if ( 'dashboard_page_health-check' !== $hook ) {
-			return;
-		}
-
-		wp_enqueue_script( 'jquery-ui-accordion' );
 	}
 
 	/**
