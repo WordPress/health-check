@@ -45,13 +45,25 @@ class Health_Check_Debug_Data {
 			$wp_config_path = dirname( ABSPATH ) . '/wp-config.php';
 		}
 
+		$core_current_version = get_bloginfo( 'version' );
+		$core_updates         = get_core_updates();
+
+		foreach ( $core_updates as $core => $update ) {
+			if ( 'upgrade' === $update->response ) {
+				// translators: %s: Latest WordPress version number.
+				$core_update_needed = ' ' . sprintf( __( '( Latest version: %s )', 'health-check' ), $update->version );
+			} else {
+				$core_update_needed = '';
+			}
+		}
+
 		$info = array(
 			'wp-core'             => array(
 				'label'  => __( 'WordPress', 'health-check' ),
 				'fields' => array(
 					array(
 						'label' => __( 'Version', 'health-check' ),
-						'value' => get_bloginfo( 'version' ),
+						'value' => $core_current_version . $core_update_needed,
 					),
 					array(
 						'label' => __( 'Language', 'health-check' ),
