@@ -45,7 +45,7 @@ class Health_Check_Files_Integrity {
 		$wplocale  = get_locale();
 
 		// Setup API Call.
-		$checksumapi = wp_remote_get( 'https://api.wordpress.org/core/checksums/1.0/?version=' . $wpversion . '&locale=' . $wplocale );
+		$checksumapi = wp_remote_get( 'https://api.wordpress.org/core/checksums/1.0/?version=' . $wpversion . '&locale=' . $wplocale, array( 'timeout' => 10000 ) );
 
 		// Encode the API response body.
 		$checksumapibody = json_decode( wp_remote_retrieve_body( $checksumapi ), true );
