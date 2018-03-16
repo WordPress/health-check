@@ -121,15 +121,16 @@ jQuery( document ).ready(function( $ ) {
 
 		e.preventDefault();
 
-		$( '#tools-response-holder' ).html( '<span class="spinner"></span>' );
-		$( '#tools-response-holder .spinner' ).addClass( 'is-active' );
+		$( '#tools-file-integrity-response-holder' ).html( '<span class="spinner"></span>' );
+		$( '#tools-file-integrity-response-holder .spinner' ).addClass( 'is-active' );
 
 		$.post(
 			ajaxurl,
 			data,
 			function( response ) {
-				$( '#tools-response-holder .spinner' ).removeClass( 'is-active' );
-				$( '#tools-response-holder' ).html( response.data.message );
+				$( '#tools-file-integrity-response-holder .spinner' ).removeClass( 'is-active' );
+				$( '#tools-file-integrity-response-holder' ).parent().css( 'height', 'auto' );
+				$( '#tools-file-integrity-response-holder' ).html( response.data.message );
 		});
 	});
 
@@ -139,8 +140,8 @@ jQuery( document ).ready(function( $ ) {
 
 		e.preventDefault();
 
-		$( '#tools-response-holder' ).html( '<span class="spinner"></span>' );
-		$( '#tools-response-holder .spinner' ).addClass( 'is-active' );
+		$( '#tools-mail-check-response-holder' ).html( '<span class="spinner"></span>' );
+		$( '#tools-mail-check-response-holder .spinner' ).addClass( 'is-active' );
 
 		data = {
 			'action': 'health-check-mail-check',
@@ -151,12 +152,13 @@ jQuery( document ).ready(function( $ ) {
 			ajaxurl,
 			data,
 			function( response ) {
-				$( '#tools-response-holder .spinner' ).removeClass( 'is-active' );
-				$( '#tools-response-holder' ).html( response.data.message );
+				$( '#tools-mail-check-response-holder .spinner' ).removeClass( 'is-active' );
+				$( '#tools-mail-check-response-holder' ).parent().css( 'height', 'auto' );
+				$( '#tools-mail-check-response-holder' ).html( response.data.message );
 		});
 	});
 
-	$( '#tools-response-holder' ).on( 'click', 'a[href="#health-check-diff"]', function( e ) {
+	$( '#tools-file-integrity-response-holder' ).on( 'click', 'a[href="#health-check-diff"]', function( e ) {
 		var file = $( this ).data( 'file' ),
 			data;
 
@@ -183,6 +185,16 @@ jQuery( document ).ready(function( $ ) {
 	$( '#health-check-diff-modal' ).on( 'click', 'a[href="#health-check-diff-modal-close"]', function( e ) {
 		e.preventDefault();
 		$( '#health-check-diff-modal' ).toggle();
+        $( '#health-check-diff-modal #health-check-diff-modal-diff' ).html( '' );
+        $( '#health-check-diff-modal #health-check-diff-modal-content h3' ).html( '' );
+	});
+
+	$( document ).keyup(function( e ) {
+		if ( 27 === e.which  ) {
+			$( '#health-check-diff-modal' ).css( 'display', 'none' );
+			$( '#health-check-diff-modal #health-check-diff-modal-diff' ).html( '' );
+			$( '#health-check-diff-modal #health-check-diff-modal-content h3' ).html( '' );
+		}
 	});
 
 });

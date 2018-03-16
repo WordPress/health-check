@@ -47,14 +47,14 @@ body {
 					&:first-child {
 
 						text-align: center;
-						width: 80%;
+						width: 60px;
 					}
 				}
 			}
 		}
 
 		#health-check-mail-check,
-		#health-check-file-integritu {
+		#health-check-file-integrity {
 
 			margin-bottom: 15px;
 		}
@@ -164,6 +164,21 @@ body {
 		.spinner {
 			float: none;
 		}
+
+		.tool {
+			background: #fff;
+			margin-top: 15px;
+			padding: 15px;
+
+			h3 {
+				margin-top: 0;
+			}
+		}
+
+		.tool-first {
+			margin-top: 5px;
+		}
+
 	}
 }
 

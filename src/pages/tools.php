@@ -11,18 +11,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-
-	<div class="notice notice-info inline">
-		<h2><?php esc_html_e( 'File Integrity', 'health-check' ); ?></h2>
+<div class="tool tool-first">
+	<h3><?php esc_html_e( 'File Integrity', 'health-check' ); ?></h3>
+	<div class="tool-content">
 		<p>
 			<?php _e( 'The File Integrity checks all the core files with the <code>checksums</code> provided by the WordPress API to see if they are intact. If there are changes you will be able to make a Diff between the files hosted on WordPress.org and your installation to see what has been changed.', 'health-check' ); ?>
 		</p>
 		<form action="#" id="health-check-file-integrity" method="POST">
-			<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the Files Integrity', 'health-check' ); ?>">
+			<p>
+				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the Files Integrity', 'health-check' ); ?>">
+			</p>
 		</form>
 	</div>
-	<div class="notice notice-info inline">
-		<h2><?php esc_html_e( 'Mail Check', 'health-check' ); ?></h2>
+	<div id="tools-file-integrity-response-holder">
+		<span class="spinner"></span>
+	</div>
+</div>
+<div class="tool">
+	<h3><?php esc_html_e( 'Mail Check', 'health-check' ); ?></h3>
+	<div class="tool-content">
 		<p>
 			<?php _e( 'The Mail Check will invoke the <code>wp_mail()</code> function and check if it succeeds. We will use the E-mail address you have set up, but you can change it below if you like.', 'health-check' ); ?>
 		</p>
@@ -37,10 +44,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check Mail', 'health-check' ); ?>">
 		</form>
 	</div>
-
-	<div id="tools-response-holder">
+	<div id="tools-mail-check-response-holder">
 		<span class="spinner"></span>
 	</div>
-
-	<?php
-	include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/modals/diff.php' );
+</div>
+<?php
+include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/modals/diff.php' );

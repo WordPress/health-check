@@ -44,6 +44,7 @@ class HealthCheck {
 		add_action( 'plugins_loaded', array( $this, 'load_i18n' ) );
 
 		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
+
 		add_filter( 'plugin_row_meta', array( $this, 'settings_link' ), 10, 2 );
 
 		add_filter( 'plugin_action_links', array( $this, 'troubeshoot_plugin_action' ), 20, 4 );
