@@ -579,11 +579,11 @@ class Health_Check_Troubleshooting_MU {
 
 		foreach ( $themes as $theme ) {
 			$node = array(
-				'id' => sprintf(
+				'id'     => sprintf(
 					'health-check-theme-%s',
 					sanitize_title( $theme['id'] )
 				),
-				'title' => sprintf(
+				'title'  => sprintf(
 					'%s %s',
 					// translators: Prefix for the active theme in a listing.
 					( $theme['active'] ? esc_html__( 'Active:', 'health-check' ) : '' ),
