@@ -34,14 +34,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php _e( 'The Mail Check will invoke the <code>wp_mail()</code> function and check if it succeeds. We will use the E-mail address you have set up, but you can change it below if you like.', 'health-check' ); ?>
 		</p>
 		<form action="#" id="health-check-mail-check" method="POST">
-			<p>
-				<?php
-					$current_user = wp_get_current_user();
-				?>
-				<label for="email"><?php _e( 'E-mail', 'health-check' ); ?></label>
-				<input type="text" name="email" id="email" value="<?php echo $current_user->user_email; ?>">
-			</p>
-			<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check Mail', 'health-check' ); ?>">
+			<table class="widefat tools-email-table">
+				<tr>
+					<td>
+						<p>
+							<?php
+								$current_user = wp_get_current_user();
+							?>
+							<label for="email"><?php _e( 'E-mail', 'health-check' ); ?></label>
+							<input type="text" name="email" id="email" value="<?php echo $current_user->user_email; ?>">
+						</p>
+					</td>
+					<td>
+					<p>
+						<label for="email_message"><?php _e( 'Additional message', 'health-check' ); ?></label>
+						<input type="text" name="email_message" id="email_message" value="">
+					</p>
+					</td>
+				</tr>
+			</table>
+			<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Send test mail', 'health-check' ); ?>">
 		</form>
 	</div>
 	<div id="tools-mail-check-response-holder">
