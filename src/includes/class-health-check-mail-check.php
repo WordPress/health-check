@@ -30,14 +30,13 @@ class Health_Check_Mail_Check {
 		$wp_name       = get_bloginfo( 'name' );
 		$date          = date( 'F j, Y' );
 		$time          = date( 'g:i a' );
-		$email_headers = array( 'Content-Type: text/html; charset=UTF-8' );
 
 		// translators: %s: website url.
 		$email_subject = sprintf( esc_html__( 'Health Check – Test Message from %s', 'health-check' ), $wp_address );
 
 		$email_body = sprintf(
 			// translators: %1$s: website name. %2$s: website url. %3$s: additional message from user.
-			__( '<p>Hi!</p><p>This test message was sent by the Health Check plugin from <strong>%1$s</strong> (%2$s) on %3$s at %4$s. Since you’re reading this, it obviously works.</p><p>Additional message from admin: %5$s</p>', 'health-check' ),
+			__( 'Hi! This test message was sent by the Health Check plugin from %1$s (%2$s) on %3$s at %4$s. Since you’re reading this, it obviously works. Additional message from admin: %5$s', 'health-check' ),
 			$wp_name,
 			$wp_address,
 			$date,
@@ -45,7 +44,7 @@ class Health_Check_Mail_Check {
 			$email_message
 		);
 
-		$sendmail = wp_mail( $email, $email_subject, $email_body, $email_headers );
+		$sendmail = wp_mail( $email, $email_subject, $email_body );
 
 		if ( ! empty( $sendmail ) ) {
 			$output .= '<div class="notice notice-success inline"><p>';

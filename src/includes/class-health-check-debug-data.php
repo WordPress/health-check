@@ -10,6 +10,23 @@
  */
 class Health_Check_Debug_Data {
 
+	/**
+	 * Calls all core funtions to check for updates
+	 *
+	 * @uses wp_version_check()
+	 * @uses wp_update_plugins()
+	 * @uses wp_update_themes()
+	 *
+	 * @return void
+	 */
+	static function check_for_updates() {
+
+		wp_version_check();
+		wp_update_plugins();
+		wp_update_themes();
+
+	}
+
 	static function debug_data( $locale = null ) {
 		if ( ! empty( $locale ) ) {
 			// Change the language used for translations
@@ -28,13 +45,25 @@ class Health_Check_Debug_Data {
 			$wp_config_path = dirname( ABSPATH ) . '/wp-config.php';
 		}
 
+		$core_current_version = get_bloginfo( 'version' );
+		$core_updates         = get_core_updates();
+
+		foreach ( $core_updates as $core => $update ) {
+			if ( 'upgrade' === $update->response ) {
+				// translators: %s: Latest WordPress version number.
+				$core_update_needed = ' ' . sprintf( __( '( Latest version: %s )', 'health-check' ), $update->version );
+			} else {
+				$core_update_needed = '';
+			}
+		}
+
 		$info = array(
 			'wp-core'             => array(
 				'label'  => __( 'WordPress', 'health-check' ),
 				'fields' => array(
 					array(
 						'label' => __( 'Version', 'health-check' ),
-						'value' => get_bloginfo( 'version' ),
+						'value' => $core_current_version . $core_update_needed,
 					),
 					array(
 						'label' => __( 'Language', 'health-check' ),
@@ -78,7 +107,7 @@ class Health_Check_Debug_Data {
 				'fields'      => array(),
 			),
 			'wp-active-theme'     => array(
-				'label'  => __( 'Active theme', 'health-check' ),
+				'label'  => __( 'Active Theme', 'health-check' ),
 				'fields' => array(),
 			),
 			'wp-themes'           => array(
@@ -115,7 +144,7 @@ class Health_Check_Debug_Data {
 				'fields' => array(),
 			),
 			'wp-constants'        => array(
-				'label'       => __( 'WordPress constants', 'health-check' ),
+				'label'       => __( 'WordPress Constants', 'health-check' ),
 				'description' => __( 'These values represent values set in your websites code which affect WordPress in various ways that may be of importance when seeking help with your site.', 'health-check' ),
 				'fields'      => array(
 					array(
@@ -173,7 +202,7 @@ class Health_Check_Debug_Data {
 				),
 			),
 			'wp-filesystem'       => array(
-				'label'       => __( 'Filesystem permissions', 'health-check' ),
+				'label'       => __( 'Filesystem Permissions', 'health-check' ),
 				'description' => __( 'The status of various locations WordPress needs to write files in various scenarios.', 'health-check' ),
 				'fields'      => array(
 					array(

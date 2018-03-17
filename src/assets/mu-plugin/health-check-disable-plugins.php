@@ -251,7 +251,7 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return array Array of active plugins.
 	 */
-	private function get_unfiltered_plugin_list() {
+	public function get_unfiltered_plugin_list() {
 		$this->override_active = false;
 		$all_plugins           = get_option( 'active_plugins' );
 		$this->override_active = true;
@@ -264,7 +264,7 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return bool
 	 */
-	private function is_troubleshooting() {
+	public function is_troubleshooting() {
 		// Check if a session cookie to disable plugins has been set.
 		if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
 			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'];

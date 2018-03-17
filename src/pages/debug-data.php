@@ -10,6 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
+Health_Check_Debug_Data::check_for_updates();
+
 $info = Health_Check_Debug_Data::debug_data();
 ?>
 
@@ -139,7 +141,7 @@ $info = Health_Check_Debug_Data::debug_data();
 	</div>
 
 	<h2 id="system-information-table-of-contents">
-		<?php esc_html_e( 'Table of contents', 'health-check' ); ?>
+		<?php esc_html_e( 'Table Of Contents', 'health-check' ); ?>
 	</h2>
 	<div>
 		<?php
@@ -191,7 +193,6 @@ foreach ( $info as $section => $details ) {
 		<tbody>
 		<?php
 		foreach ( $details['fields'] as $field ) {
-			$values = esc_html( $field['value'] );
 			if ( is_array( $field['value'] ) ) {
 				$values = '';
 				foreach ( $field['value'] as $name => $value ) {
@@ -201,6 +202,8 @@ foreach ( $info as $section => $details ) {
 						esc_html( $value )
 					);
 				}
+			} else {
+				$values = esc_html( $field['value'] );
 			}
 
 			printf(

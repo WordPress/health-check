@@ -16,6 +16,8 @@ env:
   global:
     # WordPress Health Check Coding Standard test indicator.
     WP_HC_CS_TEST=no
+    WP_VERSION=latest
+    WP_MULTISITE=0
 
 # Create a matrix for testing against multiple PHP versions.
 # We do this as the Health Check plugin should be available
@@ -62,11 +64,21 @@ before_script:
       echo "xdebug.ini does not exist"
     fi
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  # - composer global require --dev phpunit/phpunit ^6
-  # - which phpunit
-  # - phpunit --version
   # Install phpunuit test suite
-  # - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+      if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.2" ]]; then
+        echo "Using default PHPUnit, hopefully 3.6"
+      elif [[ ${TRAVIS_PHP_VERSION:0:2} == "5." ]]; then
+        composer global require "phpunit/phpunit=4.8.*"
+      else
+        composer global require "phpunit/phpunit=5.7.*"
+      fi
+    fi
+  - which phpunit
+  - phpunit --version
+  # Only update composer with other dependencies from composer.json if we are doing CS tests.
   - |
     if [ "${WP_HC_CS_TEST}" == "yes" ]; then
       composer update
@@ -95,3 +107,4 @@ script:
       npm install -g grunt-cli
       grunt travis
     fi
+  - phpunit

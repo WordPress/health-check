@@ -68,7 +68,7 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 							),
 							sprintf(
 								// translators: %s: Recommended PHP version
-								esc_html__( 'For performance and security reasons, we strongly recommend running PHP version %s or higher.', 'health-check' ),
+								esc_html__( 'For best performance we recommend using PHP %s or higher.', 'health-check' ),
 								HEALTH_CHECK_PHP_REC_VERSION
 							)
 						);
