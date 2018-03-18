@@ -1,0 +1,54 @@
+#health-check-diff-modal {
+
+	width: 100vw;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.7);
+	display: none;
+	z-index: 99999;
+
+	#health-check-diff-modal-content {
+
+		background: #fff;
+		height: calc(100% - 120px);
+		width: calc(100% - 120px);
+		margin-top: 40px;
+		margin-left: 40px;
+		padding: 20px;
+		display: block;
+	}
+
+	#health-check-diff-modal-diff {
+
+		width: 100%;
+		height: calc(100% - 80px);
+		overflow-y: auto;
+		display: block;
+		position: relative;
+
+		table {
+
+			&.diff {
+
+				td {
+
+					&:nth-child(2) {
+
+						background: #f3f3f3;
+					}
+				}
+			}
+		}
+	}
+}
+
+#health-check-diff-modal-close-ref {
+
+	position: relative;
+	display: block;
+	float: right;
+	color: #000;
+	text-decoration: none;
+}

@@ -35,58 +35,6 @@ body {
 			}
 		}
 
-		.file-integrity-table {
-
-			thead,
-			tbody,
-			tfoot {
-
-				th,
-				td {
-
-					&:first-child {
-
-						text-align: center;
-						width: 60px;
-					}
-				}
-			}
-		}
-
-		.tools-email-table {
-
-			border: 0;
-			box-shadow: none;
-
-			td {
-
-				&:first-child {
-					width: 280px;
-				}
-
-				@media (max-width: 768px) {
-					display: block;
-				}
-
-			}
-
-			input {
-				width: 100%;
-			}
-
-			label {
-				display: block;
-				clear: both;
-			}
-
-		}
-
-		#health-check-mail-check,
-		#health-check-file-integrity {
-
-			margin-bottom: 15px;
-		}
-
 		.pass,
 		.good {
 
@@ -134,134 +82,21 @@ body {
 			}
 		}
 
-		#health-check-diff-modal {
-
-			width: 100vw;
-			height: 100%;
-			position: fixed;
-			top: 0;
-			left: 0;
-			background: rgba(0, 0, 0, 0.7);
-			display: none;
-			z-index: 99999;
-
-			#health-check-diff-modal-content {
-
-				background: #fff;
-				height: calc(100% - 120px);
-				width: calc(100% - 120px);
-				margin-top: 40px;
-				margin-left: 40px;
-				padding: 20px;
-				display: block;
-			}
-
-			#health-check-diff-modal-diff {
-
-				width: 100%;
-				height: calc(100% - 80px);
-				overflow-y: auto;
-				display: block;
-				position: relative;
-
-				table {
-
-					&.diff {
-
-						td {
-
-							&:nth-child(2) {
-
-								background: #f3f3f3;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		#health-check-diff-modal-close-ref {
-
-			position: relative;
-			display: block;
-			float: right;
-			color: #000;
-			text-decoration: none;
-		}
-
 		.spinner {
 			float: none;
 		}
 
-		.tool {
-			background: #fff;
-			margin-top: 15px;
-			padding: 15px;
+		/* Tools screen styles */
+		@import "modules/tools";
 
-			h3 {
-				margin-top: 0;
-			}
-		}
-
-		.tool-first {
-			margin-top: 5px;
-		}
+		/* Diff viewer styles */
+		@import "modules/diff-viewer";
 
 	}
 }
 
-.health-check-modal {
+/* Accordion styles */
+@import "modules/accordion";
 
-	display: none;
-	position: fixed;
-	z-index: 1000;
-	padding-top: 100px;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgb(0, 0, 0);
-	background-color: rgba(0, 0, 0, 0.4);
-
-	&.show {
-
-		display: block;
-	}
-
-	.modal-content {
-
-		background-color: #fefefe;
-		margin: auto;
-		padding: 20px;
-		border: 1px solid #888;
-		width: 30%;
-
-		.modal-close {
-
-			color: #aaa;
-			float: right;
-			font-size: 28px;
-			font-weight: 600;
-			cursor: pointer;
-		}
-
-		#dynamic-content {
-
-			display: block;
-			width: 100%;
-		}
-	}
-
-	.modal-close {
-
-		&:hover,
-		&:focus {
-
-			color: #aaa;
-			float: right;
-			font-size: 28px;
-			font-weight: 600;
-		}
-	}
-}
+/* Modal styles */
+@import "modules/modal";

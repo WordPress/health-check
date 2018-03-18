@@ -1,0 +1,95 @@
+.health-check-accordion {
+
+	border: 1px solid hsl(0, 0%, 82%);
+	border-radius: 0.3em;
+	box-shadow: 0 1px 2px hsl(0, 0%, 82%);
+
+	> * + * {
+
+		border-top: 1px solid hsl(0, 0%, 82%);
+	}
+
+	dt {
+
+		font-weight: 600;
+
+		&:first-child {
+
+			border-radius: 0.3em 0.3em 0 0;
+		}
+	}
+
+	.health-check-accordion-trigger {
+
+		background: #fff;
+		border: 0;
+		color: hsl(0, 0%, 13%);
+		display: block;
+		font-size: 1rem;
+		font-weight: 400;
+		margin: 0;
+		padding: 1em 1.5em;
+		position: relative;
+		text-align: left;
+		width: 100%;
+
+		&:hover,
+		&:focus,
+		&:active {
+
+			background: hsl(0, 0%, 87%);
+		}
+
+		.title {
+
+			display: block;
+			pointer-events: none;
+		}
+
+		.icon {
+
+			border: solid hsl(0, 0%, 62%);
+			border-width: 0 2px 2px 0;
+			height: 0.5rem;
+			pointer-events: none;
+			position: absolute;
+			right: 1.5em;
+			top: 50%;
+			transform: translateY(-60%) rotate(45deg);
+			width: 0.5rem;
+		}
+
+		&[aria-expanded="true"] {
+
+			.icon {
+
+				transform: translateY(-50%) rotate(-135deg);
+			}
+		}
+	}
+
+	.health-check-accordion-panel {
+
+		margin: 0;
+		padding: 1em 1.5em;
+		background: #fff;
+
+		> div {
+
+			display: block;
+		}
+
+		&[hidden] {
+
+			display: none;
+		}
+	}
+
+	dl {
+
+		dd {
+
+			margin: 0 0 0.5em 2em;
+		}
+	}
+}
