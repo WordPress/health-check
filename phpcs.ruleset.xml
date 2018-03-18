@@ -19,10 +19,10 @@
 
     <!-- Our MU plugin uses a different file-name scheme from what is expected for the sake of simplicity. -->
     <rule ref="WordPress.Files.FileName.InvalidClassFileName">
-        <exclude-pattern>*/mu-plugin/health-check-disable-plugins.php</exclude-pattern>
+        <exclude-pattern>*/mu-plugin/health-check-troubleshooting-mode.php</exclude-pattern>
     </rule>
 
-    <!-- Some class functions in the auto update tester do not follwo conventions, as they instead
+    <!-- Some class functions in the auto update tester do not follow conventions, as they instead
     directly represent constants being used, this makes them easier to glance over -->
     <rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
         <exclude-pattern>*/class-health-check-auto-updates.php</exclude-pattern>

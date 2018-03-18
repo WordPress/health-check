@@ -18,7 +18,7 @@ require_once $_tests_dir . '/includes/functions.php';
  */
 function _manually_load_plugin() {
 	// Load in our MU plugin first
-	require dirname( dirname( dirname( __FILE__ ) ) ) . '/src/assets/mu-plugin/health-check-disable-plugins.php';
+	require dirname( dirname( dirname( __FILE__ ) ) ) . '/src/assets/mu-plugin/health-check-troubleshooting-mode.php';
 
 	require dirname( dirname( dirname( __FILE__ ) ) ) . '/src/health-check.php';
 }
