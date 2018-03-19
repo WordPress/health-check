@@ -90,7 +90,7 @@ define( 'WP_DEBUG_DISPLAY', false );
 		fclose( $read_wpconfig );
 		fclose( $write_wpconfig );
 
-		if ( ! copy( $wpconfig_temp, $wpconfig ) ){
+		if ( ! copy( $wpconfig_temp, $wpconfig ) ) {
 			$response = array(
 				'status'  => 'error',
 				'message' => esc_html__( 'Could create wp-config.php from the temp file.', 'health-check' ),
