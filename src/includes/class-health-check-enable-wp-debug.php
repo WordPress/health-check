@@ -29,7 +29,7 @@ class Health_Check_Enable_WP_Debug {
 
 	/**
 	 * Enables WP_DEBUG
-	 * 
+	 *
 	 * @uses copy()
 	 * @uses fopen()
 	 * @uses feof()
@@ -57,7 +57,7 @@ define( 'WP_DEBUG_LOG', true );
 define( 'WP_DEBUG_DISPLAY', false );
 @ini_set( 'display_errors', 0 );";
 
-		if ( ! copy( $wpconfig, $wpconfig_backup ) ){
+		if ( ! copy( $wpconfig, $wpconfig_backup ) ) {
 			$response = array(
 				'status'  => 'error',
 				'message' => esc_html__( 'Could not create a backup of wp-config.php.', 'health-check' ),
@@ -65,7 +65,7 @@ define( 'WP_DEBUG_DISPLAY', false );
 			wp_send_json_error( $response );
 		}
 
-		if ( ! copy( $wpconfig, $wpconfig_temp ) ){
+		if ( ! copy( $wpconfig, $wpconfig_temp ) ) {
 			$response = array(
 				'status'  => 'error',
 				'message' => esc_html__( 'Could not create a temp file of wp-config.php.', 'health-check' ),
