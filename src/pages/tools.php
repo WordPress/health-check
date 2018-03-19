@@ -79,6 +79,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 	</dd>
+
+	<dt role="heading" aria-level="3">
+		<button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-3" id="health-check-accordion-heading-3" type="button">
+			<span class="title">
+				<?php esc_html_e( 'Installation Size', 'health-check' ); ?>
+			</span>
+			<span class="icon"></span>
+		</button>
+	</dt>
+	<dd id="health-check-accordion-block-3" role="region" aria-labelledby="health-check-accordion-heading-3" class="health-check-accordion-panel" hidden="hidden">
+		<div>
+			<p>
+				<?php _e( 'Checks the database & various folder sizes.', 'health-check' ); ?>
+			</p>
+			<form action="#" id="health-check-installation-size-check" method="POST">
+				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check Sizes', 'health-check' ); ?>">
+			</form>
+
+			<div id="tools-installation-size-response-holder">
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</dd>
 </dl>
 
 <?php

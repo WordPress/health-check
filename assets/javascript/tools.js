@@ -46,6 +46,26 @@ jQuery( document ).ready(function( $ ) {
 			});
 	});
 
+	$( '#health-check-installation-size-check' ).submit( function( e ) {
+		var data;
+		e.preventDefault();
+
+		$( '#tools-installation-size-response-holder' ).html( '<span class="spinner"></span>' );
+		$( '#tools-installation-size-response-holder .spinner' ).addClass( 'is-active' );
+
+		data = {
+			'action': 'health-check-installation-size-check'
+		};
+
+		$.post(
+			ajaxurl,
+			data,
+			function( response ) {
+				$( '#tools-installation-size-response-holder .spinner' ).removeClass( 'is-active' );
+				$( '#tools-installation-size-response-holder' ).html( response.data.message );
+		});
+	});
+
 	$( '#tools-file-integrity-response-holder' ).on( 'click', 'a[href="#health-check-diff"]', function( e ) {
 		var file = $( this ).data( 'file' ),
 			data;
