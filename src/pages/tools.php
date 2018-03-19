@@ -79,6 +79,50 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 	</dd>
+
+	<dt role="heading" aria-level="3">
+		<button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-3" id="health-check-accordion-heading-3" type="button">
+			<span class="title">
+				<?php esc_html_e( 'Live WP Debug', 'health-check' ); ?>
+			</span>
+			<span class="icon"></span>
+		</button>
+	</dt>
+	<dd id="health-check-accordion-block-3" role="region" aria-labelledby="health-check-accordion-heading-3" class="health-check-accordion-panel" hidden="hidden">
+		<?php
+		if ( WP_DEBUG ) {
+		?>
+		<div>
+			<p>
+				<?php _e( 'Disables <code>WP_DEBUG</code>', 'health-check' ); ?>
+			</p>
+			<form action="#" id="health-check-disable-wp-debug" method="POST">
+				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Disable', 'health-check' ); ?>">
+			</form>
+
+			<div id="tools-disable-wp-debug-response-holder">
+				<span class="spinner"></span>
+			</div>
+		</div>
+		<?php
+		} else {
+		?>
+		<div>
+			<p>
+				<?php _e( 'Enables <code>WP_DEBUG</code> and shows the <code>debug.log</code>', 'health-check' ); ?>
+			</p>
+			<form action="#" id="health-check-enable-wp-debug" method="POST">
+				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Enable', 'health-check' ); ?>">
+			</form>
+
+			<div id="tools-enable-wp-debug-response-holder">
+				<span class="spinner"></span>
+			</div>
+		</div>
+		<?php
+		}
+		?>
+	</dd>
 </dl>
 
 <?php

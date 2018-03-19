@@ -6,3 +6,4 @@ composer.lock
 src/assets/css/
 src/assets/javascript/
 vendor/
+.idea/
