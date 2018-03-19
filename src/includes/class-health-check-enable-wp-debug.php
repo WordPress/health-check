@@ -46,16 +46,6 @@ class Health_Check_Enable_WP_Debug {
 		$wpconfig        = ABSPATH . 'wp-config.php';
 		$wpconfig_backup = ABSPATH . 'wp-config_hcbk.php';
 		$wpconfig_temp   = ABSPATH . 'wp-config_hctemp.php';
-		$find            = "define('WP_DEBUG', false);";
-		$hc_debug        = "// Enable WP_DEBUG mode
-define( 'WP_DEBUG', true );
-
-// Enable Debug logging to the /wp-content/debug.log file
-define( 'WP_DEBUG_LOG', true );
-
-// Disable display of errors and warnings
-define( 'WP_DEBUG_DISPLAY', false );
-@ini_set( 'display_errors', 0 );";
 
 		if ( ! copy( $wpconfig, $wpconfig_backup ) ) {
 			$response = array(
@@ -76,13 +66,13 @@ define( 'WP_DEBUG_DISPLAY', false );
 		$read_wpconfig  = fopen( $wpconfig, 'r' );
 		$write_wpconfig = fopen( $wpconfig_temp, 'w' );
 
-		$edited = false;
-
 		while ( ! feof( $read_wpconfig ) ) {
 			$line = fgets( $read_wpconfig );
-			if ( stristr( $line, $find ) ) {
-				$line   = $hc_debug . "\n";
-				$edited = true;
+			if ( stristr( $line, "define('WP_DEBUG', false);" ) ) {
+				$line  = "define('WP_DEBUG', true);" . "\n";
+				$line .= "define('WP_DEBUG_LOG', false);" . "\n";
+				$line .= "define('WP_DEBUG_DISPLAY', false);" . "\n";
+				$line .= "@ini_set('display_errors', 0);" . "\n";
 			}
 			fputs( $write_wpconfig, $line );
 		}
@@ -98,7 +88,7 @@ define( 'WP_DEBUG_DISPLAY', false );
 			wp_send_json_error( $response );
 		}
 
-		unlink( $wpconfig_temp );
+		//unlink( $wpconfig_temp );
 
 		$response = array(
 			'status'  => 'success',
