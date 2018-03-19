@@ -63,7 +63,7 @@ class HealthCheck {
 		add_action( 'wp_ajax_health-check-files-integrity-check', array( 'Health_Check_Files_Integrity', 'run_files_integrity_check' ) );
 		add_action( 'wp_ajax_health-check-view-file-diff', array( 'Health_Check_Files_Integrity', 'view_file_diff' ) );
 		add_action( 'wp_ajax_health-check-mail-check', array( 'Health_Check_Mail_Check', 'run_mail_check' ) );
-		add_action( 'wp_ajax_health-check-enable-wp-debug', array( 'Health_Check_Enable_WP_Debug', 'check_wp_debug' ) );
+		add_action( 'wp_ajax_health-check-wp-debug', array( 'Health_Check_WP_Debug', 'check_wp_debug' ) );
 		add_action( 'wp_ajax_health-check-confirm-warning', array( 'Health_Check_Troubleshoot', 'confirm_warning' ) );
 	}
 

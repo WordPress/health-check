@@ -55,7 +55,7 @@ jQuery( document ).ready(function( $ ) {
 		$( '#tools-enable-wp-debug-response-holder .spinner' ).addClass( 'is-active' );
 
 		data = {
-			'action': 'health-check-enable-wp-debug'
+			'action': 'health-check-wp-debug'
 		};
 
 		$.post(
