@@ -20,11 +20,13 @@ class Health_Check_WP_Debug {
 	 * @return void
 	 */
 	static function check_wp_debug() {
+
 		if ( ! WP_DEBUG ) {
 			Health_Check_WP_Debug::enable_wp_debug();
 		} else {
 			Health_Check_WP_Debug::disable_wp_debug();
 		}
+
 	}
 
 	/**
@@ -183,6 +185,26 @@ class Health_Check_WP_Debug {
 
 		$response = array(
 			'message' => $debug_contents,
+		);
+
+		wp_send_json_success( $response );
+
+	}
+
+	/**
+	 * Clear debug.log contents
+	 *
+	 * @uses file_put_contents()
+	 * @uses wp_die()
+	 *
+	 * @return void
+	 */
+	static function clear_wp_debug() {
+
+		file_put_contents( WP_CONTENT_DIR . '/debug.log', '' );
+
+		$response = array(
+			'message' => esc_html__( 'The debug.log has been cleared.', 'health-check' ),
 		);
 
 		wp_send_json_success( $response );

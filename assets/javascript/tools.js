@@ -116,6 +116,24 @@ jQuery( document ).ready(function( $ ) {
 			$( '#health-check-start-stop-wp-debug #stop-refresh' ).show();
 		} );
 
+		$( '#health-check-clear-wp-debug' ).submit( function( e ) {
+			var data;
+
+			e.preventDefault();
+
+			data = {
+				'action': 'health-check-wp-debug-clear'
+			};
+
+			$.post( ajaxurl, data, function( response ) {
+
+				$( '#tools-wp-debug-output textarea' ).html( response.data.message );
+				scrollDebugAreaToBottom();
+
+			} );
+
+		} );
+
 		$.post( ajaxurl, { 'action': 'health-check-wp-debug-read' }, function( response ) {
 			$( '#tools-wp-debug-output textarea' ).html( response.data.message );
 			scrollDebugAreaToBottom();

@@ -65,6 +65,7 @@ class HealthCheck {
 		add_action( 'wp_ajax_health-check-mail-check', array( 'Health_Check_Mail_Check', 'run_mail_check' ) );
 		add_action( 'wp_ajax_health-check-wp-debug', array( 'Health_Check_WP_Debug', 'check_wp_debug' ) );
 		add_action( 'wp_ajax_health-check-wp-debug-read', array( 'Health_Check_WP_Debug', 'read_wp_debug' ) );
+		add_action( 'wp_ajax_health-check-wp-debug-clear', array( 'Health_Check_WP_Debug', 'clear_wp_debug' ) );
 		add_action( 'wp_ajax_health-check-confirm-warning', array( 'Health_Check_Troubleshoot', 'confirm_warning' ) );
 	}
 
