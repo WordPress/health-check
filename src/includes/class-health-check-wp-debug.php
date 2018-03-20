@@ -112,8 +112,7 @@ class Health_Check_WP_Debug {
 	static function disable_wp_debug() {
 
 		$wpconfig        = ABSPATH . 'wp-config.php';
-		$wpconfig_backup = ABSPATH . 'wp-config_hcbk.php';
-		$wpconfig_temp   = ABSPATH . 'wp-config_hctemp.php';
+		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
 
 		if ( fopen( $wpconfig_backup, 'r' ) ) {
 			if ( ! copy( $wpconfig_backup, $wpconfig ) ) {
