@@ -105,8 +105,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<form action="#" id="health-check-clear-wp-debug" method="POST">
 				<input type="submit" class="button" value="<?php esc_html_e( 'Clear debug.log', 'health-check' ); ?>">
 			</form>
-			<form action="#" id="health-check-pause-wp-debug" method="POST">
-				<input type="submit" class="button" value="<?php esc_html_e( 'Pause refresh', 'health-check' ); ?>">
+			<form action="#" id="health-check-start-stop-wp-debug" method="POST">
+				<input type="button" id="stop-refresh" class="button" value="<?php esc_html_e( 'Stop refresh', 'health-check' ); ?>">
+				<input type="button" id="start-refresh" class="button" value="<?php esc_html_e( 'Start refresh', 'health-check' ); ?>">
+				<input type="hidden" id="debug-do-scroll" value="yes">
 			</form>
 			<div id="tools-disable-wp-debug-response-holder">
 				<span class="spinner"></span>

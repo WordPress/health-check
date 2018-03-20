@@ -62,9 +62,9 @@ jQuery( document ).ready(function( $ ) {
 			ajaxurl,
 			data,
 			function( response ) {
-				if ( response.data.status === 'success' ) {
+				if (  'success' === response.data.status ) {
 					location.reload();
-				} else if ( response.data.status === 'error' ) {
+				} else if ( 'error' === response.data.status ) {
 					$( '#tools-enable-wp-debug-response-holder .spinner' ).removeClass( 'is-active' );
 					$( '#tools-enable-wp-debug-response-holder' ).parent().css( 'height', 'auto' );
 					$( '#tools-enable-wp-debug-response-holder' ).html( response.data.message );
@@ -88,9 +88,9 @@ jQuery( document ).ready(function( $ ) {
 			ajaxurl,
 			data,
 			function( response ) {
-				if ( response.data.status === 'success' ) {
+				if ( 'success' === response.data.status ) {
 					location.reload();
-				} else if ( response.data.status === 'error' ) {
+				} else if ( 'error' === response.data.status ) {
 					$( '#tools-disable-wp-debug-response-holder .spinner' ).removeClass( 'is-active' );
 					$( '#tools-disable-wp-debug-response-holder' ).parent().css( 'height', 'auto' );
 					$( '#tools-disable-wp-debug-response-holder' ).html( response.data.message );
@@ -98,8 +98,17 @@ jQuery( document ).ready(function( $ ) {
 			});
 	});
 
-	if ( $( '#tools-wp-debug-output' ).length ){
-        console.log( 'debug output textarea found' );
+	if ( $( '#tools-wp-debug-output' ).length ) {
+        $( '#health-check-start-stop-wp-debug #stop-refresh' ).on( 'click', function() {
+			$( '#health-check-start-stop-wp-debug #debug-do-scroll' ).val( 'no' );
+			$( this ).hide();
+			$( '#health-check-start-stop-wp-debug #start-refresh' ).show();
+		} );
+		$( '#health-check-start-stop-wp-debug #start-refresh' ).on( 'click', function() {
+			$( '#health-check-start-stop-wp-debug #debug-do-scroll' ).val( 'yes' );
+			$( this ).hide();
+			$( '#health-check-start-stop-wp-debug #stop-refresh' ).show();
+		} );
     }
 
 	$( '#tools-file-integrity-response-holder' ).on( 'click', 'a[href="#health-check-diff"]', function( e ) {
