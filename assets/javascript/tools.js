@@ -1,5 +1,9 @@
 /* global ajaxurl */
 jQuery( document ).ready(function( $ ) {
+	function scrollDebugAreaToBottom() {
+		$( '#tools-wp-debug-output textarea' ).scrollTop( $( '#tools-wp-debug-output textarea' )[0].scrollHeight );
+	}
+
 	$( '#health-check-file-integrity' ).submit( function( e ) {
 		var data = {
 			'action': 'health-check-files-integrity-check'
@@ -99,10 +103,6 @@ jQuery( document ).ready(function( $ ) {
 	});
 
 	if ( $( '#tools-wp-debug-output' ).length ) {
-
-		function scrollDebugAreaToBottom() {
-			$( '#tools-wp-debug-output textarea' ).scrollTop( $( '#tools-wp-debug-output textarea' )[0].scrollHeight );
-		}
 
 		$( '#health-check-start-stop-wp-debug #stop-refresh' ).on( 'click', function() {
 			$( '#health-check-start-stop-wp-debug #debug-do-scroll' ).val( 'no' );

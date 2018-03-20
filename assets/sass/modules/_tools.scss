@@ -62,20 +62,24 @@
 	margin-bottom: 20px;
 
 	textarea {
-		font-family: Consolas, Monaco, monospace; font-size: 14px;
+		font-family: Consolas, Monaco, monospace;
+		font-size: 14px;
 		width: 100%;
 		height: 100%;
 	}
 }
 
 .tools-debug-on {
+
 	form {
 		display: inline-block;
 	}
 
 	#health-check-start-stop-wp-debug {
+
 		#stop-refresh {
 			display: none;
 		}
+
 	}
 }
