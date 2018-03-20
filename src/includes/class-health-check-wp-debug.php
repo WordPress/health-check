@@ -16,6 +16,7 @@ class Health_Check_WP_Debug {
 	 *
 	 * @uses copy()
 	 * @uses file()
+	 * @uses file_put_contents()
 	 * @uses fopen()
 	 * @uses strpos()
 	 * @uses fputs()
@@ -116,7 +117,6 @@ class Health_Check_WP_Debug {
 			}
 		}
 
-		// TODO: disable wp_debug if backup doesn't exist.
 	}
 
 	/**

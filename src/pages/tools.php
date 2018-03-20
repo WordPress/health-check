@@ -103,6 +103,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</form>
 			<?php } ?>
 			<?php if ( WP_DEBUG_LOG ) { ?>
+			<form action="#" id="health-check-disable-wp-debug-log" method="POST">
+				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Disable WP_DEBUG_LOG', 'health-check' ); ?>">
+			</form>
 			<div id="tools-wp-debug-output">
 				<textarea id="tools-live-debug-area"></textarea>
 			</div>
@@ -113,6 +116,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<input type="button" id="stop-refresh" class="button" value="<?php esc_html_e( 'Stop auto refresh', 'health-check' ); ?>">
 				<input type="button" id="start-refresh" class="button" value="<?php esc_html_e( 'Start auto refresh', 'health-check' ); ?>">
 				<input type="hidden" id="debug-do-scroll" value="no">
+			</form>
+			<?php } else { ?>
+			<form action="#" id="health-check-enable-wp-debug-log" method="POST">
+				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Enable WP_DEBUG_LOG', 'health-check' ); ?>">
 			</form>
 			<?php } ?>
 			<div id="tools-disable-wp-debug-response-holder">
