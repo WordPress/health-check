@@ -69,11 +69,33 @@ class Health_Check_WP_Debug {
 		$write_temp_wpconfig = fopen( $wpconfig_temp, 'w' );
 
 		foreach ( $editing_wpconfig as $line ) {
+			// find and remove the WP_DEBUG_LOG
+			if ( false !== strpos( $line, 'WP_DEBUG_LOG' ) ) {
+				$line = '';
+			}
+			// find and remove the WP_DEBUG_DISPLAY
+			if ( false !== strpos( $line, 'WP_DEBUG_DISPLAY' ) ) {
+				$line = '';
+			}
+			// find and remove the display_errors
+			if ( false !== strpos( $line, 'display_errors' ) ) {
+				$line = '';
+			}
+			// find and replace WP_DEBUG
 			if ( false !== strpos( $line, 'WP_DEBUG' ) && false === strpos( $line, '*' ) ) {
 				$line  = "define('WP_DEBUG', true);" . PHP_EOL;
-				$line .= "define('WP_DEBUG_LOG', false);" . PHP_EOL;
+				$line .= "define('WP_DEBUG_LOG', true);" . PHP_EOL;
 				$line .= "define('WP_DEBUG_DISPLAY', false);" . PHP_EOL;
-				$line .= "@ini_set('display_errors', 0);" . PHP_EOL;
+				$line .= "@ini_set('display_errors', 0);" . PHP_EOL . PHP_EOL;
+			} else {
+				// if no WP_DEBUG find the ABSPATH and prepend with WP_DEBUG
+				if ( false !== strpos( $line, "!defined('ABSPATH')" ) ) {
+					$line  = "define('WP_DEBUG', true);" . PHP_EOL;
+					$line .= "define('WP_DEBUG_LOG', true);" . PHP_EOL;
+					$line .= "define('WP_DEBUG_DISPLAY', false);" . PHP_EOL;
+					$line .= "@ini_set('display_errors', 0);" . PHP_EOL . PHP_EOL;
+					$line .= "if ( !defined('ABSPATH') )" . PHP_EOL;
+				}
 			}
 			fputs( $write_temp_wpconfig, $line );
 		}
