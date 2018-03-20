@@ -98,6 +98,10 @@ jQuery( document ).ready(function( $ ) {
 			});
 	});
 
+	if ( $( '#tools-wp-debug-output' ).length ){
+        console.log( 'debug output textarea found' );
+    }
+
 	$( '#tools-file-integrity-response-holder' ).on( 'click', 'a[href="#health-check-diff"]', function( e ) {
 		var file = $( this ).data( 'file' ),
 			data;

@@ -14,14 +14,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <dl id="health-check-tools" role="presentation" class="health-check-accordion">
 	<dt role="heading" aria-level="2">
-		<button aria-expanded="true" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-1" id="health-check-accordion-heading-1" type="button">
+		<button aria-expanded="<?php echo ( WP_DEBUG ? 'false' : 'true' ); ?>" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-1" id="health-check-accordion-heading-1" type="button">
 			<span class="title">
 				<?php esc_html_e( 'File Integrity', 'health-check' ); ?>
 			</span>
 			<span class="icon"></span>
 		</button>
 	</dt>
-	<dd id="health-check-accordion-block-1" role="region" aria-labelledby="health-check-accordion-heading-1" class="health-check-accordion-panel">
+	<dd id="health-check-accordion-block-1" role="region" aria-labelledby="health-check-accordion-heading-1" class="health-check-accordion-panel" <?php echo ( WP_DEBUG ? 'hidden="hidden"' : '' ); ?>>
 		<div>
 			<p>
 				<?php _e( 'The File Integrity checks all the core files with the <code>checksums</code> provided by the WordPress API to see if they are intact. If there are changes you will be able to make a Diff between the files hosted on WordPress.org and your installation to see what has been changed.', 'health-check' ); ?>
@@ -81,25 +81,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</dd>
 
 	<dt role="heading" aria-level="3">
-		<button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-3" id="health-check-accordion-heading-3" type="button">
+		<button aria-expanded="<?php echo ( WP_DEBUG ? 'true' : 'false' ); ?>" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-3" id="health-check-accordion-heading-3" type="button">
 			<span class="title">
 				<?php esc_html_e( 'Live WP Debug', 'health-check' ); ?>
 			</span>
 			<span class="icon"></span>
 		</button>
 	</dt>
-	<dd id="health-check-accordion-block-3" role="region" aria-labelledby="health-check-accordion-heading-3" class="health-check-accordion-panel" hidden="hidden">
+	<dd id="health-check-accordion-block-3" role="region" aria-labelledby="health-check-accordion-heading-3" class="health-check-accordion-panel" <?php echo ( WP_DEBUG ? '' : 'hidden="hidden"' ); ?>>
 		<?php
 		if ( WP_DEBUG ) {
 		?>
-		<div>
+		<div class="tools-debug-on">
 			<p>
 				<?php _e( 'Disables <code>WP_DEBUG</code>', 'health-check' ); ?>
 			</p>
-			<form action="#" id="health-check-disable-wp-debug" method="POST">
-				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Disable', 'health-check' ); ?>">
+				<form action="#" id="health-check-disable-wp-debug" method="POST">
+					<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Disable', 'health-check' ); ?>">
+				</form>
+			<div id="tools-wp-debug-output">
+				<textarea id="tools-live-debug-area"></textarea>
+			</div>
+			<form action="#" id="health-check-clear-wp-debug" method="POST">
+				<input type="submit" class="button" value="<?php esc_html_e( 'Clear debug.log', 'health-check' ); ?>">
 			</form>
-
+			<form action="#" id="health-check-pause-wp-debug" method="POST">
+				<input type="submit" class="button" value="<?php esc_html_e( 'Pause refresh', 'health-check' ); ?>">
+			</form>
 			<div id="tools-disable-wp-debug-response-holder">
 				<span class="spinner"></span>
 			</div>

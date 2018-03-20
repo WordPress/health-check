@@ -54,3 +54,22 @@
 #tools-disable-wp-debug-response-holder {
 	margin-top: 20px;
 }
+
+#tools-wp-debug-output {
+	width: 100%;
+	height: 500px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+
+	textarea {
+		font-family: Consolas, Monaco, monospace; font-size: 14px;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.tools-debug-on {
+	form {
+		display: inline-block;
+	}
+}
