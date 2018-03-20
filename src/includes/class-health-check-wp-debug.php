@@ -30,7 +30,7 @@ class Health_Check_WP_Debug {
 
 		$wpconfig        = ABSPATH . 'wp-config.php';
 		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
-		$wpconfig_temp   = ABSPATH . 'wp-config_hc_temp.php';
+		$wp_debug_found  = 'no';
 
 		if ( ! copy( $wpconfig, $wpconfig_backup ) ) {
 			$response = array(
@@ -40,61 +40,40 @@ class Health_Check_WP_Debug {
 			wp_send_json_error( $response );
 		}
 
-		if ( ! copy( $wpconfig, $wpconfig_temp ) ) {
-			$response = array(
-				'status'  => 'error',
-				'message' => esc_html__( 'Could not create a temp file of wp-config.php.', 'health-check' ),
-			);
-			wp_send_json_error( $response );
-		}
+		$editing_wpconfig = file( $wpconfig );
 
-		$editing_wpconfig = file( $wpconfig_temp );
+		file_put_contents( $wpconfig, '' );
 
-		$write_temp_wpconfig = fopen( $wpconfig_temp, 'w' );
+		$write_wpconfig = fopen( $wpconfig, 'w' );
 
 		foreach ( $editing_wpconfig as $line ) {
-			// find and remove the WP_DEBUG_LOG
-			if ( false !== strpos( $line, 'WP_DEBUG_LOG' ) ) {
-				$line = '';
-			}
-			// find and remove the WP_DEBUG_DISPLAY
-			if ( false !== strpos( $line, 'WP_DEBUG_DISPLAY' ) ) {
-				$line = '';
-			}
-			// find and remove the display_errors
-			if ( false !== strpos( $line, 'display_errors' ) ) {
-				$line = '';
-			}
-			// find and replace WP_DEBUG
 			if ( false !== strpos( $line, 'WP_DEBUG' ) && false === strpos( $line, '*' ) ) {
-				$line  = "define('WP_DEBUG', true);" . PHP_EOL;
-				$line .= "define('WP_DEBUG_LOG', true);" . PHP_EOL;
-				$line .= "define('WP_DEBUG_DISPLAY', false);" . PHP_EOL;
-				$line .= "@ini_set('display_errors', 0);" . PHP_EOL . PHP_EOL;
-			} else {
-				// if no WP_DEBUG find the ABSPATH and prepend with WP_DEBUG
+				$line           = "define( 'WP_DEBUG', true );" . PHP_EOL;
+				$wp_debug_found = 'yes';
+			}
+			fputs( $write_wpconfig, $line );
+		}
+
+		fclose( $write_wpconfig );
+
+		if ( 'no' === $wp_debug_found ) {
+
+			$editing_wpconfig = file( $wpconfig );
+
+			file_put_contents( $wpconfig, '' );
+
+			$write_wpconfig = fopen( $wpconfig, 'w' );
+
+			foreach ( $editing_wpconfig as $line ) {
 				if ( false !== strpos( $line, "!defined('ABSPATH')" ) ) {
-					$line  = "define('WP_DEBUG', true);" . PHP_EOL;
-					$line .= "define('WP_DEBUG_LOG', true);" . PHP_EOL;
-					$line .= "define('WP_DEBUG_DISPLAY', false);" . PHP_EOL;
-					$line .= "@ini_set('display_errors', 0);" . PHP_EOL . PHP_EOL;
+					$line  = "define( 'WP_DEBUG', true );" . PHP_EOL;
 					$line .= "if ( !defined('ABSPATH') )" . PHP_EOL;
 				}
+				fputs( $write_wpconfig, $line );
 			}
-			fputs( $write_temp_wpconfig, $line );
+
+			fclose( $write_wpconfig );
 		}
-
-		fclose( $write_temp_wpconfig );
-
-		if ( ! copy( $wpconfig_temp, $wpconfig ) ) {
-			$response = array(
-				'status'  => 'error',
-				'message' => esc_html__( 'Could create wp-config.php from the temp file.', 'health-check' ),
-			);
-			wp_send_json_error( $response );
-		}
-
-		unlink( $wpconfig_temp );
 
 		$response = array(
 			'status'  => 'success',
