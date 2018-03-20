@@ -31,10 +31,9 @@ class Health_Check_WP_Debug {
 	 * Enables WP_DEBUG and creates a backup of wp-config.php
 	 *
 	 * @uses copy()
+	 * @uses file()
 	 * @uses fopen()
-	 * @uses feof()
-	 * @uses fgets()
-	 * @uses stristr()
+	 * @uses strpos()
 	 * @uses fputs()
 	 * @uses fclose()
 	 * @uses wp_send_json_error()
@@ -46,8 +45,8 @@ class Health_Check_WP_Debug {
 	static function enable_wp_debug() {
 
 		$wpconfig        = ABSPATH . 'wp-config.php';
-		$wpconfig_backup = ABSPATH . 'wp-config_hcbk.php';
-		$wpconfig_temp   = ABSPATH . 'wp-config_hctemp.php';
+		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
+		$wpconfig_temp   = ABSPATH . 'wp-config_hc_temp.php';
 
 		if ( ! copy( $wpconfig, $wpconfig_backup ) ) {
 			$response = array(
@@ -65,22 +64,21 @@ class Health_Check_WP_Debug {
 			wp_send_json_error( $response );
 		}
 
-		$read_wpconfig  = fopen( $wpconfig, 'r' );
-		$write_wpconfig = fopen( $wpconfig_temp, 'w' );
+		$editing_wpconfig = file( $wpconfig_temp );
 
-		while ( ! feof( $read_wpconfig ) ) {
-			$line = fgets( $read_wpconfig );
-			if ( stristr( $line, "define('WP_DEBUG', false);" ) ) {
-				$line  = "define('WP_DEBUG', true);" . "\n";
-				$line .= "define('WP_DEBUG_LOG', false);" . "\n";
-				$line .= "define('WP_DEBUG_DISPLAY', false);" . "\n";
-				$line .= "@ini_set('display_errors', 0);" . "\n";
+		$write_temp_wpconfig = fopen( $wpconfig_temp, 'w' );
+
+		foreach ( $editing_wpconfig as $line ) {
+			if ( false !== strpos( $line, 'WP_DEBUG' ) && false === strpos( $line, '*' ) ) {
+				$line  = "define('WP_DEBUG', true);" . PHP_EOL;
+				$line .= "define('WP_DEBUG_LOG', false);" . PHP_EOL;
+				$line .= "define('WP_DEBUG_DISPLAY', false);" . PHP_EOL;
+				$line .= "@ini_set('display_errors', 0);" . PHP_EOL;
 			}
-			fputs( $write_wpconfig, $line );
+			fputs( $write_temp_wpconfig, $line );
 		}
 
-		fclose( $read_wpconfig );
-		fclose( $write_wpconfig );
+		fclose( $write_temp_wpconfig );
 
 		if ( ! copy( $wpconfig_temp, $wpconfig ) ) {
 			$response = array(
