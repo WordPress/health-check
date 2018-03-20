@@ -156,4 +156,37 @@ class Health_Check_WP_Debug {
 		// TODO: disable wp_debug if backup doesn't exist.
 	}
 
+	/**
+	 * Read debug.log contents
+	 *
+	 * @uses file_exists()
+	 * @uses fopen()
+	 * @uses die()
+	 * @uses fwrite()
+	 * @uses fclose()
+	 * @uses WP_CONTENT_DIR
+	 * @uses wp_die()
+	 * @uses wp_send_json_success()
+	 *
+	 * @return void
+	 */
+	static function read_wp_debug() {
+
+		// check if debug.log exists else create it to avoid error.
+		if ( ! file_exists( WP_CONTENT_DIR . '/debug.log' ) ) {
+			$debug_log = fopen( WP_CONTENT_DIR . '/debug.log', 'w' ) or die( 'Cannot create debug.log!' );
+			fwrite( $debug_log, '' );
+			fclose( $debug_log );
+		}
+
+		$debug_contents = file_get_contents( WP_CONTENT_DIR . '/debug.log' );
+
+		$response = array(
+			'message' => $debug_contents,
+		);
+
+		wp_send_json_success( $response );
+
+	}
+
 }

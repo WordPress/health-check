@@ -99,16 +99,37 @@ jQuery( document ).ready(function( $ ) {
 	});
 
 	if ( $( '#tools-wp-debug-output' ).length ) {
-        $( '#health-check-start-stop-wp-debug #stop-refresh' ).on( 'click', function() {
+
+		function scrollDebugAreaToBottom() {
+			$( '#tools-wp-debug-output textarea' ).scrollTop( $( '#tools-wp-debug-output textarea' )[0].scrollHeight );
+		}
+
+		$( '#health-check-start-stop-wp-debug #stop-refresh' ).on( 'click', function() {
 			$( '#health-check-start-stop-wp-debug #debug-do-scroll' ).val( 'no' );
 			$( this ).hide();
 			$( '#health-check-start-stop-wp-debug #start-refresh' ).show();
 		} );
+
 		$( '#health-check-start-stop-wp-debug #start-refresh' ).on( 'click', function() {
 			$( '#health-check-start-stop-wp-debug #debug-do-scroll' ).val( 'yes' );
 			$( this ).hide();
 			$( '#health-check-start-stop-wp-debug #stop-refresh' ).show();
 		} );
+
+		$.post( ajaxurl, { 'action': 'health-check-wp-debug-read' }, function( response ) {
+			$( '#tools-wp-debug-output textarea' ).html( response.data.message );
+			scrollDebugAreaToBottom();
+		} );
+
+		setInterval( function() {
+			if ( 'yes' === $( '#health-check-start-stop-wp-debug #debug-do-scroll' ).val() ) {
+				$.post( ajaxurl, { 'action': 'health-check-wp-debug-read' }, function( response ) {
+					$( '#tools-wp-debug-output textarea' ).html( response.data.message );
+					scrollDebugAreaToBottom();
+				} );
+			}
+		}, 3000 );
+
     }
 
 	$( '#tools-file-integrity-response-holder' ).on( 'click', 'a[href="#health-check-diff"]', function( e ) {
