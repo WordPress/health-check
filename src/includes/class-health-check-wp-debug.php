@@ -12,24 +12,6 @@
 class Health_Check_WP_Debug {
 
 	/**
-	 * Checks if WP_DEBUG is enabled and acts accordingly
-	 *
-	 * @uses Health_Check_WP_Debug::enable_wp_debug()
-	 * @uses Health_Check_WP_Debug::disable_wp_debug()
-	 *
-	 * @return void
-	 */
-	static function check_wp_debug() {
-
-		if ( ! WP_DEBUG ) {
-			Health_Check_WP_Debug::enable_wp_debug();
-		} else {
-			Health_Check_WP_Debug::disable_wp_debug();
-		}
-
-	}
-
-	/**
 	 * Enables WP_DEBUG and creates a backup of wp-config.php
 	 *
 	 * @uses copy()

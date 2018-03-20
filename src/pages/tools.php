@@ -90,7 +90,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</dt>
 	<dd id="health-check-accordion-block-3" role="region" aria-labelledby="health-check-accordion-heading-3" class="health-check-accordion-panel" <?php echo ( WP_DEBUG ? '' : 'hidden="hidden"' ); ?>>
 		<?php
-		if ( WP_DEBUG ) {
+		if ( WP_DEBUG_LOG ) {
 		?>
 		<div class="tools-debug-on">
 			<p>

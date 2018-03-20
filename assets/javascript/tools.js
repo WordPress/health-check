@@ -59,7 +59,7 @@ jQuery( document ).ready(function( $ ) {
 		$( '#tools-enable-wp-debug-response-holder .spinner' ).addClass( 'is-active' );
 
 		data = {
-			'action': 'health-check-wp-debug'
+			'action': 'health-check-wp-debug-enable'
 		};
 
 		$.post(
@@ -85,7 +85,7 @@ jQuery( document ).ready(function( $ ) {
 		$( '#tools-disable-wp-debug-response-holder .spinner' ).addClass( 'is-active' );
 
 		data = {
-			'action': 'health-check-wp-debug'
+			'action': 'health-check-wp-debug-disable'
 		};
 
 		$.post(
