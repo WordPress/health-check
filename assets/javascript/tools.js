@@ -102,6 +102,58 @@ jQuery( document ).ready(function( $ ) {
 			});
 	});
 
+	$( '#health-check-enable-wp-debug-log' ).submit( function( e ) {
+		var data;
+
+		e.preventDefault();
+
+		$( '#tools-enable-wp-debug-response-holder' ).html( '<span class="spinner"></span>' );
+		$( '#tools-enable-wp-debug-response-holder .spinner' ).addClass( 'is-active' );
+
+		data = {
+			'action': 'health-check-wp-debug-enable-log'
+		};
+
+		$.post(
+			ajaxurl,
+			data,
+			function( response ) {
+				if (  'success' === response.data.status ) {
+					location.reload();
+				} else if ( 'error' === response.data.status ) {
+					$( '#tools-enable-wp-debug-response-holder .spinner' ).removeClass( 'is-active' );
+					$( '#tools-enable-wp-debug-response-holder' ).parent().css( 'height', 'auto' );
+					$( '#tools-enable-wp-debug-response-holder' ).html( response.data.message );
+				}
+			});
+	});
+
+	$( '#health-check-disable-wp-debug-log' ).submit( function( e ) {
+		var data;
+
+		e.preventDefault();
+
+		$( '#tools-disable-wp-debug-response-holder' ).html( '<span class="spinner"></span>' );
+		$( '#tools-disable-wp-debug-response-holder .spinner' ).addClass( 'is-active' );
+
+		data = {
+			'action': 'health-check-wp-debug-disable_log'
+		};
+
+		$.post(
+			ajaxurl,
+			data,
+			function( response ) {
+				if ( 'success' === response.data.status ) {
+					location.reload();
+				} else if ( 'error' === response.data.status ) {
+					$( '#tools-disable-wp-debug-response-holder .spinner' ).removeClass( 'is-active' );
+					$( '#tools-disable-wp-debug-response-holder' ).parent().css( 'height', 'auto' );
+					$( '#tools-disable-wp-debug-response-holder' ).html( response.data.message );
+				}
+			});
+	});
+
 	if ( $( '#tools-wp-debug-output' ).length ) {
 
 		$( '#health-check-start-stop-wp-debug #stop-refresh' ).on( 'click', function() {
