@@ -12,7 +12,7 @@
 class Health_Check_WP_Debug {
 
 	/**
-	 * Enables WP_DEBUG and creates a backup of wp-config.php
+	 * Enables WP_DEBUG
 	 *
 	 * @uses copy()
 	 * @uses file()
@@ -29,17 +29,19 @@ class Health_Check_WP_Debug {
 	 */
 	static function enable_wp_debug() {
 
-		$wpconfig        = ABSPATH . 'wp-config.php';
-		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
-		$wp_debug_found  = 'no';
+		$create_backup = Health_Check_WP_Debug::create_wp_config_backup();
 
-		if ( ! copy( $wpconfig, $wpconfig_backup ) ) {
+		if ( 'fail' === $create_backup ) {
 			$response = array(
 				'status'  => 'error',
 				'message' => esc_html__( 'Could not create a backup of wp-config.php.', 'health-check' ),
 			);
 			wp_send_json_error( $response );
 		}
+
+		$wpconfig = ABSPATH . 'wp-config.php';
+
+		$wp_debug_found = 'no';
 
 		$editing_wpconfig = file( $wpconfig );
 
@@ -120,7 +122,7 @@ class Health_Check_WP_Debug {
 	}
 
 	/**
-	 * Enables WP_DEBUG_LOG and creates a backup of wp-config.php
+	 * Enables WP_DEBUG_LOG
 	 *
 	 * @uses copy()
 	 * @uses file()
@@ -137,18 +139,17 @@ class Health_Check_WP_Debug {
 	 */
 	static function enable_wp_debug_log() {
 
-		$wpconfig        = ABSPATH . 'wp-config.php';
-		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
+		$create_backup = Health_Check_WP_Debug::create_wp_config_backup();
 
-		if ( ! file_exists( $wpconfig_backup ) ) {
-			if ( ! copy( $wpconfig, $wpconfig_backup ) ) {
-				$response = array(
-					'status'  => 'error',
-					'message' => esc_html__( 'Could not create a backup of wp-config.php.', 'health-check' ),
-				);
-				wp_send_json_error( $response );
-			}
+		if ( 'fail' === $create_backup ) {
+			$response = array(
+				'status'  => 'error',
+				'message' => esc_html__( 'Could not create a backup of wp-config.php.', 'health-check' ),
+			);
+			wp_send_json_error( $response );
 		}
+
+		$wpconfig = ABSPATH . 'wp-config.php';
 
 		$wp_debug_log_found = 'no';
 
@@ -213,18 +214,17 @@ class Health_Check_WP_Debug {
 	 */
 	static function disable_wp_debug_log() {
 
-		$wpconfig        = ABSPATH . 'wp-config.php';
-		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
+		$create_backup = Health_Check_WP_Debug::create_wp_config_backup();
 
-		if ( ! file_exists( $wpconfig_backup ) ) {
-			if ( ! copy( $wpconfig, $wpconfig_backup ) ) {
-				$response = array(
-					'status'  => 'error',
-					'message' => esc_html__( 'Could not create a backup of wp-config.php.', 'health-check' ),
-				);
-				wp_send_json_error( $response );
-			}
+		if ( 'fail' === $create_backup ) {
+			$response = array(
+				'status'  => 'error',
+				'message' => esc_html__( 'Could not create a backup of wp-config.php.', 'health-check' ),
+			);
+			wp_send_json_error( $response );
 		}
+
+		$wpconfig = ABSPATH . 'wp-config.php';
 
 		$editing_wpconfig = file( $wpconfig );
 
@@ -248,6 +248,26 @@ class Health_Check_WP_Debug {
 
 		wp_send_json_success( $response );
 
+	}
+
+	/**
+	 * Creates a backup of wp-config.php if it doesn't exist
+	 *
+	 * @uses file_exists()
+	 * @uses copy()
+	 *
+	 * @return string $output Success/Fail
+	 */
+	static function create_wp_config_backup() {
+		$wpconfig        = ABSPATH . 'wp-config.php';
+		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
+		$output          = 'success';
+		if ( ! file_exists( $wpconfig_backup ) ) {
+			if ( ! copy( $wpconfig, $wpconfig_backup ) ) {
+				$output = 'fail';
+			}
+		}
+		return $output;
 	}
 
 	/**
