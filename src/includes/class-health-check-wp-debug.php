@@ -190,7 +190,7 @@ class Health_Check_WP_Debug {
 
 		$response = array(
 			'status'  => 'success',
-			'message' => esc_html__( 'WP_DEBUG was enabled.', 'health-check' ),
+			'message' => esc_html__( 'WP_DEBUG_LOG was enabled.', 'health-check' ),
 		);
 
 		wp_send_json_success( $response );
@@ -243,7 +243,7 @@ class Health_Check_WP_Debug {
 
 		$response = array(
 			'status'  => 'success',
-			'message' => esc_html__( 'WP_DEBUG was enabled.', 'health-check' ),
+			'message' => esc_html__( 'WP_DEBUG_LOG was enabled.', 'health-check' ),
 		);
 
 		wp_send_json_success( $response );
