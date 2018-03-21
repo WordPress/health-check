@@ -97,9 +97,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<form action="#" id="health-check-disable-wp-debug" method="POST">
 				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Disable WP_DEBUG', 'health-check' ); ?>">
 			</form>
-			<form action="#" id="health-check-enable-wp-debug-log" method="POST">
-				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Enable WP_DEBUG_LOG', 'health-check' ); ?>">
-			</form>
 			<?php } else { ?>
 			<form action="#" id="health-check-enable-wp-debug" method="POST">
 				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Enable WP_DEBUG', 'health-check' ); ?>">
@@ -109,6 +106,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<form action="#" id="health-check-disable-wp-debug-log" method="POST">
 				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Disable WP_DEBUG_LOG', 'health-check' ); ?>">
 			</form>
+			<?php } elseif ( WP_DEBUG ) { ?>
+			<form action="#" id="health-check-enable-wp-debug-log" method="POST">
+				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Enable WP_DEBUG_LOG', 'health-check' ); ?>">
+			</form>
+			<?php } ?>
+			<?php if ( WP_DEBUG_LOG ) { ?>
 			<div id="tools-wp-debug-output">
 				<textarea id="tools-live-debug-area"></textarea>
 			</div>
