@@ -63,6 +63,8 @@ class HealthCheck {
 		add_action( 'wp_ajax_health-check-files-integrity-check', array( 'Health_Check_Files_Integrity', 'run_files_integrity_check' ) );
 		add_action( 'wp_ajax_health-check-view-file-diff', array( 'Health_Check_Files_Integrity', 'view_file_diff' ) );
 		add_action( 'wp_ajax_health-check-mail-check', array( 'Health_Check_Mail_Check', 'run_mail_check' ) );
+		add_action( 'wp_ajax_health-check-wp-debug-create-backup', array( 'Health_Check_WP_Debug', 'create_wp_config_backup' ) );
+		add_action( 'wp_ajax_health-check-wp-debug-restore-backup', array( 'Health_Check_WP_Debug', 'restore_wp_config_backup' ) );
 		add_action( 'wp_ajax_health-check-wp-debug-enable', array( 'Health_Check_WP_Debug', 'enable_wp_debug' ) );
 		add_action( 'wp_ajax_health-check-wp-debug-disable', array( 'Health_Check_WP_Debug', 'disable_wp_debug' ) );
 		add_action( 'wp_ajax_health-check-wp-debug-enable-log', array( 'Health_Check_WP_Debug', 'enable_wp_debug_log' ) );

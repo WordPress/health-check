@@ -23,21 +23,10 @@ class Health_Check_WP_Debug {
 	 * @uses fclose()
 	 * @uses wp_send_json_error()
 	 * @uses wp_send_json_succes()
-	 * @uses unlink()
 	 *
 	 * @return void
 	 */
 	static function enable_wp_debug() {
-
-		$create_backup = Health_Check_WP_Debug::create_wp_config_backup();
-
-		if ( 'fail' === $create_backup ) {
-			$response = array(
-				'status'  => 'error',
-				'message' => esc_html__( 'Could not create a backup of wp-config.php.', 'health-check' ),
-			);
-			wp_send_json_error( $response );
-		}
 
 		$wpconfig = ABSPATH . 'wp-config.php';
 
@@ -50,7 +39,7 @@ class Health_Check_WP_Debug {
 		$write_wpconfig = fopen( $wpconfig, 'w' );
 
 		foreach ( $editing_wpconfig as $line ) {
-			if ( false !== strpos( $line, 'WP_DEBUG' ) && false === strpos( $line, '*' ) ) {
+			if ( false !== strpos( $line, "'WP_DEBUG'" ) || false !== strpos( $line, '"WP_DEBUG"' ) ) {
 				$line           = "define( 'WP_DEBUG', true );" . PHP_EOL;
 				$wp_debug_found = 'yes';
 			}
@@ -99,25 +88,29 @@ class Health_Check_WP_Debug {
 	 */
 	static function disable_wp_debug() {
 
-		$wpconfig        = ABSPATH . 'wp-config.php';
-		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
+		$wpconfig = ABSPATH . 'wp-config.php';
 
-		if ( fopen( $wpconfig_backup, 'r' ) ) {
-			if ( ! copy( $wpconfig_backup, $wpconfig ) ) {
-				$response = array(
-					'status'  => 'error',
-					'message' => esc_html__( 'Could create wp-config.php from the backup file.', 'health-check' ),
-				);
-				wp_send_json_error( $response );
-			} else {
-				$response = array(
-					'status'  => 'success',
-					'message' => esc_html__( 'WP_DEBUG was disabled.', 'health-check' ),
-				);
+		$editing_wpconfig = file( $wpconfig );
 
-				wp_send_json_success( $response );
+		file_put_contents( $wpconfig, '' );
+
+		$write_wpconfig = fopen( $wpconfig, 'w' );
+
+		foreach ( $editing_wpconfig as $line ) {
+			if ( false !== strpos( $line, "'WP_DEBUG'" ) || false !== strpos( $line, '"WP_DEBUG"' ) ) {
+				$line = "define( 'WP_DEBUG', false );" . PHP_EOL;
 			}
+			fputs( $write_wpconfig, $line );
 		}
+
+		fclose( $write_wpconfig );
+
+		$response = array(
+			'status'  => 'success',
+			'message' => esc_html__( 'WP_DEBUG was disabled.', 'health-check' ),
+		);
+
+		wp_send_json_success( $response );
 
 	}
 
@@ -133,21 +126,10 @@ class Health_Check_WP_Debug {
 	 * @uses fclose()
 	 * @uses wp_send_json_error()
 	 * @uses wp_send_json_succes()
-	 * @uses unlink()
 	 *
 	 * @return void
 	 */
 	static function enable_wp_debug_log() {
-
-		$create_backup = Health_Check_WP_Debug::create_wp_config_backup();
-
-		if ( 'fail' === $create_backup ) {
-			$response = array(
-				'status'  => 'error',
-				'message' => esc_html__( 'Could not create a backup of wp-config.php.', 'health-check' ),
-			);
-			wp_send_json_error( $response );
-		}
 
 		$wpconfig = ABSPATH . 'wp-config.php';
 
@@ -160,9 +142,8 @@ class Health_Check_WP_Debug {
 		$write_wpconfig = fopen( $wpconfig, 'w' );
 
 		foreach ( $editing_wpconfig as $line ) {
-			if ( false !== strpos( $line, 'WP_DEBUG' ) && false === strpos( $line, '*' ) ) {
-				$line               = "define( 'WP_DEBUG', true );" . PHP_EOL;
-				$line              .= "define( 'WP_DEBUG_LOG', true );" . PHP_EOL;
+			if ( false !== strpos( $line, "'WP_DEBUG_LOG'" ) || false !== strpos( $line, '"WP_DEBUG_LOG"' ) ) {
+				$line               = "define( 'WP_DEBUG_LOG', true );" . PHP_EOL;
 				$wp_debug_log_found = 'yes';
 			}
 			fputs( $write_wpconfig, $line );
@@ -214,16 +195,6 @@ class Health_Check_WP_Debug {
 	 */
 	static function disable_wp_debug_log() {
 
-		$create_backup = Health_Check_WP_Debug::create_wp_config_backup();
-
-		if ( 'fail' === $create_backup ) {
-			$response = array(
-				'status'  => 'error',
-				'message' => esc_html__( 'Could not create a backup of wp-config.php.', 'health-check' ),
-			);
-			wp_send_json_error( $response );
-		}
-
 		$wpconfig = ABSPATH . 'wp-config.php';
 
 		$editing_wpconfig = file( $wpconfig );
@@ -233,7 +204,7 @@ class Health_Check_WP_Debug {
 		$write_wpconfig = fopen( $wpconfig, 'w' );
 
 		foreach ( $editing_wpconfig as $line ) {
-			if ( false !== strpos( $line, 'WP_DEBUG_LOG' ) ) {
+			if ( false !== strpos( $line, "'WP_DEBUG_LOG'" ) || false !== strpos( $line, '"WP_DEBUG_LOG"' ) ) {
 				$line = "define( 'WP_DEBUG_LOG', false );" . PHP_EOL;
 			}
 			fputs( $write_wpconfig, $line );
@@ -243,7 +214,7 @@ class Health_Check_WP_Debug {
 
 		$response = array(
 			'status'  => 'success',
-			'message' => esc_html__( 'WP_DEBUG_LOG was enabled.', 'health-check' ),
+			'message' => esc_html__( 'WP_DEBUG_LOG was disabled.', 'health-check' ),
 		);
 
 		wp_send_json_success( $response );
@@ -251,7 +222,24 @@ class Health_Check_WP_Debug {
 	}
 
 	/**
-	 * Creates a backup of wp-config.php if it doesn't exist
+	 * Check if wp-config backup exists
+	 *
+	 * @uses file_exists()
+	 *
+	 * @return bool true/false depending if the backup exists
+	 */
+	static function check_wp_config_backup() {
+		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
+
+		if ( file_exists( $wpconfig_backup ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Creates a backup of wp-config.php
 	 *
 	 * @uses file_exists()
 	 * @uses copy()
@@ -261,13 +249,52 @@ class Health_Check_WP_Debug {
 	static function create_wp_config_backup() {
 		$wpconfig        = ABSPATH . 'wp-config.php';
 		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
-		$output          = 'success';
-		if ( ! file_exists( $wpconfig_backup ) ) {
-			if ( ! copy( $wpconfig, $wpconfig_backup ) ) {
-				$output = 'fail';
-			}
+
+		if ( ! copy( $wpconfig, $wpconfig_backup ) ) {
+			$response = array(
+				'status'  => 'error',
+				'message' => esc_html__( 'wp-config.php backup failed.', 'health-check' ),
+			);
+			wp_send_json_error( $response );
 		}
-		return $output;
+
+		$response = array(
+			'status'  => 'success',
+			'message' => esc_html__( 'wp-config.php backup was created.', 'health-check' ),
+		);
+
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Restores a backup of wp-config.php
+	 *
+	 * @uses file_exists()
+	 * @uses copy()
+	 * @uses unlink()
+	 *
+	 * @return string $output Success/Fail
+	 */
+	static function restore_wp_config_backup() {
+		$wpconfig        = ABSPATH . 'wp-config.php';
+		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
+
+		if ( ! copy( $wpconfig_backup, $wpconfig ) ) {
+			$response = array(
+				'status'  => 'error',
+				'message' => esc_html__( 'wp-config.php restore failed.', 'health-check' ),
+			);
+			wp_send_json_error( $response );
+		}
+
+		$response = array(
+			'status'  => 'success',
+			'message' => esc_html__( 'wp-config.php backup was restored.', 'health-check' ),
+		);
+
+		unlink( $wpconfig_backup );
+
+		wp_send_json_success( $response );
 	}
 
 	/**
@@ -320,6 +347,37 @@ class Health_Check_WP_Debug {
 		);
 
 		wp_send_json_success( $response );
+
+	}
+
+	/**
+	 * Checks the debug constants
+	 *
+	 * @uses WP_DEBUG
+	 * @uses WP_DEBUG_LOG
+	 * @uses WP_DEBUG_DISPLAY
+	 * @uses SCRIPT_DEBUG
+	 *
+	 * @return string $output html representation for enable / disabled debug constants
+	 */
+	static function check_wp_debug_constants() {
+
+		$enabled  = '<span style="color:green;">' . esc_html__( 'Enabled', 'health-check' ) . '</span>';
+		$disabled = '<span style="color:red;">' . esc_html__( 'Disabled', 'health-check' ) . '</span>';
+
+		$output  = '<div class="notice notice-info inline">';
+		$output .= '<p><strong>WP_DEBUG:</strong> ';
+		$output .= ( WP_DEBUG ? $enabled : $disabled );
+		$output .= ' | <strong>WP_DEBUG_LOG:</strong> ';
+		$output .= ( WP_DEBUG_LOG ? $enabled : $disabled );
+		$output .= ' | <strong>WP_DEBUG_DISPLAY:</strong> ';
+		$output .= ( WP_DEBUG_DISPLAY ? $enabled : $disabled );
+		$output .= ' | <strong>SCRIPT_DEBUG:</strong> ';
+		$output .= ( SCRIPT_DEBUG ? $enabled : $disabled );
+		$output .= '</p>';
+		$output .= '</div>';
+
+		return $output;
 
 	}
 

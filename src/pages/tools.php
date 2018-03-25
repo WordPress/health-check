@@ -10,18 +10,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
+if ( ! empty( $_GET['debugtool'] ) ) {
+	$debugtool = true;
+} else {
+	$debugtool = false;
+}
+
 ?>
 
 <dl id="health-check-tools" role="presentation" class="health-check-accordion">
 	<dt role="heading" aria-level="2">
-		<button aria-expanded="<?php echo ( WP_DEBUG_LOG ? 'false' : 'true' ); ?>" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-1" id="health-check-accordion-heading-1" type="button">
+		<button aria-expanded="<?php echo ( $debugtool ? 'false' : 'true' ); ?>" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-1" id="health-check-accordion-heading-1" type="button">
 			<span class="title">
 				<?php esc_html_e( 'File Integrity', 'health-check' ); ?>
 			</span>
 			<span class="icon"></span>
 		</button>
 	</dt>
-	<dd id="health-check-accordion-block-1" role="region" aria-labelledby="health-check-accordion-heading-1" class="health-check-accordion-panel" <?php echo ( WP_DEBUG_LOG ? 'hidden="hidden"' : '' ); ?>>
+	<dd id="health-check-accordion-block-1" role="region" aria-labelledby="health-check-accordion-heading-1" class="health-check-accordion-panel" <?php echo ( $debugtool ? 'hidden="hidden"' : '' ); ?>>
 		<div>
 			<p>
 				<?php _e( 'The File Integrity checks all the core files with the <code>checksums</code> provided by the WordPress API to see if they are intact. If there are changes you will be able to make a Diff between the files hosted on WordPress.org and your installation to see what has been changed.', 'health-check' ); ?>
@@ -81,48 +87,62 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</dd>
 
 	<dt role="heading" aria-level="3">
-		<button aria-expanded="<?php echo ( WP_DEBUG_LOG ? 'true' : 'false' ); ?>" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-3" id="health-check-accordion-heading-3" type="button">
+		<button aria-expanded="<?php echo ( $debugtool ? 'true' : 'false' ); ?>" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-3" id="health-check-accordion-heading-3" type="button">
 			<span class="title">
 				<?php esc_html_e( 'Live WP Debug', 'health-check' ); ?>
 			</span>
 			<span class="icon"></span>
 		</button>
 	</dt>
-	<dd id="health-check-accordion-block-3" role="region" aria-labelledby="health-check-accordion-heading-3" class="health-check-accordion-panel" <?php echo ( WP_DEBUG_LOG ? '' : 'hidden="hidden"' ); ?>>
+	<dd id="health-check-accordion-block-3" role="region" aria-labelledby="health-check-accordion-heading-3" class="health-check-accordion-panel" <?php echo ( $debugtool ? '' : 'hidden="hidden"' ); ?>>
 		<p>
-			<?php _e( 'Enables / Disables various <code>WP_DEBUG</code> options.', 'health-check' ); ?>
+			<?php _e( 'Enables / Disables various WordPress debugging options.', 'health-check' ); ?>
 		</p>
+		<?php echo Health_Check_WP_Debug::check_wp_debug_constants(); ?>
 		<div class="tools-debug-on">
-			<?php if ( WP_DEBUG ) { ?>
-			<form action="#" id="health-check-disable-wp-debug" method="POST">
-				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Disable WP_DEBUG', 'health-check' ); ?>">
-			</form>
+			<?php if ( ! Health_Check_WP_Debug::check_wp_config_backup() ) { ?>
+
+				<form action="#" id="health-check-create-wp-debug-backup" method="POST">
+					<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Create a backup to continue', 'health-check' ); ?>">
+				</form>
+
 			<?php } else { ?>
-			<form action="#" id="health-check-enable-wp-debug" method="POST">
-				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Enable WP_DEBUG', 'health-check' ); ?>">
-			</form>
-			<?php } ?>
-			<?php if ( WP_DEBUG_LOG ) { ?>
-			<form action="#" id="health-check-disable-wp-debug-log" method="POST">
-				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Disable WP_DEBUG_LOG', 'health-check' ); ?>">
-			</form>
-			<?php } elseif ( WP_DEBUG ) { ?>
-			<form action="#" id="health-check-enable-wp-debug-log" method="POST">
-				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Enable WP_DEBUG_LOG', 'health-check' ); ?>">
-			</form>
-			<?php } ?>
-			<?php if ( WP_DEBUG_LOG ) { ?>
-			<div id="tools-wp-debug-output">
-				<textarea id="tools-live-debug-area"></textarea>
-			</div>
-			<form action="#" id="health-check-clear-wp-debug" method="POST">
-				<input type="submit" class="button" value="<?php esc_html_e( 'Clear debug.log', 'health-check' ); ?>">
-			</form>
-			<form action="#" id="health-check-start-stop-wp-debug" method="POST">
-				<input type="button" id="stop-refresh" class="button" value="<?php esc_html_e( 'Stop auto refresh', 'health-check' ); ?>">
-				<input type="button" id="start-refresh" class="button" value="<?php esc_html_e( 'Start auto refresh', 'health-check' ); ?>">
-				<input type="hidden" id="debug-do-scroll" value="no">
-			</form>
+
+				<form action="#" id="health-check-restore-wp-debug-backup" method="POST">
+					<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Restore your backup', 'health-check' ); ?>">
+				</form>
+
+				<?php if ( WP_DEBUG ) { ?>
+					<form action="#" id="health-check-disable-wp-debug" method="POST">
+						<input type="submit" class="button" value="<?php esc_html_e( 'Disable WP_DEBUG', 'health-check' ); ?>">
+					</form>
+				<?php } else { ?>
+					<form action="#" id="health-check-enable-wp-debug" method="POST">
+						<input type="submit" class="button" value="<?php esc_html_e( 'Enable WP_DEBUG', 'health-check' ); ?>">
+					</form>
+				<?php } ?>
+
+				<?php if ( WP_DEBUG_LOG ) { ?>
+					<form action="#" id="health-check-disable-wp-debug-log" method="POST">
+						<input type="submit" class="button" value="<?php esc_html_e( 'Disable WP_DEBUG_LOG', 'health-check' ); ?>">
+					</form>
+					<div id="tools-wp-debug-output">
+						<textarea id="tools-live-debug-area"></textarea>
+					</div>
+					<form action="#" id="health-check-clear-wp-debug" method="POST">
+						<input type="submit" class="button" value="<?php esc_html_e( 'Clear debug.log', 'health-check' ); ?>">
+					</form>
+					<form action="#" id="health-check-start-stop-wp-debug" method="POST">
+						<input type="button" id="stop-refresh" class="button" value="<?php esc_html_e( 'Stop auto refresh', 'health-check' ); ?>">
+						<input type="button" id="start-refresh" class="button" value="<?php esc_html_e( 'Start auto refresh', 'health-check' ); ?>">
+						<input type="hidden" id="debug-do-scroll" value="no">
+					</form>
+				<?php } else { ?>
+					<form action="#" id="health-check-enable-wp-debug-log" method="POST">
+						<input type="submit" class="button" value="<?php esc_html_e( 'Enable WP_DEBUG_LOG', 'health-check' ); ?>">
+					</form>
+				<?php } ?>
+
 			<?php } ?>
 			<div id="tools-disable-wp-debug-response-holder">
 				<span class="spinner"></span>
