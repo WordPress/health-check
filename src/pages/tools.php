@@ -89,7 +89,7 @@ if ( ! empty( $_GET['debugtool'] ) ) {
 	<dt role="heading" aria-level="3">
 		<button aria-expanded="<?php echo ( $debugtool ? 'true' : 'false' ); ?>" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-3" id="health-check-accordion-heading-3" type="button">
 			<span class="title">
-				<?php esc_html_e( 'Live WP Debug', 'health-check' ); ?>
+				<?php esc_html_e( 'Live Debug', 'health-check' ); ?>
 			</span>
 			<span class="icon"></span>
 		</button>
@@ -119,6 +119,16 @@ if ( ! empty( $_GET['debugtool'] ) ) {
 				<?php } else { ?>
 					<form action="#" id="health-check-enable-wp-debug" method="POST">
 						<input type="submit" class="button" value="<?php esc_html_e( 'Enable WP_DEBUG', 'health-check' ); ?>">
+					</form>
+				<?php } ?>
+
+				<?php if ( defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY ) { ?>
+					<form action="#" id="health-check-disable-wp-debug-display" method="POST">
+						<input type="submit" class="button" value="<?php esc_html_e( 'Disable WP_DEBUG_DISPLAY', 'health-check' ); ?>">
+					</form>
+				<?php } else { ?>
+					<form action="#" id="health-check-enable-wp-debug-display" method="POST">
+						<input type="submit" class="button" value="<?php esc_html_e( 'Enable WP_DEBUG_DISPLAY', 'health-check' ); ?>">
 					</form>
 				<?php } ?>
 

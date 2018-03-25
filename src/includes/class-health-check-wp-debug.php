@@ -57,9 +57,9 @@ class Health_Check_WP_Debug {
 			$write_wpconfig = fopen( $wpconfig, 'w' );
 
 			foreach ( $editing_wpconfig as $line ) {
-				if ( false !== strpos( $line, "!defined('ABSPATH')" ) ) {
+				if ( false !== strpos( $line, 'stop editing!' ) ) {
 					$line  = "define( 'WP_DEBUG', true );" . PHP_EOL;
-					$line .= "if ( !defined('ABSPATH') )" . PHP_EOL;
+					$line .= "/* That's all, stop editing! Happy blogging. */" . PHP_EOL;
 				}
 				fputs( $write_wpconfig, $line );
 			}
@@ -77,7 +77,7 @@ class Health_Check_WP_Debug {
 	}
 
 	/**
-	 * Disables WP_DEBUG and restores the original wp-config.php
+	 * Disables WP_DEBUG
 	 *
 	 * @uses fopen()
 	 * @uses copy()
@@ -160,9 +160,9 @@ class Health_Check_WP_Debug {
 			$write_wpconfig = fopen( $wpconfig, 'w' );
 
 			foreach ( $editing_wpconfig as $line ) {
-				if ( false !== strpos( $line, "!defined('ABSPATH')" ) ) {
+				if ( false !== strpos( $line, 'stop editing!' ) ) {
 					$line  = "define( 'WP_DEBUG_LOG', true );" . PHP_EOL;
-					$line .= "if ( !defined('ABSPATH') )" . PHP_EOL;
+					$line .= "/* That's all, stop editing! Happy blogging. */" . PHP_EOL;
 				}
 				fputs( $write_wpconfig, $line );
 			}
@@ -215,6 +215,135 @@ class Health_Check_WP_Debug {
 		$response = array(
 			'status'  => 'success',
 			'message' => esc_html__( 'WP_DEBUG_LOG was disabled.', 'health-check' ),
+		);
+
+		wp_send_json_success( $response );
+
+	}
+
+	/**
+	 * Enables WP_DEBUG_DISPLAY
+	 *
+	 * @uses copy()
+	 * @uses file()
+	 * @uses file_put_contents()
+	 * @uses fopen()
+	 * @uses strpos()
+	 * @uses fputs()
+	 * @uses fclose()
+	 * @uses wp_send_json_error()
+	 * @uses wp_send_json_succes()
+	 *
+	 * @return void
+	 */
+	static function enable_wp_debug_display() {
+
+		$wpconfig = ABSPATH . 'wp-config.php';
+
+		$wp_debug_display_found = 'no';
+
+		$editing_wpconfig = file( $wpconfig );
+
+		file_put_contents( $wpconfig, '' );
+
+		$write_wpconfig = fopen( $wpconfig, 'w' );
+
+		foreach ( $editing_wpconfig as $line ) {
+			if ( false !== strpos( $line, "'WP_DEBUG_DISPLAY'" ) || false !== strpos( $line, '"WP_DEBUG_DISPLAY"' ) ) {
+				$line                   = "define( 'WP_DEBUG_DISPLAY', true );" . PHP_EOL;
+				$wp_debug_display_found = 'yes';
+			}
+			fputs( $write_wpconfig, $line );
+		}
+
+		fclose( $write_wpconfig );
+
+		if ( 'no' === $wp_debug_display_found ) {
+
+			$editing_wpconfig = file( $wpconfig );
+
+			file_put_contents( $wpconfig, '' );
+
+			$write_wpconfig = fopen( $wpconfig, 'w' );
+
+			foreach ( $editing_wpconfig as $line ) {
+				if ( false !== strpos( $line, 'stop editing!' ) ) {
+					$line  = "define( 'WP_DEBUG_DISPLAY', true );" . PHP_EOL;
+					$line .= "/* That's all, stop editing! Happy blogging. */" . PHP_EOL;
+				}
+				fputs( $write_wpconfig, $line );
+			}
+
+			fclose( $write_wpconfig );
+		}
+
+		$response = array(
+			'status'  => 'success',
+			'message' => esc_html__( 'WP_DEBUG_DISPLAY was enabled.', 'health-check' ),
+		);
+
+		wp_send_json_success( $response );
+
+	}
+
+	/**
+	 * Disables WP_DEBUG_DISPLAY
+	 *
+	 * @uses file_exists()
+	 * @uses fopen()
+	 * @uses copy()
+	 * @uses strpos()
+	 * @uses fputs()
+	 * @uses fclose()
+	 * @uses wp_send_json_error()
+	 * @uses wp_send_json_succes()
+	 *
+	 * @return void
+	 */
+	static function disable_wp_debug_display() {
+
+		$wpconfig = ABSPATH . 'wp-config.php';
+
+		$wp_debug_display_found = 'no';
+
+		$editing_wpconfig = file( $wpconfig );
+
+		file_put_contents( $wpconfig, '' );
+
+		$write_wpconfig = fopen( $wpconfig, 'w' );
+
+		foreach ( $editing_wpconfig as $line ) {
+			if ( false !== strpos( $line, "'WP_DEBUG_DISPLAY'" ) || false !== strpos( $line, '"WP_DEBUG_DISPLAY"' ) ) {
+				$line                   = "define( 'WP_DEBUG_DISPLAY', false );" . PHP_EOL;
+				$wp_debug_display_found = 'yes';
+			}
+			fputs( $write_wpconfig, $line );
+		}
+
+		fclose( $write_wpconfig );
+
+		if ( 'no' === $wp_debug_display_found ) {
+
+			$editing_wpconfig = file( $wpconfig );
+
+			file_put_contents( $wpconfig, '' );
+
+			$write_wpconfig = fopen( $wpconfig, 'w' );
+
+			foreach ( $editing_wpconfig as $line ) {
+				if ( false !== strpos( $line, 'stop editing!' ) ) {
+					$line  = "define( 'WP_DEBUG_DISPLAY', false );" . PHP_EOL;
+					$line .= "/* That's all, stop editing! Happy blogging. */" . PHP_EOL;
+				}
+				fputs( $write_wpconfig, $line );
+			}
+
+			fclose( $write_wpconfig );
+		}
+
+		$response = array(
+			'status'  => 'success',
+			'message' => esc_html__( 'WP_DEBUG_DISPLAY was disabled.', 'health-check' ),
 		);
 
 		wp_send_json_success( $response );
@@ -368,10 +497,10 @@ class Health_Check_WP_Debug {
 		$output  = '<div class="notice notice-info inline">';
 		$output .= '<p><strong>WP_DEBUG:</strong> ';
 		$output .= ( defined( 'WP_DEBUG' ) && WP_DEBUG ? $enabled : $disabled );
-		$output .= ' | <strong>WP_DEBUG_LOG:</strong> ';
-		$output .= ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ? $enabled : $disabled );
 		$output .= ' | <strong>WP_DEBUG_DISPLAY:</strong> ';
 		$output .= ( defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY ? $enabled : $disabled );
+		$output .= ' | <strong>WP_DEBUG_LOG:</strong> ';
+		$output .= ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ? $enabled : $disabled );
 		$output .= ' | <strong>SCRIPT_DEBUG:</strong> ';
 		$output .= ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? $enabled : $disabled );
 		$output .= ' | <strong>SAVEQUERIES:</strong> ';
