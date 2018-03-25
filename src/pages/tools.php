@@ -112,7 +112,7 @@ if ( ! empty( $_GET['debugtool'] ) ) {
 					<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Restore your backup', 'health-check' ); ?>">
 				</form>
 
-				<?php if ( WP_DEBUG ) { ?>
+				<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) { ?>
 					<form action="#" id="health-check-disable-wp-debug" method="POST">
 						<input type="submit" class="button" value="<?php esc_html_e( 'Disable WP_DEBUG', 'health-check' ); ?>">
 					</form>
@@ -122,7 +122,7 @@ if ( ! empty( $_GET['debugtool'] ) ) {
 					</form>
 				<?php } ?>
 
-				<?php if ( WP_DEBUG_LOG ) { ?>
+				<?php if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) { ?>
 					<form action="#" id="health-check-disable-wp-debug-log" method="POST">
 						<input type="submit" class="button" value="<?php esc_html_e( 'Disable WP_DEBUG_LOG', 'health-check' ); ?>">
 					</form>

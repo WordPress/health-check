@@ -367,13 +367,15 @@ class Health_Check_WP_Debug {
 
 		$output  = '<div class="notice notice-info inline">';
 		$output .= '<p><strong>WP_DEBUG:</strong> ';
-		$output .= ( WP_DEBUG ? $enabled : $disabled );
+		$output .= ( defined( 'WP_DEBUG' ) && WP_DEBUG ? $enabled : $disabled );
 		$output .= ' | <strong>WP_DEBUG_LOG:</strong> ';
-		$output .= ( WP_DEBUG_LOG ? $enabled : $disabled );
+		$output .= ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ? $enabled : $disabled );
 		$output .= ' | <strong>WP_DEBUG_DISPLAY:</strong> ';
-		$output .= ( WP_DEBUG_DISPLAY ? $enabled : $disabled );
+		$output .= ( defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY ? $enabled : $disabled );
 		$output .= ' | <strong>SCRIPT_DEBUG:</strong> ';
-		$output .= ( SCRIPT_DEBUG ? $enabled : $disabled );
+		$output .= ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? $enabled : $disabled );
+		$output .= ' | <strong>SAVEQUERIES:</strong> ';
+		$output .= ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ? $enabled : $disabled );
 		$output .= '</p>';
 		$output .= '</div>';
 
