@@ -10,6 +10,20 @@
  */
 class Health_Check_Troubleshoot {
 
+	static function initiate_troubleshooting_mode( $allowed_plugins = array() ) {
+		if ( ! is_array( $allowed_plugins ) ) {
+			$allowed_plugins = (array) $allowed_plugins;
+		}
+
+		$loopback_hash = md5( rand() );
+
+		update_option( 'health-check-allowed-plugins', $allowed_plugins );
+
+		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
+
+		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
+	}
+
 	/**
 	 * Conditionally show a form for providing filesystem credentials when introducing our troubleshooting mode plugin.
 	 *
@@ -27,7 +41,7 @@ class Health_Check_Troubleshoot {
 				'page' => 'health-check',
 				'tab'  => 'troubleshoot',
 			),
-		admin_url() ) );
+			admin_url() ) );
 		$creds = request_filesystem_credentials( $url, '', false, WP_CONTENT_DIR, array( 'health-check-troubleshoot-mode', 'action' ) );
 		if ( false === $creds ) {
 			return false;
@@ -251,7 +265,7 @@ class Health_Check_Troubleshoot {
 			}
 		}
 
-?>
+		?>
 		<div class="notice inline">
 			<form action="" method="post" class="form" style="text-align: center;">
 				<input type="hidden" name="health-check-troubleshoot-mode" value="true">
@@ -264,6 +278,6 @@ class Health_Check_Troubleshoot {
 			</form>
 		</div>
 
-<?php
+		<?php
 	}
 }
