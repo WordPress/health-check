@@ -10,6 +10,19 @@
  */
 class Health_Check_Troubleshoot {
 
+	/**
+	 * Initiate the troubleshooting mode by setting meta data and cookies.
+	 *
+	 * @uses is_array()
+	 * @uses md5()
+	 * @uses rand()
+	 * @uses update_option()
+	 * @uses setcookie()
+	 *
+	 * @param array $allowed_plugins An array of plugins that may be active right away.
+	 *
+	 * @return void
+	 */
 	static function initiate_troubleshooting_mode( $allowed_plugins = array() ) {
 		if ( ! is_array( $allowed_plugins ) ) {
 			$allowed_plugins = (array) $allowed_plugins;
@@ -20,6 +33,8 @@ class Health_Check_Troubleshoot {
 		update_option( 'health-check-allowed-plugins', $allowed_plugins );
 
 		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
+
+		update_option( 'health-check-backup-plugin-list', get_option( 'active_plugins' ) );
 
 		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
 	}
@@ -41,7 +56,7 @@ class Health_Check_Troubleshoot {
 				'page' => 'health-check',
 				'tab'  => 'troubleshoot',
 			),
-			admin_url() ) );
+		admin_url() ) );
 		$creds = request_filesystem_credentials( $url, '', false, WP_CONTENT_DIR, array( 'health-check-troubleshoot-mode', 'action' ) );
 		if ( false === $creds ) {
 			return false;

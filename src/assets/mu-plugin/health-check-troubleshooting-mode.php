@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check Troubleshooting Mode
 	Description: Conditionally disabled themes or plugins on your site for a given session, used to rule out conflicts during troubleshooting.
-	Version: 1.3
+	Version: 1.4
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -419,6 +419,10 @@ class Health_Check_Troubleshooting_MU {
 		delete_option( 'health-check-allowed-plugins' );
 		delete_option( 'health-check-default-theme' );
 		delete_option( 'health-check-current-theme' );
+
+		update_option( 'active_plugins', get_option( 'health-check-backup-plugin-list' ) );
+
+		delete_option( 'health-check-backup-plugin-list' );
 	}
 
 	/**
