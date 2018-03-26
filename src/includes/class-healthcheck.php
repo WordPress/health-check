@@ -87,10 +87,7 @@ class HealthCheck {
 	 * Catch when the troubleshooting form has been submitted, and appropriately set required options and cookies.
 	 *
 	 * @uses current_user_can()
-	 * @uses md5()
-	 * @uses rand()
-	 * @uses update_option()
-	 * @uses setcookie()
+	 * @uses Health_Check_Troubleshoot::initiate_troubleshooting_mode()
 	 *
 	 * @return void
 	 */
@@ -99,10 +96,7 @@ class HealthCheck {
 			return;
 		}
 
-		$loopback_hash = md5( rand() );
-		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
-
-		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
+		Health_Check_Troubleshoot::initiate_troubleshooting_mode();
 	}
 
 	/**
@@ -112,10 +106,13 @@ class HealthCheck {
 	 * required options and cookies.
 	 *
 	 * @uses current_user_can()
-	 * @uses md5()
-	 * @uses rand()
-	 * @uses update_option()
-	 * @uses setcookie()
+	 * @uses ob_start()
+	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
+	 * @uses Health_Check_Troubleshoot::get_filesystem_credentials()
+	 * @uses Health_Check_Troubleshoot::setup_must_use_plugin()
+	 * @uses Health_Check_Troubleshoot::maybe_update_must_use_plugin()
+	 * @uses ob_get_clean()
+	 * @uses Health_Check_Troubleshoot::initiate_troubleshooting_mode()
 	 * @uses wp_redirect()
 	 * @uses admin_url()
 	 *
@@ -155,14 +152,9 @@ class HealthCheck {
 			return;
 		}
 
-		$loopback_hash = md5( rand() );
-		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
-
-		update_option( 'health-check-allowed-plugins', array(
+		Health_Check_Troubleshoot::initiate_troubleshooting_mode( array(
 			$_GET['health-check-troubleshoot-plugin'] => $_GET['health-check-troubleshoot-plugin'],
 		) );
-
-		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
 
 		wp_redirect( admin_url( 'plugins.php' ) );
 	}

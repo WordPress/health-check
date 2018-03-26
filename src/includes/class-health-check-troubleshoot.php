@@ -11,6 +11,35 @@
 class Health_Check_Troubleshoot {
 
 	/**
+	 * Initiate the troubleshooting mode by setting meta data and cookies.
+	 *
+	 * @uses is_array()
+	 * @uses md5()
+	 * @uses rand()
+	 * @uses update_option()
+	 * @uses setcookie()
+	 *
+	 * @param array $allowed_plugins An array of plugins that may be active right away.
+	 *
+	 * @return void
+	 */
+	static function initiate_troubleshooting_mode( $allowed_plugins = array() ) {
+		if ( ! is_array( $allowed_plugins ) ) {
+			$allowed_plugins = (array) $allowed_plugins;
+		}
+
+		$loopback_hash = md5( rand() );
+
+		update_option( 'health-check-allowed-plugins', $allowed_plugins );
+
+		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
+
+		update_option( 'health-check-backup-plugin-list', get_option( 'active_plugins' ) );
+
+		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
+	}
+
+	/**
 	 * Conditionally show a form for providing filesystem credentials when introducing our troubleshooting mode plugin.
 	 *
 	 * @uses wp_nonce_url()
@@ -251,7 +280,7 @@ class Health_Check_Troubleshoot {
 			}
 		}
 
-?>
+		?>
 		<div class="notice inline">
 			<form action="" method="post" class="form" style="text-align: center;">
 				<input type="hidden" name="health-check-troubleshoot-mode" value="true">
@@ -264,6 +293,6 @@ class Health_Check_Troubleshoot {
 			</form>
 		</div>
 
-<?php
+		<?php
 	}
 }
