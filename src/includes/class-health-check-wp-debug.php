@@ -398,7 +398,6 @@ class Health_Check_WP_Debug {
 	/**
 	 * Restores a backup of wp-config.php
 	 *
-	 * @uses file_exists()
 	 * @uses copy()
 	 * @uses unlink()
 	 *
@@ -424,6 +423,28 @@ class Health_Check_WP_Debug {
 		unlink( $wpconfig_backup );
 
 		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Restores a backup of wp-config.php on plugin deactivation
+	 *
+	 * @uses file_exists()
+	 * @uses copy()
+	 * @uses unlink()
+	 *
+	 * @return void
+	 */
+	static function deactivation_restore_wp_config_backup() {
+		$wpconfig        = ABSPATH . 'wp-config.php';
+		$wpconfig_backup = ABSPATH . 'wp-config_hc_backup.php';
+
+		if ( file_exists( $wpconfig_backup ) ) {
+			if ( copy( $wpconfig_backup, $wpconfig ) ) {
+				unlink( $wpconfig_backup );
+			}
+		}
+
+		return;
 	}
 
 	/**

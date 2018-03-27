@@ -59,5 +59,8 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-files-integrit
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-mail-check.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-debug.php' );
 
+// Restore wp-config backup on deactivation
+register_deactivation_hook( __FILE__, array( 'Health_Check_WP_Debug', 'deactivation_restore_wp_config_backup' ) );
+
 // Initialize our plugin.
 new HealthCheck();
