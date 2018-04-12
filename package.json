@@ -5,6 +5,7 @@
   },
   "description": "WordPress site health tester, and troubleshooting tools for end users and anyone providing support",
   "devDependencies": {
+    "@wordpress/browserslist-config": "^2.1.2",
     "autoprefixer": "^7.1.2",
     "grunt": "~1.0.1",
     "grunt-check-dependencies": "~1.0.0",
