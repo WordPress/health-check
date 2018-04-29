@@ -59,37 +59,6 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 					$status = 'good';
 					$notice = array();
 
-					if ( ! $php_rec_version_check ) {
-						$status   = 'warning';
-						$notice[] = sprintf(
-							'<a href="%s">%s</a>',
-							esc_url(
-								_x( 'https://wordpress.org/support/upgrade-php/', 'The link to the Update PHP page, which may be localized.', 'health-check' )
-							),
-							sprintf(
-								// translators: %s: Recommended PHP version
-								esc_html__( 'For best performance we recommend using PHP %s or higher.', 'health-check' ),
-								HEALTH_CHECK_PHP_REC_VERSION
-							)
-						);
-					}
-
-					if ( ! $php_supported_version_check ) {
-						$status   = 'warning';
-						$notice[] = sprintf(
-							'<a href="%s">%s</a>',
-							esc_url(
-								_x( 'https://wordpress.org/support/upgrade-php/', 'The link to the Update PHP page, which may be localized.', 'health-check' )
-							),
-							sprintf(
-								// translators: %1$s: Current PHP version. %2$s: Recommended PHP version.
-								esc_html__( 'Your version of PHP, %1$s, is very outdated and no longer receiving security updates. You should contact your host for an upgrade, WordPress recommends using PHP version %2$s.', 'health-check' ),
-								PHP_VERSION,
-								HEALTH_CHECK_PHP_REC_VERSION
-							)
-						);
-					}
-
 					if ( ! $php_min_version_check ) {
 						$status   = 'error';
 						$notice[] = sprintf(
@@ -103,6 +72,33 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 								PHP_VERSION,
 								HEALTH_CHECK_PHP_REC_VERSION,
 								HEALTH_CHECK_PHP_MIN_VERSION
+							)
+						);
+					} elseif ( ! $php_supported_version_check ) {
+						$status   = 'warning';
+						$notice[] = sprintf(
+							'<a href="%s">%s</a>',
+							esc_url(
+								_x( 'https://wordpress.org/support/upgrade-php/', 'The link to the Update PHP page, which may be localized.', 'health-check' )
+							),
+							sprintf(
+								// translators: %1$s: Current PHP version. %2$s: Recommended PHP version.
+								esc_html__( 'Your version of PHP, %1$s, is very outdated and no longer receiving security updates. You should contact your host for an upgrade, WordPress recommends using PHP version %2$s.', 'health-check' ),
+								PHP_VERSION,
+								HEALTH_CHECK_PHP_REC_VERSION
+							)
+						);
+					} elseif ( ! $php_rec_version_check ) {
+						$status   = 'warning';
+						$notice[] = sprintf(
+							'<a href="%s">%s</a>',
+							esc_url(
+								_x( 'https://wordpress.org/support/upgrade-php/', 'The link to the Update PHP page, which may be localized.', 'health-check' )
+							),
+							sprintf(
+								// translators: %s: Recommended PHP version
+								esc_html__( 'For best performance we recommend using PHP %s or higher.', 'health-check' ),
+								HEALTH_CHECK_PHP_REC_VERSION
 							)
 						);
 					}
