@@ -455,7 +455,7 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 						printf(
 							'<span class="%s"></span> %s',
 							esc_attr( $check_loopback->status ),
-							esc_html( $check_loopback->message )
+							$check_loopback->message
 						);
 
 						if ( 'error' === $check_loopback->status ) {
