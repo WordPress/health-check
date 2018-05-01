@@ -532,6 +532,8 @@ class Health_Check_Troubleshooting_MU {
 				$plugin_slug = explode( '/', $single_plugin );
 				$plugin_slug = $plugin_slug[0];
 
+				$plugin_data = get_plugin_data( trailingslashit( WP_PLUGIN_DIR ) . $single_plugin );
+
 				$enabled = true;
 
 				if ( in_array( $plugin_slug, $allowed_plugins ) ) {
@@ -540,7 +542,7 @@ class Health_Check_Troubleshooting_MU {
 						esc_html__( 'Disable %s', 'health-check' ),
 						sprintf(
 							'<strong>%s</strong>',
-							$plugin_slug
+							$plugin_data['Name']
 						)
 					);
 					$url = add_query_arg( array(
@@ -553,7 +555,7 @@ class Health_Check_Troubleshooting_MU {
 						esc_html__( 'Enable %s', 'health-check' ),
 						sprintf(
 							'<strong>%s</strong>',
-							$plugin_slug
+							$plugin_data['Name']
 						)
 					);
 					$url = add_query_arg( array(
