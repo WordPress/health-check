@@ -439,6 +439,20 @@ class Health_Check_Debug_Data {
 			'value' => ( extension_loaded( 'imagick' ) ? __( 'Yes', 'health-check' ) : __( 'No', 'health-check' ) ),
 		);
 
+		// Check if a .htaccess file exists.
+		if ( is_file( ABSPATH . '/.htaccess' ) ) {
+			// If the file exists, grab the content of it.
+			$htaccess_content = file_get_contents( ABSPATH . '/.htaccess' );
+
+			// Filter away the core WordPress rules.
+			$filtered_htaccess_content = trim( preg_replace( '/\# BEGIN WordPress[\s\S]+?# END WordPress/si', '', $htaccess_content ) );
+
+			$info['wp-server']['fields'][] = array(
+				'label' => __( 'Htaccess rules', 'health-check' ),
+				'value' => ( ! empty( $filtered_htaccess_content ) ? __( 'Custom rules have been added to your htaccess file', 'health-check' ) : __( 'Your htaccess file only contains core WordPress features', 'health-check' ) ),
+			);
+		}
+
 		// Populate the database debug fields.
 		if ( is_resource( $wpdb->dbh ) ) {
 			// Old mysql extension.
