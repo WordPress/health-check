@@ -31,10 +31,10 @@ $wpdb->delete(
 
 // Remove the old Must-Use plugin if it was implemented.
 if ( file_exists( trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php' ) ) {
-	unlink( trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php' );
+	wp_delete_file( trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php' );
 }
 
 // Remove the renamed Must-Use plugin if it exists
 if ( file_exists( trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-troubleshooting-mode.php' ) ) {
-	unlink( trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-troubleshooting-mode.php' );
+	wp_delete_file( trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-troubleshooting-mode.php' );
 }
