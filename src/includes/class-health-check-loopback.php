@@ -101,7 +101,7 @@ class Health_Check_Loopback {
 	 *
 	 * @uses ob_start()
 	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
-	 * @uses Health_Check_Troubleshoot::get_filesystem_credentials()
+	 * @uses HealthCheck::get_filesystem_credentials()
 	 * @uses Health_Check_Troubleshoot::setup_must_use_plugin()
 	 * @uses Health_Check_Troubleshoot::maybe_update_must_use_plugin()
 	 * @uses ob_get_clean()
@@ -124,7 +124,7 @@ class Health_Check_Loopback {
 		$needs_creds = false;
 
 		if ( ! Health_Check_Troubleshoot::mu_plugin_exists() ) {
-			if ( ! Health_Check_Troubleshoot::get_filesystem_credentials() ) {
+			if ( ! HealthCheck::get_filesystem_credentials() ) {
 				$needs_creds = true;
 			} else {
 				$check_output = Health_Check_Troubleshoot::setup_must_use_plugin();
@@ -180,7 +180,7 @@ class Health_Check_Loopback {
 	 *
 	 * @uses ob_start()
 	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
-	 * @uses Health_Check_Troubleshoot::get_filesystem_credentials()
+	 * @uses HealthCheck::get_filesystem_credentials()
 	 * @uses Health_Check_Troubleshoot::setup_must_use_plugin()
 	 * @uses ob_get_clean()
 	 * @uses wp_send_json_error()
@@ -205,7 +205,7 @@ class Health_Check_Loopback {
 		$needs_creds = false;
 
 		if ( ! Health_Check_Troubleshoot::mu_plugin_exists() ) {
-			if ( ! Health_Check_Troubleshoot::get_filesystem_credentials() ) {
+			if ( ! HealthCheck::get_filesystem_credentials() ) {
 				$needs_creds = true;
 			} else {
 				Health_Check_Troubleshoot::setup_must_use_plugin();

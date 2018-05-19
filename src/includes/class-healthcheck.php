@@ -108,7 +108,7 @@ class HealthCheck {
 	 * @uses current_user_can()
 	 * @uses ob_start()
 	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
-	 * @uses Health_Check_Troubleshoot::get_filesystem_credentials()
+	 * @uses HealthCheck::get_filesystem_credentials()
 	 * @uses Health_Check_Troubleshoot::setup_must_use_plugin()
 	 * @uses Health_Check_Troubleshoot::maybe_update_must_use_plugin()
 	 * @uses ob_get_clean()
@@ -128,7 +128,7 @@ class HealthCheck {
 		$needs_credentials = false;
 
 		if ( ! Health_Check_Troubleshoot::mu_plugin_exists() ) {
-			if ( ! Health_Check_Troubleshoot::get_filesystem_credentials() ) {
+			if ( ! HealthCheck::get_filesystem_credentials() ) {
 				$needs_credentials = true;
 			} else {
 				$check_output = Health_Check_Troubleshoot::setup_must_use_plugin( false );
@@ -393,6 +393,38 @@ class HealthCheck {
 				$admin_notice->message
 			);
 		}
+	}
+
+
+	/**
+	 * Conditionally show a form for providing filesystem credentials when introducing our troubleshooting mode plugin.
+	 *
+	 * @uses wp_nonce_url()
+	 * @uses add_query_arg()
+	 * @uses admin_url()
+	 * @uses request_filesystem_credentials()
+	 * @uses WP_Filesystem
+	 *
+	 * @return bool
+	 */
+	static function get_filesystem_credentials() {
+		$url   = wp_nonce_url( add_query_arg(
+			array(
+				'page' => 'health-check',
+				'tab'  => 'troubleshoot',
+			),
+			admin_url() ) );
+		$creds = request_filesystem_credentials( $url, '', false, WP_CONTENT_DIR, array( 'health-check-troubleshoot-mode', 'action' ) );
+		if ( false === $creds ) {
+			return false;
+		}
+
+		if ( ! WP_Filesystem( $creds ) ) {
+			request_filesystem_credentials( $url, '', true, WPMU_PLUGIN_DIR, array( 'health-check-troubleshoot-mode', 'action' ) );
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
