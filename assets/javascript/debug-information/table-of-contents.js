@@ -1,4 +1,3 @@
-/* global HealthCheck */
 jQuery( document ).ready(function( $ ) {
 	$( '.health-check-toc' ).click(function( e ) {
 
