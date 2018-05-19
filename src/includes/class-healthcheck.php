@@ -405,15 +405,20 @@ class HealthCheck {
 	 * @uses request_filesystem_credentials()
 	 * @uses WP_Filesystem
 	 *
+	 * @param array $args Any WP_Filesystem arguments you wish to pass.
+	 *
 	 * @return bool
 	 */
-	static function get_filesystem_credentials() {
-		$url   = wp_nonce_url( add_query_arg(
+	static function get_filesystem_credentials( $args = array() ) {
+		$args = array_merge(
 			array(
 				'page' => 'health-check',
 				'tab'  => 'troubleshoot',
 			),
-			admin_url() ) );
+			$args
+		);
+
+		$url   = wp_nonce_url( add_query_arg( $args, admin_url() ) );
 		$creds = request_filesystem_credentials( $url, '', false, WP_CONTENT_DIR, array( 'health-check-troubleshoot-mode', 'action' ) );
 		if ( false === $creds ) {
 			return false;
