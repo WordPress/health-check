@@ -34,8 +34,6 @@ class Health_Check_Troubleshoot {
 
 		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
 
-		update_option( 'health-check-backup-plugin-list', get_option( 'active_plugins' ) );
-
 		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
 	}
 

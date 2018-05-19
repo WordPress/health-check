@@ -420,8 +420,6 @@ class Health_Check_Troubleshooting_MU {
 		delete_option( 'health-check-default-theme' );
 		delete_option( 'health-check-current-theme' );
 
-		update_option( 'active_plugins', get_option( 'health-check-backup-plugin-list' ) );
-
 		delete_option( 'health-check-backup-plugin-list' );
 	}
 

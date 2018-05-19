@@ -16,7 +16,6 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 delete_option( 'health-check-disable-plugin-hash' );
 delete_option( 'health-check-default-theme' );
 delete_option( 'health-check-current-theme' );
-delete_option( 'health-check-backup-plugin-list' );
 
 /*
  * Remove any user meta entries we made, done with a custom query as core
