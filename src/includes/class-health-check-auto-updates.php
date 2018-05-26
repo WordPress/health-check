@@ -223,6 +223,40 @@ class Health_Check_Auto_Updates {
 	}
 
 	/**
+	 * Check if plugin updates are intercepted by a filter.
+	 *
+	 * @uses has_filter()
+	 * @uses esc_html()
+	 *
+	 * @return array
+	 */
+	function test_wp_plugin_updates_filtered() {
+		if ( has_filter( 'auto_update_plugin' ) ) {
+			return array(
+				'desc'     => esc_html( 'Plugin updates are being filtered.', 'health-check' ),
+				'severity' => 'warning',
+			);
+		}
+	}
+
+	/**
+	 * Check if theme updates are intercepted by a filter.
+	 *
+	 * @uses has_filter()
+	 * @uses esc_html()
+	 *
+	 * @return array
+	 */
+	function test_wp_theme_updates_filtered() {
+		if ( has_filter( 'auto_update_theme' ) ) {
+			return array(
+				'desc'     => esc_html( 'Theme updates are being filtered.', 'health-check' ),
+				'severity' => 'warning',
+			);
+		}
+	}
+
+	/**
 	 * Check if WordPress is controlled by a VCS (Git, Subversion etc).
 	 *
 	 * @uses dirname()
