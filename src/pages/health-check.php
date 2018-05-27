@@ -452,7 +452,7 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 					<ul>
 						<?php
 						$updates = new Health_Check_Updates();
-						$tests             = $updates->run_tests();
+						$tests   = $updates->run_tests();
 
 						if ( $tests ) {
 							foreach ( $tests as $test ) {

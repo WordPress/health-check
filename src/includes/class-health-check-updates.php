@@ -24,12 +24,12 @@ class Health_Check_Updates {
 	 * Initiate the plugin class.
 	 *
 	 * @return void
-	 */
+     */
 	public function init() {
 		//include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-    }
+	}
 
-    /**
+	/**
 	 * Run tests to determine if updates can run.
 	 *
 	 * @uses get_class_methods()
@@ -62,9 +62,9 @@ class Health_Check_Updates {
 		}
 
 		return $tests;
-    }
-    
-    /**
+	}
+
+	/**
 	 * Check if plugin updates have had any filters removed.
 	 *
 	 * @uses has_filter()
@@ -74,31 +74,31 @@ class Health_Check_Updates {
 	 * @return array
 	 */
 	function test_wp_plugin_update_filters() {
-        $tests = function() {
-            $test1 = has_filter( 'load-plugins.php', 'wp_update_plugins' );
-            $test2 = has_filter( 'load-update.php', 'wp_update_plugins' );
-            $test3 = has_filter( 'load-update-core.php', 'wp_update_plugins' );
-            $test4 = has_filter( 'wp_update_plugins', 'wp_update_plugins' );
-            $test5 = has_filter( 'admin_init', '_maybe_update_plugins' );
-            $test6 = wp_next_scheduled( 'wp_update_plugins' );
+		$tests = function() {
+			$test1 = has_filter( 'load-plugins.php', 'wp_update_plugins' );
+			$test2 = has_filter( 'load-update.php', 'wp_update_plugins' );
+			$test3 = has_filter( 'load-update-core.php', 'wp_update_plugins' );
+			$test4 = has_filter( 'wp_update_plugins', 'wp_update_plugins' );
+			$test5 = has_filter( 'admin_init', '_maybe_update_plugins' );
+			$test6 = wp_next_scheduled( 'wp_update_plugins' );
 
-            return $test1 && $test2 && $test3 && $test4 && $test5 && $test6;
-        };
+			return $test1 && $test2 && $test3 && $test4 && $test5 && $test6;
+		};
 
 		if ( ! $tests ) {
 			return array(
 				'desc'     => esc_html__( 'Plugin updates may have been disabled.', 'health-check' ),
 				'severity' => 'warning',
 			);
-        }
+		}
         
-        return array(
+		return array(
 			'desc'     => esc_html__( 'Plugin updates should be working as expected.', 'health-check' ),
 			'severity' => 'pass',
 		);
-    }
+	}
     
-    /**
+	/**
 	 * Check if theme updates have had any filters removed.
 	 *
 	 * @uses has_filter()
@@ -108,16 +108,16 @@ class Health_Check_Updates {
 	 * @return array
 	 */
 	function test_wp_theme_update_filters() {
-        $tests = function() {
-            $test1 = has_filter( 'load-plugins.php', 'wp_update_themes' );
-            $test2 = has_filter( 'load-update.php', 'wp_update_themes' );
-            $test3 = has_filter( 'load-update-core.php', 'wp_update_themes' );
-            $test4 = has_filter( 'wp_update_themes', 'wp_update_themes' );
-            $test5 = has_filter( 'admin_init', '_maybe_update_themes' );
-            $test6 = wp_next_scheduled( 'wp_update_themes' );
+		$tests = function() {
+			$test1 = has_filter( 'load-plugins.php', 'wp_update_themes' );
+			$test2 = has_filter( 'load-update.php', 'wp_update_themes' );
+			$test3 = has_filter( 'load-update-core.php', 'wp_update_themes' );
+			$test4 = has_filter( 'wp_update_themes', 'wp_update_themes' );
+			$test5 = has_filter( 'admin_init', '_maybe_update_themes' );
+			$test6 = wp_next_scheduled( 'wp_update_themes' );
 
-            return $test1 && $test2 && $test3 && $test4 && $test5 && $test6;
-        };
+			return $test1 && $test2 && $test3 && $test4 && $test5 && $test6;
+		};
 
 		if ( ! $tests ) {
 			return array(
@@ -126,7 +126,7 @@ class Health_Check_Updates {
 			);
         }
 
-        return array(
+		return array(
 			'desc'     => esc_html__( 'Theme updates should be working as expected.', 'health-check' ),
 			'severity' => 'pass',
 		);
