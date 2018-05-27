@@ -231,7 +231,7 @@ class Health_Check_Troubleshoot {
 	 *
 	 * @return void
 	 */
-	
+
 	/**
 	 * Display the form for enabling troubleshooting mode.
 	 *
