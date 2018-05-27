@@ -447,6 +447,33 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 			</tr>
 
 			<tr>
+				<td><?php esc_html_e( 'Plugin/Theme updates', 'health-check' ); ?></td>
+				<td>
+					<ul>
+						<?php
+						$updates = new Health_Check_Updates();
+						$tests             = $updates->run_tests();
+
+						if ( $tests ) {
+							foreach ( $tests as $test ) {
+								printf(
+									'<li><span class="%s"></span> %s</li>',
+									esc_attr( $test->severity ),
+									$test->desc
+								);
+							}
+						} else {
+							printf(
+								'<span class="good"></span> %s',
+								esc_html__( 'Updates should be working normally.', 'health-check' )
+							);
+						}
+						?>
+					</ul>
+				</td>
+			</tr>
+
+			<tr>
 				<td><?php esc_html_e( 'Loopback request', 'health-check' ); ?></td>
 				<td>
 					<?php
