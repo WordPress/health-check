@@ -231,6 +231,24 @@ class Health_Check_Troubleshoot {
 	 *
 	 * @return void
 	 */
+
+	/**
+	 * Display the form for enabling troubleshooting mode.
+	 *
+	 * @uses printf()
+	 * @uses esc_html__()
+	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
+	 * @uses Health_Check_Troubleshoot::maybe_update_must_use_plugin()
+	 * @uses Health_Check_Troubleshoot::session_started()
+	 * @uses HealthCheck::get_filesystem_credentials()
+	 * @uses Health_Check_Troubleshoot::setup_must_use_plugin()
+	 * @uses Health_Check_Troubleshooting_MU::is_troubleshooting()
+	 * @uses esc_url()
+	 * @uses add_query_arg()
+	 * @uses esc_html_e()
+	 *
+	 * @return void
+	 */
 	static function show_enable_troubleshoot_form() {
 		if ( isset( $_POST['health-check-troubleshoot-mode'] ) ) {
 			if ( Health_Check_Troubleshoot::mu_plugin_exists() ) {
@@ -249,15 +267,28 @@ class Health_Check_Troubleshoot {
 
 		?>
 		<div class="notice inline">
+
+		<?php if ( class_exists( 'Health_Check_Troubleshooting_MU' ) && Health_Check_Troubleshooting_MU::is_troubleshooting() ) : ?>
+
+			<p style="text-align: center;">
+				<a class="button button-primary" href="<?php echo esc_url( add_query_arg( array( 'health-check-disable-troubleshooting' => true ) ) ); ?>">
+					<?php esc_html_e( 'Disable Troubleshooting Mode', 'health-check' ); ?>
+				</a>
+			</p>
+
+		<?php else : ?>
+
 			<form action="" method="post" class="form" style="text-align: center;">
 				<input type="hidden" name="health-check-troubleshoot-mode" value="true">
-
 				<p>
 					<button type="submit" class="button button-primary">
 						<?php esc_html_e( 'Enable Troubleshooting Mode', 'health-check' ); ?>
 					</button>
 				</p>
 			</form>
+
+		<?php endif; ?>
+
 		</div>
 
 		<?php
