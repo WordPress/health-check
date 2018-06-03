@@ -29,7 +29,25 @@ class Health_Check_Tools_Test extends WP_UnitTestCase {
 
 		$this->assertEquals( array(
 			array(
-				$original_file => 'File not found'
+				'xmlrpc.php',
+				'File not found'
+			)
+		), $files );
+
+		rename( $renamed_file, $original_file );
+	}
+
+	public function testFilesIntegiryModifiedFiles() {
+		$filename = trailingslashit( ABSPATH ) . 'xmlrpc.php';
+
+		file_put_contents( $filename, PHP_EOL . '// Modified file content.' . PHP_EOL,  FILE_APPEND );
+
+		$files = Health_Check_Files_Integrity::parse_checksum_results( $this->core_checksums );
+
+		$this->assertEquals( array(
+			array(
+				'xmlrpc.php',
+				'Content changed <a href="#health-check-diff" data-file="xmlrpc.php">(View Diff)</a>'
 			)
 		), $files );
 	}
