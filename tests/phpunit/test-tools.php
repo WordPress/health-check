@@ -14,7 +14,7 @@ class Health_Check_Tools_Test extends WP_UnitTestCase {
 	}
 
 	public function testFilesIntegrityUntampered() {
-		$files = Health_Check_Files_Integrity::parse_checksum_results( $checksums );
+		$files = Health_Check_Files_Integrity::parse_checksum_results( $this->core_checksums );
 
 		$this->assertEmpty( $files );
 	}
@@ -25,7 +25,7 @@ class Health_Check_Tools_Test extends WP_UnitTestCase {
 
 		rename( $original_file, $renamed_file );
 
-		$files = Health_Check_Files_Integrity::parse_checksum_results( $checksums );
+		$files = Health_Check_Files_Integrity::parse_checksum_results( $this->core_checksums );
 
 		$this->assertEquals( array(
 			array(
