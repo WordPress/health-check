@@ -1,10 +1,6 @@
 <?php
 
-if ( class_exists( 'PHPUnit\Framework\TestCase' ) ) {
-	class_alias( 'PHPUnit\Framework\TestCase', 'PHPUnit_Framework_TestCase' );
-}
-
-class AssertionTest extends PHPUnit_Framework_TestCase {
+class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
