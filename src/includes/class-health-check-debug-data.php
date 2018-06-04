@@ -101,6 +101,10 @@ class Health_Check_Debug_Data {
 					),
 				),
 			),
+			'wp-install-size'     => array(
+				'label'  => __( 'Installation size', 'health-check' ),
+				'fields' => array(),
+			),
 			'wp-dropins'          => array(
 				'label'       => __( 'Drop-ins', 'health-check' ),
 				'description' => __( 'Drop-ins are single files that replace or enhance WordPress features in ways that are not possible for traditional plugins', 'health-check' ),
@@ -690,6 +694,8 @@ class Health_Check_Debug_Data {
 			);
 		}
 
+		$info['wp-install-size']['fields'] = Health_Check_Debug_Data::get_installation_size();
+
 		/**
 		 * Add or modify new debug sections.
 		 *
@@ -738,5 +744,82 @@ class Health_Check_Debug_Data {
 		}
 
 		return $info;
+	}
+
+	public static function get_installation_size() {
+		$uploads_dir = wp_upload_dir();
+
+		$size_wp      = Health_Check_Debug_Data::get_directory_size( ABSPATH );
+		$size_themes  = Health_Check_Debug_Data::get_directory_size( trailingslashit( get_theme_root() ) );
+		$size_plugins = Health_Check_Debug_Data::get_directory_size( WP_PLUGIN_DIR );
+		$size_uploads = Health_Check_Debug_Data::get_directory_size( $uploads_dir['basedir'] );
+		$size_db      = Health_Check_Debug_Data::get_database_size();
+
+		$size_total = $size_wp + $size_db;
+
+		return array(
+			array(
+				'label' => __( 'Uploads Directory', 'health-check' ),
+				'value' => size_format( $size_uploads, 2 ),
+			),
+			array(
+				'label' => __( 'Themes Directory', 'health-check' ),
+				'value' => size_format( $size_themes, 2 ),
+			),
+			array(
+				'label' => __( 'Plugins Directory', 'health-check' ),
+				'value' => size_format( $size_plugins, 2 ),
+			),
+			array(
+				'label' => __( 'Database size', 'health-check' ),
+				'value' => size_format( $size_db, 2 ),
+			),
+			array(
+				'label' => __( 'Whole WordPress Directory', 'health-check' ),
+				'value' => size_format( $size_wp, 2 ),
+			),
+			array(
+				'label' => __( 'Total installation size', 'health-check' ),
+				'value' => size_format( $size_total, 2 ),
+			),
+		);
+	}
+
+	public static function get_directory_size( $path ) {
+		$size = 0;
+
+		$dir = opendir( $path );
+		if ( false !== $dir ) {
+			$file = readdir( $dir );
+			while ( false !== $file ) {
+				$nextpath = $path . '/' . $file;
+				if ( '.' !== $file && '..' !== $file && ! is_link( $nextpath ) ) {
+					if ( is_dir( $nextpath ) ) {
+						$nextsize = Health_Check_Debug_Data::get_directory_size( $nextpath );
+						$size    += $nextsize;
+					} elseif ( is_file( $nextpath ) ) {
+						$size += filesize( $nextpath );
+					}
+				}
+			}
+		}
+
+		closedir( $dir );
+
+		return $size;
+	}
+
+	public static function get_database_size() {
+		global $wpdb;
+		$size = 0;
+		$rows = $wpdb->get_results( 'SHOW TABLE STATUS', ARRAY_A );
+
+		if ( $wpdb->num_rows > 0 ) {
+			foreach ( $rows as $row ) {
+				$size += $row['Data_length'] + $row['Index_length'];
+			}
+		}
+
+		return $size;
 	}
 }
