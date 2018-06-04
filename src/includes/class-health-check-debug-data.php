@@ -755,7 +755,7 @@ class Health_Check_Debug_Data {
 		$size_uploads = Health_Check_Debug_Data::get_directory_size( $uploads_dir['basedir'] );
 		$size_db      = Health_Check_Debug_Data::get_database_size();
 
-		$size_total   = $size_wp + $size_db;
+		$size_total = $size_wp + $size_db;
 
 		return array(
 			array(
@@ -781,15 +781,17 @@ class Health_Check_Debug_Data {
 			array(
 				'label' => __( 'Total installation size', 'health-check' ),
 				'value' => size_format( $size_total, 2 ),
-			)
+			),
 		);
 	}
 
 	public static function get_directory_size( $path ) {
 		$size = 0;
 
-		if ( $dir = opendir( $path ) ) {
-			while ( false !== ( $file = readdir( $dir ) ) ) {
+		$dir = opendir( $path );
+		if ( false !== $dir ) {
+			$file = readdir( $dir );
+			while ( false !== $file ) {
 				$nextpath = $path . '/' . $file;
 				if ( '.' !== $file && '..' !== $file && ! is_link( $nextpath ) ) {
 					if ( is_dir( $nextpath ) ) {
