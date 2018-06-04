@@ -4,11 +4,12 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 
 	private $test_plugin;
 
-	public function setUp() {
+  public function setUp() {
 		parent::setUp();
 
 		$this->class_instance = new Health_Check_Troubleshooting_MU();
-		$this->test_plugin = 'akismet/akismet.php';
+
+    $this->test_plugin = 'akismet/akismet.php';
 
 		/*
 		 * Start by making sure there are other plugins activated,
