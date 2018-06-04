@@ -59,7 +59,7 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 		// Fetch a list of all active plugins while troubleshooting.
 		$all_plugins = get_option( 'active_plugins' );
 
-		// Test taht the plugin list is now empty.
+		// Test that the plugin list is now empty.
 		$this->assertEmpty( $all_plugins );
 	}
 
@@ -68,14 +68,17 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 		$_COOKIE['health-check-disable-plugins'] = 'abc123';
 
 		// Add Akismet to the approved plugins list.
-		update_option( 'health-check-allowed-plugins', array( trim( $this->test_plugin ) ) );
+		update_option( 'health-check-allowed-plugins', array( 'akismet' ) );
 
-		// Fetch a list of all active plugins.
+		// Fetch a list of all active plugins while troubleshooting.
 		$all_plugins = get_option( 'active_plugins' );
 
 		// Test that the plugin list is what we expect it to be.
 		$this->assertEquals( array(
 			plugin_basename( trim( $this->test_plugin ) )
 		), $all_plugins );
+
+		// Empty out the approved plugins list after asserting tests.
+		update_option( 'health-check-allowed-plugins', array() );
 	}
 }
