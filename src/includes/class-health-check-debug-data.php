@@ -788,23 +788,9 @@ class Health_Check_Debug_Data {
 	public static function get_directory_size( $path ) {
 		$size = 0;
 
-		$dir = opendir( $path );
-		if ( false !== $dir ) {
-			$file = readdir( $dir );
-			while ( false !== $file ) {
-				$nextpath = $path . '/' . $file;
-				if ( '.' !== $file && '..' !== $file && ! is_link( $nextpath ) ) {
-					if ( is_dir( $nextpath ) ) {
-						$nextsize = Health_Check_Debug_Data::get_directory_size( $nextpath );
-						$size    += $nextsize;
-					} elseif ( is_file( $nextpath ) ) {
-						$size += filesize( $nextpath );
-					}
-				}
-			}
+		foreach( new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $path ) ) as $file ) {
+			$size += $file->getSize();
 		}
-
-		closedir( $dir );
 
 		return $size;
 	}
