@@ -185,4 +185,40 @@ class Health_Check_Files_Integrity {
 		wp_die();
 	}
 
+	/**
+	 * Add the Files integrity checker to the tools tab.
+	 *
+	 * @param array $tabs
+	 *
+	 * return array
+	 */
+	static function tools_tab( $tabs ) {
+		ob_start();
+?>
+
+		<div>
+			<p>
+				<?php _e( 'The File Integrity checks all the core files with the <code>checksums</code> provided by the WordPress API to see if they are intact. If there are changes you will be able to make a Diff between the files hosted on WordPress.org and your installation to see what has been changed.', 'health-check' ); ?>
+			</p>
+			<form action="#" id="health-check-file-integrity" method="POST">
+				<p>
+					<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the Files Integrity', 'health-check' ); ?>">
+				</p>
+			</form>
+
+			<div id="tools-file-integrity-response-holder">
+				<span class="spinner"></span>
+			</div>
+		</div>
+
+<?php
+		$tab_content = ob_get_clean();
+
+		$tabs[] = array(
+			'label'   => esc_html__( 'File Integrity', 'health-check' ),
+			'content' => $tab_content,
+		);
+
+		return $tabs;
+	}
 }
