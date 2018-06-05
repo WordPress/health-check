@@ -35,42 +35,17 @@ In the future we may introduce more checks, and welcome feedback both through th
 
 == Changelog ==
 
-= v 1.0.1 =
-* Fixed email tester having the wrong class reference, preventing it from running.
-* Add some missing text domains preventing full translations.
-
-= v 1.0.0 =
-* Added minimum PHP version checks with documentation links.
-* Added testing with a default theme to the loopback checker.
-* Added cURL version checker to the health check tab.
-* Added simple e-mail tester.
-* Added core file integrity checker.
-* Added capability checks, to avoid installing things that may modify the database while troubleshooting.
-* Added a prompt to install a default theme if none exist.
-* Added a warning encouraging users to maintain up to date backups when troubleshooting.
-* Fixed MU plugin not always updating (if available) when a user tries to troubleshoot.
-* Fixed fatal error when trying to troubleshoot "too early".
-* Updated troubleshooting drop down, it no longer shows theme switching if no default theme exists.
-* Removed the checkbox requirement from the Troubleshooting tab, it wasn't needed any more, and added pointless complexity now.
-
-= v 0.9.0 =
-* Various string changes, typo fixes and translation enhancements.
-* Added conditional hiding of the plugins list from the admin bar, if there's too many plugins it becomes a bad experience. (Hidden if there are more than 20 active plugins)
-* Added ability to enable/disable plugins in Troubleshooting Mode from the plugins list.
-* Added filter to remove actions from the plugin list in Troubleshooting Mode.
-* Fixed notices on the plugin screen when plugin data may be inconsistent.
-* Fixed jumping directly to troubleshooting mode for single file plugins placed directly in the plugin directory root.
-* Fixed issue where troubleshooting a plugin directly made it impossible to disable it while in Troubleshooting Mode.
-* Fixed so that the original language is returned when translating the debug data for copying.
-* Fixed issue where the Debug screen would turn to half-English when using a non-English language.
-* Fixed an issue where plugins could become truly disabled on a site when in Troubleshooting Mode.
-* Fixed so that enabled/disabled plugins don't carry over between troubleshooting sessions.
-
-= v 0.8.0 =
-* Updated recommended PHP version to mirror WordPress.org.
-* Updated texts for troubleshooting mode.
-* Re-labeled database terms to be more user friendly.
-* Added media information to the debug tab.
-* Added individual `Troubleshoot` links for the list of active plugins.
-* Added automatic copy to clipboard with supported browsers in the debug tab.
-
+= v 1.1.0 =
+* Check for theme, plugin and WordPress updates when visiting the debug tab.
+* Improved wording on some failure situations.
+* Made the Debug Information tab a bit easier to read with fixed table styles.
+* Redesigned tools page, with added accordion to avoid information overload, and different features mixing together.
+* Mail test tool now allows you to include an optional customized message.
+* Users can now change between any installed theme while in troubleshooting mode.
+* Renamed the Must-Use plugin, making it align with what features present in the file.
+* Improved the plugin cleanup process, when the plugin is deleted.
+* Show full plugin names, and not slugs, in the troubleshooting admin bar menu.
+* Check if the .htaccess file contains any rules not added by WordPress core in the debug section.
+* Allow the disabling of Troubleshooting Mode from the same page as you previously enabled it from.
+* Removed cURL checks from the automated test page, this was more confusion than help.
+* Add installation size to the debug information.
