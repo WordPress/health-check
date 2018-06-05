@@ -788,7 +788,7 @@ class Health_Check_Debug_Data {
 	public static function get_directory_size( $path ) {
 		$size = 0;
 
-		foreach( new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $path ) ) as $file ) {
+		foreach ( new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $path ) ) as $file ) {
 			$size += $file->getSize();
 		}
 
