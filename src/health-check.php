@@ -8,7 +8,7 @@
  * Plugin URI: http://wordpress.org/plugins/health-check/
  * Description: Checks the health of your WordPress install.
  * Author: The WordPress.org community
- * Version: 1.0.1
+ * Version: 1.1.0
  * Author URI: http://wordpress.org/plugins/health-check/
  * Text Domain: health-check
  */
@@ -34,7 +34,7 @@ define( 'HEALTH_CHECK_MYSQL_MIN_VERSION', '5.0' );
 define( 'HEALTH_CHECK_MYSQL_REC_VERSION', '5.6' );
 
 // Set the plugin version.
-define( 'HEALTH_CHECK_PLUGIN_VERSION', '1.0.1' );
+define( 'HEALTH_CHECK_PLUGIN_VERSION', '1.1.0' );
 
 // Set the absolute path for the plugin.
 define( 'HEALTH_CHECK_PLUGIN_DIRECTORY', plugin_dir_path( __FILE__ ) );
