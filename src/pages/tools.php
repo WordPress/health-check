@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <dl id="health-check-tools" role="presentation" class="health-check-accordion">
 	<?php
-		$tabs = apply_filters( 'health_check_tools_tab', array() );
+	$tabs = apply_filters( 'health_check_tools_tab', array() );
 
-		foreach( $tabs as $count => $tab ) :
+	foreach ( $tabs as $count => $tab ) :
 	?>
 
 	<dt role="heading" aria-level="2">
