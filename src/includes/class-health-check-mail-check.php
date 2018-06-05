@@ -66,4 +66,57 @@ class Health_Check_Mail_Check {
 
 	}
 
+	/**
+	 * Add the Mail Checker to the tools tab.
+	 *
+	 * @param array $tabs
+	 *
+	 * return array
+	 */
+	public static function tools_tab( $tabs ) {
+		ob_start();
+?>
+
+		<div>
+			<p>
+				<?php _e( 'The Mail Check will invoke the <code>wp_mail()</code> function and check if it succeeds. We will use the E-mail address you have set up, but you can change it below if you like.', 'health-check' ); ?>
+			</p>
+			<form action="#" id="health-check-mail-check" method="POST">
+				<table class="widefat tools-email-table">
+					<tr>
+						<td>
+							<p>
+								<?php
+								$current_user = wp_get_current_user();
+								?>
+								<label for="email"><?php _e( 'E-mail', 'health-check' ); ?></label>
+								<input type="text" name="email" id="email" value="<?php echo $current_user->user_email; ?>">
+							</p>
+						</td>
+						<td>
+							<p>
+								<label for="email_message"><?php _e( 'Additional message', 'health-check' ); ?></label>
+								<input type="text" name="email_message" id="email_message" value="">
+							</p>
+						</td>
+					</tr>
+				</table>
+				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Send test mail', 'health-check' ); ?>">
+			</form>
+
+			<div id="tools-mail-check-response-holder">
+				<span class="spinner"></span>
+			</div>
+		</div>
+
+<?php
+		$tab_content = ob_get_clean();
+
+		$tabs[] = array(
+			'label'   => esc_html__( 'Mail Check', 'health-check' ),
+			'content' => $tab_content,
+		);
+
+		return $tabs;
+	}
 }
