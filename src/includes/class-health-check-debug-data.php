@@ -452,7 +452,7 @@ class Health_Check_Debug_Data {
 			$filtered_htaccess_content = trim( preg_replace( '/\# BEGIN WordPress[\s\S]+?# END WordPress/si', '', $htaccess_content ) );
 
 			$info['wp-server']['fields'][] = array(
-				'label' => __( 'Htaccess rules', 'health-check' ),
+				'label' => __( 'htaccess rules', 'health-check' ),
 				'value' => ( ! empty( $filtered_htaccess_content ) ? __( 'Custom rules have been added to your htaccess file', 'health-check' ) : __( 'Your htaccess file only contains core WordPress features', 'health-check' ) ),
 			);
 		}
