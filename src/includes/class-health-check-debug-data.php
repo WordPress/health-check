@@ -749,26 +749,51 @@ class Health_Check_Debug_Data {
 	public static function get_installation_size() {
 		$uploads_dir = wp_upload_dir();
 
-		$size_wp      = Health_Check_Debug_Data::get_directory_size( ABSPATH );
-		$size_themes  = Health_Check_Debug_Data::get_directory_size( trailingslashit( get_theme_root() ) );
-		$size_plugins = Health_Check_Debug_Data::get_directory_size( WP_PLUGIN_DIR );
-		$size_uploads = Health_Check_Debug_Data::get_directory_size( $uploads_dir['basedir'] );
+		$sizes = array(
+			'wp'      => array(
+				'path' => ABSPATH,
+				'size' => 0,
+			),
+			'themes'  => array(
+				'path' => trailingslashit( get_theme_root() ),
+				'size' => 0,
+			),
+			'plugins' => array(
+				'path' => WP_PLUGIN_DIR,
+				'size' => 0,
+			),
+			'uploads' => array(
+				'path' => $uploads_dir['basedir'],
+				'size' => 0,
+			),
+		);
+
+		$inaccurate = false;
+
+		foreach( $sizes as $size => $attributes ) {
+			try {
+				$sizes[ $size ]['size'] = Health_Check_Debug_Data::get_directory_size( $attributes['path'] );
+			} catch ( Exception $e ) {
+				$inaccurate = true;
+			}
+		}
+
 		$size_db      = Health_Check_Debug_Data::get_database_size();
 
-		$size_total = $size_wp + $size_db;
+		$size_total = $sizes['wp']['size'] + $size_db;
 
-		return array(
+		$result = array(
 			array(
 				'label' => __( 'Uploads Directory', 'health-check' ),
-				'value' => size_format( $size_uploads, 2 ),
+				'value' => size_format( $sizes['uploads']['size'], 2 ),
 			),
 			array(
 				'label' => __( 'Themes Directory', 'health-check' ),
-				'value' => size_format( $size_themes, 2 ),
+				'value' => size_format( $sizes['themes']['size'], 2 ),
 			),
 			array(
 				'label' => __( 'Plugins Directory', 'health-check' ),
-				'value' => size_format( $size_plugins, 2 ),
+				'value' => size_format( $sizes['plugins']['size'], 2 ),
 			),
 			array(
 				'label' => __( 'Database size', 'health-check' ),
@@ -776,13 +801,19 @@ class Health_Check_Debug_Data {
 			),
 			array(
 				'label' => __( 'Whole WordPress Directory', 'health-check' ),
-				'value' => size_format( $size_wp, 2 ),
+				'value' => size_format( $sizes['wp']['size'], 2 ),
 			),
 			array(
 				'label' => __( 'Total installation size', 'health-check' ),
-				'value' => size_format( $size_total, 2 ),
+				'value' => sprintf(
+					'%s%s',
+					size_format( $size_total, 2 ),
+					( false === $inaccurate ? '' : __( '- Some errors, likely caused by invalid permissions, were encountered when determining the size of your installation. This means the values represented may be inaccurate.', 'health-check' ) )
+				)
 			),
 		);
+
+		return $result;
 	}
 
 	public static function get_directory_size( $path ) {
