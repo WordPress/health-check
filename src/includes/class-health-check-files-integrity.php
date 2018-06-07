@@ -194,7 +194,7 @@ class Health_Check_Files_Integrity {
 	 */
 	static function tools_tab( $tabs ) {
 		ob_start();
-?>
+		?>
 
 		<div>
 			<p>
@@ -211,7 +211,7 @@ class Health_Check_Files_Integrity {
 			</div>
 		</div>
 
-<?php
+		<?php
 		$tab_content = ob_get_clean();
 
 		$tabs[] = array(

@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	$tabs = apply_filters( 'health_check_tools_tab', array() );
 
 	foreach ( $tabs as $count => $tab ) :
-	?>
+		?>
 
 	<dt role="heading" aria-level="2">
 		<button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-<?php echo esc_attr( $count ); ?>" id="health-check-accordion-heading-<?php echo esc_attr( $count ); ?>" type="button">

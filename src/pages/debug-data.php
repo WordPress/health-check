@@ -36,7 +36,7 @@ $info = Health_Check_Debug_Data::debug_data();
 			if ( ! is_textdomain_loaded( 'health-check' ) && _get_path_to_translation( 'health-check' ) ) {
 				load_textdomain( 'health-check', _get_path_to_translation( 'health-check' ) );
 			}
-		?>
+			?>
 			<div id="system-information-english-copy-wrapper" style="display: none;">
 					<textarea id="system-information-english-copy-field" class="widefat" rows="10">`
 						<?php

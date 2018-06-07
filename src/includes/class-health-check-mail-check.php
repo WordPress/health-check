@@ -75,7 +75,7 @@ class Health_Check_Mail_Check {
 	 */
 	public static function tools_tab( $tabs ) {
 		ob_start();
-?>
+		?>
 
 		<div>
 			<p>
@@ -109,7 +109,7 @@ class Health_Check_Mail_Check {
 			</div>
 		</div>
 
-<?php
+		<?php
 		$tab_content = ob_get_clean();
 
 		$tabs[] = array(

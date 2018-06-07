@@ -770,7 +770,7 @@ class Health_Check_Debug_Data {
 
 		$inaccurate = false;
 
-		foreach( $sizes as $size => $attributes ) {
+		foreach ( $sizes as $size => $attributes ) {
 			try {
 				$sizes[ $size ]['size'] = Health_Check_Debug_Data::get_directory_size( $attributes['path'] );
 			} catch ( Exception $e ) {
@@ -778,7 +778,7 @@ class Health_Check_Debug_Data {
 			}
 		}
 
-		$size_db      = Health_Check_Debug_Data::get_database_size();
+		$size_db = Health_Check_Debug_Data::get_database_size();
 
 		$size_total = $sizes['wp']['size'] + $size_db;
 
@@ -809,7 +809,7 @@ class Health_Check_Debug_Data {
 					'%s%s',
 					size_format( $size_total, 2 ),
 					( false === $inaccurate ? '' : __( '- Some errors, likely caused by invalid permissions, were encountered when determining the size of your installation. This means the values represented may be inaccurate.', 'health-check' ) )
-				)
+				),
 			),
 		);
 

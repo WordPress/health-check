@@ -415,7 +415,7 @@ $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 						if ( 'error' === $check_loopback->status ) {
 							echo '<br><button type="button" id="loopback-no-plugins" class="button button-primary">Test without plugins</button>';
 						}
-					?>
+						?>
 				</td>
 			</tr>
 		</tbody>
