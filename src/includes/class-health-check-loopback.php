@@ -61,6 +61,15 @@ class Health_Check_Loopback {
 			);
 		}
 
+		# if any plugin is using php session, request will time-out
+		if ( function_exists( '\session_status' ) ) {
+			if (session_status() == 2) { # PHP_SESSION_ACTIVE
+				@session_write_close ();
+			}
+		} else if ( !empty (session_id())) { # PHP < 5.4
+			@session_write_close ();
+		}
+
 		$r = wp_remote_get( $url, compact( 'cookies', 'headers', 'timeout' ) );
 
 		if ( is_wp_error( $r ) ) {
