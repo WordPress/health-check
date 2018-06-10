@@ -152,10 +152,12 @@ class Health_Check_Updates {
 	 */
 	function check_plugin_update_pre_request() {
 		add_action( 'pre_http_request', array( $this, 'plugin_pre_request_check' ), PHP_INT_MAX, 3 );
+		add_action( 'pre_http_request', array( $this, 'block_fake_request' ), PHP_INT_MAX, 3 );
 
 		$this->plugin_update_fake_request();
 
 		remove_action( 'pre_http_request', array( $this, 'plugin_pre_request_check' ), PHP_INT_MAX );
+		remove_action( 'pre_http_request', array( $this, 'block_fake_request' ), PHP_INT_MAX );
 
 		return self::$plugins_blocked;
 	}
@@ -171,7 +173,7 @@ class Health_Check_Updates {
 	function plugin_pre_request_check( $pre, $r, $url ) {
 		$check_url = 'api.wordpress.org/plugins/update-check/1.1/';
 		if ( 0 !== substr_compare( $url, $check_url, -strlen( $check_url ) ) ) {
-			return $r; // Not a plugin update request.
+			return $pre; // Not a plugin update request.
 		}
 
 		// If not false something is blocking update checks
@@ -179,8 +181,7 @@ class Health_Check_Updates {
 			self::$plugins_blocked = (bool) true;
 		}
 
-		// non false return will prevent HTTP request
-		return 'block_request';
+		return $pre;
 	}
 
 	/**
@@ -195,11 +196,13 @@ class Health_Check_Updates {
 	function check_plugin_update_request_args() {
 		add_action( 'http_request_args', array( $this, 'plugin_request_args_before' ), 1, 2 );
 		add_action( 'http_request_args', array( $this, 'plugin_request_args_after' ), PHP_INT_MAX, 2 );
+		add_action( 'pre_http_request', array( $this, 'block_fake_request' ), PHP_INT_MAX, 3 );
 
 		$this->plugin_update_fake_request();
 
 		remove_action( 'http_request_args', array( $this, 'plugin_request_args_before' ), 1 );
 		remove_action( 'http_request_args', array( $this, 'plugin_request_args_after' ), PHP_INT_MAX );
+		remove_action( 'pre_http_request', array( $this, 'block_fake_request' ), PHP_INT_MAX );
 
 		$diff = array_diff_assoc( $this->plugins_before['plugins'], $this->plugins_after['plugins'] );
 
@@ -367,10 +370,12 @@ class Health_Check_Updates {
 	 */
 	function check_theme_update_pre_request() {
 		add_action( 'pre_http_request', array( $this, 'theme_pre_request_check' ), PHP_INT_MAX, 3 );
+		add_action( 'pre_http_request', array( $this, 'block_fake_request' ), PHP_INT_MAX, 3 );
 
 		$this->theme_update_fake_request();
 
 		remove_action( 'pre_http_request', array( $this, 'theme_pre_request_check' ), PHP_INT_MAX );
+		remove_action( 'pre_http_request', array( $this, 'block_fake_request' ), PHP_INT_MAX );
 
 		return self::$themes_blocked;
 	}
@@ -386,7 +391,7 @@ class Health_Check_Updates {
 	function theme_pre_request_check( $pre, $r, $url ) {
 		$check_url = 'api.wordpress.org/themes/update-check/1.1/';
 		if ( 0 !== substr_compare( $url, $check_url, -strlen( $check_url ) ) ) {
-			return $r; // Not a theme update request.
+			return $pre; // Not a theme update request.
 		}
 
 		// If not false something is blocking update checks
@@ -394,8 +399,7 @@ class Health_Check_Updates {
 			self::$themes_blocked = (bool) true;
 		}
 
-		// non false return will prevent HTTP request
-		return 'block_request';
+		return $pre;
 	}
 
 	/**
@@ -410,11 +414,13 @@ class Health_Check_Updates {
 	function check_theme_update_request_args() {
 		add_action( 'http_request_args', array( $this, 'theme_request_args_before' ), 1, 2 );
 		add_action( 'http_request_args', array( $this, 'theme_request_args_after' ), PHP_INT_MAX, 2 );
+		add_action( 'pre_http_request', array( $this, 'block_fake_request' ), PHP_INT_MAX, 3 );
 
 		$this->theme_update_fake_request();
 
 		remove_action( 'http_request_args', array( $this, 'theme_request_args_before' ), 1 );
 		remove_action( 'http_request_args', array( $this, 'theme_request_args_after' ), PHP_INT_MAX );
+		remove_action( 'pre_http_request', array( $this, 'block_fake_request' ), PHP_INT_MAX );
 
 		$diff = array_diff_assoc( $this->themes_before['themes'], $this->themes_after['themes'] );
 
@@ -516,5 +522,24 @@ class Health_Check_Updates {
 
 		// Ignore the response. Just need the hooks to fire.
 		wp_remote_post( $url, $options );
+	}
+
+	/**
+	 * Blocks the fake update requests, ensuring they do not slow down page loads.
+	 *
+	 * @param  bool $pre If not false, request cancelled.
+	 * @param  array $r Request parameters.
+	 * @param  string $url Request URL.
+	 * @return bool
+	 */
+	function block_fake_request( $pre, $r, $url ) {
+		switch ( $url ) {
+			case 'https://api.wordpress.org/plugins/update-check/1.1/':
+				return 'block_request';
+			case 'https://api.wordpress.org/themes/update-check/1.1/':
+				return 'block_request';
+			default:
+				return $pre;
+		}
 	}
 }
