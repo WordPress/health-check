@@ -5,4 +5,5 @@ package-lock.json
 composer.lock
 src/assets/css/
 src/assets/javascript/
+build/
 vendor/

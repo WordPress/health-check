@@ -53,6 +53,14 @@ module.exports = function( grunt ) {
 			},
 			src: {}
 		},
+		copy: {
+			files: {
+				cwd: 'src/',
+				src: '**/*',
+				dest: 'build/',
+				expand: true
+			}
+		},
 		jscs: {
 			src: PATH_JS,
 			options: {
@@ -93,7 +101,7 @@ module.exports = function( grunt ) {
 			},
 			healthcheck: {
 				expand: true,
-				src: 'src/assets/css/health-check.css'
+				src: 'build/assets/css/health-check.css'
 			}
 		},
 		sass: {
@@ -101,7 +109,7 @@ module.exports = function( grunt ) {
 				expand: true,
 				ext: '.css',
 				cwd: 'assets/sass/',
-				dest: 'src/assets/css/',
+				dest: 'build/assets/css/',
 				src: [ 'health-check.scss' ],
 				options: {
 					indentType: 'tab',
@@ -113,7 +121,7 @@ module.exports = function( grunt ) {
 		concat: {
 			healthcheck: {
 				src: [ 'assets/javascript/**/*.js' ],
-				dest: 'src/assets/javascript/health-check.js'
+				dest: 'build/assets/javascript/health-check.js'
 			}
 		},
 		stylelint: {
@@ -165,6 +173,7 @@ module.exports = function( grunt ) {
 	// Default task.
 	grunt.registerTask( 'default', [
 		'checkDependencies',
+		'copy',
 		'csstest',
 		'jstest',
 		'phptest',
