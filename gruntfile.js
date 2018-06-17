@@ -149,7 +149,7 @@ module.exports = function( grunt ) {
 		},
 		phpcs: {
 			application: {
-				src: [ 'build/**/*.php' ]
+				src: [ 'src/**/*.php' ]
 			},
 			options: {
 				bin: 'vendor/bin/phpcs --standard=phpcs.ruleset.xml',
