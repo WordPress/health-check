@@ -268,7 +268,7 @@ class Health_Check_Troubleshoot {
 		?>
 		<div class="notice inline">
 
-		<?php if ( class_exists( 'Health_Check_Troubleshooting_MU' ) && Health_Check_Troubleshooting_MU::is_troubleshooting() ) : ?>
+		<?php if ( class_exists( 'Health_Check_Troubleshooting_MU' ) && is_callable( array( 'Health_Check_Troubleshooting_MU', 'is_troubleshooting' ) ) && Health_Check_Troubleshooting_MU::is_troubleshooting() ) : ?>
 
 			<p style="text-align: center;">
 				<a class="button button-primary" href="<?php echo esc_url( add_query_arg( array( 'health-check-disable-troubleshooting' => true ) ) ); ?>">
