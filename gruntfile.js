@@ -140,7 +140,7 @@ module.exports = function( grunt ) {
 			},
 			sass: {
 				files: PATH_SCSS,
-				tasks: [ 'sass', 'postcss:helphub', 'postcss:contributors' ]
+				tasks: [ 'sass' ]
 			},
 			js: {
 				files: PATH_JS,
