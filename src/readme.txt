@@ -35,6 +35,9 @@ In the future we may introduce more checks, and welcome feedback both through th
 
 == Changelog ==
 
+= v 1.1.1 =
+* Fixed a fatal error that would occur if a user had an older version of Troubleshooting Mode on their system.
+
 = v 1.1.0 =
 * Check for theme, plugin and WordPress updates when visiting the debug tab.
 * Improved wording on some failure situations.
