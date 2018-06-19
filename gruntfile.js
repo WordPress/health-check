@@ -9,6 +9,10 @@ module.exports = function( grunt ) {
 			'assets/javascript/**/*.js'
 		],
 
+		PATH_PHP = [
+			'src/**/*'
+		],
+
 		autoprefixer = require( 'autoprefixer' ),
 
 		matchdep = require( 'matchdep' ),
@@ -145,6 +149,10 @@ module.exports = function( grunt ) {
 			js: {
 				files: PATH_JS,
 				tasks: [ 'javascript' ]
+			},
+			php: {
+				files: PATH_PHP,
+				tasks: [ 'copy' ]
 			}
 		},
 		phpcs: {
