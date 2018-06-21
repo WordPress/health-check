@@ -1,4 +1,4 @@
-#Contributing
+# Contributing
 
 Contributions can be made either through code or ticket input, both are equally valuable and 
 help move the project forward.
@@ -8,7 +8,7 @@ It's worth noting that we do not follow traditional semantic versioning, but ins
 in that our major versions are X.X.Y, where X is a major version, and Y is a minor.
 
 
-##Contributing through input
+## Contributing through input
 
 Tickets will often require opinions from various points of view, in regard to many aspects such as:
 Design, accessibility, user experience, and language used, just to name a few.
@@ -17,7 +17,7 @@ When looking to implement features they are always added as issues first to allo
 this kind of valuable input.
 
 
-##Contributing with code
+## Contributing with code
 
 When contributing through code, please start by forking the repository, and then making a clone 
 for your self to work off.
@@ -36,7 +36,7 @@ Please do not change version numbers in when providing code changes, these are b
 maintainers when a new version is released, and any changes outside of this may lead to confusion.
 
 
-###Setting up a local environment
+### Setting up a local environment
 
 If you wish to set up a local environment for working with the project, start off by installing 
 [node](https://nodejs.org), [npm](https://www.npmjs.com) (Node Package Manager) 
@@ -48,7 +48,7 @@ execute the following commands:
 - `npm install` This will install node modules that we use, as defined in the `package.json` file.
 
 
-###Submitting Pull Requests
+### Submitting Pull Requests
 
 Once you've got your development environment set up, and you are ready to push your code, here
 are some items you should take note of
