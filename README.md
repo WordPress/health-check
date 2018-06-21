@@ -1,5 +1,7 @@
 # Health Check
 
+[![Build Status](https://travis-ci.org/WordPress/health-check.svg?branch=master)](https://travis-ci.org/WordPress/health-check)
+
 Health Check if a WordPress plugin that will perform a number of checks on your WordPress install to detect common configuration errors and known issues.
 
 It currently checks your PHP and MySQL versions, some extensions which are needed or may improve WordPress, and that the WordPress.org services are accessible to you.
