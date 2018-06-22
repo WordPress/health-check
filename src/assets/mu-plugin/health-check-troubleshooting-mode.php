@@ -503,7 +503,7 @@ class Health_Check_Troubleshooting_MU {
 		$allowed_plugins = get_option( 'health-check-allowed-plugins', array() );
 
 		// Add a link to manage plugins if there are more than 20 set to be active.
-		if ( count( $allowed_plugins ) > 20 ) {
+		if ( count( $this->active_plugins ) > 20 ) {
 			$wp_menu->add_node( array(
 				'id'     => 'health-check-plugins',
 				'title'  => esc_html__( 'Manage active plugins', 'health-check' ),
