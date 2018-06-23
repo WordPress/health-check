@@ -52,7 +52,7 @@ execute the following commands:
 
 Once you've got your development environment set up, and you are ready to push your code, here
 are some items you should take note of
-- Does the code follow the [WordPress Coding Standar](https://make.wordpress.org/core/handbook/best-practices/coding-standards/)?
+- Does the code follow the [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/)?
 - Did you include unit tests (if applicable)?
 - Was your local copy recently pulled from `master`, so it's a clean patch?
 
