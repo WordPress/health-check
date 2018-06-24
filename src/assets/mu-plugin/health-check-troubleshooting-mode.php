@@ -14,6 +14,7 @@ class Health_Check_Troubleshooting_MU {
 	private $default_theme   = true;
 	private $active_plugins  = array();
 	private $current_theme;
+	private $current_theme_details;
 
 	private $available_query_args = array(
 		'health-check-disable-plugins',
@@ -76,6 +77,8 @@ class Health_Check_Troubleshooting_MU {
 		$this->default_theme  = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
 		$this->active_plugins = $this->get_unfiltered_plugin_list();
 		$this->current_theme  = get_option( 'health-check-current-theme', false );
+
+		$this->current_theme_details = wp_get_theme( $this->current_theme );
 	}
 
 	/**
@@ -378,6 +381,13 @@ class Health_Check_Troubleshooting_MU {
 		// Check if overrides are triggered if not break out.
 		if ( ! $this->override_theme() ) {
 			return $theme;
+		}
+
+		// Check if this is a parent theme request, if so return it as usual.
+		if ( $this->current_theme_details->parent() ) {
+			if ( $this->current_theme_details->get_template() === $theme ) {
+				return $theme;
+			}
 		}
 
 		// Check if a default theme exists, and if so use it as a default.
