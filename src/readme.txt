@@ -1,4 +1,4 @@
-=== Health Check ===
+=== Health Check & Troubleshooting ===
 Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 3.8
