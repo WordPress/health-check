@@ -67,6 +67,211 @@ class Health_Check_Site_Status {
 		die();
 	}
 
+	public function test_wordpress_version() {
+		$core_current_version = get_bloginfo( 'version' );
+		$core_updates         = get_core_updates();
+
+		if ( ! is_array( $core_updates ) ) {
+			printf(
+				'<span class="warning"></span> %s',
+				sprintf(
+					// translators: %s: Your current version of WordPress.
+					esc_html__( '%s - We were unable to check if any new versions are available.', 'health-check' )
+				)
+			);
+		} else {
+			foreach ( $core_updates as $core => $update ) {
+				if ( 'upgrade' === $update->response ) {
+					$current_version = explode( '.', $core_current_version );
+					$new_version     = explode( '.', $update->version );
+
+					$current_major = $current_version[0] . '.' . $current_version[1];
+					$new_major     = $new_version[0] . '.' . $new_version[1];
+
+					if ( $current_major !== $new_major ) {
+						// This is a major version mismatch.
+						printf(
+							'<span class="warning"></span> %s',
+							sprintf(
+								// translators: %1$s: Your current version of WordPress. %2$s The latest version of WordPress available.
+								esc_html__( '%1$s ( Latest version: %2$s )', 'health-check' ),
+								$core_current_version,
+								$update->version
+							)
+						);
+					} else {
+						// This is a minor version, sometimes considered more critical.
+						printf(
+							'<span class="error"></span> %s',
+							sprintf(
+								// translators: %1$s: Your current version of WordPress. %2$s The latest version of WordPress available.
+								esc_html__( '%1$s ( Latest version: %2$s ) - We strongly urge you to update, as minor updates are often security related.', 'health-check' ),
+								$core_current_version,
+								$update->version
+							)
+						);
+					}
+				} else {
+					printf(
+						'<span class="good"></span> %s',
+						esc_html( $core_current_version )
+					);
+				}
+			}
+		}
+	}
+
+	public function test_plugin_version() {
+		$plugins        = get_plugins();
+		$plugin_updates = get_plugin_updates();
+
+		$show_unused_plugins  = true;
+		$plugins_have_updates = false;
+		$plugins_active       = 0;
+		$plugins_total        = 0;
+		$plugins_needs_update = 0;
+
+		if ( class_exists( 'Health_Check_Troubleshooting_MU' ) && is_callable( array( 'Health_Check_Troubleshooting_MU', 'is_troubleshooting' ) ) && Health_Check_Troubleshooting_MU::is_troubleshooting() ) {
+			$show_unused_plugins = false;
+		}
+
+		foreach ( $plugins as $plugin_path => $plugin ) {
+			$plugins_total++;
+
+			if ( is_plugin_active( $plugin_path ) ) {
+				$plugins_active++;
+			}
+
+			$plugin_version = $plugin['Version'];
+
+			if ( array_key_exists( $plugin_path, $plugin_updates ) ) {
+				$plugins_needs_update++;
+				$plugins_have_updates = true;
+			}
+		}
+
+		echo '<ul>';
+
+		if ( $plugins_needs_update > 0 ) {
+			printf(
+				'<li><span class="error"></span> %s',
+				sprintf(
+					// translators: %d: The amount of outdated plugins.
+					esc_html__( 'Your site has %d plugins waiting to be updated.', 'health-check' ),
+					$plugins_needs_update
+				)
+			);
+		} else {
+			printf(
+				'<li><span class="good"></span> %s',
+				sprintf(
+					// translators: %d: The amount of plugins.
+					esc_html__( 'Your site has %d active plugins, and they are all up to date.', 'health-check' ),
+					$plugins_total
+				)
+			);
+		}
+
+		if ( ( $plugins_total > $plugins_active ) && $show_unused_plugins ) {
+			printf(
+				'<li><span class="warning"></span> %s',
+				sprintf(
+					// translators: %d: The amount of inactive plugins.
+					esc_html__( 'Your site has %d inactive plugins, it is recommended to remove any unused plugins to enhance your site security.', 'health-check' ),
+					( $plugins_total - $plugins_active )
+				)
+			);
+		}
+
+		echo '</ul>';
+	}
+
+	public function test_theme_version() {
+		$theme_updates = get_theme_updates();
+
+		$themes_total        = 0;
+		$themes_need_updates = 0;
+		$themes_inactive     = 0;
+
+		$has_default_theme  = false;
+		$has_unused_themes  = false;
+		$show_unused_themes = true;
+
+		if ( class_exists( 'Health_Check_Troubleshooting_MU' ) && is_callable( array( 'Health_Check_Troubleshooting_MU', 'is_troubleshooting' ) ) && Health_Check_Troubleshooting_MU::is_troubleshooting() ) {
+			$show_unused_themes = false;
+		}
+
+		// Populate a list of all themes available in the install.
+		$all_themes = wp_get_themes();
+
+		foreach ( $all_themes as $theme_slug => $theme ) {
+			$themes_total++;
+
+			if ( WP_DEFAULT_THEME === $theme_slug ) {
+				$has_default_theme = true;
+			}
+
+			if ( array_key_exists( $theme_slug, $theme_updates ) ) {
+				$themes_need_updates++;
+			}
+		}
+
+		if ( $themes_total > 1 ) {
+			if ( $has_default_theme ) {
+				if ( $themes_total > 2 ) {
+					$has_unused_themes = true;
+					$themes_inactive   = ( $themes_total - 2 );
+				}
+			} else {
+				$has_unused_themes = true;
+				$themes_inactive   = ( $themes_total - 1 );
+			}
+		}
+
+		echo '<ul>';
+
+		if ( $themes_needs_update > 0 ) {
+			printf(
+				'<li><span class="error"></span> %s',
+				sprintf(
+					// translators: %d: The amount of outdated themes.
+					esc_html__( 'Your site has %d themes waiting to be updated.', 'health-check' ),
+					$themes_need_updates
+				)
+			);
+		} else {
+			printf(
+				'<li><span class="good"></span> %s',
+				sprintf(
+					// translators: %d: The amount of themes.
+					esc_html__( 'Your site has %d installed themes, and they are all up to date.', 'health-check' ),
+					$themes_total
+				)
+			);
+		}
+
+		if ( $has_unused_themes && $show_unused_themes ) {
+			printf(
+				'<li><span class="warning"></span> %s',
+				sprintf(
+					// translators: %1$d: The amount of inactive themes. %2$s: The default theme for WordPress.
+					esc_html__( 'Your site has %1$s inactive themes, other than %2$s and your currently active one, it is recommended to remove any unused themes to enhance your sites security.', 'health-check' ),
+					$themes_inactive,
+					WP_DEFAULT_THEME
+				)
+			);
+		}
+
+		if ( ! $has_default_theme ) {
+			printf(
+				'<li><span class="warning"></span> %s',
+				esc_html__( 'Your site does not have a default theme, default themes are used by WordPress automatically if anything is wrong with your normal theme.', 'health-check' )
+			);
+		}
+
+		echo '</ul>';
+	}
+
 	public function test_php_version() {
 		$status = 'good';
 		$notice = array();
@@ -370,6 +575,8 @@ class Health_Check_Site_Status {
 		$automatic_updates = new Health_Check_Auto_Updates();
 		$tests             = $automatic_updates->run_tests();
 
+		echo '<ul>';
+
 		foreach ( $tests as $test ) {
 			printf(
 				'<li><span class="%s"></span> %s</li>',
@@ -377,6 +584,8 @@ class Health_Check_Site_Status {
 				$test->desc
 			);
 		}
+
+		echo '</ul>';
 	}
 
 	public function test_loopback_requests() {

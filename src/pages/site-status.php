@@ -20,6 +20,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<table class="widefat striped health-check-table">
 		<tbody>
 			<tr>
+				<td><?php esc_html_e( 'WordPress Version', 'health-check' ); ?></td>
+				<td class="health-check-site-status-test" data-site-status="wordpress_version">
+					<span class="spinner is-active"></span>
+				</td>
+			</tr>
+
+			<tr>
+				<td><?php esc_html_e( 'Plugin Versions', 'health-check' ); ?></td>
+				<td class="health-check-site-status-test" data-site-status="plugin_version">
+					<span class="spinner is-active"></span>
+				</td>
+			</tr>
+
+			<tr>
+				<td><?php esc_html_e( 'Theme Versions', 'health-check' ); ?></td>
+				<td class="health-check-site-status-test" data-site-status="theme_version">
+					<span class="spinner is-active"></span>
+				</td>
+			</tr>
+
+			<tr>
 				<td><?php esc_html_e( 'PHP Version', 'health-check' ); ?></td>
 				<td class="health-check-site-status-test" data-site-status="php_version">
 					<span class="spinner is-active"></span>
