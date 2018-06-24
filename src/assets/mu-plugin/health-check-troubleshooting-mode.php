@@ -384,7 +384,7 @@ class Health_Check_Troubleshooting_MU {
 		}
 
 		// Check if this is a parent theme request, if so return it as usual.
-		if ( ! empty( $this->current_theme_details->parent() ) ) {
+		if ( $this->current_theme_details->parent() ) {
 			if ( $this->current_theme_details->get_template() === $theme ) {
 				return $theme;
 			}
