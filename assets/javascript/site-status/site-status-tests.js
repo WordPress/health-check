@@ -1,3 +1,4 @@
+/* global ajaxurl */
 jQuery( document ).ready(function( $ ) {
 	$( '.health-check-site-status-test' ).each( function() {
 		var $check = $( this ),
