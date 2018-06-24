@@ -197,7 +197,7 @@ class Health_Check_Site_Status {
 		foreach ( $all_themes as $theme_slug => $theme ) {
 			$themes_total++;
 
-			if ( $theme_slug === WP_DEFAULT_THEME ) {
+			if ( WP_DEFAULT_THEME === $theme_slug ) {
 				$has_default_theme = true;
 			}
 
@@ -210,11 +210,11 @@ class Health_Check_Site_Status {
 			if ( $has_default_theme ) {
 				if ( $themes_total > 2 ) {
 					$has_unused_themes = true;
-					$themes_inactive = ( $themes_total - 2 );
+					$themes_inactive   = ( $themes_total - 2 );
 				}
 			} else {
 				$has_unused_themes = true;
-				$themes_inactive = ( $themes_total - 1 );
+				$themes_inactive   = ( $themes_total - 1 );
 			}
 		}
 
