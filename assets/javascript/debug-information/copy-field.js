@@ -1,4 +1,4 @@
-/* global HealthCheck */
+/* global Health_Check */
 jQuery( document ).ready(function( $ ) {
 	$( '.health-check-copy-field' ).click(function( e ) {
 		var $textarea = $( 'textarea', $( this ).closest( 'div' ) ),
@@ -11,7 +11,7 @@ jQuery( document ).ready(function( $ ) {
 
 		copied = document.execCommand( 'copy' );
 		if ( copied ) {
-			$button.text( HealthCheck.string.copied );
+			$button.text( Health_Check.string.copied );
 		}
 	});
 });

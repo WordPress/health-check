@@ -1,6 +1,6 @@
-/* global HealthCheck, ajaxurl, healthCheckFailureModal */
+/* global Health_Check, ajaxurl, healthCheckFailureModal */
 jQuery( document ).ready(function( $ ) {
-	$( '#loopback-no-plugins' ).click(function( e ) {
+	$( '.dashboard_page_health-check' ).on( 'click', '#loopback-no-plugins', function( e ) {
 		var $trigger = $( this ),
 			$parent = $( this ).closest( 'td' ),
 			data = {
@@ -9,7 +9,7 @@ jQuery( document ).ready(function( $ ) {
 
 		e.preventDefault();
 
-		$( this ).html( '<span class="spinner" style="visibility: visible;"></span> ' + HealthCheck.string.please_wait );
+		$( this ).html( '<span class="spinner" style="visibility: visible;"></span> ' + Health_Check.string.please_wait );
 
 		$.post(
 			ajaxurl,
@@ -24,9 +24,7 @@ jQuery( document ).ready(function( $ ) {
 			},
 			'json'
 		);
-	});
-
-	$( '.dashboard_page_health-check' ).on( 'click', '#loopback-individual-plugins', function( e ) {
+	}).on( 'click', '#loopback-individual-plugins', function( e ) {
 		var $trigger = $( this ),
 			$parent = $( this ).closest( 'td' ),
 			data = {
@@ -35,7 +33,7 @@ jQuery( document ).ready(function( $ ) {
 
 		e.preventDefault();
 
-		$( this ).html( '<span class="spinner" style="visibility: visible;"></span> ' + HealthCheck.string.please_wait );
+		$( this ).html( '<span class="spinner" style="visibility: visible;"></span> ' + Health_Check.string.please_wait );
 
 		$.post(
 			ajaxurl,
