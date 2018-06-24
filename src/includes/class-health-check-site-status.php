@@ -149,7 +149,7 @@ class Health_Check_Site_Status {
 		$status = 'good';
 		$notice = array();
 
-		$db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
+		$db_dropin = file_exists( WP_CONTENT_DIR . '/db.php' );
 
 		if ( ! $this->mysql_rec_version_check ) {
 			$status   = 'warning';
