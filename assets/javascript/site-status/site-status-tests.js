@@ -10,7 +10,7 @@ jQuery( document ).ready(function( $ ) {
 		$.post(
 			ajaxurl,
 			data,
-			function ( response ) {
+			function( response ) {
 				$check.html( response );
 			}
 		);
