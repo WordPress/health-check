@@ -79,7 +79,7 @@ class Health_Check_Site_Status {
 					_x( 'https://wordpress.org/support/upgrade-php/', 'The link to the Update PHP page, which may be localized.', 'health-check' )
 				),
 				sprintf(
-				// translators: %1$s: Current PHP version. %2$s: Recommended PHP version. %3$s: Minimum PHP version.
+					// translators: %1$s: Current PHP version. %2$s: Recommended PHP version. %3$s: Minimum PHP version.
 					esc_html__( 'Your version of PHP, %1$s, is very outdated and no longer receiving security updates and is not supported by WordPress. You should contact your host for an upgrade, WordPress recommends using PHP version %2$s, but will work with version %3$s or newer.', 'health-check' ),
 					PHP_VERSION,
 					HEALTH_CHECK_PHP_REC_VERSION,
@@ -94,7 +94,7 @@ class Health_Check_Site_Status {
 					_x( 'https://wordpress.org/support/upgrade-php/', 'The link to the Update PHP page, which may be localized.', 'health-check' )
 				),
 				sprintf(
-				// translators: %1$s: Current PHP version. %2$s: Recommended PHP version.
+					// translators: %1$s: Current PHP version. %2$s: Recommended PHP version.
 					esc_html__( 'Your version of PHP, %1$s, is very outdated and no longer receiving security updates. You should contact your host for an upgrade, WordPress recommends using PHP version %2$s.', 'health-check' ),
 					PHP_VERSION,
 					HEALTH_CHECK_PHP_REC_VERSION
@@ -108,7 +108,7 @@ class Health_Check_Site_Status {
 					_x( 'https://wordpress.org/support/upgrade-php/', 'The link to the Update PHP page, which may be localized.', 'health-check' )
 				),
 				sprintf(
-				// translators: %s: Recommended PHP version
+					// translators: %s: Recommended PHP version
 					esc_html__( 'For best performance we recommend using PHP %s or higher.', 'health-check' ),
 					HEALTH_CHECK_PHP_REC_VERSION
 				)
@@ -154,7 +154,7 @@ class Health_Check_Site_Status {
 		if ( ! $this->mysql_rec_version_check ) {
 			$status   = 'warning';
 			$notice[] = sprintf(
-			// translators: %1$s: The database engine in use (MySQL or MariaDB). %2$s: Database server recommended version number.
+				// translators: %1$s: The database engine in use (MySQL or MariaDB). %2$s: Database server recommended version number.
 				esc_html__( 'For performance and security reasons, we strongly recommend running %1$s version %2$s or higher.', 'health-check' ),
 				( $this->mariadb ? 'MariaDB' : 'MySQL' ),
 				$this->health_check_mysql_rec_version
@@ -164,7 +164,7 @@ class Health_Check_Site_Status {
 		if ( ! $this->mysql_min_version_check ) {
 			$status   = 'error';
 			$notice[] = sprintf(
-			// translators: %1$s: The database engine in use (MySQL or MariaDB). %2$s: Database server minimum version number.
+				// translators: %1$s: The database engine in use (MySQL or MariaDB). %2$s: Database server minimum version number.
 				esc_html__( 'WordPress 3.2+ requires %1$s version %2$s or higher.', 'health-check' ),
 				( $this->mariadb ? 'MariaDB' : 'MySQL' ),
 				HEALTH_CHECK_MYSQL_MIN_VERSION
@@ -175,7 +175,7 @@ class Health_Check_Site_Status {
 			// translators: %s: The database engine in use (MySQL or MariaDB).
 			$notice[] = wp_kses(
 				sprintf(
-				// translators: %s: The name of the database engine being used.
+					// translators: %s: The name of the database engine being used.
 					__( 'You are using a <code>wp-content/db.php</code> drop-in which might mean that a %s database is not being used.', 'health-check' ),
 					( $this->mariadb ? 'MariaDB' : 'MySQL' )
 				),
@@ -204,7 +204,7 @@ class Health_Check_Site_Status {
 				printf(
 					'<span class="warning"></span> %s',
 					sprintf(
-					/* translators: %s: Number of version. */
+						/* translators: %s: Number of version. */
 						esc_html__( 'WordPress\' utf8mb4 support requires MySQL version %s or greater', 'health-check' ),
 						'5.5.3'
 					)
@@ -220,7 +220,7 @@ class Health_Check_Site_Status {
 				printf(
 					'<span class="warning"></span> %s',
 					sprintf(
-					/* translators: %s: Number of version. */
+						/* translators: %s: Number of version. */
 						esc_html__( 'WordPress\' utf8mb4 support requires MariaDB version %s or greater', 'health-check' ),
 						'5.5.0'
 					)
@@ -251,7 +251,7 @@ class Health_Check_Site_Status {
 				printf(
 					'<br><span class="warning"></span> %s',
 					sprintf(
-					/* translators: %1$s: Name of the library, %2$s: Number of version. */
+						/* translators: %1$s: Name of the library, %2$s: Number of version. */
 						__( 'WordPress\' utf8mb4 support requires MySQL client library (%1$s) version %2$s or newer.', 'health-check' ),
 						'mysqlnd',
 						'5.0.9'
@@ -263,7 +263,7 @@ class Health_Check_Site_Status {
 				printf(
 					'<br><span class="warning"></span> %s',
 					sprintf(
-					/* translators: %1$s: Name of the library, %2$s: Number of version. */
+						/* translators: %1$s: Name of the library, %2$s: Number of version. */
 						__( 'WordPress\' utf8mb4 support requires MySQL client library (%1$s) version %2$s or newer.', 'health-check' ),
 						'libmysql',
 						'5.5.3'
@@ -286,7 +286,7 @@ class Health_Check_Site_Status {
 			printf(
 				'<span class="error"></span> %s',
 				sprintf(
-				// translators: %1$s: The IP address WordPress.org resolves to. %2$s: The error returned by the lookup.
+					// translators: %1$s: The IP address WordPress.org resolves to. %2$s: The error returned by the lookup.
 					__( 'Unable to reach WordPress.org at %1$s: %2$s', 'health-check' ),
 					gethostbyname( 'wordpress.org' ),
 					$wp_dotorg->get_error_message()
@@ -338,7 +338,7 @@ class Health_Check_Site_Status {
 				printf(
 					'<span class="warning"></span> %s',
 					sprintf(
-					// translators: %s: The name of the failed cron event.
+						// translators: %s: The name of the failed cron event.
 						esc_html__( 'A scheduled event (%s) has failed to run. Your site still works, but this may indicate that scheduling posts or automated updates may not work as intended.', 'health-check' ),
 						$scheduled_events->last_missed_cron
 					)
