@@ -230,7 +230,7 @@ class Health_Check_Site_Status {
 
 		echo '<ul>';
 
-		if ( $themes_needs_update > 0 ) {
+		if ( $themes_need_updates > 0 ) {
 			printf(
 				'<li><span class="error"></span> %s',
 				sprintf(
