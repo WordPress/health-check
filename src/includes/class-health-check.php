@@ -208,7 +208,7 @@ class Health_Check {
 
 		wp_enqueue_script( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/javascript/health-check.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION, true );
 
-		wp_localize_script( 'health-check', 'Health_Check', array(
+		wp_localize_script( 'health-check', 'HealthCheck', array(
 			'string'  => array(
 				'please_wait' => esc_html__( 'Please wait...', 'health-check' ),
 				'copied'      => esc_html__( 'Copied', 'health-check' ),

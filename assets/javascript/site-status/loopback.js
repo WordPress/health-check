@@ -1,4 +1,4 @@
-/* global Health_Check, ajaxurl, healthCheckFailureModal */
+/* global HealthCheck, ajaxurl, healthCheckFailureModal */
 jQuery( document ).ready(function( $ ) {
 	$( '.dashboard_page_health-check' ).on( 'click', '#loopback-no-plugins', function( e ) {
 		var $trigger = $( this ),
@@ -9,7 +9,7 @@ jQuery( document ).ready(function( $ ) {
 
 		e.preventDefault();
 
-		$( this ).html( '<span class="spinner" style="visibility: visible;"></span> ' + Health_Check.string.please_wait );
+		$( this ).html( '<span class="spinner" style="visibility: visible;"></span> ' + HealthCheck.string.please_wait );
 
 		$.post(
 			ajaxurl,
@@ -33,7 +33,7 @@ jQuery( document ).ready(function( $ ) {
 
 		e.preventDefault();
 
-		$( this ).html( '<span class="spinner" style="visibility: visible;"></span> ' + Health_Check.string.please_wait );
+		$( this ).html( '<span class="spinner" style="visibility: visible;"></span> ' + HealthCheck.string.please_wait );
 
 		$.post(
 			ajaxurl,
