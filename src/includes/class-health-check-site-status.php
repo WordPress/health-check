@@ -297,10 +297,24 @@ class Health_Check_Site_Status {
 
 	public function test_https_status() {
 		if ( is_ssl() ) {
-			printf(
-				'<span class="good"></span> %s',
-				esc_html__( 'You are accessing this website using HTTPS.', 'health-check' )
-			);
+			$wp_url   = get_bloginfo( 'wpurl' );
+			$site_url = get_bloginfo( 'url' );
+
+			if ( 'https' !== substr( $wp_url, 0, 5 ) || 'https' !== substr( $site_url, 0, 5 ) ) {
+				printf(
+					'<span class="warning"></span> %s',
+					sprintf(
+						// translators: %s: URL to Settings > General to change options.
+						__( 'You are accessing this website using HTTPS, but your <a href="%s">WordPress Address</a> is not set up to use HTTPS by default.', 'health-check' ),
+						esc_url( admin_url( 'options-general.php' ) )
+					)
+				);
+			} else {
+				printf(
+					'<span class="good"></span> %s',
+					esc_html__( 'You are accessing this website using HTTPS.', 'health-check' )
+				);
+			}
 		} else {
 			printf(
 				'<span class="warning"></span> %s',
