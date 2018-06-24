@@ -8,7 +8,7 @@
 /**
  * Class HealthCheck
  */
-class HealthCheck {
+class Health_Check {
 
 	/**
 	 * Notices to show at the head of the admin screen.
@@ -22,7 +22,7 @@ class HealthCheck {
 	/**
 	 * HealthCheck constructor.
 	 *
-	 * @uses HealthCheck::init()
+	 * @uses Health_Check::init()
 	 *
 	 * @return void
 	 */
@@ -111,7 +111,7 @@ class HealthCheck {
 	 * @uses current_user_can()
 	 * @uses ob_start()
 	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
-	 * @uses HealthCheck::get_filesystem_credentials()
+	 * @uses Health_Check::get_filesystem_credentials()
 	 * @uses Health_Check_Troubleshoot::setup_must_use_plugin()
 	 * @uses Health_Check_Troubleshoot::maybe_update_must_use_plugin()
 	 * @uses ob_get_clean()
@@ -131,7 +131,7 @@ class HealthCheck {
 		$needs_credentials = false;
 
 		if ( ! Health_Check_Troubleshoot::mu_plugin_exists() ) {
-			if ( ! HealthCheck::get_filesystem_credentials() ) {
+			if ( ! Health_Check::get_filesystem_credentials() ) {
 				$needs_credentials = true;
 			} else {
 				$check_output = Health_Check_Troubleshoot::setup_must_use_plugin( false );
@@ -208,7 +208,7 @@ class HealthCheck {
 
 		wp_enqueue_script( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/javascript/health-check.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION, true );
 
-		wp_localize_script( 'health-check', 'HealthCheck', array(
+		wp_localize_script( 'health-check', 'Health_Check', array(
 			'string'  => array(
 				'please_wait' => esc_html__( 'Please wait...', 'health-check' ),
 				'copied'      => esc_html__( 'Copied', 'health-check' ),

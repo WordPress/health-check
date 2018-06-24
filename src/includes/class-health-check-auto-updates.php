@@ -12,7 +12,7 @@ class Health_Check_Auto_Updates {
 	/**
 	 * Health_Check_Auto_Updates constructor.
 	 *
-	 * @uses HealthCheck::init()
+	 * @uses Health_Check::init()
 	 *
 	 * @return void
 	 */

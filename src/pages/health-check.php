@@ -40,7 +40,7 @@ if ( stristr( $mysql_server_type, 'mariadb' ) ) {
 $mysql_min_version_check = version_compare( HEALTH_CHECK_MYSQL_MIN_VERSION, $mysql_server_version, '<=' );
 $mysql_rec_version_check = version_compare( $health_check_mysql_rec_version, $mysql_server_version, '<=' );
 
-$json_check = HealthCheck::json_check();
+$json_check = Health_Check::json_check();
 $db_dropin  = file_exists( WP_CONTENT_DIR . '/db.php' );
 ?>
 

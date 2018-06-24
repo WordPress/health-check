@@ -111,7 +111,7 @@ class Health_Check_Troubleshoot {
 	 *
 	 * @uses is_dir()
 	 * @uses WP_Filesystem::mkdir()
-	 * @uses HealthCheck::display_notice()
+	 * @uses Health_Check::display_notice()
 	 * @uses esc_html__()
 	 * @uses WP_Filesystem::copy()
 	 * @uses trailingslashit()
@@ -125,7 +125,7 @@ class Health_Check_Troubleshoot {
 		// Make sure the `mu-plugins` directory exists.
 		if ( ! is_dir( WPMU_PLUGIN_DIR ) ) {
 			if ( ! $wp_filesystem->mkdir( WPMU_PLUGIN_DIR ) ) {
-				HealthCheck::display_notice( esc_html__( 'We were unable to create the mu-plugins directory.', 'health-check' ), 'error' );
+				Health_Check::display_notice( esc_html__( 'We were unable to create the mu-plugins directory.', 'health-check' ), 'error' );
 				return false;
 			}
 		}
@@ -133,14 +133,14 @@ class Health_Check_Troubleshoot {
 		// Remove instances of the old plugin, to avoid collisions.
 		if ( Health_Check_Troubleshoot::old_mu_plugin_exists() ) {
 			if ( ! $wp_filesystem->delete( trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php' ) ) {
-				HealthCheck::display_notice( esc_html__( 'We could not remove the old must-use plugin.', 'health-check' ), 'error' );
+				Health_Check::display_notice( esc_html__( 'We could not remove the old must-use plugin.', 'health-check' ), 'error' );
 				return false;
 			}
 		}
 
 		// Copy the must-use plugin to the local directory.
 		if ( ! $wp_filesystem->copy( trailingslashit( HEALTH_CHECK_PLUGIN_DIRECTORY ) . 'assets/mu-plugin/health-check-troubleshooting-mode.php', trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-troubleshooting-mode.php' ) ) {
-			HealthCheck::display_notice( esc_html__( 'We were unable to copy the plugin file required to enable the Troubleshooting Mode.', 'health-check' ), 'error' );
+			Health_Check::display_notice( esc_html__( 'We were unable to copy the plugin file required to enable the Troubleshooting Mode.', 'health-check' ), 'error' );
 			return false;
 		}
 
@@ -157,7 +157,7 @@ class Health_Check_Troubleshoot {
 	 * @global $wp_filesystem
 	 *
 	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
-	 * @uses HealthCheck::get_filesystem_credentials()
+	 * @uses Health_Check::get_filesystem_credentials()
 	 * @uses get_plugin_data()
 	 * @uses trailingslashit()
 	 * @uses version_compare()
@@ -170,7 +170,7 @@ class Health_Check_Troubleshoot {
 		if ( ! Health_Check_Troubleshoot::mu_plugin_exists() ) {
 			return false;
 		}
-		if ( ! HealthCheck::get_filesystem_credentials() ) {
+		if ( ! Health_Check::get_filesystem_credentials() ) {
 			return false;
 		}
 
@@ -184,7 +184,7 @@ class Health_Check_Troubleshoot {
 			global $wp_filesystem;
 
 			if ( ! $wp_filesystem->copy( trailingslashit( HEALTH_CHECK_PLUGIN_DIRECTORY ) . 'assets/mu-plugin/health-check-troubleshooting-mode.php', trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-troubleshooting-mode.php', true ) ) {
-				HealthCheck::display_notice( esc_html__( 'We were unable to replace the plugin file required to enable the Troubleshooting Mode.', 'health-check' ), 'error' );
+				Health_Check::display_notice( esc_html__( 'We were unable to replace the plugin file required to enable the Troubleshooting Mode.', 'health-check' ), 'error' );
 				return false;
 			}
 		}
@@ -195,7 +195,7 @@ class Health_Check_Troubleshoot {
 	/**
 	 * Output a notice if our Troubleshooting Mode has been initiated.
 	 *
-	 * @uses HealthCheck::display_notice()
+	 * @uses Health_Check::display_notice()
 	 * @uses sprintf()
 	 * @uses esc_html__()
 	 * @uses esc_url()
@@ -204,7 +204,7 @@ class Health_Check_Troubleshoot {
 	 * @return void
 	 */
 	static function session_started() {
-		HealthCheck::display_notice(
+		Health_Check::display_notice(
 			sprintf(
 				'%s<br>%s',
 				esc_html__( 'You have successfully enabled Troubleshooting Mode, all plugins will appear inactive until you log out and back in again.', 'health-check' ),
@@ -225,7 +225,7 @@ class Health_Check_Troubleshoot {
 	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
 	 * @uses Health_Check_Troubleshoot::maybe_update_must_use_plugin()
 	 * @uses Health_Check_Troubleshoot::session_started()
-	 * @uses HealthCheck::get_filesystem_credentials()
+	 * @uses Health_Check::get_filesystem_credentials()
 	 * @uses Health_Check_Troubleshoot::setup_must_use_plugin()
 	 * @uses esc_html_e()
 	 *
@@ -240,7 +240,7 @@ class Health_Check_Troubleshoot {
 	 * @uses Health_Check_Troubleshoot::mu_plugin_exists()
 	 * @uses Health_Check_Troubleshoot::maybe_update_must_use_plugin()
 	 * @uses Health_Check_Troubleshoot::session_started()
-	 * @uses HealthCheck::get_filesystem_credentials()
+	 * @uses Health_Check::get_filesystem_credentials()
 	 * @uses Health_Check_Troubleshoot::setup_must_use_plugin()
 	 * @uses Health_Check_Troubleshooting_MU::is_troubleshooting()
 	 * @uses esc_url()
@@ -257,7 +257,7 @@ class Health_Check_Troubleshoot {
 				}
 				Health_Check_Troubleshoot::session_started();
 			} else {
-				if ( ! HealthCheck::get_filesystem_credentials() ) {
+				if ( ! Health_Check::get_filesystem_credentials() ) {
 					return;
 				} else {
 					Health_Check_Troubleshoot::setup_must_use_plugin();

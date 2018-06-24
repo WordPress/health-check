@@ -49,7 +49,7 @@ define( 'HEALTH_CHECK_CURL_VERSION', '7.58' );
 define( 'HEALTH_CHECK_CURL_MIN_VERSION', '7.38' );
 
 // Include class-files used by our plugin.
-require_once( dirname( __FILE__ ) . '/includes/class-healthcheck.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-health-check.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-auto-updates.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cron.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-debug-data.php' );
@@ -59,4 +59,4 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-files-integrit
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-mail-check.php' );
 
 // Initialize our plugin.
-new HealthCheck();
+new Health_Check();
