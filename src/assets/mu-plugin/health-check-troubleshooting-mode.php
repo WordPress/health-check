@@ -490,8 +490,7 @@ class Health_Check_Troubleshooting_MU {
 		if ( ! $this->is_troubleshooting() ) {
 			return;
 		}
-		
-		
+
 		// We need some admin functions to make this a better user experience, so include that file.
 		if ( ! is_admin() ) {
 			require_once( trailingslashit( ABSPATH ) . 'wp-admin/includes/plugin.php' );
