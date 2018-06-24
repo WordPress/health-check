@@ -309,14 +309,14 @@ class Health_Check {
 
 			<?php
 			$tabs = array(
-				'health-check' => esc_html_x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ),
+				'site-status'  => esc_html__( 'Site Status', 'health-check' ),
 				'debug'        => esc_html__( 'Debug Information', 'health-check' ),
 				'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
 				'phpinfo'      => esc_html__( 'PHP Information', 'health-check' ),
 				'tools'        => esc_html__( 'Tools', 'health-check' ),
 			);
 
-			$current_tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'health-check' );
+			$current_tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'site-status' );
 			?>
 
 			<h2 class="nav-tab-wrapper wp-clearfix">
@@ -350,9 +350,9 @@ class Health_Check {
 				case 'tools':
 					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php' );
 					break;
-				case 'health-check':
+				case 'site-status':
 				default:
-					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/health-check.php' );
+					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-status.php' );
 			}
 			?>
 		</div>
