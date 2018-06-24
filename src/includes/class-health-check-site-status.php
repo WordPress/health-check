@@ -125,10 +125,15 @@ class Health_Check_Site_Status {
 		$plugins        = get_plugins();
 		$plugin_updates = get_plugin_updates();
 
+		$show_unused_plugins  = true;
 		$plugins_have_updates = false;
 		$plugins_active       = 0;
 		$plugins_total        = 0;
 		$plugins_needs_update = 0;
+
+		if ( class_exists( 'Health_Check_Troubleshooting_MU' ) && is_callable( array( 'Health_Check_Troubleshooting_MU', 'is_troubleshooting' ) ) && Health_Check_Troubleshooting_MU::is_troubleshooting() ) {
+			$show_unused_plugins = false;
+		}
 
 		foreach ( $plugins as $plugin_path => $plugin ) {
 			$plugins_total++;
@@ -167,7 +172,7 @@ class Health_Check_Site_Status {
 			);
 		}
 
-		if ( $plugins_total > $plugins_active ) {
+		if ( ( $plugins_total > $plugins_active ) && $show_unused_plugins ) {
 			printf(
 				'<li><span class="warning"></span> %s',
 				sprintf(
@@ -188,8 +193,13 @@ class Health_Check_Site_Status {
 		$themes_need_updates = 0;
 		$themes_inactive     = 0;
 
-		$has_default_theme = false;
-		$has_unused_themes = false;
+		$has_default_theme  = false;
+		$has_unused_themes  = false;
+		$show_unused_themes = true;
+
+		if ( class_exists( 'Health_Check_Troubleshooting_MU' ) && is_callable( array( 'Health_Check_Troubleshooting_MU', 'is_troubleshooting' ) ) && Health_Check_Troubleshooting_MU::is_troubleshooting() ) {
+			$show_unused_themes = false;
+		}
 
 		// Populate a list of all themes available in the install.
 		$all_themes = wp_get_themes();
@@ -240,7 +250,7 @@ class Health_Check_Site_Status {
 			);
 		}
 
-		if ( $has_unused_themes ) {
+		if ( $has_unused_themes && $show_unused_themes ) {
 			printf(
 				'<li><span class="warning"></span> %s',
 				sprintf(
