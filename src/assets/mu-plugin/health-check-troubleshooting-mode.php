@@ -174,8 +174,10 @@ class Health_Check_Troubleshooting_MU {
 		}
 
 		printf(
-			'<div class="notice notice-warning"><p>%s</p></div>',
-			esc_html__( 'Plugin actions are not available while in Troubleshooting Mode.', 'health-check' )
+			'<div class="notice notice-warning"><p>%s</p><p>%s</p><p>%s</p></div>',
+			esc_html__( 'Plugin actions are not available while in Troubleshooting Mode.', 'health-check' ),
+			esc_html__( 'By enabling the Troubleshooting Mode, all plugins will appear inactive and your site will switch to the default theme only for you. All other users will see your site as usual.', 'health-check' ),
+			esc_html__( 'A Troubleshooting Mode menu is added to your admin bar, which will allow you to enable plugins individually, switch back to your current theme, and disable Troubleshooting Mode.', 'health-check' )
 		);
 	}
 
