@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check Troubleshooting Mode
 	Description: Conditionally disabled themes or plugins on your site for a given session, used to rule out conflicts during troubleshooting.
-	Version: 1.4
+	Version: 1.4.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,6 +15,7 @@ class Health_Check_Troubleshooting_MU {
 	private $active_plugins  = array();
 	private $current_theme;
 	private $current_theme_details;
+	private $self_fetching_theme = false;
 
 	private $available_query_args = array(
 		'health-check-disable-plugins',
@@ -77,8 +78,6 @@ class Health_Check_Troubleshooting_MU {
 		$this->default_theme  = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
 		$this->active_plugins = $this->get_unfiltered_plugin_list();
 		$this->current_theme  = get_option( 'health-check-current-theme', false );
-
-		$this->current_theme_details = wp_get_theme( $this->current_theme );
 	}
 
 	/**
@@ -378,9 +377,20 @@ class Health_Check_Troubleshooting_MU {
 	 * @return string Theme slug to be perceived as the active theme.
 	 */
 	function health_check_troubleshoot_theme( $theme ) {
+		// Check if this is us fetching theme details, we then want to just return things as usual.
+		if ( $this->self_fetching_theme ) {
+			return $theme;
+		}
+
 		// Check if overrides are triggered if not break out.
 		if ( ! $this->override_theme() ) {
 			return $theme;
+		}
+
+		if ( empty( $this->current_theme_details ) ) {
+			$this->self_fetching_theme   = true;
+			$this->current_theme_details = wp_get_theme( $this->current_theme );
+			$this->self_fetching_theme   = false;
 		}
 
 		// Check if this is a parent theme request, if so return it as usual.
