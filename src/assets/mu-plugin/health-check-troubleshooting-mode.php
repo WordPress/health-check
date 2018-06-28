@@ -388,9 +388,9 @@ class Health_Check_Troubleshooting_MU {
 		}
 
 		if ( empty( $this->current_theme_details ) ) {
-			$this->self_fetching_theme = true;
+			$this->self_fetching_theme   = true;
 			$this->current_theme_details = wp_get_theme( $this->current_theme );
-			$this->self_fetching_theme = false;
+			$this->self_fetching_theme   = false;
 		}
 
 		// Check if this is a parent theme request, if so return it as usual.
