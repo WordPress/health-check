@@ -1,9 +1,9 @@
 .health-check-modal {
 
 	display: none;
-	position: fixed;
+	position: absolute;
 	z-index: 1000;
-	padding-top: 100px;
+	padding-top: 50px;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -11,6 +11,11 @@
 	overflow: auto;
 	background-color: rgb(0, 0, 0);
 	background-color: rgba(0, 0, 0, 0.4);
+
+	@media all and (min-width: 1024px) {
+
+		padding-top: 100px;
+	}
 
 	&.show {
 
@@ -23,7 +28,12 @@
 		margin: auto;
 		padding: 20px;
 		border: 1px solid #888;
-		width: 30%;
+		width: 90%;
+
+		@media all and (min-width: 1024px) {
+
+			width: 30%;
+		}
 
 		.modal-close {
 
