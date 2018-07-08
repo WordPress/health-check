@@ -7,18 +7,18 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		/*
+		 * Start by making sure there are other plugins activated,
+		 * we will use Akismet, as it comes bundled with core.
+		 */
+		activate_plugin( $this->test_plugin, '', false, true );
+
 		// Set up a Troubleshooting hash.
 		update_option( 'health-check-disable-plugin-hash', 'abc123' );
 
 		$this->class_instance = new Health_Check_Troubleshooting_MU();
 
 		$this->test_plugin = 'akismet/akismet.php';
-
-		/*
-		 * Start by making sure there are other plugins activated,
-		 * we will use Akismet, as it comes bundled with core.
-		 */
-		activate_plugin( $this->test_plugin, '', false, true );
 	}
 
 	public function testTroubleshootingModeDisabledNoCookie() {
@@ -47,7 +47,7 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 		$_COOKIE['health-check-disable-plugins'] = '';
 
 		// Fetch a list of all active plugins.
-		$all_plugins = get_option( 'active_plugins' );
+		$all_plugins = $this->class_instance->get_unfiltered_plugin_list();
 
 		// Test that the plugin list is what we expect it to be.
 		$this->assertEquals( array(
