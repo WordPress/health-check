@@ -11,7 +11,7 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 		 * Start by making sure there are other plugins activated,
 		 * we will use Akismet, as it comes bundled with core.
 		 */
-		$this->test_plugin = 'akismet/akismet.php';
+		$this->test_plugin = 'hello.php';
 		activate_plugin( $this->test_plugin, '', false, true );
 
 		// Set up a Troubleshooting hash.
