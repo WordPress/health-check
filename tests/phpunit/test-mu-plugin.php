@@ -47,7 +47,7 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 		$_COOKIE['health-check-disable-plugins'] = '';
 
 		// Fetch a list of all active plugins.
-		$all_plugins = $this->class_instance->get_unfiltered_plugin_list();
+		$all_plugins = get_option( 'active_plugins' );
 
 		// Test that the plugin list is what we expect it to be.
 		$this->assertEquals( array(
