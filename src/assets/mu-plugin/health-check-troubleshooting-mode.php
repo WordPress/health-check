@@ -520,7 +520,7 @@ class Health_Check_Troubleshooting_MU {
 
 				$this->add_dashboard_notice(
 					sprintf(
-					// translators: %s: The plugin slug that was disabled.
+						// translators: %s: The plugin slug that was disabled.
 						__( 'We detected a site failure when you disabled the plugin, %s, because of this we have left the plugin enabled at this time.', 'health-check' ),
 						$_GET['health-check-troubleshoot-enable-plugin']
 					),
@@ -539,11 +539,11 @@ class Health_Check_Troubleshooting_MU {
 			update_option( 'health-check-current-theme', $_GET['health-check-change-active-theme'] );
 
 			if ( ! $this->test_site_state() ) {
-				update_option( 'health-check-current-theme', $old_theme);
+				update_option( 'health-check-current-theme', $old_theme );
 
 				$this->add_dashboard_notice(
 					sprintf(
-					// translators: %s: The theme slug that was switched to.
+						// translators: %s: The theme slug that was switched to.
 						__( 'We detected a site failure when you changed your active theme to %s. Because of this we reverted to the previous theme.', 'health-check' ),
 						$_GET['health-check-change-active-theme']
 					),
@@ -562,7 +562,7 @@ class Health_Check_Troubleshooting_MU {
 		$notices[] = array(
 			'severity' => $severity,
 			'message'  => $message,
-			'time'     => date( "Y-m-d H:i" ),
+			'time'     => date( 'Y-m-d H:i' ),
 		);
 
 		update_option( 'health-check-dashboard-notices', $notices );
@@ -749,7 +749,7 @@ class Health_Check_Troubleshooting_MU {
 		if ( 'dashboard' !== $screen->id ) {
 			return;
 		}
-?>
+		?>
 <style type="text/css">
 	@media all and (min-width: 783px) {
 		#health-check-dashboard-widget {
@@ -791,7 +791,7 @@ class Health_Check_Troubleshooting_MU {
 		display: block;
 	}
 </style>
-<?php
+		<?php
 	}
 
 	public function dashboard_widget_scripts() {
@@ -804,7 +804,7 @@ class Health_Check_Troubleshooting_MU {
 		if ( 'dashboard' !== $screen->id ) {
 			return;
 		}
-?>
+		?>
 <script type="text/javascript">
 	jQuery( document ).ready(function( $ ) {
 		$( '.health-check-toggle-visibility' ).click(function( e ) {
@@ -818,7 +818,7 @@ class Health_Check_Troubleshooting_MU {
 		});
 	});
 </script>
-<?php
+		<?php
 	}
 
 	public function display_dashboard_widget() {
@@ -833,7 +833,7 @@ class Health_Check_Troubleshooting_MU {
 		}
 
 		$notices = get_option( 'health-check-dashboard-notices', array() );
-?>
+		?>
 		<div class="wrap">
 			<div id="health-check-dashboard-widget" class="welcome-panel">
 				<div class="welcome-panel-content">
@@ -873,13 +873,17 @@ class Health_Check_Troubleshooting_MU {
 						}
 						?>
 
-						<?php if ( ! empty( $notices ) ) : ?>
-						<a href="<?php
-							echo esc_url( add_query_arg( array(
-								'health-check-dismiss-notices' => true,
-							) ) );
-						?>" class="dismiss-notices">Dismiss notices</a>
-						<?php endif; ?>
+						<?php
+						if ( ! empty( $notices ) ) {
+							printf(
+								'<a href="%s" class="dismiss-notices">%s</a>',
+								esc_url( add_query_arg( array(
+									'health-check-dismiss-notices' => true,
+								) ) ),
+								esc_html__( 'Dismiss notices', 'health-check' )
+							);
+						}
+						?>
 					</div>
 
 					<div class="welcome-panel-column-container">
@@ -931,7 +935,7 @@ class Health_Check_Troubleshooting_MU {
 											) ) ),
 											esc_attr(
 												sprintf(
-												// translators: %s: Plugin name.
+													// translators: %s: Plugin name.
 													'Enable %s',
 													$plugin_data['Name']
 												)
@@ -1033,16 +1037,20 @@ class Health_Check_Troubleshooting_MU {
 					</div>
 
 					<div class="welcome-panel-column">
-						<a href="<?php
-						echo esc_url( add_query_arg( array(
-							'health-check-disable-troubleshooting' => true,
-						) ) );
-			?>" class="button button-primary button-hero disable-troubleshooting-mode">Disable Troubleshooting Mode</a>
+						<?php
+						printf(
+							'<a href="%s" class="button button-primary button-hero disable-troubleshooting-mode">%s</a>',
+							esc_url( add_query_arg( array(
+								'health-check-disable-troubleshooting' => true,
+							) ) ),
+							esc_html__( 'Disable Troubleshooting Mode', 'health-check' )
+						);
+						?>
 					</div>
 				</div>
 			</div>
 		</div>
-<?php
+		<?php
 	}
 
 }
