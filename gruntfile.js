@@ -63,6 +63,12 @@ module.exports = function( grunt ) {
 				src: '**/*',
 				dest: 'build/',
 				expand: true
+			},
+			documents: {
+				cwd: 'docs/plugin/',
+				src: '**/*',
+				dest: 'build/',
+				expand: true
 			}
 		},
 		jscs: {
