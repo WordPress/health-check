@@ -494,7 +494,7 @@ class Health_Check_Troubleshooting_MU {
 				$this->add_dashboard_notice(
 					sprintf(
 						// translators: %s: The plugin slug that was enabled.
-						__( 'We detected a site failure when you enabled the plugin, %s, because of this we have not left the plugin enabled at this time.', 'health-check' ),
+						__( 'When enabling the plugin, %s, a site failure occurred. Because of this the change was automatically reverted.', 'health-check' ),
 						$_GET['health-check-troubleshoot-enable-plugin']
 					),
 					'warning'
@@ -521,7 +521,7 @@ class Health_Check_Troubleshooting_MU {
 				$this->add_dashboard_notice(
 					sprintf(
 						// translators: %s: The plugin slug that was disabled.
-						__( 'We detected a site failure when you disabled the plugin, %s, because of this we have left the plugin enabled at this time.', 'health-check' ),
+						__( 'When disabling the plugin, %s, a site failure occurred. Because of this the change was automatically reverted.', 'health-check' ),
 						$_GET['health-check-troubleshoot-enable-plugin']
 					),
 					'warning'
@@ -544,7 +544,7 @@ class Health_Check_Troubleshooting_MU {
 				$this->add_dashboard_notice(
 					sprintf(
 						// translators: %s: The theme slug that was switched to.
-						__( 'We detected a site failure when you changed your active theme to %s. Because of this we reverted to the previous theme.', 'health-check' ),
+						__( 'When switching the active theme to %s, a site failure occurred. Because of this we reverted the theme to the one you used previously.', 'health-check' ),
 						$_GET['health-check-change-active-theme']
 					),
 					'warning'
@@ -838,7 +838,7 @@ class Health_Check_Troubleshooting_MU {
 			<div id="health-check-dashboard-widget" class="welcome-panel">
 				<div class="welcome-panel-content">
 					<h2>
-						Health Check &mdash; Troubleshooting Mode
+						<?php esc_html_e( 'Health Check &mdash; Troubleshooting Mode', 'health-check' ); ?>
 					</h2>
 
 					<p class="about-description">
@@ -846,7 +846,7 @@ class Health_Check_Troubleshooting_MU {
 					</p>
 
 					<p class="about-description">
-						<?php esc_html_e( 'Here you may enable individual plugins or themes, helping you find our what might be causing strange behaviors on your site. Do note that any changes you make to settings will be kept when you disable Troubleshooting Mode.', 'health-check' ); ?>
+						<?php esc_html_e( 'Here you can enable individual plugins or themes, helping you to find out what might be causing strange behaviors on your site. Do note that any changes you make to settings will be kept when you disable Troubleshooting Mode.', 'health-check' ); ?>
 					</p>
 
 					<div class="notices">
