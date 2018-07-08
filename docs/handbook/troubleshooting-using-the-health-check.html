@@ -1,0 +1,65 @@
+<header class="entry-header">
+
+
+	<h1 class="entry-title" style="display: block;">
+
+		Troubleshooting using the Health Check
+
+	</h1>
+
+</header>
+
+<div class="entry-content">
+
+	<p>The support team utilizes the <a href="https://wordpress.org/plugins/health-check/">Health Check plugin</a> to help with troubleshooting common problems with websites, and to provide debug information to help with identifying problems with site setups.</p>
+	<p>This is an introduction to the various elements of the plugin, and how to utilize the various features it provides.</p>
+	<p>When active, the Health Check plugin can be found in your admin menu, under the <strong>Dashboard</strong> menu</p>
+
+	<h2>Health check</h2>
+	<p><a href="https://make.wordpress.org/support/files/2018/01/health-check-tab.png" class="user-typed"><img class="alignnone wp-image-47321 size-full" src="https://make.wordpress.org/support/files/2018/01/health-check-tab.png" alt="" width="1015" height="590" srcset="https://make.wordpress.org/support/files/2018/01/health-check-tab.png 1015w, https://make.wordpress.org/support/files/2018/01/health-check-tab-300x174.png 300w, https://make.wordpress.org/support/files/2018/01/health-check-tab-768x446.png 768w" sizes="(max-width: 1015px) 100vw, 1015px"></a></p>
+	<p>The first tab you are presented with will run a suite of checks against your site to ensure various software versions are up to date, and required features are available.</p>
+	<p>&nbsp;</p>
+	<p>The checks that are performed at the time of writing are:</p>
+	<ul>
+		<li>PHP Version: Check if your site uses the minimum required PHP version, and also recommends a newer version if if it older than the recommended version.</li>
+		<li>MySQL Server version: Checks that the database service your site uses is on the minimum required version (supports both MySQL and MariaDB, these are the two database engines we officially support).</li>
+		<li>JSON Extension: Many features in WordPress, as well as plugins and themes, rely on data in a format known as JSON, this check makes sure this is enabled for your site.</li>
+		<li>MySQL utf8mb4 support: Since WordPress 4.2, we now support <a href="https://make.wordpress.org/core/2015/04/02/the-utf8mb4-upgrade/">utf8mb4 as the database character set</a>, this allows for various advanced letters to be utilized on your site, such as <a href="https://en.wikipedia.org/wiki/Han_unification">Han character sets</a>.</li>
+		<li>Communication with WordPress.org: This makes sure you can fetch plugin, theme and WordPress core updates from the WordPress.org network.</li>
+		<li>HTTPS Status: Checks if you are visiting your site using a secure connection.</li>
+		<li>Secure communication: Checks if your website is able to communicate with external services using secure connections (SSL), many services require secure communications to work and this may affect various plugins.</li>
+		<li>Scheduled events: Checks if <a href="https://developer.wordpress.org/plugins/cron/">WP Cron</a>&nbsp;is running like it should, if it fails, things such as scheduled posts and automated updates won’t work.</li>
+		<li>Background updates: A suite of tests to check if anything is preventing WordPress from automatically applying minor updates (security/bugfix updates).</li>
+		<li>Loopback request: Checks if anything is preventing loopbacks from being triggered. A loopback is used to start WP Cron, as mentioned earlier, and is also used to verify files after making updates and can affect many different parts of your site. If a request were to fail, you will be presented with a method to test if it’s caused by one or more of your plugins.</li>
+	</ul>
+
+	<h2>Debug information</h2>
+	<p><a href="https://make.wordpress.org/support/files/2018/01/debug-information-tab.png" class="user-typed"><img class="alignnone wp-image-47322 size-full" src="https://make.wordpress.org/support/files/2018/01/debug-information-tab.png" alt="" width="1276" height="609" srcset="https://make.wordpress.org/support/files/2018/01/debug-information-tab.png 1276w, https://make.wordpress.org/support/files/2018/01/debug-information-tab-300x143.png 300w, https://make.wordpress.org/support/files/2018/01/debug-information-tab-768x367.png 768w, https://make.wordpress.org/support/files/2018/01/debug-information-tab-1024x489.png 1024w" sizes="(max-width: 1276px) 100vw, 1276px"></a></p>
+	<p>The debug information tab provides information that may be crucial to replicating issues, or identifying causes for problems with a site.</p>
+	<p><a href="https://make.wordpress.org/support/files/2018/01/debug-information-tab-copy.png" class="user-typed"><img class="alignright size-thumbnail wp-image-47323" src="https://make.wordpress.org/support/files/2018/01/debug-information-tab-copy-150x150.png" alt="" width="150" height="150"></a>This page also provides the user with a field for easily copying this information over into a support topic on the WordPress.org support forums (or to their plugin or theme providers support form if they wish). This section can be accessed by clicking the&nbsp;<strong>Show copy and paste field</strong> button at the top of the page.</p>
+	<p>The information in the copy and paste field has been filtered, and some data from the debug tab is unavailable as it is deemed private, such as database information, this means you can safely copy the whole field and it will be formatted and should be safe to put on a public forum.</p>
+	<div class="callout callout-alert">
+		<p>
+			<span class="screen-reader-text">Alert:</span> Note that the information provided on the debug page can be added to by plugins or themes using the <strong>debug_information</strong> filter.
+		</p>
+	</div>
+
+	<p>If you are using the plugin in a language that has been translated, you may also find that you are presented with two buttons, one will provide the copy and paste information in your own language, the other will provide it in English, this is to make it easier to provide the information depending on what support site you are using (for example, one of our <a href="https://make.wordpress.org/support/handbook/contributing-to-the-wordpress-forums/support-forums-in-your-language/">support forums in your own language</a>).</p>
+
+	<h2>Troubleshooting</h2>
+	<p><a href="https://make.wordpress.org/support/files/2018/01/troubleshooting-tab.png" class="user-typed"><img class="alignnone size-full wp-image-47324" src="https://make.wordpress.org/support/files/2018/01/troubleshooting-tab.png" alt="" width="1292" height="341" srcset="https://make.wordpress.org/support/files/2018/01/troubleshooting-tab.png 1292w, https://make.wordpress.org/support/files/2018/01/troubleshooting-tab-300x79.png 300w, https://make.wordpress.org/support/files/2018/01/troubleshooting-tab-768x203.png 768w, https://make.wordpress.org/support/files/2018/01/troubleshooting-tab-1024x270.png 1024w" sizes="(max-width: 1292px) 100vw, 1292px"></a></p>
+	<p>When utilizing the troubleshooting mode, your currently logged in user is given a stripped down version of WordPress, where all plugins are disabled and one of the default themes is activated.</p>
+	<p>It is important to note that this is only the case for your user, it does not affect any other site visitors, or users of your site, for them the theme will be the same, and all plugins will still be running as before.</p>
+	<p>This mode is essential when trying to identify the cause of an issue, as in most cases, any issue you have will be introduced by your theme or one of your plugins (or maybe even multiple plugins interacting poorly with each other),</p>
+	<p>When in troubleshooting mode you are able to verify if a problem still exists in a basic WordPress setup, thus helping us identify and fixing a bug others may be encountering, or finding out which plugin or your theme is causing the problems so that you can report this to the applicable authors.</p>
+	<p>Once in troubleshooting mode, a new item is added to your admin bar, this gives you an overview of which plugins are enabled or disabled, and allows you to toggle them on or off.<br>
+	It also allows you to switch between a default theme, and your currently active theme (the one you were using on your site before enabling troubleshooting mode), and of course gives you a way to disable troubleshooting mode.</p>
+	<p><a href="https://make.wordpress.org/support/files/2018/01/troubleshooting-mode-admin-bar.png" class="user-typed"><img class="alignnone size-full wp-image-47325" src="https://make.wordpress.org/support/files/2018/01/troubleshooting-mode-admin-bar.png" alt="" width="737" height="186" srcset="https://make.wordpress.org/support/files/2018/01/troubleshooting-mode-admin-bar.png 737w, https://make.wordpress.org/support/files/2018/01/troubleshooting-mode-admin-bar-300x76.png 300w" sizes="(max-width: 737px) 100vw, 737px"></a></p>
+
+	<h2>PHP information</h2>
+	<p><a href="https://make.wordpress.org/support/files/2018/01/php-information-tab.png" class="user-typed"><img class="alignnone size-full wp-image-47326" src="https://make.wordpress.org/support/files/2018/01/php-information-tab.png" alt="" width="1281" height="486" srcset="https://make.wordpress.org/support/files/2018/01/php-information-tab.png 1281w, https://make.wordpress.org/support/files/2018/01/php-information-tab-300x114.png 300w, https://make.wordpress.org/support/files/2018/01/php-information-tab-768x291.png 768w, https://make.wordpress.org/support/files/2018/01/php-information-tab-1024x388.png 1024w" sizes="(max-width: 1281px) 100vw, 1281px"></a></p>
+	<p>The PHP information tab is here for those extra hard issues, where normal information may not be enough and information about your sites more granular settings are required.</p>
+	<p>This tab is essentially just the output of the <code>phpinfo()</code> function, but adjusted to be displayed within your WordPress site instead of requiring you to write your own file to get the data.</p>
+	<p>When asked for additional information from this page, the simplest approach is to use your browsers search feature (ctrl+f or cmd+f) and typing or pasting the name of the field you are asked to find.</p>
+
+</div>

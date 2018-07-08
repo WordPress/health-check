@@ -17,6 +17,14 @@ When looking to implement features they are always added as issues first to allo
 this kind of valuable input.
 
 
+## Contributing with documentation
+The directory `docs` has our plugins readme, changelog and handbook content.
+
+The handbook lives on the WordPress.org Support Team's site, at https://make.wordpress.org/support/handbook/appendix/troubleshooting-using-the-health-check/.
+The structure of this document will be replicated to the website, and allows us to educate users and
+developers on the benefits of the plugin and how to use it.
+
+
 ## Contributing with code
 
 When contributing through code, please start by forking the repository, and then making a clone 
