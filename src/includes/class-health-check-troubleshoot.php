@@ -207,7 +207,7 @@ class Health_Check_Troubleshoot {
 		Health_Check::display_notice(
 			sprintf(
 				'%s<br>%s',
-				esc_html__( 'You have successfully enabled Troubleshooting Mode, all plugins will appear inactive until you log out and back in again.', 'health-check' ),
+				esc_html__( 'You have successfully enabled Troubleshooting Mode, all plugins will appear inactive until you disable Troubleshooting Mode, or log out and back in again.', 'health-check' ),
 				sprintf(
 					'<a href="%1$s">%2$s</a><script type="text/javascript">window.location = "%1$s";</script>',
 					esc_url( admin_url( '/' ) ),
@@ -268,8 +268,15 @@ class Health_Check_Troubleshoot {
 		?>
 		<div class="notice inline">
 
-		<?php if ( class_exists( 'Health_Check_Troubleshooting_MU' ) && is_callable( array( 'Health_Check_Troubleshooting_MU', 'is_troubleshooting' ) ) && Health_Check_Troubleshooting_MU::is_troubleshooting() ) : ?>
+		<?php
+		$troubleshooting = null;
 
+		if ( class_exists( 'Health_Check_Troubleshooting_MU' ) ) {
+			$troubleshooting = new Health_Check_Troubleshooting_MU();
+		}
+
+		if ( null !== $troubleshooting && $troubleshooting->is_troubleshooting() ) :
+			?>
 			<p style="text-align: center;">
 				<a class="button button-primary" href="<?php echo esc_url( add_query_arg( array( 'health-check-disable-troubleshooting' => true ) ) ); ?>">
 					<?php esc_html_e( 'Disable Troubleshooting Mode', 'health-check' ); ?>
