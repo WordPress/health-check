@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Health_Check_Troubleshooting_MU {
+	private $disable_hash    = null;
 	private $override_active = true;
 	private $default_theme   = true;
 	private $active_plugins  = array();
@@ -55,8 +56,8 @@ class Health_Check_Troubleshooting_MU {
 		add_filter( 'option_active_plugins', array( $this, 'health_check_loopback_test_disable_plugins' ) );
 		add_filter( 'option_active_sitewide_plugins', array( $this, 'health_check_loopback_test_disable_plugins' ) );
 
-		add_filter( 'stylesheet', array( $this, 'health_check_troubleshoot_theme' ) );
-		add_filter( 'template', array( $this, 'health_check_troubleshoot_theme' ) );
+		add_filter( 'pre_option_template', array( $this, 'health_check_troubleshoot_theme_template' ) );
+		add_filter( 'pre_option_stylesheet', array( $this, 'health_check_troubleshoot_theme_stylesheet' ) );
 
 		add_action( 'admin_notices', array( $this, 'plugin_list_admin_notice' ) );
 		add_action( 'admin_notices', array( $this, 'prompt_install_default_theme' ) );
@@ -79,6 +80,7 @@ class Health_Check_Troubleshooting_MU {
 		 */
 		add_action( 'activated_plugin', array( $this, 'plugin_activated' ) );
 
+		$this->disable_hash   = get_option( 'health-check-disable-plugin-hash', null );
 		$this->default_theme  = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
 		$this->active_plugins = $this->get_unfiltered_plugin_list();
 		$this->current_theme  = get_option( 'health-check-current-theme', false );
@@ -274,7 +276,7 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return bool
 	 */
-	public static function is_troubleshooting() {
+	public function is_troubleshooting() {
 		// Check if a session cookie to disable plugins has been set.
 		if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
 			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'];
@@ -285,9 +287,12 @@ class Health_Check_Troubleshooting_MU {
 			return false;
 		}
 
+		if ( empty( $this->disable_hash ) ) {
+			return false;
+		}
+
 		// If the plugin hash is not valid, we also break out
-		$disable_hash = get_option( 'health-check-disable-plugin-hash', '' );
-		if ( $disable_hash !== $_GET['health-check-disable-plugin-hash'] ) {
+		if ( $this->disable_hash !== $_GET['health-check-disable-plugin-hash'] ) {
 			return false;
 		}
 
@@ -372,25 +377,22 @@ class Health_Check_Troubleshooting_MU {
 	}
 
 	/**
-	 * Use a default theme.
+	 * Override the default theme.
 	 *
-	 * Attempt to set one of the default themes as the active one
-	 * during Troubleshooting Mode, if one exists, if not fall
-	 * back to always showing the active theme.
+	 * Attempt to set one of the default themes, or a theme of the users choosing, as the active one
+	 * during Troubleshooting Mode.
 	 *
-	 * @param string $theme The users active theme slug.
+	 * @param $default
 	 *
-	 * @return string Theme slug to be perceived as the active theme.
+	 * @return bool|string
 	 */
-	function health_check_troubleshoot_theme( $theme ) {
-		// Check if this is us fetching theme details, we then want to just return things as usual.
+	function health_check_troubleshoot_theme_stylesheet( $default ) {
 		if ( $this->self_fetching_theme ) {
-			return $theme;
+			return $default;
 		}
 
-		// Check if overrides are triggered if not break out.
 		if ( ! $this->override_theme() ) {
-			return $theme;
+			return $default;
 		}
 
 		if ( empty( $this->current_theme_details ) ) {
@@ -399,25 +401,54 @@ class Health_Check_Troubleshooting_MU {
 			$this->self_fetching_theme   = false;
 		}
 
-		// Check if this is a parent theme request, if so return it as usual.
-		if ( $this->current_theme_details->parent() ) {
-			if ( $this->current_theme_details->get_template() === $theme ) {
-				return $theme;
+		// If no theme has been chosen, start off by troubleshooting as a default theme if one exists.
+		$default_theme = $this->has_default_theme();
+		if ( false === $this->current_theme ) {
+			if ( $default_theme ) {
+				return $default_theme;
 			}
 		}
 
-		// Check if a default theme exists, and if so use it as a default.
+		return $this->current_theme;
+	}
+
+	/**
+	 * Override the default parent theme.
+	 *
+	 * If this is a child theme, override the parent and provide our users chosen themes parent instead.
+	 *
+	 * @param $default
+	 *
+	 * @return bool|string
+	 */
+	function health_check_troubleshoot_theme_template( $default ) {
+		if ( $this->self_fetching_theme ) {
+			return $default;
+		}
+
+		if ( ! $this->override_theme() ) {
+			return $default;
+		}
+
+		if ( empty( $this->current_theme_details ) ) {
+			$this->self_fetching_theme   = true;
+			$this->current_theme_details = wp_get_theme( $this->current_theme );
+			$this->self_fetching_theme   = false;
+		}
+
+		// If no theme has been chosen, start off by troubleshooting as a default theme if one exists.
 		$default_theme = $this->has_default_theme();
-		if ( $default_theme ) {
-			$theme = $default_theme;
+		if ( false === $this->current_theme ) {
+			if ( $default_theme ) {
+				return $default_theme;
+			}
 		}
 
-		// If a specific theme has been chosen, use it.
-		if ( false !== $this->current_theme ) {
-			$theme = $this->current_theme;
+		if ( $this->current_theme_details->parent() ) {
+			return $this->current_theme_details->get_template();
 		}
 
-		return $theme;
+		return $this->current_theme;
 	}
 
 	/**
