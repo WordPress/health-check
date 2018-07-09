@@ -131,8 +131,12 @@ class Health_Check_Site_Status {
 		$plugins_total        = 0;
 		$plugins_needs_update = 0;
 
-		if ( class_exists( 'Health_Check_Troubleshooting_MU' ) && is_callable( array( 'Health_Check_Troubleshooting_MU', 'is_troubleshooting' ) ) && Health_Check_Troubleshooting_MU::is_troubleshooting() ) {
-			$show_unused_plugins = false;
+		if ( class_exists( 'Health_Check_Troubleshooting_MU' ) ) {
+			$troubleshooting = new Health_Check_Troubleshooting_MU();
+
+			if ( $troubleshooting->is_troubleshooting() ) {
+				$show_unused_plugins = false;
+			}
 		}
 
 		foreach ( $plugins as $plugin_path => $plugin ) {
@@ -197,8 +201,12 @@ class Health_Check_Site_Status {
 		$has_unused_themes  = false;
 		$show_unused_themes = true;
 
-		if ( class_exists( 'Health_Check_Troubleshooting_MU' ) && is_callable( array( 'Health_Check_Troubleshooting_MU', 'is_troubleshooting' ) ) && Health_Check_Troubleshooting_MU::is_troubleshooting() ) {
-			$show_unused_themes = false;
+		if ( class_exists( 'Health_Check_Troubleshooting_MU' ) ) {
+			$troubleshooting = new Health_Check_Troubleshooting_MU();
+
+			if ( $troubleshooting->is_troubleshooting() ) {
+				$show_unused_themes = false;
+			}
 		}
 
 		// Populate a list of all themes available in the install.
