@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Health_Check_Troubleshooting_MU {
-	private $disable_hash;
+	private $disable_hash    = null;
 	private $override_active = true;
 	private $default_theme   = true;
 	private $active_plugins  = array();
@@ -80,7 +80,7 @@ class Health_Check_Troubleshooting_MU {
 		 */
 		add_action( 'activated_plugin', array( $this, 'plugin_activated' ) );
 
-		$this->disable_hash   = get_option( 'health-check-disable-plugin-hash', '' );
+		$this->disable_hash   = get_option( 'health-check-disable-plugin-hash', null );
 		$this->default_theme  = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
 		$this->active_plugins = $this->get_unfiltered_plugin_list();
 		$this->current_theme  = get_option( 'health-check-current-theme', false );
@@ -284,6 +284,10 @@ class Health_Check_Troubleshooting_MU {
 
 		// If the disable hash isn't set, no need to interact with things.
 		if ( ! isset( $_GET['health-check-disable-plugin-hash'] ) ) {
+			return false;
+		}
+
+		if ( empty( $this->disable_hash ) ) {
 			return false;
 		}
 
