@@ -746,7 +746,7 @@ class Health_Check_Troubleshooting_MU {
 	}
 
 	public function dashboard_widget_styles() {
-		if ( !  $this->is_troubleshooting() ) {
+		if ( ! $this->is_troubleshooting() ) {
 			return;
 		}
 
