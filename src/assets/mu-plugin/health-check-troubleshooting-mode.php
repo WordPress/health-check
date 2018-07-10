@@ -80,6 +80,15 @@ class Health_Check_Troubleshooting_MU {
 		 */
 		add_action( 'activated_plugin', array( $this, 'plugin_activated' ) );
 
+		$this->load_options();
+	}
+
+	/**
+	 * Set up the class variables based on option table entries.
+	 *
+	 * @return void
+	 */
+	public function load_options() {
 		$this->disable_hash    = get_option( 'health-check-disable-plugin-hash', null );
 		$this->allowed_plugins = get_option( 'health-check-allowed-plugins', array() );
 		$this->default_theme   = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );

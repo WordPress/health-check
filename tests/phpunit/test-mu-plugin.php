@@ -75,6 +75,9 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 		// Add Akismet to the approved plugins list.
 		update_option( 'health-check-allowed-plugins', array( 'akismet' ) );
 
+		// Re-load the options entries so we know they're after our changes.
+		$this->class_instance->load_options();
+
 		// Fetch a list of all active plugins while troubleshooting.
 		$all_plugins = get_option( 'active_plugins' );
 
@@ -85,5 +88,9 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 
 		// Empty out the approved plugins list after asserting tests.
 		update_option( 'health-check-allowed-plugins', array() );
+
+		// Re-load the options entries so we know they're after our changes.
+		$this->class_instance->load_options();
+
 	}
 }
