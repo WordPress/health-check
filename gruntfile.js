@@ -66,7 +66,7 @@ module.exports = function( grunt ) {
 			},
 			documents: {
 				cwd: 'docs/plugin/',
-				src: '**/*',
+				src: [ '**/*', '!assets/*' ],
 				dest: 'build/',
 				expand: true
 			}
