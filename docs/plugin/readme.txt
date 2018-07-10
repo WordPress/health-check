@@ -21,11 +21,13 @@ For a more extensive example of how to efficiently use the Health Check plugin, 
 
 In the future we may introduce more checks, and welcome feedback both through the [WordPress.org forums](https://wordpress.org/support/plugin/health-check), and the [GitHub project page](https://github.com/WordPress/health-check).
 
-== Installation ==
+== Frequently Asked Questions ==
 
-1. Upload to your plugins folder, usually `wp-content/plugins/`
-2. Activate the plugin on the plugin screen.
-3. Once activated the plugin will appear under your `Dashboard` menu.
+= I am unable to access my site after enabling troubleshooting =
+
+If you should find your self stuck in Troubleshooting Mode for any reason, you can easily disable it by clearing your cookies.
+
+Are you unfamiliar with how to clear your cookies? No worries, you may also close all your browser windows, or perform a computer restart and it will clear this specific cookie automatically.
 
 == Screenshots ==
 
