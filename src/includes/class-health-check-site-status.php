@@ -24,6 +24,8 @@ class Health_Check_Site_Status {
 		$this->prepare_sql_data();
 
 		add_action( 'wp_ajax_health-check-site-status', array( $this, 'site_status' ) );
+
+		add_action( 'wp_loaded', array( $this, 'check_wp_version_check_exists' ) );
 	}
 
 	private function prepare_sql_data() {
@@ -50,6 +52,16 @@ class Health_Check_Site_Status {
 
 		$this->mysql_min_version_check = version_compare( HEALTH_CHECK_MYSQL_MIN_VERSION, $this->mysql_server_version, '<=' );
 		$this->mysql_rec_version_check = version_compare( $this->health_check_mysql_rec_version, $this->mysql_server_version, '<=' );
+	}
+
+	public function check_wp_version_check_exists() {
+		if ( ! is_admin() || ! is_user_logged_in() || ! current_user_can( 'manage_options' ) || ! isset( $_GET['health-check-test-wp_version_check'] ) ) {
+			return;
+		}
+
+		echo ( has_filter( 'wp_version_check', 'wp_version_check' ) ? 'yes' : 'no' );
+
+		die();
 	}
 
 	public function site_status() {

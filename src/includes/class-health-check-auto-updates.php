@@ -140,7 +140,26 @@ class Health_Check_Auto_Updates {
 	 * @return array
 	 */
 	function test_wp_version_check_attached() {
-		if ( ! has_filter( 'wp_version_check', 'wp_version_check' ) ) {
+		$cookies = wp_unslash( $_COOKIE );
+		$timeout = 10;
+		$headers = array(
+			'Cache-Control' => 'no-cache',
+		);
+
+		// Include Basic auth in loopback requests.
+		if ( isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['PHP_AUTH_PW'] ) ) {
+			$headers['Authorization'] = 'Basic ' . base64_encode( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) . ':' . wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
+		}
+
+		$url = add_query_arg( array(
+			'health-check-test-wp_version_check' => true,
+		), admin_url() );
+
+		$test = wp_remote_get( $url, compact( 'cookies', 'headers', 'timeout' ) );
+
+		$response = wp_remote_retrieve_body( $test );
+
+		if ( 'yes' !== $response ) {
 			return array(
 				'desc'     => sprintf(
 					/* translators: %s: Name of the filter used. */
