@@ -1,16 +1,17 @@
 /* global HealthCheck, ajaxurl, healthCheckFailureModal */
 jQuery( document ).ready(function( $ ) {
 	function testDefaultTheme() {
-		var data = {
-			action: 'health-check-loopback-default-theme'
-		};
+		var $parent = $( '.individual-loopback-test-status', '#test-single-no-theme' ),
+			data = {
+				action: 'health-check-loopback-default-theme'
+			};
 
 		$.post(
 			ajaxurl,
 			data,
 			function( response ) {
 				if ( true === response.success ) {
-					$( '.individual-loopback-test-status', '#test-single-no-theme' ).html( response.data.message );
+					$parent.html( response.data.message );
 				} else {
 					healthCheckFailureModal( response.data, data.action, $parent );
 				}
@@ -21,7 +22,8 @@ jQuery( document ).ready(function( $ ) {
 
 	function testSinglePlugin() {
 		var $test_lines = $( '.not-tested', '#loopback-individual-plugins-list' );
-		var $test_line,
+		var $parent_field,
+			$test_line,
 			data;
 
 		if ( $test_lines.length < 1 ) {
@@ -35,7 +37,9 @@ jQuery( document ).ready(function( $ ) {
 			plugin: $test_line.data( 'test-plugin' )
 		};
 
-		$( '.individual-loopback-test-status', $test_line ).html( HealthCheck.string.running_tests );
+		$parent_field = $( '.individual-loopback-test-status', $test_line )M
+
+		$parent_field.html( HealthCheck.string.running_tests );
 
 		$.post(
 			ajaxurl,
@@ -43,10 +47,10 @@ jQuery( document ).ready(function( $ ) {
 			function( response ) {
 				if ( true === response.success ) {
 					$test_line.removeClass( 'not-tested' );
-					$( '.individual-loopback-test-status', $test_line ).html( response.data.message );
+					$parent_field.html( response.data.message );
 					testSinglePlugin();
 				} else {
-					healthCheckFailureModal( response.data, data.action, $parent );
+					healthCheckFailureModal( response.data, data.action, $parent_field );
 				}
 			},
 			'json'
