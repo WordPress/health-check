@@ -60,6 +60,7 @@ class Health_Check {
 
 		add_action( 'wp_ajax_health-check-loopback-no-plugins', array( 'Health_Check_Loopback', 'loopback_no_plugins' ) );
 		add_action( 'wp_ajax_health-check-loopback-individual-plugins', array( 'Health_Check_Loopback', 'loopback_test_individual_plugins' ) );
+		add_action( 'wp_ajax_health-check-loopback-default-theme', array( 'Health_Check_Loopback', 'loopback_test_default_theme' ) );
 		add_action( 'wp_ajax_health-check-files-integrity-check', array( 'Health_Check_Files_Integrity', 'run_files_integrity_check' ) );
 		add_action( 'wp_ajax_health-check-view-file-diff', array( 'Health_Check_Files_Integrity', 'view_file_diff' ) );
 		add_action( 'wp_ajax_health-check-mail-check', array( 'Health_Check_Mail_Check', 'run_mail_check' ) );
@@ -210,8 +211,9 @@ class Health_Check {
 
 		wp_localize_script( 'health-check', 'HealthCheck', array(
 			'string'  => array(
-				'please_wait' => esc_html__( 'Please wait...', 'health-check' ),
-				'copied'      => esc_html__( 'Copied', 'health-check' ),
+				'please_wait'   => esc_html__( 'Please wait...', 'health-check' ),
+				'copied'        => esc_html__( 'Copied', 'health-check' ),
+				'running_tests' => esc_html__( 'Currently being tested...', 'health-check' ),
 			),
 			'warning' => array(
 				'seen_backup' => Health_Check_Troubleshoot::has_seen_warning(),
