@@ -159,6 +159,34 @@ class Health_Check_Loopback {
 		);
 
 		if ( 'error' !== $no_plugin_test->status ) {
+			$plugins = wp_get_active_and_valid_plugins();
+			$theme   = wp_get_theme();
+
+			$message .= '<table id="loopback-individual-plugins-list">';
+
+			foreach ( $plugins as $single_plugin ) {
+				$plugin = get_plugin_data( $single_plugin );
+
+				$message .= sprintf(
+					'<tr data-test-plugin="%s" class="not-tested"><td>%s</td><td class="individual-loopback-test-status">%s</td></tr>',
+					esc_attr( plugin_basename( $single_plugin ) ),
+					esc_html( $plugin['Name'] ),
+					esc_html__( 'Waiting...', 'health-check' )
+				);
+			}
+
+			$message .= sprintf(
+				'<tr id="test-single-no-theme"><td>%s</td><td class="individual-loopback-test-status">%s</td></tr>',
+				sprintf(
+					// translators: %s: The active theme name.
+					esc_html__( 'Active theme: %s', 'health-check' ),
+					$theme->name
+				),
+				esc_html__( 'Waiting...', 'health-check' )
+			);
+
+			$message .= '</table>';
+
 			$message .= '<br><button type="button" id="loopback-individual-plugins" class="button button-primary">Test individual plugins</button>';
 		}
 
@@ -221,30 +249,55 @@ class Health_Check_Loopback {
 
 		delete_option( 'health-check-disable-plugin-hash' );
 
-		$all_plugins = get_option( 'active_plugins' );
+		$loopback_hash = md5( rand() );
+		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
+
+		$plugin_slug = explode( '/', $_POST['plugin'] );
+		$plugin_slug = $plugin_slug[0];
+
+		$single_test = Health_Check_Loopback::can_perform_loopback( $loopback_hash, $plugin_slug );
+
+		$message = sprintf(
+			'<span class="%s"></span> %s',
+			esc_attr( $single_test->status ),
+			$single_test->message
+		);
+
+		$response = array(
+			'message' => $message,
+		);
+
+		wp_send_json_success( $response );
+
+		die();
+	}
+
+	static function loopback_test_default_theme() {
+		ob_start();
+
+		$needs_creds = false;
+
+		if ( ! Health_Check_Troubleshoot::mu_plugin_exists() ) {
+			if ( ! Health_Check::get_filesystem_credentials() ) {
+				$needs_creds = true;
+			} else {
+				Health_Check_Troubleshoot::setup_must_use_plugin();
+			}
+		}
+
+		$result = ob_get_clean();
+
+		if ( $needs_creds ) {
+			wp_send_json_error( $result );
+			die();
+		}
+
+		delete_option( 'health-check-disable-plugin-hash' );
 
 		$loopback_hash = md5( rand() );
 		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
 
 		$message = '';
-
-		foreach ( $all_plugins as $single_plugin ) {
-			$plugin_slug = explode( '/', $single_plugin );
-			$plugin_slug = $plugin_slug[0];
-
-			$single_test = Health_Check_Loopback::can_perform_loopback( $loopback_hash, $plugin_slug );
-
-			$message .= sprintf(
-				'<br><span class="%s"></span> %s: %s',
-				esc_attr( $single_test->status ),
-				sprintf(
-					// Translators: %s: Plugin slug being tested.
-					esc_html__( 'Testing %s', 'health-check' ),
-					$plugin_slug
-				),
-				$single_test->message
-			);
-		}
 
 		// Test without a theme active.
 		update_option( 'health-check-default-theme', 'yes' );
@@ -252,9 +305,8 @@ class Health_Check_Loopback {
 		$theme_test = Health_Check_Loopback::can_perform_loopback( $loopback_hash, '' );
 
 		$message .= sprintf(
-			'<br><span class="%s"></span> %s: %s',
+			'<span class="%s"></span> %s',
 			esc_attr( $theme_test->status ),
-			esc_html__( 'Testing a default theme', 'health-check' ),
 			$theme_test->message
 		);
 
