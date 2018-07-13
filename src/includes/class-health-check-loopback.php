@@ -178,7 +178,7 @@ class Health_Check_Loopback {
 			$message .= sprintf(
 				'<tr id="test-single-no-theme"><td>%s</td><td class="individual-loopback-test-status">%s</td></tr>',
 				sprintf(
-				// translators: %s: The active theme name.
+					// translators: %s: The active theme name.
 					esc_html__( 'Active theme: %s', 'health-check' ),
 					$theme->name
 				),
