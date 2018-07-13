@@ -37,7 +37,7 @@ jQuery( document ).ready(function( $ ) {
 			plugin: $test_line.data( 'test-plugin' )
 		};
 
-		$parent_field = $( '.individual-loopback-test-status', $test_line )M
+		$parent_field = $( '.individual-loopback-test-status', $test_line );
 
 		$parent_field.html( HealthCheck.string.running_tests );
 
