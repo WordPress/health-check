@@ -27,32 +27,32 @@ matrix:
     - php: 7.2
       env: WP_HC_CS_TEST=yes
     - php: 7.2
-      env: WP_VERSION=3.9
+      env: WP_VERSION=4.0
     - php: 7.1
     - php: 7.1
-      env: WP_VERSION=3.9
+      env: WP_VERSION=4.0
     - php: 7.0
     - php: 7.0
-      env: WP_VERSION=3.9
+      env: WP_VERSION=4.0
     - php: 5.6
     - php: 5.6
-      env: WP_VERSION=3.8
+      env: WP_VERSION=4.0
     - php: 5.5
     - php: 5.5
-      env: WP_VERSION=3.8
+      env: WP_VERSION=4.0
     - php: 5.4
     - php: 5.4
-      env: WP_VERSION=3.8
+      env: WP_VERSION=4.0
     - php: 5.3
       dist: precise
     - php: 5.3
       dist: precise
-      env: WP_VERSION=3.8
+      env: WP_VERSION=4.0
     - php: 5.2
       dist: precise
     - php: 5.2
       dist: precise
-      env: WP_VERSION=3.8
+      env: WP_VERSION=4.0
 
 # Setup NPM modules for Travis CI cache maintanence.
 cache:

@@ -14,6 +14,7 @@ class Health_Check_Troubleshooting_MU {
 	private $override_active = true;
 	private $default_theme   = true;
 	private $active_plugins  = array();
+	private $allowed_plugins = array();
 	private $current_theme;
 	private $current_theme_details;
 	private $self_fetching_theme = false;
@@ -79,10 +80,20 @@ class Health_Check_Troubleshooting_MU {
 		 */
 		add_action( 'activated_plugin', array( $this, 'plugin_activated' ) );
 
-		$this->disable_hash   = get_option( 'health-check-disable-plugin-hash', null );
-		$this->default_theme  = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
-		$this->active_plugins = $this->get_unfiltered_plugin_list();
-		$this->current_theme  = get_option( 'health-check-current-theme', false );
+		$this->load_options();
+	}
+
+	/**
+	 * Set up the class variables based on option table entries.
+	 *
+	 * @return void
+	 */
+	public function load_options() {
+		$this->disable_hash    = get_option( 'health-check-disable-plugin-hash', null );
+		$this->allowed_plugins = get_option( 'health-check-allowed-plugins', array() );
+		$this->default_theme   = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
+		$this->active_plugins  = $this->get_unfiltered_plugin_list();
+		$this->current_theme   = get_option( 'health-check-current-theme', false );
 	}
 
 	/**
@@ -201,11 +212,9 @@ class Health_Check_Troubleshooting_MU {
 			$plugin_data['slug'] = $plugin_file;
 		}
 
-		$allowed_plugins = get_option( 'health-check-allowed-plugins', array() );
-
 		$plugin_slug = ( isset( $plugin_data['slug'] ) ? $plugin_data['slug'] : sanitize_title( $plugin_data['Name'] ) );
 
-		if ( in_array( $plugin_slug, $allowed_plugins ) ) {
+		if ( in_array( $plugin_slug, $this->allowed_plugins ) ) {
 			$actions['troubleshoot-disable'] = sprintf(
 				'<a href="%s">%s</a>',
 				esc_url( add_query_arg( array(
@@ -283,11 +292,9 @@ class Health_Check_Troubleshooting_MU {
 			return $plugins;
 		}
 
-		$allowed_plugins = get_option( 'health-check-allowed-plugins', array() );
-
 		// If we've received a comma-separated list of allowed plugins, we'll add them to the array of allowed plugins.
 		if ( isset( $_GET['health-check-allowed-plugins'] ) ) {
-			$allowed_plugins = explode( ',', $_GET['health-check-allowed-plugins'] );
+			$this->allowed_plugins = explode( ',', $_GET['health-check-allowed-plugins'] );
 		}
 
 		foreach ( $plugins as $plugin_no => $plugin_path ) {
@@ -295,7 +302,7 @@ class Health_Check_Troubleshooting_MU {
 			$plugin_parts = explode( '/', $plugin_path );
 
 			// We may want to allow individual, or groups of plugins, so introduce a skip-mechanic for those scenarios.
-			if ( in_array( $plugin_parts[0], $allowed_plugins ) ) {
+			if ( in_array( $plugin_parts[0], $this->allowed_plugins ) ) {
 				continue;
 			}
 
@@ -474,7 +481,7 @@ class Health_Check_Troubleshooting_MU {
 		}
 
 		// Dismiss notices.
-		if ( isset( $_GET['health-check-dismiss-notices'] ) && Health_Check_Troubleshooting_MU::is_troubleshooting() && is_admin() ) {
+		if ( isset( $_GET['health-check-dismiss-notices'] ) && $this->is_troubleshooting() && is_admin() ) {
 			update_option( 'health-check-dashboard-notices', array() );
 
 			wp_redirect( admin_url() );
@@ -483,15 +490,14 @@ class Health_Check_Troubleshooting_MU {
 
 		// Enable an individual plugin.
 		if ( isset( $_GET['health-check-troubleshoot-enable-plugin'] ) ) {
-			$allowed_plugins = get_option( 'health-check-allowed-plugins', array() );
+			$old_allowed_plugins = $this->allowed_plugins;
 
-			$old_allowed_plugins = $allowed_plugins;
+			$this->allowed_plugins[ $_GET['health-check-troubleshoot-enable-plugin'] ] = $_GET['health-check-troubleshoot-enable-plugin'];
 
-			$allowed_plugins[ $_GET['health-check-troubleshoot-enable-plugin'] ] = $_GET['health-check-troubleshoot-enable-plugin'];
-
-			update_option( 'health-check-allowed-plugins', $allowed_plugins );
+			update_option( 'health-check-allowed-plugins', $this->allowed_plugins );
 
 			if ( ! $this->test_site_state() ) {
+				$this->allowed_plugins = $old_allowed_plugins;
 				update_option( 'health-check-allowed-plugins', $old_allowed_plugins );
 
 				$this->add_dashboard_notice(
@@ -510,15 +516,14 @@ class Health_Check_Troubleshooting_MU {
 
 		// Disable an individual plugin.
 		if ( isset( $_GET['health-check-troubleshoot-disable-plugin'] ) ) {
-			$allowed_plugins = get_option( 'health-check-allowed-plugins', array() );
+			$old_allowed_plugins = $this->allowed_plugins;
 
-			$old_allowed_plugins = $allowed_plugins;
+			unset( $this->allowed_plugins[ $_GET['health-check-troubleshoot-disable-plugin'] ] );
 
-			unset( $allowed_plugins[ $_GET['health-check-troubleshoot-disable-plugin'] ] );
-
-			update_option( 'health-check-allowed-plugins', $allowed_plugins );
+			update_option( 'health-check-allowed-plugins', $this->allowed_plugins );
 
 			if ( ! $this->test_site_state() ) {
+				$this->allowed_plugins = $old_allowed_plugins;
 				update_option( 'health-check-allowed-plugins', $old_allowed_plugins );
 
 				$this->add_dashboard_notice(
@@ -601,8 +606,6 @@ class Health_Check_Troubleshooting_MU {
 			'title' => esc_html__( 'Troubleshooting Mode', 'health-check' ),
 		) );
 
-		$allowed_plugins = get_option( 'health-check-allowed-plugins', array() );
-
 		// Add a link to manage plugins if there are more than 20 set to be active.
 		if ( count( $this->active_plugins ) > 20 ) {
 			$wp_menu->add_node( array(
@@ -635,7 +638,7 @@ class Health_Check_Troubleshooting_MU {
 
 				$enabled = true;
 
-				if ( in_array( $plugin_slug, $allowed_plugins ) ) {
+				if ( in_array( $plugin_slug, $this->allowed_plugins ) ) {
 					$label = sprintf(
 						// Translators: %s: Plugin slug.
 						esc_html__( 'Disable %s', 'health-check' ),
@@ -743,7 +746,7 @@ class Health_Check_Troubleshooting_MU {
 	}
 
 	public function dashboard_widget_styles() {
-		if ( ! Health_Check_Troubleshooting_MU::is_troubleshooting() ) {
+		if ( ! $this->is_troubleshooting() ) {
 			return;
 		}
 
@@ -810,7 +813,7 @@ class Health_Check_Troubleshooting_MU {
 	}
 
 	public function dashboard_widget_scripts() {
-		if ( ! Health_Check_Troubleshooting_MU::is_troubleshooting() ) {
+		if ( ! $this->is_troubleshooting() ) {
 			return;
 		}
 
@@ -837,7 +840,7 @@ class Health_Check_Troubleshooting_MU {
 	}
 
 	public function display_dashboard_widget() {
-		if ( ! Health_Check_Troubleshooting_MU::is_troubleshooting() ) {
+		if ( ! $this->is_troubleshooting() ) {
 			return;
 		}
 
@@ -921,7 +924,6 @@ class Health_Check_Troubleshooting_MU {
 									<?php
 									$active_plugins   = array();
 									$inactive_plugins = array();
-									$allowed_plugins  = get_option( 'health-check-allowed-plugins', array() );
 
 									foreach ( $this->active_plugins as $count => $single_plugin ) {
 										$plugin_slug = explode( '/', $single_plugin );
@@ -936,7 +938,7 @@ class Health_Check_Troubleshooting_MU {
 
 										$actions = array();
 
-										if ( in_array( $plugin_slug, $allowed_plugins ) ) {
+										if ( in_array( $plugin_slug, $this->allowed_plugins ) ) {
 											$actions[] = sprintf(
 												'<a href="%s" aria-label="%s">%s</a>',
 												esc_url( add_query_arg( array(
