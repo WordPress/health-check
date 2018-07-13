@@ -21,36 +21,36 @@ jQuery( document ).ready(function( $ ) {
 	}
 
 	function testSinglePlugin() {
-		var $test_lines = $( '.not-tested', '#loopback-individual-plugins-list' );
-		var $parent_field,
-			$test_line,
+		var $testLines = $( '.not-tested', '#loopback-individual-plugins-list' );
+		var $parentField,
+			$testLine,
 			data;
 
-		if ( $test_lines.length < 1 ) {
+		if ( $testLines.length < 1 ) {
 			testDefaultTheme();
 			return null;
 		}
 
-		$test_line = $test_lines.first();
+		$testLine = $testLines.first();
 		data = {
 			action: 'health-check-loopback-individual-plugins',
-			plugin: $test_line.data( 'test-plugin' )
+			plugin: $testLine.data( 'test-plugin' )
 		};
 
-		$parent_field = $( '.individual-loopback-test-status', $test_line );
+		$parentField = $( '.individual-loopback-test-status', $testLine );
 
-		$parent_field.html( HealthCheck.string.running_tests );
+		$parentField.html( HealthCheck.string.running_tests );
 
 		$.post(
 			ajaxurl,
 			data,
 			function( response ) {
 				if ( true === response.success ) {
-					$test_line.removeClass( 'not-tested' );
-					$parent_field.html( response.data.message );
+					$testLine.removeClass( 'not-tested' );
+					$parentField.html( response.data.message );
 					testSinglePlugin();
 				} else {
-					healthCheckFailureModal( response.data, data.action, $parent_field );
+					healthCheckFailureModal( response.data, data.action, $parentField );
 				}
 			},
 			'json'
