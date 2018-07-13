@@ -152,8 +152,8 @@ class Health_Check_Auto_Updates {
 		}
 
 		$url = add_query_arg( array(
-				'health-check-test-wp_version_check' => true,
-			), admin_url() );
+			'health-check-test-wp_version_check' => true,
+		), admin_url() );
 
 		$test = wp_remote_get( $url, compact( 'cookies', 'headers', 'timeout' ) );
 
