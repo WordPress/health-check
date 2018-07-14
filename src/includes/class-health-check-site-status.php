@@ -268,7 +268,7 @@ class Health_Check_Site_Status {
 
 		if ( $themes_total > $allowed_theme_count ) {
 			$has_unused_themes = true;
-			$themes_inactive = ( $themes_total - $allowed_theme_count );
+			$themes_inactive   = ( $themes_total - $allowed_theme_count );
 		}
 
 		echo '<ul>';
