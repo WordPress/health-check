@@ -173,7 +173,12 @@ class Health_Check_Site_Status {
 				'<li><span class="error"></span> %s',
 				sprintf(
 					// translators: %d: The amount of outdated plugins.
-					esc_html__( 'Your site has %d plugins waiting to be updated.', 'health-check' ),
+					esc_html( _n(
+						'Your site has %d plugin waiting to be updated.',
+						'Your site has %d plugins waiting to be updated.',
+						$plugins_needs_update,
+						'health-check'
+					) ),
 					$plugins_needs_update
 				)
 			);
@@ -182,19 +187,30 @@ class Health_Check_Site_Status {
 				'<li><span class="good"></span> %s',
 				sprintf(
 					// translators: %d: The amount of plugins.
-					esc_html__( 'Your site has %d active plugins, and they are all up to date.', 'health-check' ),
+					esc_html( _n(
+						'Your site has %d active plugin, and it is up to date.',
+						'Your site has %d active plugins, and they are all up to date.',
+						$plugins_total,
+						'health-check'
+					) ),
 					$plugins_total
 				)
 			);
 		}
 
 		if ( ( $plugins_total > $plugins_active ) && $show_unused_plugins ) {
+			$unused_plugins = $plugins_total - $plugins_active;
 			printf(
 				'<li><span class="warning"></span> %s',
 				sprintf(
 					// translators: %d: The amount of inactive plugins.
-					esc_html__( 'Your site has %d inactive plugins, it is recommended to remove any unused plugins to enhance your site security.', 'health-check' ),
-					( $plugins_total - $plugins_active )
+					esc_html( _n(
+						'Your site has %d inactive plugin, it is recommended to remove any unused plugins to enhance your site security.',
+						'Your site has %d inactive plugins, it is recommended to remove any unused plugins to enhance your site security.',
+						$unused_plugins,
+						'health-check'
+					) ),
+					$unused_plugins
 				)
 			);
 		}
@@ -209,6 +225,9 @@ class Health_Check_Site_Status {
 		$themes_need_updates = 0;
 		$themes_inactive     = 0;
 
+		// This value is changed dduring processing to determine how many themes are considered a reasonable amount.
+		$allowed_theme_count = 1;
+
 		$has_default_theme  = false;
 		$has_unused_themes  = false;
 		$show_unused_themes = true;
@@ -222,7 +241,8 @@ class Health_Check_Site_Status {
 		}
 
 		// Populate a list of all themes available in the install.
-		$all_themes = wp_get_themes();
+		$all_themes   = wp_get_themes();
+		$active_theme = wp_get_theme();
 
 		foreach ( $all_themes as $theme_slug => $theme ) {
 			$themes_total++;
@@ -236,16 +256,19 @@ class Health_Check_Site_Status {
 			}
 		}
 
-		if ( $themes_total > 1 ) {
-			if ( $has_default_theme ) {
-				if ( $themes_total > 2 ) {
-					$has_unused_themes = true;
-					$themes_inactive   = ( $themes_total - 2 );
-				}
-			} else {
-				$has_unused_themes = true;
-				$themes_inactive   = ( $themes_total - 1 );
-			}
+		// If this is a child theme, increase the allowed theme count by one, to account for the parent.
+		if ( $active_theme->parent() ) {
+			$allowed_theme_count++;
+		}
+
+		// If there's a default theme installed, we count that as allowed as well.
+		if ( $has_default_theme ) {
+			$allowed_theme_count++;
+		}
+
+		if ( $themes_total > $allowed_theme_count ) {
+			$has_unused_themes = true;
+			$themes_inactive   = ( $themes_total - $allowed_theme_count );
 		}
 
 		echo '<ul>';
@@ -255,7 +278,12 @@ class Health_Check_Site_Status {
 				'<li><span class="error"></span> %s',
 				sprintf(
 					// translators: %d: The amount of outdated themes.
-					esc_html__( 'Your site has %d themes waiting to be updated.', 'health-check' ),
+					esc_html( _n(
+						'Your site has %d theme waiting to be updated.',
+						'Your site has %d themes waiting to be updated.',
+						$themes_need_updates,
+						'health-check'
+					) ),
 					$themes_need_updates
 				)
 			);
@@ -264,22 +292,56 @@ class Health_Check_Site_Status {
 				'<li><span class="good"></span> %s',
 				sprintf(
 					// translators: %d: The amount of themes.
-					esc_html__( 'Your site has %d installed themes, and they are all up to date.', 'health-check' ),
+					esc_html( _n(
+						'Your site has %d installed theme, and it is up to date.',
+						'Your site has %d installed themes, and they are all up to date.',
+						$themes_total,
+						'health-check'
+					) ),
 					$themes_total
 				)
 			);
 		}
 
 		if ( $has_unused_themes && $show_unused_themes ) {
-			printf(
-				'<li><span class="warning"></span> %s',
-				sprintf(
-					// translators: %1$d: The amount of inactive themes. %2$s: The default theme for WordPress.
-					esc_html__( 'Your site has %1$s inactive themes, other than %2$s and your currently active one, it is recommended to remove any unused themes to enhance your sites security.', 'health-check' ),
-					$themes_inactive,
-					WP_DEFAULT_THEME
-				)
-			);
+
+			// This is a child theme, so we want to be a bit more explicit in our messages.
+			if ( $active_theme->parent() ) {
+				printf(
+					'<li><span class="warning"></span> %s',
+					sprintf(
+						// translators: %1$d: The amount of inactive themes. %2$s: The default theme for WordPress. %3$s: The currently active theme. %4$s: The active themes parent theme.
+						esc_html( _n(
+							'Your site has %1$d inactive theme. To enhance your sites security it is recommended to remove any unused themes. You should keep %2$s, the default WordPress theme, %3$s, your current theme and %4$s, the parent theme.',
+							'Your site has %1$d inactive themes. To enhance your sites security it is recommended to remove any unused themes. You should keep %2$s, the default WordPress theme, %3$s, your current theme and %4$s, the parent theme. ',
+							$themes_inactive,
+							'health-check'
+						) ),
+						$themes_inactive,
+						WP_DEFAULT_THEME,
+						$active_theme->name,
+						$active_theme->parent()->name
+					)
+				);
+
+			} else {
+				printf(
+					'<li><span class="warning"></span> %s',
+					sprintf(
+						// translators: %1$d: The amount of inactive themes. %2$s: The default theme for WordPress. %3$s: The currently active theme.
+						esc_html( _n(
+							'Your site has %1$d inactive theme, other than %2$s, the default WordPress theme, and %3$s, your active theme. It is recommended to remove any unused themes to enhance your sites security.',
+							'Your site has %1$d inactive themes, other than %2$s, the default WordPress theme, and %3$s, your active theme. It is recommended to remove any unused themes to enhance your sites security.',
+							$themes_inactive,
+							'health-check'
+						) ),
+						$themes_inactive,
+						WP_DEFAULT_THEME,
+						$active_theme->name
+					)
+				);
+
+			}
 		}
 
 		if ( ! $has_default_theme ) {
