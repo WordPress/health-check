@@ -947,7 +947,7 @@ class Health_Check_Troubleshooting_MU {
 												esc_attr(
 													sprintf(
 														// translators: %s: Plugin name.
-														'Disable %s',
+														__( 'Disable the plugin, %s, while troubleshooting.', 'health-check' ),
 														$plugin_data['Name']
 													)
 												),
@@ -962,7 +962,7 @@ class Health_Check_Troubleshooting_MU {
 												esc_attr(
 													sprintf(
 														// translators: %s: Plugin name.
-														'Enable %s',
+														__( 'Enable the plugin, %s, while troubleshooting.', 'health-check' ),
 														$plugin_data['Name']
 													)
 												),
