@@ -3,7 +3,7 @@ Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.1.2
+Stable tag: 1.2.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,26 +37,14 @@ Are you unfamiliar with how to clear your cookies? No worries, you may also clos
 
 == Changelog ==
 
-= v 1.1.2 =
-* Fixed child themes not displaying properly in Troubleshooting Mode.
-* Improved styling for the backup warning, shown when activating the plugin, so it doesn't block mobile users.
-* Added explanations to the plugins screen if you enter Troubleshooting Mode there, so users know what is going on.
-* Fixed admin menu overflowing if too many plugins exist.
-
-= v 1.1.1 =
-* Fixed a fatal error that would occur if a user had an older version of Troubleshooting Mode on their system.
-
-= v 1.1.0 =
-* Check for theme, plugin and WordPress updates when visiting the debug tab.
-* Improved wording on some failure situations.
-* Made the Debug Information tab a bit easier to read with fixed table styles.
-* Redesigned tools page, with added accordion to avoid information overload, and different features mixing together.
-* Mail test tool now allows you to include an optional customized message.
-* Users can now change between any installed theme while in troubleshooting mode.
-* Renamed the Must-Use plugin, making it align with what features present in the file.
-* Improved the plugin cleanup process, when the plugin is deleted.
-* Show full plugin names, and not slugs, in the troubleshooting admin bar menu.
-* Check if the .htaccess file contains any rules not added by WordPress core in the debug section.
-* Allow the disabling of Troubleshooting Mode from the same page as you previously enabled it from.
-* Removed cURL checks from the automated test page, this was more confusion than help.
-* Add installation size to the debug information.
+= v 1.2.0 =
+* Changed plugin name, it now better describes the plugins two primary purposes.
+* Changed the `Health Check` tab, it's now named `Site Status`, as we used the old name too many places and it was confusing.
+* Site status tests now run asynchronously, making the page load much faster.
+* The HTTPS tests now also check your Site URL settings to make sure they are following recommended best practices.
+* Fixed a warning preventing plugin names from displaying on the front-end in some cases.
+* Fixed an issue where you might get a 500 error if you tried using Troubleshooting Mode while using a child theme.
+* Automatically disable/enable a plugin or theme in Troubleshooting Mode if they are detected to cause errors.
+* Introduce a new dashboard widget during Troubleshooting Mode (and a simplified version on the plugins screen) to better explain what is going on, and make available actions more discoverable than the admin menu is.
+* Some text improvements throughout the plugin.
+* When loopback tests fail, we previously tested all plugins at once, for sites that have many plugins this may fail as the request times out. We now test one plugin at a time to avoid this, while also showing more information at the tests are running to the end user.
