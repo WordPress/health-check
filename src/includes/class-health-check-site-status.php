@@ -88,7 +88,8 @@ class Health_Check_Site_Status {
 				'<span class="warning"></span> %s',
 				sprintf(
 					// translators: %s: Your current version of WordPress.
-					esc_html__( '%s - We were unable to check if any new versions are available.', 'health-check' )
+					esc_html__( '%s - We were unable to check if any new versions are available.', 'health-check' ),
+					$core_current_version
 				)
 			);
 		} else {
