@@ -1,3 +1,27 @@
+= v 1.1.2 =
+* Fixed child themes not displaying properly in Troubleshooting Mode.
+* Improved styling for the backup warning, shown when activating the plugin, so it doesn't block mobile users.
+* Added explanations to the plugins screen if you enter Troubleshooting Mode there, so users know what is going on.
+* Fixed admin menu overflowing if too many plugins exist.
+
+= v 1.1.1 =
+* Fixed a fatal error that would occur if a user had an older version of Troubleshooting Mode on their system.
+
+= v 1.1.0 =
+* Check for theme, plugin and WordPress updates when visiting the debug tab.
+* Improved wording on some failure situations.
+* Made the Debug Information tab a bit easier to read with fixed table styles.
+* Redesigned tools page, with added accordion to avoid information overload, and different features mixing together.
+* Mail test tool now allows you to include an optional customized message.
+* Users can now change between any installed theme while in troubleshooting mode.
+* Renamed the Must-Use plugin, making it align with what features present in the file.
+* Improved the plugin cleanup process, when the plugin is deleted.
+* Show full plugin names, and not slugs, in the troubleshooting admin bar menu.
+* Check if the .htaccess file contains any rules not added by WordPress core in the debug section.
+* Allow the disabling of Troubleshooting Mode from the same page as you previously enabled it from.
+* Removed cURL checks from the automated test page, this was more confusion than help.
+* Add installation size to the debug information.
+
 = v 1.0.1 =
 * Fixed email tester having the wrong class reference, preventing it from running.
 * Add some missing text domains preventing full translations.
