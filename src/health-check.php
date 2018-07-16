@@ -4,6 +4,7 @@
  *
  * @package Health Check
  *
+ * @wordpress-plugin
  * Plugin Name: Health Check & Troubleshooting
  * Plugin URI: http://wordpress.org/plugins/health-check/
  * Description: Checks the health of your WordPress install.
