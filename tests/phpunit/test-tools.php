@@ -37,7 +37,7 @@ class Health_Check_Tools_Test extends WP_UnitTestCase {
 		rename( $renamed_file, $original_file );
 	}
 
-	public function testFilesIntegiryModifiedFiles() {
+	public function testFilesIntegrityModifiedFiles() {
 		$filename = trailingslashit( ABSPATH ) . 'xmlrpc.php';
 
 		file_put_contents( $filename, PHP_EOL . '// Modified file content.' . PHP_EOL,  FILE_APPEND );
