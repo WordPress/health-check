@@ -68,6 +68,23 @@ class Health_Check_Troubleshoot {
 	 * @return bool
 	 */
 	static function has_seen_warning() {
+		/**
+		 * Filter who may see the backup warning from the plugin.
+		 *
+		 * The plugin displays a warning reminding users to keep backups when active.
+		 * This filter allows anyone to declare what capability is needed to view the warning, it is set to
+		 * the `manage_options` capability by default. This means the feature is available to any site admin,
+		 * even in a multisite environment.
+		 *
+		 * @param string $capability Default manage_options. The capability required to see the warning.
+		 */
+		$capability_to_see = apply_filters( 'health_check_backup_warning_required_capability', 'manage_options' );
+
+		// If the current user lacks the capabilities to use the plugin, pretend they've seen the warning so it isn't displayed.
+		if ( ! current_user_can( $capability_to_see ) ) {
+			return true;
+		}
+
 		$meta = get_user_meta( get_current_user_id(), 'health-check', true );
 		if ( empty( $meta ) ) {
 			return false;
