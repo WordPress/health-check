@@ -292,7 +292,7 @@ class Health_Check_Troubleshoot {
 			$troubleshooting = new Health_Check_Troubleshooting_MU();
 		}
 
-		if ( null !== $troubleshooting && $troubleshooting->is_troubleshooting() ) :
+		if ( null !== $troubleshooting && is_callable( array( $troubleshooting, 'is_troubleshooting' ) ) && $troubleshooting->is_troubleshooting() ) :
 			?>
 			<p style="text-align: center;">
 				<a class="button button-primary" href="<?php echo esc_url( add_query_arg( array( 'health-check-disable-troubleshooting' => true ) ) ); ?>">
