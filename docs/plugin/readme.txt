@@ -3,7 +3,7 @@ Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,11 @@ Are you unfamiliar with how to clear your cookies? No worries, you may also clos
 3. The generic PHP information tab, when more detailed information is required.
 
 == Changelog ==
+
+= v 1.2.1 =
+* Make sure only those with access to the plugin see the backup encouragement notice.
+* Make sure the `is_troubleshooting()` checks are available to the Site Status tester when the MU plugin may not have updated yet.
+* Avoid a warning of an undefined variable if you have the latest WordPress version installed.
 
 = v 1.2.0 =
 * Changed plugin name, it now better describes the plugins two primary purposes.
