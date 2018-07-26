@@ -47,6 +47,7 @@ class Health_Check_Debug_Data {
 
 		$core_current_version = get_bloginfo( 'version' );
 		$core_updates         = get_core_updates();
+		$core_update_needed   = '';
 
 		foreach ( $core_updates as $core => $update ) {
 			if ( 'upgrade' === $update->response ) {
