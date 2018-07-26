@@ -150,12 +150,14 @@ class Health_Check_Site_Status {
 			return false;
 		}
 
-		if ( empty( $this->disable_hash ) ) {
+		$disable_hash = get_option( 'health-check-disable-plugin-hash', null );
+
+		if ( empty( $disable_hash ) ) {
 			return false;
 		}
 
 		// If the plugin hash is not valid, we also break out
-		if ( $this->disable_hash !== $_GET['health-check-disable-plugin-hash'] ) {
+		if ( $disable_hash !== $_GET['health-check-disable-plugin-hash'] ) {
 			return false;
 		}
 
