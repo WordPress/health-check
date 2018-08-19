@@ -217,10 +217,10 @@ class Health_Check_Site_Status {
 					esc_html( _n(
 						'Your site has %d active plugin, and it is up to date.',
 						'Your site has %d active plugins, and they are all up to date.',
-						$plugins_total,
+						$plugins_active,
 						'health-check'
 					) ),
-					$plugins_total
+					$plugins_active
 				)
 			);
 		}
