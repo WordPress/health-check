@@ -203,7 +203,11 @@ foreach ( $info as $section => $details ) {
 					);
 				}
 			} else {
-				$values = esc_html( $field['value'] );
+				$values = wp_kses( $field['value'], array(
+					'a' => array(
+						'href' => true,
+					),
+				) );
 			}
 
 			printf(

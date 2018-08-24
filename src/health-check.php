@@ -58,6 +58,7 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-loopback.php' 
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-troubleshoot.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-files-integrity.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-mail-check.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-health-check-htaccess-viewer.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-site-status.php' );
 
 // Initialize our plugin.

@@ -452,9 +452,16 @@ class Health_Check_Debug_Data {
 			// Filter away the core WordPress rules.
 			$filtered_htaccess_content = trim( preg_replace( '/\# BEGIN WordPress[\s\S]+?# END WordPress/si', '', $htaccess_content ) );
 
+			// Create link for tools tab.
+			$tools_tab = add_query_arg( array(
+				'page' => 'health-check',
+				'tab'  => 'tools',
+			), admin_url( 'index.php' ) );
+
 			$info['wp-server']['fields'][] = array(
 				'label' => __( 'htaccess rules', 'health-check' ),
-				'value' => ( ! empty( $filtered_htaccess_content ) ? __( 'Custom rules have been added to your htaccess file', 'health-check' ) : __( 'Your htaccess file only contains core WordPress features', 'health-check' ) ),
+				/* translators: admin url */
+				'value' => ! empty( $filtered_htaccess_content ) ? sprintf( __( 'Custom rules have been added to your htaccess file, you can view the contents <a href="%s">here</a>', 'health-check' ), esc_url( $tools_tab ) ) : __( 'Your htaccess file only contains core WordPress features', 'health-check' ),
 			);
 		}
 

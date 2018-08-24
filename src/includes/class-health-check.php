@@ -68,6 +68,9 @@ class Health_Check {
 
 		add_filter( 'health_check_tools_tab', array( 'Health_Check_Files_Integrity', 'tools_tab' ) );
 		add_filter( 'health_check_tools_tab', array( 'Health_Check_Mail_Check', 'tools_tab' ) );
+
+		// add the htaccess viewer
+		add_filter( 'health_check_tools_tab', array( 'Health_Check_Htaccess_Viewer', 'tools_tab' ) );
 	}
 
 	/**
