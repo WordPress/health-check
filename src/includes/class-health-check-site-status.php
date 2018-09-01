@@ -79,18 +79,25 @@ class Health_Check_Site_Status {
 		die();
 	}
 
+	/**
+	 * Tests for WordPress version and outputs it.
+	 *
+	 * @return void It is an AJAX call.
+	 */
 	public function test_wordpress_version() {
 		$core_current_version = get_bloginfo( 'version' );
 		$core_updates         = get_core_updates();
 
+		// Prepare for a class and text for later use.
+		$text  = '';
+		$class = '';
+
 		if ( ! is_array( $core_updates ) ) {
-			printf(
-				'<span class="warning"></span> %s',
-				sprintf(
-					// translators: %s: Your current version of WordPress.
-					esc_html__( '%s - We were unable to check if any new versions are available.', 'health-check' ),
-					$core_current_version
-				)
+			$class = 'warning';
+			$text  = sprintf(
+				// translators: %s: Your current version of WordPress.
+				__( '%s - We were unable to check if any new versions are available.', 'health-check' ),
+				$core_current_version
 			);
 		} else {
 			foreach ( $core_updates as $core => $update ) {
@@ -103,35 +110,33 @@ class Health_Check_Site_Status {
 
 					if ( $current_major !== $new_major ) {
 						// This is a major version mismatch.
-						printf(
-							'<span class="warning"></span> %s',
-							sprintf(
-								// translators: %1$s: Your current version of WordPress. %2$s The latest version of WordPress available.
-								esc_html__( '%1$s ( Latest version: %2$s )', 'health-check' ),
-								$core_current_version,
-								$update->version
-							)
+						$class = 'warning';
+						$text  = sprintf(
+							// translators: %1$s: Your current version of WordPress. %2$s The latest version of WordPress available.
+							__( '%1$s ( Latest version: %2$s )', 'health-check' ),
+							$core_current_version,
+							$update->version
 						);
 					} else {
 						// This is a minor version, sometimes considered more critical.
-						printf(
-							'<span class="error"></span> %s',
-							sprintf(
-								// translators: %1$s: Your current version of WordPress. %2$s The latest version of WordPress available.
-								esc_html__( '%1$s ( Latest version: %2$s ) - We strongly urge you to update, as minor updates are often security related.', 'health-check' ),
-								$core_current_version,
-								$update->version
-							)
+						$class = 'error';
+						$text  = sprintf(
+							// translators: %1$s: Your current version of WordPress. %2$s The latest version of WordPress available.
+							__( '%1$s ( Latest version: %2$s ) - We strongly urge you to update, as minor updates are often security related.', 'health-check' ),
+							$core_current_version,
+							$update->version
 						);
 					}
 				} else {
-					printf(
-						'<span class="good"></span> %s',
-						esc_html( $core_current_version )
-					);
+					$class = 'good';
+					$text  = $core_current_version;
 				}
 			}
 		}
+
+		printf( '<span class="%1$s"></span> %2$s', esc_attr( $class ), esc_html( $text ) );
+
+		die(); // just in case.
 	}
 
 	/**
