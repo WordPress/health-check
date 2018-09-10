@@ -376,6 +376,10 @@ class Health_Check_Debug_Data {
 			'value' => ( ! function_exists( 'php_uname' ) ? __( 'Unable to determine server architecture', 'health-check' ) : sprintf( '%s %s %s', php_uname( 's' ), php_uname( 'r' ), php_uname( 'm' ) ) ),
 		);
 		$info['wp-server']['fields'][] = array(
+			'label' => __( 'Web Server Software', 'health-check' ),
+			'value' => ( isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : __( 'Unable to determine what web server software is used', 'health-check' ) ),
+		);
+		$info['wp-server']['fields'][] = array(
 			'label' => __( 'PHP Version', 'health-check' ),
 			'value' => ( ! function_exists( 'phpversion' ) ? __( 'Unable to determine PHP version', 'health-check' ) : sprintf(
 				'%s %s',
