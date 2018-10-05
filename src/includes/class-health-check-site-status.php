@@ -708,7 +708,10 @@ class Health_Check_Site_Status {
 		);
 
 		if ( 'error' === $check_loopback->status ) {
-			echo '<br><button type="button" id="loopback-no-plugins" class="button button-primary">Test without plugins</button>';
+			printf(
+				'<br><button type="button" id="loopback-no-plugins" class="button button-primary">%s</button>',
+				esc_html__( 'Test without plugins', 'health-check' )
+			);
 		}
 	}
 }
