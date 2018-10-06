@@ -135,8 +135,6 @@ class Health_Check_Site_Status {
 		}
 
 		printf( '<span class="%1$s"></span> %2$s', esc_attr( $class ), esc_html( $text ) );
-
-		die(); // just in case.
 	}
 
 	/**
@@ -714,6 +712,77 @@ class Health_Check_Site_Status {
 			);
 		}
 	}
+
+	/**
+	 * Return a set of tests that belong to the site status page.
+	 *
+	 * Each site status test is defined here, they may be `direct` tests, that run on page load,
+	 * or `async` tests which will run later down the line via JavaScript calls to improve page
+	 * performance and hopefully also user experiences.
+	 *
+	 * @return array
+	 */
+	public static function get_tests() {
+		return array(
+			'direct' => array(
+				array(
+					'label' => __( 'WordPress Version', 'health-check' ),
+					'test'  => 'wordpress_version',
+				),
+				array(
+					'label' => __( 'Plugin Versions', 'health-check' ),
+					'test'  => 'plugin_version',
+				),
+				array(
+					'label' => __( 'Theme Versions', 'health-check' ),
+					'test'  => 'theme_version',
+				),
+				array(
+					'label' => __( 'PHP Version', 'health-check' ),
+					'test'  => 'php_version',
+				),
+				array(
+					'label' => __( 'Database Server version', 'health-check' ),
+					'test'  => 'sql_server',
+				),
+				array(
+					'label' => __( 'JSON Extension', 'health-check' ),
+					'test'  => 'json_extension',
+				),
+				array(
+					'label' => __( 'MySQL utf8mb4 support', 'health-check' ),
+					'test'  => 'utf8mb4_support',
+				),
+				array(
+					'label' => __( 'Communication with WordPress.org', 'health-check' ),
+					'test'  => 'dotorg_communication',
+				),
+				array(
+					'label' => __( 'HTTPS status', 'health-check' ),
+					'test'  => 'https_status',
+				),
+				array(
+					'label' => __( 'Secure communication', 'health-check' ),
+					'test'  => 'ssl_support',
+				),
+			),
+			'async'  => array(
+				array(
+					'label' => __( 'Scheduled events', 'health-check' ),
+					'test'  => 'scheduled_events',
+				),
+				array(
+					'label' => __( 'Background updates', 'health-check' ),
+					'test'  => 'background_updates',
+				),
+				array(
+					'label' => __( 'Loopback request', 'health-check' ),
+					'test'  => 'loopback_requests',
+				),
+			),
+		);
+	}
 }
 
-new Health_Check_Site_Status();
+global $health_check_site_status;
+$health_check_site_status = new Health_Check_Site_Status();
