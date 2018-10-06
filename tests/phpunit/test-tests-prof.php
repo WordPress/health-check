@@ -2,7 +2,7 @@
 
 class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
 
-	private $tests_list;
+	public $tests_list;
 
 	public function setUp() {
 		parent::setUp();
