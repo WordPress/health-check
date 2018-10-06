@@ -18,14 +18,12 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 		);
 
 		$start_time = microtime( true );
-		ob_start();
 		call_user_func( array( $health_check_site_status, $func ) );
-		ob_end_clean();
 
 		return round( ( microtime( true ) - $start_time ) * 1000 );
 	}
 
-	public function testSiteStatusDirectTests() {
+	public function testDirectTiming() {
 		$tests = $this->tests_list['direct'];
 		foreach ( $tests as $test ) {
 			$test_function = sprintf(
@@ -41,10 +39,10 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 			);
 
 			/**
-			 * Result should be <= 100 miliseconds.
+			 * Result should be <= 500 miliseconds.
 			 */
 			$this->assertLessThanOrEqual(
-				100,
+				500,
 				$result,
 				$message
 			);
