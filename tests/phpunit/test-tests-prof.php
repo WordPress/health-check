@@ -2,24 +2,24 @@
 
 class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
 
-	private $health_check_site_status;
 	private $tests_list;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->$health_check_site_status = new Health_Check_Site_Status();
-		$this->$tests_list               = Health_Check_Site_Status::get_tests();
+		$this->$tests_list = Health_Check_Site_Status::get_tests();
 	}
 
 	private function runStatusTest( $func ) {
+		global $health_check_site_status;
+
 		$this->assertTrue(
-			method_exists( $this->$health_check_site_status, $func ) && is_callable( array( $this->$health_check_site_status, $func ) )
+			method_exists( $health_check_site_status, $func ) && is_callable( array( $health_check_site_status, $func ) )
 		);
 
 		$start_time = microtime( true );
 		ob_start();
-		call_user_func( array( $this->$health_check_site_status, $func ) );
+		call_user_func( array( $health_check_site_status, $func ) );
 		ob_end_clean();
 
 		return round( ( microtime( true ) - $start_time ) * 1000 );
