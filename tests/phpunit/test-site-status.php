@@ -35,7 +35,7 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 
 			$result = $this->runStatusTest( $test_function );
 
-			$message = printf(
+			$message = sprintf(
 				'Func %s took too long',
 				$test_function
 			);
