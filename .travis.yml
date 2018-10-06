@@ -92,6 +92,8 @@ before_script:
         composer global require "phpunit/phpunit=5.7.*"
       elif [[ ${TRAVIS_PHP_VERSION:0:2} == "5." ]]; then
         composer global require "phpunit/phpunit=4.8.*"
+      elif [[ ${TRAVIS_PHP_VERSION:0:2} == "7." && "${WP_VERSION}" == "4.0" ]]; then
+        composer global require "phpunit/phpunit=5.7.*"
       elif [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then
         composer global require "phpunit/phpunit=6.5.*"
       else
