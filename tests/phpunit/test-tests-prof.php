@@ -58,9 +58,9 @@ class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
 			$result = $this->runTest( $test_function );
 
 			/**
-			 * Result should be >= 100 miliseconds.
+			 * Result should be > 100 miliseconds.
 			 */
-			$this->assertGreaterThanOrEqual(
+			$this->assertGreaterThan(
 				100,
 				$result
 			);
