@@ -53,7 +53,17 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 
 	public function testAsyncTiming() {
 		$tests = $this->tests_list['async'];
+
+		// Certain tests are known to be prolonged, but will appear short in testing
+		$skip_testing = array(
+			'loopback_requests',
+		);
+
 		foreach ( $tests as $test ) {
+			if ( in_array( $skip_testing, $test['test'] ) ) {
+				continue;
+			}
+
 			$test_function = sprintf(
 				'test_%s',
 				$test['test']
