@@ -62,3 +62,8 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-site-status.ph
 
 // Initialize our plugin.
 new Health_Check();
+
+// If WP-CLI is being used, we include our own commands as well.
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	include_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cli.php' );
+}
