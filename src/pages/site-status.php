@@ -9,6 +9,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
+
+global $health_check_site_status;
 ?>
 
 	<div class="notice notice-info inline">
@@ -19,98 +21,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<table class="widefat striped health-check-table">
 		<tbody>
+		<?php
+		$tests = Health_Check_Site_Status::get_tests();
+		foreach ( $tests['direct'] as $test ) :
+			?>
 			<tr>
-				<td><?php esc_html_e( 'WordPress Version', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="wordpress_version">
-					<span class="spinner is-active"></span>
-				</td>
-			</tr>
+				<td><?php echo esc_html( $test['label'] ); ?></td>
+				<td class="" data-site-status="<?php echo esc_attr( $test['test'] ); ?>">
+					<?php
+					$test_function = sprintf(
+						'test_%s',
+						$test['test']
+					);
 
-			<tr>
-				<td><?php esc_html_e( 'Plugin Versions', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="plugin_version">
-					<span class="spinner is-active"></span>
+					if ( method_exists( $health_check_site_status, $test_function ) && is_callable( array( $health_check_site_status, $test_function ) ) ) {
+						call_user_func( array( $health_check_site_status, $test_function ) );
+					}
+					?>
 				</td>
 			</tr>
+		<?php endforeach; ?>
 
+		<?php foreach ( $tests['async'] as $test ) : ?>
 			<tr>
-				<td><?php esc_html_e( 'Theme Versions', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="theme_version">
+				<td><?php echo esc_html( $test['label'] ); ?></td>
+				<td class="health-check-site-status-test" data-site-status="<?php echo esc_attr( $test['test'] ); ?>">
 					<span class="spinner is-active"></span>
 				</td>
 			</tr>
-
-			<tr>
-				<td><?php esc_html_e( 'PHP Version', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="php_version">
-					<span class="spinner is-active"></span>
-				</td>
-			</tr>
-
-			<tr>
-				<td>
-					<?php esc_html_e( 'Database Server version', 'health-check' ); ?>
-				</td>
-				<td class="health-check-site-status-test" data-site-status="sql_server">
-					<span class="spinner is-active"></span>
-				</td>
-			</tr>
-
-			<tr>
-				<td><?php esc_html_e( 'JSON Extension', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="json_extension">
-					<span class="spinner is-active"></span>
-				</td>
-			</tr>
-
-			<tr>
-				<td><?php esc_html_e( 'MySQL utf8mb4 support', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="utf8mb4_support">
-					<span class="spinner is-active"></span>
-				</td>
-			</tr>
-
-			<tr>
-				<td><?php esc_html_e( 'Communication with WordPress.org', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="dotorg_communication">
-					<span class="spinner is-active"></span>
-				</td>
-			</tr>
-
-			<tr>
-				<td><?php esc_html_e( 'HTTPS status', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="https_status">
-					<span class="spinner is-active"></span>
-				</td>
-			</tr>
-
-			<tr>
-				<td><?php esc_html_e( 'Secure communication', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="ssl_support">
-					<span class="spinner is-active"></span>
-				</td>
-			</tr>
-
-			<tr>
-				<td><?php esc_html_e( 'Scheduled events', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="scheduled_events">
-					<span class="spinner is-active"></span>
-				</td>
-			</tr>
-
-			<tr>
-				<td><?php esc_html_e( 'Background updates', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="background_updates">
-					<span class="spinner is-active"></span>
-				</td>
-			</tr>
-
-			<tr>
-				<td><?php esc_html_e( 'Loopback request', 'health-check' ); ?></td>
-				<td class="health-check-site-status-test" data-site-status="loopback_requests">
-					<span class="spinner is-active"></span>
-				</td>
-			</tr>
+		<?php endforeach; ?>
 		</tbody>
 	</table>
 
