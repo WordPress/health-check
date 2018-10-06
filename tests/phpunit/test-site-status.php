@@ -50,4 +50,41 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 			);
 		}
 	}
+
+	public function testAsyncTiming() {
+		$tests = $this->tests_list['async'];
+
+		// Certain tests are known to be prolonged, but will appear short in testing
+		$skip_testing = array(
+			'loopback_requests',
+		);
+
+		foreach ( $tests as $test ) {
+			if ( in_array( $test['test'], $skip_testing ) ) {
+				continue;
+			}
+
+			$test_function = sprintf(
+				'test_%s',
+				$test['test']
+			);
+
+			$result = $this->runStatusTest( $test_function );
+
+			$message = sprintf(
+				'Function %s executed in %dms and should be run directly.',
+				$test_function,
+				$result
+			);
+
+			/**
+			 * Result should be > 100 miliseconds.
+			 */
+			$this->assertGreaterThan(
+				100,
+				$result,
+				$message
+			);
+		}
+	}
 }
