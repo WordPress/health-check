@@ -1,6 +1,6 @@
 <?php
 
-class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
+class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 
 	private $tests_list;
 
@@ -25,9 +25,8 @@ class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
 		return round( ( microtime( true ) - $start_time ) * 1000 );
 	}
 
-	public function testDirectTestsProf() {
-		$tests = $this->tests_list['direct'];
-
+	public function testSiteStatusDirectTests() {
+		$tests = $this->$tests_list['direct'];
 		foreach ( $tests as $test ) {
 			$test_function = sprintf(
 				'test_%s',
@@ -35,34 +34,19 @@ class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
 			);
 
 			$result = $this->runStatusTest( $test_function );
+
+			$message = printf(
+				'Func %s took too long',
+				$test_function
+			);
 
 			/**
 			 * Result should be <= 100 miliseconds.
 			 */
 			$this->assertLessThanOrEqual(
 				100,
-				$result
-			);
-		}
-	}
-
-	public function testAsyncTestsProf() {
-		$tests = $this->tests_list['async'];
-
-		foreach ( $tests as $test ) {
-			$test_function = sprintf(
-				'test_%s',
-				$test['test']
-			);
-
-			$result = $this->runStatusTest( $test_function );
-
-			/**
-			 * Result should be > 100 miliseconds.
-			 */
-			$this->assertGreaterThan(
-				100,
-				$result
+				$result,
+				$message
 			);
 		}
 	}
