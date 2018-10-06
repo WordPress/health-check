@@ -12,7 +12,7 @@ class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
 		$this->$tests_list               = Health_Check_Site_Status::get_tests();
 	}
 
-	private function runTest( $func ) {
+	private function runStatusTest( $func ) {
 		$this->assertTrue(
 			method_exists( $this->$health_check_site_status, $func ) && is_callable( array( $this->$health_check_site_status, $func ) )
 		);
@@ -34,7 +34,7 @@ class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
 				$test['test']
 			);
 
-			$result = $this->runTest( $test_function );
+			$result = $this->runStatusTest( $test_function );
 
 			/**
 			 * Result should be <= 100 miliseconds.
@@ -55,7 +55,7 @@ class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
 				$test['test']
 			);
 
-			$result = $this->runTest( $test_function );
+			$result = $this->runStatusTest( $test_function );
 
 			/**
 			 * Result should be > 100 miliseconds.
