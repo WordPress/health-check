@@ -18,7 +18,9 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 		);
 
 		$start_time = microtime( true );
+		ob_start();
 		call_user_func( array( $health_check_site_status, $func ) );
+		ob_end_clean();
 
 		return round( ( microtime( true ) - $start_time ) * 1000 );
 	}
@@ -34,15 +36,15 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 			$result = $this->runStatusTest( $test_function );
 
 			$message = sprintf(
-				'Func %s took too long',
+				'Function %s exceeded the execution time limit.',
 				$test_function
 			);
 
 			/**
-			 * Result should be <= 500 miliseconds.
+			 * Result should be <= 100 miliseconds.
 			 */
 			$this->assertLessThanOrEqual(
-				500,
+				100,
 				$result,
 				$message
 			);
