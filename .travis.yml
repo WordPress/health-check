@@ -27,10 +27,10 @@ matrix:
     - php: 7.2
       env: WP_HC_CS_TEST=yes
     - php: 7.2
-      env: WP_VERSION=4.0
+      env: WP_VERSION=4.8
     - php: 7.1
     - php: 7.1
-      env: WP_VERSION=4.0
+      env: WP_VERSION=4.8
     - php: 7.0
     - php: 7.0
       env: WP_VERSION=4.0
