@@ -2,12 +2,12 @@
 
 class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
 
-	public $tests_list;
+	private $tests_list;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->$tests_list = Health_Check_Site_Status::get_tests();
+		$this->tests_list = Health_Check_Site_Status::get_tests();
 	}
 
 	private function runStatusTest( $func ) {
@@ -26,7 +26,7 @@ class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
 	}
 
 	public function testDirectTestsProf() {
-		$tests = $this->$tests_list['direct'];
+		$tests = $this->tests_list['direct'];
 
 		foreach ( $tests as $test ) {
 			$test_function = sprintf(
@@ -47,7 +47,7 @@ class Health_Check_Tests_Prof_Test extends WP_UnitTestCase {
 	}
 
 	public function testAsyncTestsProf() {
-		$tests = $this->$tests_list['async'];
+		$tests = $this->tests_list['async'];
 
 		foreach ( $tests as $test ) {
 			$test_function = sprintf(
