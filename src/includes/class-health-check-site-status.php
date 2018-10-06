@@ -754,10 +754,6 @@ class Health_Check_Site_Status {
 					'test'  => 'utf8mb4_support',
 				),
 				array(
-					'label' => __( 'Communication with WordPress.org', 'health-check' ),
-					'test'  => 'dotorg_communication',
-				),
-				array(
 					'label' => __( 'HTTPS status', 'health-check' ),
 					'test'  => 'https_status',
 				),
@@ -765,11 +761,15 @@ class Health_Check_Site_Status {
 					'label' => __( 'Secure communication', 'health-check' ),
 					'test'  => 'ssl_support',
 				),
-			),
-			'async'  => array(
 				array(
 					'label' => __( 'Scheduled events', 'health-check' ),
 					'test'  => 'scheduled_events',
+				),
+			),
+			'async'  => array(
+				array(
+					'label' => __( 'Communication with WordPress.org', 'health-check' ),
+					'test'  => 'dotorg_communication',
 				),
 				array(
 					'label' => __( 'Background updates', 'health-check' ),
