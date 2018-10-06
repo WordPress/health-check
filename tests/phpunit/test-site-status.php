@@ -26,7 +26,7 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 	}
 
 	public function testSiteStatusDirectTests() {
-		$tests = $this->$tests_list['direct'];
+		$tests = $this->tests_list['direct'];
 		foreach ( $tests as $test ) {
 			$test_function = sprintf(
 				'test_%s',
