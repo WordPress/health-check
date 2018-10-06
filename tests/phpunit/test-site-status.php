@@ -60,7 +60,7 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 		);
 
 		foreach ( $tests as $test ) {
-			if ( in_array( $skip_testing, $test['test'] ) ) {
+			if ( in_array( $test['test'], $skip_testing ) ) {
 				continue;
 			}
 
