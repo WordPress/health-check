@@ -39,7 +39,7 @@ $info = Health_Check_Debug_Data::debug_data();
 			?>
 			<div id="system-information-english-copy-wrapper" style="display: none;">
 					<textarea id="system-information-english-copy-field" class="widefat" rows="10">`
-<?php // phpcs:ignore
+<?php // @codingStandardsIgnoreLine
 			foreach ( $english_info as $section => $details ) {
 				// Skip this section if there are no fields, or the section has been declared as private.
 				if ( empty( $details['fields'] ) || ( isset( $details['private'] ) && $details['private'] ) ) {
@@ -91,7 +91,7 @@ $info = Health_Check_Debug_Data::debug_data();
 
 		<div id="system-information-copy-wrapper" style="display: none;">
 			<textarea id="system-information-copy-field" class="widefat" rows="10">`
-<?php // phpcs:ignore
+<?php // @codingStandardsIgnoreLine
 			foreach ( $info as $section => $details ) {
 				// Skip this section if there are no fields, or the section has been declared as private.
 				if ( empty( $details['fields'] ) || ( isset( $details['private'] ) && $details['private'] ) ) {
