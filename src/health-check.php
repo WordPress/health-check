@@ -6,11 +6,11 @@
  *
  * @wordpress-plugin
  * Plugin Name: Health Check & Troubleshooting
- * Plugin URI: http://wordpress.org/plugins/health-check/
+ * Plugin URI: https://wordpress.org/plugins/health-check/
  * Description: Checks the health of your WordPress install.
  * Author: The WordPress.org community
  * Version: 1.2.1
- * Author URI: http://wordpress.org/plugins/health-check/
+ * Author URI: https://wordpress.org/plugins/health-check/
  * Text Domain: health-check
  */
 
