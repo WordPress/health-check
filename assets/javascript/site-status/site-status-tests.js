@@ -1,6 +1,6 @@
 /* global ajaxurl */
 jQuery( document ).ready(function( $ ) {
-	function run_next_site_status_test() {
+	function runNextSiteStatusTest() {
 		var $test = $( '.health-check-site-status-test' ),
 			data;
 
@@ -23,10 +23,10 @@ jQuery( document ).ready(function( $ ) {
 			data,
 			function( response ) {
 				$test.html( response );
-				run_next_site_status_test();
+				runNextSiteStatusTest();
 			}
 		);
 	}
 
-	run_next_site_status_test();
+	runNextSiteStatusTest();
 });
