@@ -89,8 +89,8 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 		}
 
 		$plugins = json_decode( $r['body']['plugins'], true );
-		unset( $plugins->plugins['akismet/akismet.php'] );
-		unset( $plugins->active['akismet/akismet.php'] );
+		unset( $plugins['plugins']['akismet/akismet.php'] );
+		unset( $plugins['active']['akismet/akismet.php'] );
 		$r['body']['plugins'] = json_encode( $plugins );
 		return $r;
 	}
