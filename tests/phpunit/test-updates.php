@@ -28,7 +28,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 		$this->assertFalse( $blocked );
 
 		// Check detection of blocked update requests.
-		add_action( 'pre_http_request', array( $this, 'blockUpdates' ) );
+		add_action( 'pre_http_request', array( $this, 'blockUpdates' ), 10, 3 );
 		$blocked = $this->test_updates->check_plugin_update_pre_request();
 		$this->assertTrue( $blocked );
 		remove_action( 'pre_http_request', array( $this, 'blockUpdates' ) );
@@ -40,7 +40,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 		$this->assertCount( 0, $diff );
 
 		// Check for plugin which has been hidden.
-		add_filter( 'http_request_args', array( $this, 'hidePlugin' ) );
+		add_filter( 'http_request_args', array( $this, 'hidePlugin' ), 10, 2 );
 		$diff = (array) $this->test_updates->check_plugin_update_request_args();
 		remove_filter( 'http_request_args', array( $this, 'hidePlugin' ) );
 		$this->assertCount( 1, $diff );
@@ -64,7 +64,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 		$this->assertFalse( $blocked );
 
 		// Check detection of blocked update requests.
-		add_action( 'pre_http_request', array( $this, 'blockUpdates' ) );
+		add_action( 'pre_http_request', array( $this, 'blockUpdates' ), 10, 3 );
 		$blocked = $this->test_updates->check_theme_update_pre_request();
 		$this->assertTrue( $blocked );
 		remove_action( 'pre_http_request', array( $this, 'blockUpdates' ) );
@@ -76,7 +76,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 		$this->assertCount( 0, $diff );
 
 		// Check for theme which has been hidden.
-		add_filter( 'http_request_args', array( $this, 'hideTheme' ) );
+		add_filter( 'http_request_args', array( $this, 'hideTheme' ), 10, 2 );
 		$diff = (array) $this->test_updates->check_theme_update_request_args();
 		remove_filter( 'http_request_args', array( $this, 'hideTheme' ) );
 		$this->assertCount( 1, $diff );
