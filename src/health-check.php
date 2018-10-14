@@ -59,6 +59,7 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-troubleshoot.p
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-files-integrity.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-mail-check.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-site-status.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-health-check-updates.php' );
 
 // Initialize our plugin.
 new Health_Check();
