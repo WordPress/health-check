@@ -285,16 +285,29 @@ class Health_Check_Updates {
 		$timeout      = 3 + (int) ( count( $plugins ) / 10 );
 
 		// Setup the request options.
-		$options = array(
-			'timeout'    => $timeout,
-			'body'       => array(
-				'plugins'      => wp_json_encode( $to_send ),
-				'translations' => wp_json_encode( $translations ),
-				'locale'       => wp_json_encode( $locales ),
-				'all'          => wp_json_encode( true ),
-			),
-			'user-agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . home_url( '/' ),
-		);
+		if ( function_exists( 'wp_json_encode' ) ) {
+			$options = array(
+				'timeout'    => $timeout,
+				'body'       => array(
+					'plugins'      => wp_json_encode( $to_send ),
+					'translations' => wp_json_encode( $translations ),
+					'locale'       => wp_json_encode( $locales ),
+					'all'          => wp_json_encode( true ),
+				),
+				'user-agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . home_url( '/' ),
+			);
+		} else {
+			$options = array(
+				'timeout'    => $timeout,
+				'body'       => array(
+					'plugins'      => json_encode( $to_send ),
+					'translations' => json_encode( $translations ),
+					'locale'       => json_encode( $locales ),
+					'all'          => json_encode( true ),
+				),
+				'user-agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . home_url( '/' ),
+			);
+		}
 
 		// Set the URL
 		$http_url = 'http://api.wordpress.org/plugins/update-check/1.1/';
@@ -523,15 +536,27 @@ class Health_Check_Updates {
 		$locales = array_values( get_available_languages() );
 		$timeout = 3 + (int) ( count( $themes ) / 10 );
 
-		$options = array(
-			'timeout'    => $timeout,
-			'body'       => array(
-				'themes'       => wp_json_encode( $request ),
-				'translations' => wp_json_encode( $translations ),
-				'locale'       => wp_json_encode( $locales ),
-			),
-			'user-agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . home_url( '/' ),
-		);
+		if ( function_exists( 'wp_json_encode' ) ) {
+			$options = array(
+				'timeout'    => $timeout,
+				'body'       => array(
+					'themes'       => wp_json_encode( $request ),
+					'translations' => wp_json_encode( $translations ),
+					'locale'       => wp_json_encode( $locales ),
+				),
+				'user-agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . home_url( '/' ),
+			);
+		} else {
+			$options = array(
+				'timeout'    => $timeout,
+				'body'       => array(
+					'themes'       => json_encode( $request ),
+					'translations' => json_encode( $translations ),
+					'locale'       => json_encode( $locales ),
+				),
+				'user-agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . home_url( '/' ),
+			);
+		}
 
 		// Set the URL
 		$http_url = 'http://api.wordpress.org/themes/update-check/1.1/';
