@@ -26,7 +26,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 
 	public function testPluginUpdateRequestArgs() {
 		// Check if plugins have been removed from the update requests.
-		$diff = (array) $this->check_plugin_update_request_args();
+		$diff = (array) $this->test_updates->check_plugin_update_request_args();
 
 		$this->assertCount( 0, $diff );
 	}
@@ -47,7 +47,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 
 	public function testThemeUpdateRequestArgs() {
 		// Check if themes have been removed from the update requests.
-		$diff = (array) $this->check_theme_update_request_args();
+		$diff = (array) $this->test_updates->check_theme_update_request_args();
 
 		$this->assertCount( 0, $diff );
 	}
