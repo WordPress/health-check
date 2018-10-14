@@ -53,7 +53,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 
 		// Check update hooks have been removed.
 		remove_filter( 'load-themes.php', 'wp_update_themes' );
-		$hooks = $this->test_updates->check_plugin_update_hooks();
+		$hooks = $this->test_updates->check_theme_update_hooks();
 		add_filter( 'load-themes.php', 'wp_update_themes' );
 		$this->assertFalse( $hooks );
 	}
