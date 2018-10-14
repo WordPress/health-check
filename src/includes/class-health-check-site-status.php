@@ -477,31 +477,31 @@ class Health_Check_Site_Status {
 		 * }
 		 */
 		$modules = array(
-			'bcmath' => array(
+			'bcmath'    => array(
 				'function' => 'bcadd',
 				'required' => false,
 			),
-			'curl' => array(
+			'curl'      => array(
 				'function' => 'curl_version',
 				'required' => false,
 			),
-			'exif' => array(
+			'exif'      => array(
 				'function' => 'exif_read_data',
 				'required' => false,
 			),
-			'filter' => array(
+			'filter'    => array(
 				'function' => 'filter_list',
 				'required' => false,
 			),
-			'fileinfo' => array(
+			'fileinfo'  => array(
 				'function' => 'finfo_file',
 				'required' => false,
 			),
-			'mod_xml' => array(
+			'mod_xml'   => array(
 				'extension' => 'libxml',
 				'required'  => false,
 			),
-			'mysqli' => array(
+			'mysqli'    => array(
 				'function' => 'mysqli_connect',
 				'required' => false,
 			),
@@ -509,24 +509,24 @@ class Health_Check_Site_Status {
 				'function' => 'sodium_compare',
 				'required' => false,
 			),
-			'openssl' => array(
+			'openssl'   => array(
 				'function' => 'openssl_encrypt',
 				'required' => false,
 			),
-			'pcre' => array(
+			'pcre'      => array(
 				'function' => 'preg_match',
 				'required' => false,
 			),
-			'imagick' => array(
+			'imagick'   => array(
 				'extension' => 'imagick',
 				'required'  => false,
 			),
-			'gd' => array(
+			'gd'        => array(
 				'extension'    => 'gd',
 				'required'     => false,
 				'fallback_for' => 'imagick',
 			),
-			'mcrypt' => array(
+			'mcrypt'    => array(
 				'extension'    => 'mcrypt',
 				'required'     => false,
 				'fallback_for' => 'libsodium',
@@ -536,7 +536,7 @@ class Health_Check_Site_Status {
 				'required'     => false,
 				'fallback_for' => 'xml',
 			),
-			'zlib' => array(
+			'zlib'      => array(
 				'extension'    => 'zlib',
 				'required'     => false,
 				'fallback_for' => 'zip'
@@ -567,6 +567,7 @@ class Health_Check_Site_Status {
 					'<span class="%s"></span> %s',
 					( $module['required'] ? 'error' : 'warning' ),
 					sprintf(
+						// translators: %1$2: If a module is required or recommended. %2$s: The module name.
 						__( 'The %1$s module, %2$s, is not installer, or has been disabled.', 'health-check' ),
 						( $module['required'] ? __( 'required', 'health-check' ) : __( 'optional', 'health-check' ) ),
 						$library
