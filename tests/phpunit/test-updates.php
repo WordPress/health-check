@@ -82,7 +82,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 		$this->assertCount( 1, $diff );
 	}
 
-	private function hidePlugin( $r, $url ) {
+	public function hidePlugin( $r, $url ) {
 		$check_url = 'api.wordpress.org/plugins/update-check/1.1/';
 		if ( 0 !== substr_compare( $url, $check_url, -strlen( $check_url ) ) ) {
 			return $r; // Not a plugin update request.
@@ -95,7 +95,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 		return $r;
 	}
 
-	private function hideTheme( $r, $url ) {
+	public function hideTheme( $r, $url ) {
 		$check_url = 'api.wordpress.org/themes/update-check/1.1/';
 		if ( 0 !== substr_compare( $url, $check_url, -strlen( $check_url ) ) ) {
 			return $r; // Not a theme update request.
@@ -108,7 +108,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 		return $r;
 	}
 
-	private function blockUpdates( $pre, $r, $url ) {
+	public function blockUpdates( $pre, $r, $url ) {
 		switch ( $url ) {
 			case 'https://api.wordpress.org/plugins/update-check/1.1/':
 				return 'block_request';
