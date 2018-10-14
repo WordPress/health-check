@@ -102,6 +102,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 		}
 
 		$themes = json_decode( $r['body']['themes'], true );
+		unset( $themes['themes']['twentyfourteen'] );
 		unset( $themes['themes']['twentyseventeen'] );
 		$r['body']['themes'] = json_encode( $themes );
 		return $r;
