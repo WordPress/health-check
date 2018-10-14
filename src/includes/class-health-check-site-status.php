@@ -713,6 +713,60 @@ class Health_Check_Site_Status {
 		}
 	}
 
+	public function test_rest_availability() {
+		$cookies = wp_unslash( $_COOKIE );
+		$timeout = 10;
+		$headers = array(
+			'Cache-Control' => 'no-cache',
+		);
+
+		// Include Basic auth in loopback requests.
+		if ( isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['PHP_AUTH_PW'] ) ) {
+			$headers['Authorization'] = 'Basic ' . base64_encode( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) . ':' . wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
+		}
+
+		$url = rest_url( 'wp/v2/posts' );
+
+		// We only need the first post to ensure this works, to make it low impact.
+		$url = add_query_arg( array(
+			'per_page' => 1,
+		), $url );
+
+		$r = wp_remote_get( $url, compact( 'cookies', 'headers', 'timeout' ) );
+
+		if ( is_wp_error( $r ) ) {
+			printf(
+				'<span class="error"></span> %s',
+				sprintf(
+					'%s<br>%s',
+					esc_html__( 'The REST API request failed due to an error.', 'health-check' ),
+					sprintf(
+						/* translators: %1$d: The HTTP response code. %2$s: The error message returned. */
+						esc_html__( 'Error encountered: (%1$d) %2$s', 'health-check' ),
+						wp_remote_retrieve_response_code( $r ),
+						$r->get_error_message()
+					)
+				)
+			);
+		} elseif ( 200 !== wp_remote_retrieve_response_code( $r ) ) {
+			printf(
+				'<span class="warning"></span> %s',
+				sprintf(
+					/* translators: %1$d: The HTTP response code returned. %2$s: The error message returned. */
+					esc_html__( 'The REST API call gave the following unexpected result: (%1$d) %2$s.', 'health-check' ),
+					wp_remote_retrieve_response_code( $r ),
+					wp_remote_retrieve_body( $r )
+				)
+			);
+		} else {
+
+			printf(
+				'<span class="good"></span> %s',
+				__( 'The REST API is available.', 'health-check' )
+			);
+		}
+	}
+
 	/**
 	 * Return a set of tests that belong to the site status page.
 	 *
@@ -723,7 +777,7 @@ class Health_Check_Site_Status {
 	 * @return array
 	 */
 	public static function get_tests() {
-		return array(
+		$tests = array(
 			'direct' => array(
 				array(
 					'label' => __( 'WordPress Version', 'health-check' ),
@@ -781,6 +835,16 @@ class Health_Check_Site_Status {
 				),
 			),
 		);
+
+		// Conditionally include REST rules if the function for it exists.
+		if ( function_exists( 'rest_url' ) ) {
+			$tests['direct'][] = array(
+				'label' => __( 'REST API availability', 'health-check' ),
+				'test'  => 'rest_availability',
+			);
+		}
+
+		return $tests;
 	}
 }
 
