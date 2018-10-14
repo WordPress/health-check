@@ -777,7 +777,7 @@ class Health_Check_Site_Status {
 	 * @return array
 	 */
 	public static function get_tests() {
-		return array(
+		$tests = array(
 			'direct' => array(
 				array(
 					'label' => __( 'WordPress Version', 'health-check' ),
@@ -833,12 +833,18 @@ class Health_Check_Site_Status {
 					'label' => __( 'Loopback request', 'health-check' ),
 					'test'  => 'loopback_requests',
 				),
-				array(
-					'label' => __( 'REST API availability', 'health-check' ),
-					'test'  => 'rest_availability',
-				),
 			),
 		);
+
+		// Conditionally include REST rules if the function for it exists.
+		if ( function_exists( 'rest_url' ) ) {
+			$tests['direct'][] = array(
+				'label' => __( 'REST API availability', 'health-check' ),
+				'test'  => 'rest_availability',
+			);
+		}
+
+		return $tests;
 	}
 }
 
