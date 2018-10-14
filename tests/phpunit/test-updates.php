@@ -88,10 +88,10 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 			return $r; // Not a plugin update request.
 		}
 
-		$plugins = unserialize( $r['body']['plugins'] );
+		$plugins = json_decode( $r['body']['plugins'] );
 		unset( $plugins->plugins['akismet/akismet.php'] );
 		unset( $plugins->active['akismet/akismet.php'] );
-		$r['body']['plugins'] = serialize( $plugins );
+		$r['body']['plugins'] = json_encode( $plugins );
 		return $r;
 	}
 
@@ -101,10 +101,10 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 			return $r; // Not a theme update request.
 		}
 
-		$themes = unserialize( $r['body']['themes'] );
+		$themes = json_decode( $r['body']['themes'] );
 		unset( $themes[ get_option( 'template' ) ] );
 		unset( $themes[ get_option( 'stylesheet' ) ] );
-		$r['body']['themes'] = serialize( $themes );
+		$r['body']['themes'] = json_encode( $themes );
 		return $r;
 	}
 
