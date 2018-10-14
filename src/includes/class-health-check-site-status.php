@@ -539,7 +539,7 @@ class Health_Check_Site_Status {
 			'zlib'      => array(
 				'extension'    => 'zlib',
 				'required'     => false,
-				'fallback_for' => 'zip'
+				'fallback_for' => 'zip',
 			),
 		);
 
