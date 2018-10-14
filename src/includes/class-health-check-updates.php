@@ -470,8 +470,6 @@ class Health_Check_Updates {
 			return $r; // Not a theme update request.
 		}
 
-		print_r( json_decode( $r['body']['themes'], true )['themes'] );
-
 		$this->themes_before = (array) json_decode( $r['body']['themes'], true );
 
 		return $r;
