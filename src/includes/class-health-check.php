@@ -436,21 +436,4 @@ class Health_Check {
 
 		return true;
 	}
-
-	/**
-	 * Perform a check to see is JSON is enabled.
-	 *
-	 * @uses extension_loaded()
-	 * @uses function_Exists()
-	 * @uses son_encode()
-	 *
-	 * @return bool
-	 */
-	static function json_check() {
-		$extension_loaded = extension_loaded( 'json' );
-		$functions_exist  = function_exists( 'json_encode' ) && function_exists( 'json_decode' );
-		$functions_work   = function_exists( 'json_encode' ) && ( '' != json_encode( 'my test string' ) );
-
-		return $extension_loaded && $functions_exist && $functions_work;
-	}
 }
