@@ -833,6 +833,23 @@ class Health_Check_Site_Status {
 		echo '</ul>';
 	}
 
+	public function test_extension_updates() {
+		$updates = new Health_Check_Updates();
+		$tests   = $updates->run_tests();
+
+		echo '<ul>';
+
+		foreach ( $tests as $test ) {
+			printf(
+				'<li><span class="%s"></span> %s</li>',
+				esc_attr( $test->severity ),
+				$test->desc
+			);
+		}
+
+		echo '</ul>';
+	}
+
 	public function test_loopback_requests() {
 		$check_loopback = Health_Check_Loopback::can_perform_loopback();
 
@@ -955,6 +972,10 @@ class Health_Check_Site_Status {
 				array(
 					'label' => __( 'Scheduled events', 'health-check' ),
 					'test'  => 'scheduled_events',
+				),
+				array(
+					'label' => __( 'Plugin and Theme Updates', 'health-check' ),
+					'test'  => 'extension_updates',
 				),
 			),
 			'async'  => array(
