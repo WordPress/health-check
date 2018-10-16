@@ -7,6 +7,8 @@ Stable tag: 1.2.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
+Health Check identifies common problems, and helps you troubleshoot plugin and theme conflicts.
+
 == Description ==
 
 This plugin will perform a number of checks on your WordPress install to detect common configuration errors and known issues.

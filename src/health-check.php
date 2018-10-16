@@ -6,11 +6,11 @@
  *
  * @wordpress-plugin
  * Plugin Name: Health Check & Troubleshooting
- * Plugin URI: http://wordpress.org/plugins/health-check/
+ * Plugin URI: https://wordpress.org/plugins/health-check/
  * Description: Checks the health of your WordPress install.
  * Author: The WordPress.org community
  * Version: 1.2.1
- * Author URI: http://wordpress.org/plugins/health-check/
+ * Author URI: https://wordpress.org/plugins/health-check/
  * Text Domain: health-check
  */
 
@@ -60,6 +60,12 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-files-integrit
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-mail-check.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-htaccess-viewer.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-site-status.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-health-check-updates.php' );
 
 // Initialize our plugin.
 new Health_Check();
+
+// If WP-CLI is being used, we include our own commands as well.
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	include_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cli.php' );
+}

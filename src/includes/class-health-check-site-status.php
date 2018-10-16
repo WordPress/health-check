@@ -135,8 +135,6 @@ class Health_Check_Site_Status {
 		}
 
 		printf( '<span class="%1$s"></span> %2$s', esc_attr( $class ), esc_html( $text ) );
-
-		die(); // just in case.
 	}
 
 	/**
@@ -441,21 +439,158 @@ class Health_Check_Site_Status {
 		);
 	}
 
-	public function test_json_extension() {
-		$json_check = Health_Check::json_check();
+	public function child_test_php_extension_availability( $extension = null, $function = null ) {
+		// If no extension or function is passed, claim to fail testing, as we have nothing to test against.
+		if ( null === $extension && null === $function ) {
+			return false;
+		}
 
-		$status = 'good';
-		$notice = array();
+		$available = true;
 
-		if ( ! $json_check ) {
-			printf(
-				'<span class="error"> %s',
-				esc_html__( 'The PHP install on your server has the JSON extension disabled and is therefore not compatible with WordPress 3.2 or newer.', 'health-check' )
-			);
+		if ( null !== $extension && ! extension_loaded( $extension ) ) {
+			$available = false;
+		}
+
+		if ( null !== $function && ! function_exists( $function ) ) {
+			$available = false;
+		}
+
+		return $available;
+	}
+
+	public function test_php_extensions() {
+		/*
+		 * An array representing all the modules we wish to test for.
+		 *
+		 * array $modules {
+		 *     An associated array of modules to test for.
+		 *
+		 *     array $module {
+		 *         An associated array of module properties used during testing.
+		 *         One of either `$function` or `$extension` must be provided, or they will fail by default.
+		 *
+		 *         string $function     Optional. A function name to test for the existence of.
+		 *         string $extension    Optional. An extension to check if is loaded in PHP.
+		 *         bool   $required     Is this a required feature or not.
+		 *         string $fallback_for Optional. The module this module replaces as a fallback.
+		 *     }
+		 * }
+		 */
+		$modules = array(
+			'bcmath'    => array(
+				'function' => 'bcadd',
+				'required' => false,
+			),
+			'curl'      => array(
+				'function' => 'curl_version',
+				'required' => false,
+			),
+			'exif'      => array(
+				'function' => 'exif_read_data',
+				'required' => false,
+			),
+			'filter'    => array(
+				'function' => 'filter_list',
+				'required' => false,
+			),
+			'fileinfo'  => array(
+				'function' => 'finfo_file',
+				'required' => false,
+			),
+			'mod_xml'   => array(
+				'extension' => 'libxml',
+				'required'  => false,
+			),
+			'mysqli'    => array(
+				'function' => 'mysqli_connect',
+				'required' => false,
+			),
+			'libsodium' => array(
+				'function' => 'sodium_compare',
+				'required' => false,
+			),
+			'openssl'   => array(
+				'function' => 'openssl_encrypt',
+				'required' => false,
+			),
+			'pcre'      => array(
+				'function' => 'preg_match',
+				'required' => false,
+			),
+			'imagick'   => array(
+				'extension' => 'imagick',
+				'required'  => false,
+			),
+			'gd'        => array(
+				'extension'    => 'gd',
+				'required'     => false,
+				'fallback_for' => 'imagick',
+			),
+			'mcrypt'    => array(
+				'extension'    => 'mcrypt',
+				'required'     => false,
+				'fallback_for' => 'libsodium',
+			),
+			'xmlreader' => array(
+				'extension'    => 'xmlreader',
+				'required'     => false,
+				'fallback_for' => 'xml',
+			),
+			'zlib'      => array(
+				'extension'    => 'zlib',
+				'required'     => false,
+				'fallback_for' => 'zip',
+			),
+		);
+
+		$failures = array();
+
+		foreach ( $modules as $library => $module ) {
+			$extension = ( isset( $module['extension'] ) ? $module['extension'] : null );
+			$function  = ( isset( $module['function'] ) ? $module['function'] : null );
+
+			// If this module is a fallback for another function, check if that other function passed.
+			if ( isset( $module['fallback_for'] ) ) {
+				/*
+				 * If that other function has a failure, mark this module as required for normal operations.
+				 * If that other function hasn't failed, skip this test as it's only a fallback.
+				 */
+				if ( isset( $failures[ $module['fallback_for'] ] ) ) {
+					$module['required'] = true;
+				} else {
+					continue;
+				}
+			}
+
+			if ( ! $this->child_test_php_extension_availability( $extension, $function ) ) {
+				$failures[ $library ] = sprintf(
+					'<span class="%s"></span> %s',
+					( $module['required'] ? 'error' : 'warning' ),
+					sprintf(
+						// translators: %1$2: If a module is required or recommended. %2$s: The module name.
+						__( 'The %1$s module, %2$s, is not installer, or has been disabled.', 'health-check' ),
+						( $module['required'] ? __( 'required', 'health-check' ) : __( 'optional', 'health-check' ) ),
+						$library
+					)
+				);
+			}
+		}
+
+		if ( ! empty( $failures ) ) {
+			echo '<ul>';
+
+			foreach ( $failures as $failure ) {
+				printf(
+					'<li>%s</li>',
+					$failure
+				);
+			}
+
+			echo '</ul>';
 		} else {
 			printf(
-				'<span class="good"> %s',
-				esc_html__( 'Your PHP install supports JSON.', 'health-check' )
+				'<span class="good"></span> %s',
+				__( 'All required and recommended modules are installed.', 'health-check' )
 			);
 		}
 	}
@@ -698,6 +833,23 @@ class Health_Check_Site_Status {
 		echo '</ul>';
 	}
 
+	public function test_extension_updates() {
+		$updates = new Health_Check_Updates();
+		$tests   = $updates->run_tests();
+
+		echo '<ul>';
+
+		foreach ( $tests as $test ) {
+			printf(
+				'<li><span class="%s"></span> %s</li>',
+				esc_attr( $test->severity ),
+				$test->desc
+			);
+		}
+
+		echo '</ul>';
+	}
+
 	public function test_loopback_requests() {
 		$check_loopback = Health_Check_Loopback::can_perform_loopback();
 
@@ -708,9 +860,151 @@ class Health_Check_Site_Status {
 		);
 
 		if ( 'error' === $check_loopback->status ) {
-			echo '<br><button type="button" id="loopback-no-plugins" class="button button-primary">Test without plugins</button>';
+			printf(
+				'<br><button type="button" id="loopback-no-plugins" class="button button-primary">%s</button>',
+				esc_html__( 'Test without plugins', 'health-check' )
+			);
 		}
+	}
+
+	public function test_rest_availability() {
+		$cookies = wp_unslash( $_COOKIE );
+		$timeout = 10;
+		$headers = array(
+			'Cache-Control' => 'no-cache',
+		);
+
+		// Include Basic auth in loopback requests.
+		if ( isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['PHP_AUTH_PW'] ) ) {
+			$headers['Authorization'] = 'Basic ' . base64_encode( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) . ':' . wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
+		}
+
+		$url = rest_url( 'wp/v2/posts' );
+
+		// We only need the first post to ensure this works, to make it low impact.
+		$url = add_query_arg( array(
+			'per_page' => 1,
+		), $url );
+
+		$r = wp_remote_get( $url, compact( 'cookies', 'headers', 'timeout' ) );
+
+		if ( is_wp_error( $r ) ) {
+			printf(
+				'<span class="error"></span> %s',
+				sprintf(
+					'%s<br>%s',
+					esc_html__( 'The REST API request failed due to an error.', 'health-check' ),
+					sprintf(
+						/* translators: %1$d: The HTTP response code. %2$s: The error message returned. */
+						esc_html__( 'Error encountered: (%1$d) %2$s', 'health-check' ),
+						wp_remote_retrieve_response_code( $r ),
+						$r->get_error_message()
+					)
+				)
+			);
+		} elseif ( 200 !== wp_remote_retrieve_response_code( $r ) ) {
+			printf(
+				'<span class="warning"></span> %s',
+				sprintf(
+					/* translators: %1$d: The HTTP response code returned. %2$s: The error message returned. */
+					esc_html__( 'The REST API call gave the following unexpected result: (%1$d) %2$s.', 'health-check' ),
+					wp_remote_retrieve_response_code( $r ),
+					wp_remote_retrieve_body( $r )
+				)
+			);
+		} else {
+
+			printf(
+				'<span class="good"></span> %s',
+				__( 'The REST API is available.', 'health-check' )
+			);
+		}
+	}
+
+	/**
+	 * Return a set of tests that belong to the site status page.
+	 *
+	 * Each site status test is defined here, they may be `direct` tests, that run on page load,
+	 * or `async` tests which will run later down the line via JavaScript calls to improve page
+	 * performance and hopefully also user experiences.
+	 *
+	 * @return array
+	 */
+	public static function get_tests() {
+		$tests = array(
+			'direct' => array(
+				array(
+					'label' => __( 'WordPress Version', 'health-check' ),
+					'test'  => 'wordpress_version',
+				),
+				array(
+					'label' => __( 'Plugin Versions', 'health-check' ),
+					'test'  => 'plugin_version',
+				),
+				array(
+					'label' => __( 'Theme Versions', 'health-check' ),
+					'test'  => 'theme_version',
+				),
+				array(
+					'label' => __( 'PHP Version', 'health-check' ),
+					'test'  => 'php_version',
+				),
+				array(
+					'label' => __( 'Database Server version', 'health-check' ),
+					'test'  => 'sql_server',
+				),
+				array(
+					'label' => __( 'PHP Extensions', 'health-check' ),
+					'test'  => 'php_extensions',
+				),
+				array(
+					'label' => __( 'MySQL utf8mb4 support', 'health-check' ),
+					'test'  => 'utf8mb4_support',
+				),
+				array(
+					'label' => __( 'HTTPS status', 'health-check' ),
+					'test'  => 'https_status',
+				),
+				array(
+					'label' => __( 'Secure communication', 'health-check' ),
+					'test'  => 'ssl_support',
+				),
+				array(
+					'label' => __( 'Scheduled events', 'health-check' ),
+					'test'  => 'scheduled_events',
+				),
+				array(
+					'label' => __( 'Plugin and Theme Updates', 'health-check' ),
+					'test'  => 'extension_updates',
+				),
+			),
+			'async'  => array(
+				array(
+					'label' => __( 'Communication with WordPress.org', 'health-check' ),
+					'test'  => 'dotorg_communication',
+				),
+				array(
+					'label' => __( 'Background updates', 'health-check' ),
+					'test'  => 'background_updates',
+				),
+				array(
+					'label' => __( 'Loopback request', 'health-check' ),
+					'test'  => 'loopback_requests',
+				),
+			),
+		);
+
+		// Conditionally include REST rules if the function for it exists.
+		if ( function_exists( 'rest_url' ) ) {
+			$tests['direct'][] = array(
+				'label' => __( 'REST API availability', 'health-check' ),
+				'test'  => 'rest_availability',
+			);
+		}
+
+		return $tests;
 	}
 }
 
-new Health_Check_Site_Status();
+global $health_check_site_status;
+$health_check_site_status = new Health_Check_Site_Status();
