@@ -1019,7 +1019,7 @@ class Health_Check_Site_Status {
 					'test'  => 'extension_updates',
 				),
 				array(
-					'label' => __( 'HTTP Requests' ),
+					'label' => __( 'HTTP Requests', 'health-check' ),
 					'test'  => 'http_requests',
 				),
 			),
