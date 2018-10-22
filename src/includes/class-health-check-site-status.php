@@ -867,6 +867,47 @@ class Health_Check_Site_Status {
 		}
 	}
 
+	public function test_http_requests() {
+		$blocked = false;
+		$hosts   = array();
+
+		if ( defined( 'WP_HTTP_BLOCK_EXTERNAL' ) ) {
+			$blocked = true;
+		}
+
+		if ( defined( 'WP_ACCESSIBLE_HOSTS' ) ) {
+			$hosts = explode( ',', WP_ACCESSIBLE_HOSTS );
+		}
+
+		if ( $blocked && 0 === sizeof( $hosts ) ) {
+			printf(
+				'<span class="%s"></span> %s',
+				esc_attr( 'fail' ),
+				esc_html__( 'HTTP requests have been blocked by the WP_HTTP_BLOCK_EXTERNAL constant, with no allowed hosts.', 'health-check' )
+			);
+		}
+
+		if ( $blocked && 0 < sizeof( $hosts ) ) {
+			printf(
+				'<span class="%s"></span> %s',
+				esc_attr( 'warning' ),
+				sprintf(
+					/* translators: %s: List of hostnames whitelisted. */
+					esc_html__( 'HTTP requests have been blocked by the WP_HTTP_BLOCK_EXTERNAL constant, with some hosts whitelisted: %s.', 'health-check' ),
+					implode( ',', $hosts )
+				)
+			);
+		}
+
+		if ( ! $blocked ) {
+			printf(
+				'<span class="%s"></span> %s',
+				esc_attr( 'good' ),
+				esc_html__( 'HTTP requests should be working as expected.', 'health-check' )
+			);
+		}
+	}
+
 	public function test_rest_availability() {
 		$cookies = wp_unslash( $_COOKIE );
 		$timeout = 10;
@@ -976,6 +1017,10 @@ class Health_Check_Site_Status {
 				array(
 					'label' => __( 'Plugin and Theme Updates', 'health-check' ),
 					'test'  => 'extension_updates',
+				),
+				array(
+					'label' => __( 'HTTP Requests', 'health-check' ),
+					'test'  => 'http_requests',
 				),
 			),
 			'async'  => array(
