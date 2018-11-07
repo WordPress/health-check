@@ -29,7 +29,7 @@ class Health_Check_Troubleshooting_MU {
 	);
 
 	private $default_themes = array(
-        'twentynineteen',
+		'twentynineteen',
 		'twentyseventeen',
 		'twentysixteen',
 		'twentyfifteen',
