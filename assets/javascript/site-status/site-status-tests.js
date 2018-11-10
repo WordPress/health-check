@@ -23,6 +23,7 @@ jQuery( document ).ready(function( $ ) {
 			data,
 			function( response ) {
 				$test.html( response );
+                $( document ).trigger( 'health-check:site-status-classification' );
 				runNextSiteStatusTest();
 			}
 		);
