@@ -111,7 +111,7 @@ module.exports = function( grunt ) {
 			},
 			healthcheck: {
 				expand: true,
-				src: 'build/assets/css/health-check.css'
+				src: [ 'build/assets/css/health-check.css', 'build/assets/css/health-check-troubleshooting-mode.css' ]
 			}
 		},
 		sass: {
@@ -120,7 +120,7 @@ module.exports = function( grunt ) {
 				ext: '.css',
 				cwd: 'assets/sass/',
 				dest: 'build/assets/css/',
-				src: [ 'health-check.scss' ],
+				src: [ 'health-check.scss', 'health-check-troubleshooting-mode.scss' ],
 				options: {
 					indentType: 'tab',
 					indentWidth: 1,
