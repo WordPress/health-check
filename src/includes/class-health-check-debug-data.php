@@ -392,6 +392,10 @@ class Health_Check_Debug_Data {
 			'label' => __( 'PHP SAPI', 'health-check' ),
 			'value' => ( ! function_exists( 'php_sapi_name' ) ? __( 'Unable to determine PHP SAPI', 'health-check' ) : php_sapi_name() ),
 		);
+                $info['wp-server']['fields'][] = array(
+                        'label' => __( 'PHP User', 'health-check' ),
+                        'value' => get_current_user() . ' (' .  getmyuid() . ')',
+                        );
 
 		if ( ! function_exists( 'ini_get' ) ) {
 			$info['wp-server']['fields'][] = array(
