@@ -236,11 +236,13 @@ class Health_Check_Debug_Data {
 
 		if ( is_multisite() ) {
 			$network_query = new WP_Network_Query();
-			$network_ids   = $network_query->query( array(
-				'fields'        => 'ids',
-				'number'        => 100,
-				'no_found_rows' => false,
-			) );
+			$network_ids   = $network_query->query(
+				array(
+					'fields'        => 'ids',
+					'number'        => 100,
+					'no_found_rows' => false,
+				)
+			);
 
 			$site_count = 0;
 			foreach ( $network_ids as $network_id ) {
@@ -269,9 +271,12 @@ class Health_Check_Debug_Data {
 		}
 
 		// WordPress features requiring processing.
-		$wp_dotorg = wp_remote_get( 'https://wordpress.org', array(
-			'timeout' => 10,
-		) );
+		$wp_dotorg = wp_remote_get(
+			'https://wordpress.org',
+			array(
+				'timeout' => 10,
+			)
+		);
 		if ( ! is_wp_error( $wp_dotorg ) ) {
 			$info['wp-core']['fields'][] = array(
 				'label' => __( 'Communication with WordPress.org', 'health-check' ),
@@ -392,10 +397,11 @@ class Health_Check_Debug_Data {
 			'label' => __( 'PHP SAPI', 'health-check' ),
 			'value' => ( ! function_exists( 'php_sapi_name' ) ? __( 'Unable to determine PHP SAPI', 'health-check' ) : php_sapi_name() ),
 		);
-                $info['wp-server']['fields'][] = array(
-                        'label' => __( 'PHP User', 'health-check' ),
-                        'value' => get_current_user() . ' (' .  getmyuid() . ')',
-                        );
+		$info['wp-server']['fields'][] = array(
+			'label'   => __( 'PHP User', 'health-check' ),
+			'value'   => get_current_user() . ' (' . getmyuid() . ')',
+			'private' => true,
+		);
 
 		if ( ! function_exists( 'ini_get' ) ) {
 			$info['wp-server']['fields'][] = array(
