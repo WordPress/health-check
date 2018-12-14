@@ -953,17 +953,20 @@ class Health_Check_Site_Status {
 					wp_remote_retrieve_body( $r )
 				)
 			);
-		} elseif ( false !== ( $json = json_decode( wp_remote_retrieve_body( $r ), true ) ) && ! isset( $json['capabilities'] ) ) {
-			printf(
-				'<span class="warning"></span> %s',
-				esc_html__( 'The REST API did not process the \'context\' query parameter correctly.', 'health-check' )
-			);
 		} else {
+			$json = json_decode( wp_remote_retrieve_body( $r ), true );
 
-			printf(
-				'<span class="good"></span> %s',
-				__( 'The REST API is available.', 'health-check' )
-			);
+			if ( false !== $json && ! isset( $json['capabilities'] ) ) {
+				printf(
+					'<span class="warning"></span> %s',
+					esc_html__( 'The REST API did not process the \'context\' query parameter correctly.', 'health-check' )
+				);
+			} else {
+				printf(
+					'<span class="good"></span> %s',
+					__( 'The REST API is available.', 'health-check' )
+				);
+			}
 		}
 	}
 
