@@ -44,11 +44,12 @@ class Health_Check_Mail_Check {
 		);
 
 		if ( ! empty( $email_message ) ) {
-		    $email_body .= "\n\n" . sprintf(
-                __( 'Additional message from admin: %s', 'health-check' ),
-                    $email_message
-            );
-        }
+			$email_body .= "\n\n" . sprintf(
+				// translators: %s: The custom message that may be included with the email.
+				__( 'Additional message from admin: %s', 'health-check' ),
+				$email_message
+			);
+		}
 
 		$sendmail = wp_mail( $email, $email_subject, $email_body );
 
