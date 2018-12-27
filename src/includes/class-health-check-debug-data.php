@@ -384,7 +384,7 @@ class Health_Check_Debug_Data {
 			'value' => ( ! function_exists( 'phpversion' ) ? __( 'Unable to determine PHP version', 'health-check' ) : sprintf(
 				'%s %s',
 				phpversion(),
-				( 64 === PHP_INT_SIZE * 8 ? __( '(Supports 64bit values)', 'health-check' ) : '' )
+				( 64 === PHP_INT_SIZE * 8 ? __( '(Supports 64bit values)', 'health-check' ) : __( '(Does not support 64bit values)', 'health-check' ) )
 			)
 			),
 		);
