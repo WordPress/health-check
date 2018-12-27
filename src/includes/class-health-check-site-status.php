@@ -919,11 +919,11 @@ class Health_Check_Site_Status {
 			$headers['Authorization'] = 'Basic ' . base64_encode( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) . ':' . wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
 		}
 
-		$url = rest_url( 'wp/v2/posts' );
+		$url = rest_url( 'wp/v2/types/post' );
 
 		// We only need the first post to ensure this works, to make it low impact.
 		$url = add_query_arg( array(
-			'per_page' => 1,
+			'context' => 'edit',
 		), $url );
 
 		$r = wp_remote_get( $url, compact( 'cookies', 'headers', 'timeout' ) );
@@ -951,6 +951,11 @@ class Health_Check_Site_Status {
 					wp_remote_retrieve_response_code( $r ),
 					wp_remote_retrieve_body( $r )
 				)
+			);
+		} elseif ( false !== ( $json = json_decode( wp_remote_retrieve_body( $r ), true ) ) && ! isset( $json['capabilities'] ) ) {
+			printf(
+				'<span class="warning"></span> %s',
+				esc_html__( 'The REST API did not process the \'context\' query parameter correctly.', 'health-check' )
 			);
 		} else {
 
