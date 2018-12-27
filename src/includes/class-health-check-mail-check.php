@@ -35,7 +35,7 @@ class Health_Check_Mail_Check {
 		$email_subject = sprintf( esc_html__( 'Health Check – Test Message from %s', 'health-check' ), $wp_address );
 
 		$email_body = sprintf(
-		    // translators: %1$s: website name. %2$s: website url. %3$s: The date the message was sent. %4$s: The time the message was sent.
+			// translators: %1$s: website name. %2$s: website url. %3$s: The date the message was sent. %4$s: The time the message was sent.
 			__( 'Hi! This test message was sent by the Health Check plugin from %1$s (%2$s) on %3$s at %4$s. Since you’re reading this, it obviously works.', 'health-check' ),
 			$wp_name,
 			$wp_address,
@@ -46,10 +46,10 @@ class Health_Check_Mail_Check {
 
 		if ( ! empty( $email_message ) ) {
 			$email_body .= "\n\n" . sprintf(
-				    // translators: %s: The custom message that may be included with the email.
-					__( 'Additional message from admin: %s', 'health-check' ),
-					$email_message
-				);
+				// translators: %s: The custom message that may be included with the email.
+				__( 'Additional message from admin: %s', 'health-check' ),
+				$email_message
+			);
 		}
 
 		$sendmail = wp_mail( $email, $email_subject, $email_body );

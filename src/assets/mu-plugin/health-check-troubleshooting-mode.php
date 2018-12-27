@@ -776,8 +776,8 @@ class Health_Check_Troubleshooting_MU {
 		?>
 <script type="text/javascript">
 	jQuery( document ).ready(function( $ ) {
-        $( '.health-check-toggle-visibility' ).click(function() {
-            var $elements = $( '.toggle-visibility', $( '#' + $ ( this ).data( 'element' ) ).closest( '.welcome-panel-column' ) );
+		$( '.health-check-toggle-visibility' ).click(function() {
+			var $elements = $( '.toggle-visibility', $( '#' + $ ( this ).data( 'element' ) ).closest( '.welcome-panel-column' ) );
 
 			if ( $elements.is( ':visible' ) ) {
 				$elements.attr( 'aria-hidden', 'false' ).toggle();

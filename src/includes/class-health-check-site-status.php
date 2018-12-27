@@ -566,7 +566,7 @@ class Health_Check_Site_Status {
 					'<span class="%s"></span> %s',
 					( $module['required'] ? 'error' : 'warning' ),
 					sprintf(
-					// translators: %1$2: If a module is required or recommended. %2$s: The module name.
+						// translators: %1$2: If a module is required or recommended. %2$s: The module name.
 						__( 'The %1$s module, %2$s, is not installer, or has been disabled.', 'health-check' ),
 						( $module['required'] ? __( 'required', 'health-check' ) : __( 'optional', 'health-check' ) ),
 						$library
@@ -891,7 +891,7 @@ class Health_Check_Site_Status {
 				'<span class="%s"></span> %s',
 				esc_attr( 'warning' ),
 				sprintf(
-				/* translators: %s: List of hostnames whitelisted. */
+					/* translators: %s: List of hostnames whitelisted. */
 					esc_html__( 'HTTP requests have been blocked by the WP_HTTP_BLOCK_EXTERNAL constant, with some hosts whitelisted: %s.', 'health-check' ),
 					implode( ',', $hosts )
 				)
@@ -935,7 +935,7 @@ class Health_Check_Site_Status {
 					'%s<br>%s',
 					esc_html__( 'The REST API request failed due to an error.', 'health-check' ),
 					sprintf(
-					/* translators: %1$d: The HTTP response code. %2$s: The error message returned. */
+						/* translators: %1$d: The HTTP response code. %2$s: The error message returned. */
 						esc_html__( 'Error encountered: (%1$d) %2$s', 'health-check' ),
 						wp_remote_retrieve_response_code( $r ),
 						$r->get_error_message()
@@ -946,7 +946,7 @@ class Health_Check_Site_Status {
 			printf(
 				'<span class="warning"></span> %s',
 				sprintf(
-				/* translators: %1$d: The HTTP response code returned. %2$s: The error message returned. */
+					/* translators: %1$d: The HTTP response code returned. %2$s: The error message returned. */
 					esc_html__( 'The REST API call gave the following unexpected result: (%1$d) %2$s.', 'health-check' ),
 					wp_remote_retrieve_response_code( $r ),
 					wp_remote_retrieve_body( $r )
