@@ -2,8 +2,8 @@
 Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.0
-Tested up to: 4.9
-Stable tag: 1.2.1
+Tested up to: 5.0
+Stable tag: 1.2.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,12 @@ Are you unfamiliar with how to clear your cookies? No worries, you may also clos
 3. The generic PHP information tab, when more detailed information is required.
 
 == Changelog ==
+
+= v1.2.3 =
+* Added REST API availability test to the Site Status
+
+= v 1.2.2 =
+* Added Twenty Nineteen as a recognized core theme.
 
 = v 1.2.1 =
 * Make sure only those with access to the plugin see the backup encouragement notice.
