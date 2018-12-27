@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check Troubleshooting Mode
 	Description: Conditionally disabled themes or plugins on your site for a given session, used to rule out conflicts during troubleshooting.
-	Version: 1.5.1
+	Version: 1.5.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Set the MU plugin version.
-define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.5.1' );
+define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.5.0' );
 
 class Health_Check_Troubleshooting_MU {
 	private $disable_hash    = null;
@@ -70,6 +70,7 @@ class Health_Check_Troubleshooting_MU {
 		add_action( 'plugin_action_links', array( $this, 'plugin_actions' ), 50, 4 );
 
 		add_action( 'admin_notices', array( $this, 'display_dashboard_widget' ) );
+		add_action( 'admin_head', array( $this, 'dashboard_widget_styles' ) );
 		add_action( 'admin_footer', array( $this, 'dashboard_widget_scripts' ) );
 
 		add_action( 'wp_logout', array( $this, 'health_check_troubleshooter_mode_logout' ) );
@@ -278,7 +279,7 @@ class Health_Check_Troubleshooting_MU {
 	public function is_troubleshooting() {
 		// Check if a session cookie to disable plugins has been set.
 		if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
-			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'] . md5( $_SERVER['REMOTE_ADDR'] );
+			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'];
 		}
 
 		// If the disable hash isn't set, no need to interact with things.
@@ -548,7 +549,7 @@ class Health_Check_Troubleshooting_MU {
 					sprintf(
 						// translators: %s: The plugin slug that was disabled.
 						__( 'When disabling the plugin, %s, a site failure occurred. Because of this the change was automatically reverted.', 'health-check' ),
-						$_GET['health-check-troubleshoot-disable-plugin']
+						$_GET['health-check-troubleshoot-enable-plugin']
 					),
 					'warning'
 				);
@@ -776,8 +777,8 @@ class Health_Check_Troubleshooting_MU {
 		?>
 <script type="text/javascript">
 	jQuery( document ).ready(function( $ ) {
-		$( '.health-check-toggle-visibility' ).click(function() {
-			var $elements = $( '.toggle-visibility', $( '#' + $ ( this ).data( 'element' ) ).closest( '.welcome-panel-column' ) );
+        $( '.health-check-toggle-visibility' ).click(function() {
+            var $elements = $( '.toggle-visibility', $( '#' + $ ( this ).data( 'element' ) ).closest( '.welcome-panel-column' ) );
 
 			if ( $elements.is( ':visible' ) ) {
 				$elements.attr( 'aria-hidden', 'false' ).toggle();
