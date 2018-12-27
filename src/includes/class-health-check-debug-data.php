@@ -751,6 +751,58 @@ class Health_Check_Debug_Data {
 		return $info;
 	}
 
+	/**
+	 * Print the formatted variation of the information gathered for debugging, in a manner
+	 * suitable for a text area that can be instantly copied to a forum or support ticket.
+	 *
+	 * @param array $info_array
+	 *
+	 * @return void
+	 */
+	public static function textarea_format( $info_array ) {
+		echo "`\n";
+
+		foreach ( $info_array as $section => $details ) {
+			// Skip this section if there are no fields, or the section has been declared as private.
+			if ( empty( $details['fields'] ) || ( isset( $details['private'] ) && $details['private'] ) ) {
+				continue;
+			}
+
+			printf(
+				"### %s%s ###\n\n",
+				$details['label'],
+				( isset( $details['show_count'] ) && $details['show_count'] ? sprintf( ' (%d)', count( $details['fields'] ) ) : '' )
+			);
+
+			foreach ( $details['fields'] as $field ) {
+				if ( isset( $field['private'] ) && true === $field['private'] ) {
+					continue;
+				}
+
+				$values = $field['value'];
+				if ( is_array( $field['value'] ) ) {
+					$values = '';
+
+					foreach ( $field['value'] as $name => $value ) {
+						$values .= sprintf(
+							"\n\t%s: %s",
+							$name,
+							$value
+						);
+					}
+				}
+
+				printf(
+					"%s: %s\n",
+					$field['label'],
+					$values
+				);
+			}
+			echo "\n";
+		}
+		echo '`';
+	}
+
 	public static function get_installation_size() {
 		$uploads_dir = wp_upload_dir();
 
