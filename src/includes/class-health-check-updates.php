@@ -111,7 +111,7 @@ class Health_Check_Updates {
 		if ( 0 !== count( $diff ) ) {
 			return array(
 				'desc'     => sprintf(
-					/* translators: %s: List of plugin names. */
+				/* translators: %s: List of plugin names. */
 					esc_html__( 'The following Plugins have been removed from update checks: %s.', 'health-check' ),
 					implode( ',', $diff )
 				),
@@ -351,7 +351,7 @@ class Health_Check_Updates {
 		if ( 0 !== count( $diff ) ) {
 			return array(
 				'desc'     => sprintf(
-					/* translators: %s: List of theme names. */
+				/* translators: %s: List of theme names. */
 					esc_html__( 'The following Themes have been removed from update checks: %s.', 'health-check' ),
 					implode( ',', $diff )
 				),
