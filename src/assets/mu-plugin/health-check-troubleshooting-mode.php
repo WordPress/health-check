@@ -70,7 +70,6 @@ class Health_Check_Troubleshooting_MU {
 		add_action( 'plugin_action_links', array( $this, 'plugin_actions' ), 50, 4 );
 
 		add_action( 'admin_notices', array( $this, 'display_dashboard_widget' ) );
-		add_action( 'admin_head', array( $this, 'dashboard_widget_styles' ) );
 		add_action( 'admin_footer', array( $this, 'dashboard_widget_scripts' ) );
 
 		add_action( 'wp_logout', array( $this, 'health_check_troubleshooter_mode_logout' ) );
