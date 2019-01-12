@@ -1,4 +1,4 @@
-/* global ajaxurl */
+/* global ajaxurl, HealthCheck */
 jQuery( document ).ready(function( $ ) {
 	$( '#health-check-mail-check' ).submit( function( e ) {
 		var email = $( '#health-check-mail-check #email' ).val(),
@@ -13,7 +13,8 @@ jQuery( document ).ready(function( $ ) {
 		data = {
 			'action': 'health-check-mail-check',
 			'email': email,
-			'email_message': emailMessage
+			'email_message': emailMessage,
+			'_wpnonce': HealthCheck.nonce.mail_check
 		};
 
 		$.post(

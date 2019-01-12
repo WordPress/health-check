@@ -107,6 +107,12 @@ class Health_Check_Troubleshoot {
 	 * @return void
 	 */
 	static function confirm_warning() {
+		check_ajax_referer( 'health-check-confirm-warning' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
+
 		$user_meta = get_user_meta( get_current_user_id(), 'health-check', true );
 		if ( empty( $user_meta ) ) {
 			$user_meta = array(

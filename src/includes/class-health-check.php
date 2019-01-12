@@ -218,6 +218,16 @@ class Health_Check {
 			'warning' => array(
 				'seen_backup' => Health_Check_Troubleshoot::has_seen_warning(),
 			),
+			'nonce'   => array(
+				'loopback_no_plugins'         => wp_create_nonce( 'health-check-loopback-no-plugins' ),
+				'loopback_individual_plugins' => wp_create_nonce( 'health-check-loopback-individual-plugins' ),
+				'loopback_default_theme'      => wp_create_nonce( 'health-check-loopback-default-theme' ),
+				'files_integrity_check'       => wp_create_nonce( 'health-check-files-integrity-check' ),
+				'view_file_diff'              => wp_create_nonce( 'health-check-view-file-diff' ),
+				'mail_check'                  => wp_create_nonce( 'health-check-mail-check' ),
+				'confirm_warning'             => wp_create_nonce( 'health-check-confirm-warning' ),
+				'site_status'                 => wp_create_nonce( 'health-check-site-status' ),
+			),
 		) );
 	}
 

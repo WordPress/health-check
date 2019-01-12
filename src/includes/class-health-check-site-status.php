@@ -65,6 +65,12 @@ class Health_Check_Site_Status {
 	}
 
 	public function site_status() {
+		check_ajax_referer( 'health-check-site-status' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
+
 		$function = sprintf(
 			'test_%s',
 			$_POST['feature']
