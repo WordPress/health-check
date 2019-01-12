@@ -276,6 +276,11 @@ class Health_Check_Troubleshooting_MU {
 	 * @return bool
 	 */
 	public function is_troubleshooting() {
+		// Only administrators are able to perform troubleshooting scenarios.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return false;
+		}
+
 		// Check if a session cookie to disable plugins has been set.
 		if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
 			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'] . md5( $_SERVER['REMOTE_ADDR'] );
