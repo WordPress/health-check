@@ -32,7 +32,7 @@ class Health_Check_Troubleshoot {
 
 		update_option( 'health-check-allowed-plugins', $allowed_plugins );
 
-		update_option( 'health-check-disable-plugin-hash', $loopback_hash . md5( $_SERVER['REMOTE_ADDR'] ) );
+		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
 
 		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
 	}
@@ -309,7 +309,7 @@ class Health_Check_Troubleshoot {
 		<?php else : ?>
 
 			<form action="" method="post" class="form" style="text-align: center;">
-				<?php wp_nonce_field( 'health-check-enable-troubleshooting' ); ?>
+                <?php wp_nonce_field( 'health-check-enable-troubleshooting' ); ?>
 				<input type="hidden" name="health-check-troubleshoot-mode" value="true">
 				<p>
 					<button type="submit" class="button button-primary">
