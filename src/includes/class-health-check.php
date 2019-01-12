@@ -100,6 +100,11 @@ class Health_Check {
 			return;
 		}
 
+		// Don't enable troubleshooting if nonces are missing or do not match.
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'] , 'health-check-enable-troubleshooting' ) ) {
+			return;
+		}
+
 		Health_Check_Troubleshoot::initiate_troubleshooting_mode();
 	}
 
@@ -124,6 +129,11 @@ class Health_Check {
 	 */
 	public function start_troubleshoot_single_plugin_mode() {
 		if ( ! isset( $_GET['health-check-troubleshoot-plugin'] ) || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		// Don't enable troubleshooting for an individual plugin if the nonce is missing or invalid.
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'health-check-troubleshoot-plugin-' . $_GET['health-check-troubleshoot-plugin'] ) ) {
 			return;
 		}
 
@@ -293,6 +303,7 @@ class Health_Check {
 			'<a href="%s">%s</a>',
 			esc_url( add_query_arg( array(
 				'health-check-troubleshoot-plugin' => ( isset( $plugin_data['slug'] ) ? $plugin_data['slug'] : sanitize_title( $plugin_data['Name'] ) ),
+				'_wpnonce'                         => wp_create_nonce( 'health-check-troubleshoot-plugin-' . $plugin_data['slug'] ),
 			), admin_url( 'plugins.php' ) ) ),
 			esc_html__( 'Troubleshoot', 'health-check' )
 		);
@@ -434,13 +445,13 @@ class Health_Check {
 		);
 
 		$url   = wp_nonce_url( add_query_arg( $args, admin_url() ) );
-		$creds = request_filesystem_credentials( $url, '', false, WP_CONTENT_DIR, array( 'health-check-troubleshoot-mode', 'action' ) );
+		$creds = request_filesystem_credentials( $url, '', false, WP_CONTENT_DIR, array( 'health-check-troubleshoot-mode', 'action', '_wpnonce' ) );
 		if ( false === $creds ) {
 			return false;
 		}
 
 		if ( ! WP_Filesystem( $creds ) ) {
-			request_filesystem_credentials( $url, '', true, WPMU_PLUGIN_DIR, array( 'health-check-troubleshoot-mode', 'action' ) );
+			request_filesystem_credentials( $url, '', true, WPMU_PLUGIN_DIR, array( 'health-check-troubleshoot-mode', 'action', '_wpnonce' ) );
 			return false;
 		}
 
