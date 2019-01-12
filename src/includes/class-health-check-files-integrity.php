@@ -51,8 +51,6 @@ class Health_Check_Files_Integrity {
 		// Encode the API response body.
 		$checksumapibody = json_decode( wp_remote_retrieve_body( $checksumapi ), true );
 
-		set_transient( 'health-check-checksums', $checksumapibody, 2 * HOUR_IN_SECONDS );
-
 		// Remove the wp-content/ files from checking
 		foreach ( $checksumapibody['checksums'] as $file => $checksum ) {
 			if ( false !== strpos( $file, 'wp-content/' ) ) {
@@ -169,23 +167,12 @@ class Health_Check_Files_Integrity {
 			wp_send_json_error();
 		}
 
-		$filepath  = ABSPATH;
-		$file      = $_POST['file'];
-		$wpversion = get_bloginfo( 'version' );
+		$filepath         = ABSPATH;
+		$file             = $_POST['file'];
+		$wpversion        = get_bloginfo( 'version' );
 
 		if ( 0 !== validate_file( $filepath . $file ) ) {
-			wp_send_json_error( array( 'message' => esc_html__( 'You do not have access to this file.', 'health-check' ) ) );
-		}
-
-		$allowed_files = get_transient( 'health-check-checksums' );
-		if ( false === $allowed_files ) {
-			Health_Check_Files_Integrity::call_checksum_api();
-
-			$allowed_files = get_transient( 'health-check-checksums' );
-		}
-
-		if ( ! isset( $allowed_files['checksums'][ $file ] ) ) {
-			wp_send_json_error( array( 'message' => esc_html__( 'You do not have access to this file.', 'health-check' ) ) );
+			wp_send_json_error();
 		}
 
 		$local_file_body  = file_get_contents( $filepath . $file, FILE_USE_INCLUDE_PATH );
