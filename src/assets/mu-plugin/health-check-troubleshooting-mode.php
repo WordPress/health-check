@@ -548,7 +548,7 @@ class Health_Check_Troubleshooting_MU {
 					sprintf(
 						// translators: %s: The plugin slug that was disabled.
 						__( 'When disabling the plugin, %s, a site failure occurred. Because of this the change was automatically reverted.', 'health-check' ),
-						$_GET['health-check-troubleshoot-enable-plugin']
+						$_GET['health-check-troubleshoot-disable-plugin']
 					),
 					'warning'
 				);
