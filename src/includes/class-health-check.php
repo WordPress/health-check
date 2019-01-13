@@ -101,7 +101,7 @@ class Health_Check {
 		}
 
 		// Don't enable troubleshooting if nonces are missing or do not match.
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'] , 'health-check-enable-troubleshooting' ) ) {
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'health-check-enable-troubleshooting' ) ) {
 			return;
 		}
 

@@ -34,7 +34,7 @@
 			var data = {
 				'action': 'health-check-confirm-warning',
 				'warning': 'backup',
-                '_wpnonce': HealthCheck.nonce.confirm_warning
+				'_wpnonce': HealthCheck.nonce.confirm_warning
 			};
 
 			$.post(

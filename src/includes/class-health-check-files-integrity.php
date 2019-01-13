@@ -167,9 +167,9 @@ class Health_Check_Files_Integrity {
 			wp_send_json_error();
 		}
 
-		$filepath         = ABSPATH;
-		$file             = $_POST['file'];
-		$wpversion        = get_bloginfo( 'version' );
+		$filepath  = ABSPATH;
+		$file      = $_POST['file'];
+		$wpversion = get_bloginfo( 'version' );
 
 		if ( 0 !== validate_file( $filepath . $file ) ) {
 			wp_send_json_error();

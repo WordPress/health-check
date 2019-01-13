@@ -309,7 +309,7 @@ class Health_Check_Troubleshoot {
 		<?php else : ?>
 
 			<form action="" method="post" class="form" style="text-align: center;">
-                <?php wp_nonce_field( 'health-check-enable-troubleshooting' ); ?>
+				<?php wp_nonce_field( 'health-check-enable-troubleshooting' ); ?>
 				<input type="hidden" name="health-check-troubleshoot-mode" value="true">
 				<p>
 					<button type="submit" class="button button-primary">
