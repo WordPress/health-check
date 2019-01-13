@@ -278,7 +278,7 @@ class Health_Check_Troubleshooting_MU {
 	public function is_troubleshooting() {
 		// Check if a session cookie to disable plugins has been set.
 		if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
-			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'];
+			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'] . md5( $_SERVER['REMOTE_ADDR'] );
 		}
 
 		// If the disable hash isn't set, no need to interact with things.
