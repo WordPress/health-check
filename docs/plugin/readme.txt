@@ -39,6 +39,16 @@ Are you unfamiliar with how to clear your cookies? No worries, you may also clos
 
 == Changelog ==
 
+= v1.2.4 =
+* Security: Prevent arbitrary file viewing through the integrity file actions. Independently reported by Julien Legras of [https://synacktiv.com](Synacktiv) and siliconforks.
+* Security: Site status was available to any user with a subscriber role or higher on a site. Reported by Julien Legras of [https://synacktiv.com](Synacktiv).
+* Security: Hardened the troubleshooting mode session so it is lock to the users location when active.
+* New enhancement: Check that various PHP extensions exist, as recommended by the WordPress Hosting Community.
+* New enhancement: Check if update APIs are being manipulated by plugins or themes.
+* Fix: Copying debug information had the wrong indentation for easier readability.
+* Fix: Toggling plugins and themes from the troubleshooting widget on in the dashboard now lets you expand/collapse them as intended.
+* Fix: When debugging was enabled in WordPress, disabling a plugin in troubleshooting mode would cause a WSOD if the disabled plugin caused a fatal error.
+
 = v1.2.3 =
 * Added REST API availability test to the Site Status
 
