@@ -32,7 +32,7 @@ class Health_Check_Troubleshoot {
 
 		update_option( 'health-check-allowed-plugins', $allowed_plugins );
 
-		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
+		update_option( 'health-check-disable-plugin-hash', $loopback_hash . md5( $_SERVER['REMOTE_ADDR'] ) );
 
 		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
 	}
