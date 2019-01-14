@@ -17,6 +17,7 @@ class Health_Check_Files_Integrity {
 	 * @return void
 	 */
 	static function run_files_integrity_check() {
+		check_ajax_referer( 'health-check-files-integrity-check' );
 
 		$checksums = Health_Check_Files_Integrity::call_checksum_api();
 
@@ -160,9 +161,20 @@ class Health_Check_Files_Integrity {
 	* @return void
 	*/
 	static function view_file_diff() {
-		$filepath         = ABSPATH;
-		$file             = $_POST['file'];
-		$wpversion        = get_bloginfo( 'version' );
+		check_ajax_referer( 'health-check-view-file-diff' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
+
+		$filepath  = ABSPATH;
+		$file      = $_POST['file'];
+		$wpversion = get_bloginfo( 'version' );
+
+		if ( 0 !== validate_file( $filepath . $file ) ) {
+			wp_send_json_error();
+		}
+
 		$local_file_body  = file_get_contents( $filepath . $file, FILE_USE_INCLUDE_PATH );
 		$remote_file      = wp_remote_get( 'https://core.svn.wordpress.org/tags/' . $wpversion . '/' . $file );
 		$remote_file_body = wp_remote_retrieve_body( $remote_file );
@@ -190,7 +202,7 @@ class Health_Check_Files_Integrity {
 	 *
 	 * @param array $tabs
 	 *
-	 * return array
+	 * @return array
 	 */
 	static function tools_tab( $tabs ) {
 		ob_start();

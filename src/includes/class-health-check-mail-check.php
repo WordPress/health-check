@@ -22,6 +22,12 @@ class Health_Check_Mail_Check {
 	 * @return void
 	 */
 	static function run_mail_check() {
+		check_ajax_referer( 'health-check-mail-check' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
+
 		$output        = '';
 		$sendmail      = false;
 		$email         = sanitize_email( $_POST['email'] );

@@ -32,7 +32,7 @@ class Health_Check_Troubleshoot {
 
 		update_option( 'health-check-allowed-plugins', $allowed_plugins );
 
-		update_option( 'health-check-disable-plugin-hash', $loopback_hash );
+		update_option( 'health-check-disable-plugin-hash', $loopback_hash . md5( $_SERVER['REMOTE_ADDR'] ) );
 
 		setcookie( 'health-check-disable-plugins', $loopback_hash, 0, COOKIEPATH, COOKIE_DOMAIN );
 	}
@@ -107,6 +107,12 @@ class Health_Check_Troubleshoot {
 	 * @return void
 	 */
 	static function confirm_warning() {
+		check_ajax_referer( 'health-check-confirm-warning' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
+
 		$user_meta = get_user_meta( get_current_user_id(), 'health-check', true );
 		if ( empty( $user_meta ) ) {
 			$user_meta = array(
@@ -303,6 +309,7 @@ class Health_Check_Troubleshoot {
 		<?php else : ?>
 
 			<form action="" method="post" class="form" style="text-align: center;">
+				<?php wp_nonce_field( 'health-check-enable-troubleshooting' ); ?>
 				<input type="hidden" name="health-check-troubleshoot-mode" value="true">
 				<p>
 					<button type="submit" class="button button-primary">

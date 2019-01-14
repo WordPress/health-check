@@ -1,33 +1,19 @@
-/* global ajaxurl */
+/* global ajaxurl, HealthCheck */
 jQuery( document ).ready(function( $ ) {
-	function runNextSiteStatusTest() {
-		var $test = $( '.health-check-site-status-test' ),
-			data;
-
-		// If there are no more tests to run, stop processing.
-		if ( $test.length < 1 ) {
-			return;
-		}
-
-		$test = $test.first();
-
-		data = {
-			action: 'health-check-site-status',
-			feature: $test.data( 'site-status' )
-		};
-
-		$test.removeClass( 'health-check-site-status-test' );
+	$( '.health-check-site-status-test' ).each( function() {
+		var $check = $( this ),
+            data = {
+                'action': 'health-check-site-status',
+                'feature': $( this ).data( 'site-status' ),
+                '_wpnonce': HealthCheck.nonce.site_status
+            };
 
 		$.post(
 			ajaxurl,
 			data,
 			function( response ) {
-				$test.html( response );
-                $( document ).trigger( 'health-check:site-status-classification' );
-				runNextSiteStatusTest();
+				$check.html( response );
 			}
 		);
-	}
-
-	runNextSiteStatusTest();
+	});
 });

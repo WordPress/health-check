@@ -65,6 +65,12 @@ class Health_Check_Site_Status {
 	}
 
 	public function site_status() {
+		check_ajax_referer( 'health-check-site-status' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
+
 		$function = sprintf(
 			'test_%s',
 			$_POST['feature']
@@ -450,7 +456,6 @@ class Health_Check_Site_Status {
 		if ( null !== $extension && ! extension_loaded( $extension ) ) {
 			$available = false;
 		}
-
 		if ( null !== $function && ! function_exists( $function ) ) {
 			$available = false;
 		}
@@ -913,7 +918,6 @@ class Health_Check_Site_Status {
 		$timeout = 10;
 		$headers = array(
 			'Cache-Control' => 'no-cache',
-			'X-WP-Nonce'    => wp_create_nonce( 'wp_rest' ),
 		);
 
 		// Include Basic auth in loopback requests.
@@ -923,6 +927,7 @@ class Health_Check_Site_Status {
 
 		$url = rest_url( 'wp/v2/types/post' );
 
+		// We only need the first post to ensure this works, to make it low impact.
 		$url = add_query_arg( array(
 			'context' => 'edit',
 		), $url );

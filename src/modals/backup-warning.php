@@ -32,8 +32,9 @@
 			$( "#health-check-backup-warning" ).hide();
 
 			var data = {
-				action: 'health-check-confirm-warning',
-				warning: 'backup'
+				'action': 'health-check-confirm-warning',
+				'warning': 'backup',
+				'_wpnonce': HealthCheck.nonce.confirm_warning
 			};
 
 			$.post(

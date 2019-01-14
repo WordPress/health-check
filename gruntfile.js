@@ -111,7 +111,7 @@ module.exports = function( grunt ) {
 			},
 			healthcheck: {
 				expand: true,
-				src: [ 'build/assets/css/health-check.css', 'build/assets/css/health-check-troubleshooting-mode.css' ]
+				src: [ 'build/assets/css/health-check.css', 'build/assets/css/health-check-troubleshooting-mods.css' ]
 			}
 		},
 		sass: {
