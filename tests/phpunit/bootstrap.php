@@ -10,6 +10,11 @@ if ( ! $_tests_dir ) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';
 }
 
+// Set up some server variables if they're missing
+if ( ! isset( $_SERVER['REMOTE_ADDR'] ) ) {
+	$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+}
+
 // Give access to tests_add_filter() function.
 require_once $_tests_dir . '/includes/functions.php';
 
