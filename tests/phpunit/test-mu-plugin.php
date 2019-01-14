@@ -15,7 +15,7 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 		activate_plugin( $this->test_plugin, '', false, true );
 
 		// Set up a Troubleshooting hash.
-		update_option( 'health-check-disable-plugin-hash', 'abc123' );
+		update_option( 'health-check-disable-plugin-hash', 'abc123' . md5( $_SERVER['REMOTE_ADDR'] ) );
 
 		$this->class_instance = new Health_Check_Troubleshooting_MU();
 	}
