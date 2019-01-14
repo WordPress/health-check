@@ -27,8 +27,11 @@ developers on the benefits of the plugin and how to use it.
 
 ## Contributing with code
 
-When contributing through code, please start by forking the repository, and then making a clone 
-for your self to work off.
+When contributing through code, please make sure each feature is developed as a separate, forked, branch of `develop`.
+
+The `master` branch of the repository is kept in a stable state, and should at any given time always be the most recent public release of the plugin.
+
+By splitting them up, we are able to make point releases without affecting already developed features intended for future major versions.
 
 You do not need a local development environment set up to make code changes, although it is useful
 when making changes to JavaScript or SASS (CSS styles) as these are concatenated by our build tools,
