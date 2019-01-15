@@ -40,9 +40,9 @@ Are you unfamiliar with how to clear your cookies? No worries, you may also clos
 == Changelog ==
 
 = v1.2.4 =
-* Security: Prevent arbitrary file viewing through the integrity file actions. Independently reported by Julien Legras of [https://synacktiv.com](Synacktiv) and siliconforks.
-* Security: Site status was available to any user with a subscriber role or higher on a site. Reported by Julien Legras of [https://synacktiv.com](Synacktiv).
-* Security: Hardened the troubleshooting mode session so it is lock to the users location when active.
+* Security: Prevent arbitrary file viewing through the integrity file actions. Independently reported by Julien Legras of [Synacktiv](https://synacktiv.com) and siliconforks.
+* Security: Site status was available to any user with a subscriber role or higher on a site. Reported by Julien Legras of [Synacktiv](https://synacktiv.com).
+* Security: Hardened the troubleshooting mode session so it is locked to the users location when active.
 * New enhancement: Check that various PHP extensions exist, as recommended by the WordPress Hosting Community.
 * New enhancement: Check if update APIs are being manipulated by plugins or themes.
 * Fix: Copying debug information had the wrong indentation for easier readability.
