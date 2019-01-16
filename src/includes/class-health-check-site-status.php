@@ -918,6 +918,7 @@ class Health_Check_Site_Status {
 		$timeout = 10;
 		$headers = array(
 			'Cache-Control' => 'no-cache',
+			'X-WP-Nonce'    => wp_create_nonce( 'wp_rest' ),
 		);
 
 		// Include Basic auth in loopback requests.
