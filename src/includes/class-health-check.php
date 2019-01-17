@@ -202,16 +202,13 @@ class Health_Check {
 	 * @return void
 	 */
 	public function enqueues() {
-		// Don't enqueue anything unless we're on the health check page
-		if ( ! isset( $_GET['page'] ) || 'health-check' !== $_GET['page'] ) {
-
-			/*
-			 * Special consideration, if warnings are not dismissed we need to display
-			 * our modal, and thus require our styles, in other locations, before bailing.
-			 */
-			if ( ! Health_Check_Troubleshoot::has_seen_warning() ) {
-				wp_enqueue_style( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/css/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
-			}
+		/*
+		 * Don't enqueue anything unless we're on the health check page
+		 *
+		 * Special consideration, if warnings are not dismissed we need to display
+		 * our modal, and thus require our styles, in other locations, before bailing.
+		 */
+		if ( ( ! isset( $_GET['page'] ) || 'health-check' !== $_GET['page'] ) && Health_Check_Troubleshoot::has_seen_warning() ) {
 			return;
 		}
 
