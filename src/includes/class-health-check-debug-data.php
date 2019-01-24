@@ -11,7 +11,7 @@
 class Health_Check_Debug_Data {
 
 	/**
-	 * Calls all core funtions to check for updates
+	 * Calls all core functions to check for updates
 	 *
 	 * @uses wp_version_check()
 	 * @uses wp_update_plugins()
