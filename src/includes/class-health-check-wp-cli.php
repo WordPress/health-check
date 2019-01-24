@@ -7,6 +7,11 @@
 
 use WP_CLI\Utils;
 
+// Make sure the file is not directly accessible.
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'We\'re sorry, but you can not directly access this file.' );
+}
+
 /**
  * Class Health_Check_WP_CLI
  */
