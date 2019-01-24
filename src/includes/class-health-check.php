@@ -47,7 +47,7 @@ class Health_Check {
 
 		add_filter( 'plugin_row_meta', array( $this, 'settings_link' ), 10, 2 );
 
-		add_filter( 'plugin_action_links', array( $this, 'troubeshoot_plugin_action' ), 20, 4 );
+		add_filter( 'plugin_action_links', array( $this, 'troubleshoot_plugin_action' ), 20, 4 );
 
 		add_action( 'admin_footer', array( $this, 'show_backup_warning' ) );
 
@@ -280,7 +280,7 @@ class Health_Check {
 	 *
 	 * @return array
 	 */
-	public function troubeshoot_plugin_action( $actions, $plugin_file, $plugin_data, $context ) {
+	public function troubleshoot_plugin_action( $actions, $plugin_file, $plugin_data, $context ) {
 		// Don't add anything if this is a Must-Use plugin, we can't touch those.
 		if ( 'mustuse' === $context ) {
 			return $actions;
