@@ -261,7 +261,7 @@ class Health_Check_Site_Status {
 		$themes_need_updates = 0;
 		$themes_inactive     = 0;
 
-		// This value is changed dduring processing to determine how many themes are considered a reasonable amount.
+		// This value is changed during processing to determine how many themes are considered a reasonable amount.
 		$allowed_theme_count = 1;
 
 		$has_default_theme  = false;
