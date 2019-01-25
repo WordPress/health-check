@@ -3,7 +3,8 @@ jQuery( document ).ready(function( $ ) {
 	function testDefaultTheme() {
 		var $parent = $( '.individual-loopback-test-status', '#test-single-no-theme' ),
 			data = {
-				action: 'health-check-loopback-default-theme'
+				'action': 'health-check-loopback-default-theme',
+				'_wpnonce': HealthCheck.nonce.loopback_default_theme
 			};
 
 		$.post(
@@ -33,8 +34,9 @@ jQuery( document ).ready(function( $ ) {
 
 		$testLine = $testLines.first();
 		data = {
-			action: 'health-check-loopback-individual-plugins',
-			plugin: $testLine.data( 'test-plugin' )
+			'action': 'health-check-loopback-individual-plugins',
+			'plugin': $testLine.data( 'test-plugin' ),
+			'_wpnonce': HealthCheck.nonce.loopback_individual_plugins
 		};
 
 		$parentField = $( '.individual-loopback-test-status', $testLine );
@@ -61,7 +63,8 @@ jQuery( document ).ready(function( $ ) {
 		var $trigger = $( this ),
 			$parent = $( this ).closest( 'td' ),
 			data = {
-				action: 'health-check-loopback-no-plugins'
+				'action': 'health-check-loopback-no-plugins',
+				'_wpnonce': HealthCheck.nonce.loopback_no_plugins
 			};
 
 		e.preventDefault();

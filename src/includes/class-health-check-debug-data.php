@@ -5,13 +5,18 @@
  * @package Health Check
  */
 
+// Make sure the file is not directly accessible.
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'We\'re sorry, but you can not directly access this file.' );
+}
+
 /**
  * Class Health_Check_Debug_Data
  */
 class Health_Check_Debug_Data {
 
 	/**
-	 * Calls all core funtions to check for updates
+	 * Calls all core functions to check for updates
 	 *
 	 * @uses wp_version_check()
 	 * @uses wp_update_plugins()
@@ -384,7 +389,7 @@ class Health_Check_Debug_Data {
 			'value' => ( ! function_exists( 'phpversion' ) ? __( 'Unable to determine PHP version', 'health-check' ) : sprintf(
 				'%s %s',
 				phpversion(),
-				( 64 === PHP_INT_SIZE * 8 ? __( '(Supports 64bit values)', 'health-check' ) : '' )
+				( 64 === PHP_INT_SIZE * 8 ? __( '(Supports 64bit values)', 'health-check' ) : __( '(Does not support 64bit values)', 'health-check' ) )
 			)
 			),
 		);
@@ -756,6 +761,58 @@ class Health_Check_Debug_Data {
 		}
 
 		return $info;
+	}
+
+	/**
+	 * Print the formatted variation of the information gathered for debugging, in a manner
+	 * suitable for a text area that can be instantly copied to a forum or support ticket.
+	 *
+	 * @param array $info_array
+	 *
+	 * @return void
+	 */
+	public static function textarea_format( $info_array ) {
+		echo "`\n";
+
+		foreach ( $info_array as $section => $details ) {
+			// Skip this section if there are no fields, or the section has been declared as private.
+			if ( empty( $details['fields'] ) || ( isset( $details['private'] ) && $details['private'] ) ) {
+				continue;
+			}
+
+			printf(
+				"### %s%s ###\n\n",
+				$details['label'],
+				( isset( $details['show_count'] ) && $details['show_count'] ? sprintf( ' (%d)', count( $details['fields'] ) ) : '' )
+			);
+
+			foreach ( $details['fields'] as $field ) {
+				if ( isset( $field['private'] ) && true === $field['private'] ) {
+					continue;
+				}
+
+				$values = $field['value'];
+				if ( is_array( $field['value'] ) ) {
+					$values = '';
+
+					foreach ( $field['value'] as $name => $value ) {
+						$values .= sprintf(
+							"\n\t%s: %s",
+							$name,
+							$value
+						);
+					}
+				}
+
+				printf(
+					"%s: %s\n",
+					$field['label'],
+					$values
+				);
+			}
+			echo "\n";
+		}
+		echo '`';
 	}
 
 	public static function get_installation_size() {

@@ -51,7 +51,7 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 			);
 
 			/**
-			 * Result should be <= 100 miliseconds.
+			 * Result should be <= 100 milliseconds.
 			 */
 			$this->assertLessThanOrEqual(
 				100,
@@ -67,6 +67,7 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 		// Certain tests are known to be prolonged, but will appear short in testing
 		$skip_testing = array(
 			'loopback_requests', // fail early, as there's no loopback to hit on a unit test.
+			'dotorg_communication', // Time needed to run this test heavily depends on host loads.
 		);
 
 		foreach ( $tests as $test ) {

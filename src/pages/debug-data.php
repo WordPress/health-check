@@ -38,100 +38,18 @@ $info = Health_Check_Debug_Data::debug_data();
 			}
 			?>
 			<div id="system-information-english-copy-wrapper" style="display: none;">
-					<textarea id="system-information-english-copy-field" class="widefat" rows="10">`
-						<?php
-						foreach ( $english_info as $section => $details ) {
-							// Skip this section if there are no fields, or the section has been declared as private.
-							if ( empty( $details['fields'] ) || ( isset( $details['private'] ) && $details['private'] ) ) {
-								continue;
-							}
+				<textarea id="system-information-english-copy-field" class="widefat" rows="10"><?php Health_Check_Debug_Data::textarea_format( $english_info ); ?></textarea>
+				<p>
+					<?php esc_html_e( 'Some information may be filtered out from the list you are about to copy, this is information that may be considered private, and is not meant to be shared in a public forum.', 'health-check' ); ?>
+					<br>
+					<button type="button" class="button button-primary health-check-copy-field"><?php esc_html_e( 'Mark field for copying', 'health-check' ); ?></button>
+				</p>
+			</div>
 
-							printf(
-								"### %s%s ###\n\n",
-								$details['label'],
-								( isset( $details['show_count'] ) && $details['show_count'] ? sprintf( ' (%d)', count( $details['fields'] ) ) : '' )
-							);
-
-							foreach ( $details['fields'] as $field ) {
-								if ( isset( $field['private'] ) && true === $field['private'] ) {
-									continue;
-								}
-
-								$values = $field['value'];
-								if ( is_array( $field['value'] ) ) {
-									$values = '';
-
-									foreach ( $field['value'] as $name => $value ) {
-										$values .= sprintf(
-											"\n\t%s: %s",
-											$name,
-											$value
-										);
-									}
-								}
-
-								printf(
-									"%s: %s\n",
-									$field['label'],
-									$values
-								);
-							}
-							echo "\n";
-						}
-						?>
-`</textarea>
-			<p>
-				<?php esc_html_e( 'Some information may be filtered out from the list you are about to copy, this is information that may be considered private, and is not meant to be shared in a public forum.', 'health-check' ); ?>
-				<br>
-				<button type="button" class="button button-primary health-check-copy-field"><?php esc_html_e( 'Mark field for copying', 'health-check' ); ?></button>
-			</p>
-		</div>
-
-	<?php endif; ?>
+		<?php endif; ?>
 
 		<div id="system-information-copy-wrapper" style="display: none;">
-			<textarea id="system-information-copy-field" class="widefat" rows="10">`
-				<?php
-				foreach ( $info as $section => $details ) {
-					// Skip this section if there are no fields, or the section has been declared as private.
-					if ( empty( $details['fields'] ) || ( isset( $details['private'] ) && $details['private'] ) ) {
-						continue;
-					}
-
-					printf(
-						"### %s%s ###\n\n",
-						$details['label'],
-						( isset( $details['show_count'] ) && $details['show_count'] ? sprintf( ' (%d)', count( $details['fields'] ) ) : '' )
-					);
-
-					foreach ( $details['fields'] as $field ) {
-						if ( isset( $field['private'] ) && true === $field['private'] ) {
-							continue;
-						}
-
-						$values = $field['value'];
-						if ( is_array( $field['value'] ) ) {
-							$values = '';
-
-							foreach ( $field['value'] as $name => $value ) {
-								$values .= sprintf(
-									"\n\t%s: %s",
-									$name,
-									$value
-								);
-							}
-						}
-
-						printf(
-							"%s: %s\n",
-							$field['label'],
-							$values
-						);
-					}
-					echo "\n";
-				}
-				?>
-`</textarea>
+			<textarea id="system-information-copy-field" class="widefat" rows="10"><?php Health_Check_Debug_Data::textarea_format( $info ); ?></textarea>
 			<p>
 				<?php esc_html_e( 'Some information may be filtered out from the list you are about to copy, this is information that may be considered private, and is not meant to be shared in a public forum.', 'health-check' ); ?>
 				<br>

@@ -1,8 +1,9 @@
-/* global ajaxurl */
+/* global ajaxurl, HealthCheck */
 jQuery( document ).ready(function( $ ) {
 	$( '#health-check-file-integrity' ).submit( function( e ) {
 		var data = {
-			'action': 'health-check-files-integrity-check'
+			'action': 'health-check-files-integrity-check',
+			'_wpnonce': HealthCheck.nonce.files_integrity_check
 		};
 
 		e.preventDefault();
@@ -32,7 +33,8 @@ jQuery( document ).ready(function( $ ) {
 
 		data = {
 			'action': 'health-check-view-file-diff',
-			'file': file
+			'file': file,
+			'_wpnonce': HealthCheck.nonce.view_file_diff
 		};
 
 		$.post(

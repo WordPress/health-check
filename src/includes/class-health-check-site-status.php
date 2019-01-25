@@ -1,5 +1,10 @@
 <?php
 
+// Make sure the file is not directly accessible.
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'We\'re sorry, but you can not directly access this file.' );
+}
+
 class Health_Check_Site_Status {
 	private $php_min_version_check;
 	private $php_supported_version_check;
@@ -65,6 +70,12 @@ class Health_Check_Site_Status {
 	}
 
 	public function site_status() {
+		check_ajax_referer( 'health-check-site-status' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error();
+		}
+
 		$function = sprintf(
 			'test_%s',
 			$_POST['feature']
@@ -255,7 +266,7 @@ class Health_Check_Site_Status {
 		$themes_need_updates = 0;
 		$themes_inactive     = 0;
 
-		// This value is changed dduring processing to determine how many themes are considered a reasonable amount.
+		// This value is changed during processing to determine how many themes are considered a reasonable amount.
 		$allowed_theme_count = 1;
 
 		$has_default_theme  = false;
@@ -450,7 +461,6 @@ class Health_Check_Site_Status {
 		if ( null !== $extension && ! extension_loaded( $extension ) ) {
 			$available = false;
 		}
-
 		if ( null !== $function && ! function_exists( $function ) ) {
 			$available = false;
 		}
@@ -867,11 +877,53 @@ class Health_Check_Site_Status {
 		}
 	}
 
+	public function test_http_requests() {
+		$blocked = false;
+		$hosts   = array();
+
+		if ( defined( 'WP_HTTP_BLOCK_EXTERNAL' ) ) {
+			$blocked = true;
+		}
+
+		if ( defined( 'WP_ACCESSIBLE_HOSTS' ) ) {
+			$hosts = explode( ',', WP_ACCESSIBLE_HOSTS );
+		}
+
+		if ( $blocked && 0 === sizeof( $hosts ) ) {
+			printf(
+				'<span class="%s"></span> %s',
+				esc_attr( 'fail' ),
+				esc_html__( 'HTTP requests have been blocked by the WP_HTTP_BLOCK_EXTERNAL constant, with no allowed hosts.', 'health-check' )
+			);
+		}
+
+		if ( $blocked && 0 < sizeof( $hosts ) ) {
+			printf(
+				'<span class="%s"></span> %s',
+				esc_attr( 'warning' ),
+				sprintf(
+					/* translators: %s: List of hostnames whitelisted. */
+					esc_html__( 'HTTP requests have been blocked by the WP_HTTP_BLOCK_EXTERNAL constant, with some hosts whitelisted: %s.', 'health-check' ),
+					implode( ',', $hosts )
+				)
+			);
+		}
+
+		if ( ! $blocked ) {
+			printf(
+				'<span class="%s"></span> %s',
+				esc_attr( 'good' ),
+				esc_html__( 'HTTP requests should be working as expected.', 'health-check' )
+			);
+		}
+	}
+
 	public function test_rest_availability() {
 		$cookies = wp_unslash( $_COOKIE );
 		$timeout = 10;
 		$headers = array(
 			'Cache-Control' => 'no-cache',
+			'X-WP-Nonce'    => wp_create_nonce( 'wp_rest' ),
 		);
 
 		// Include Basic auth in loopback requests.
@@ -879,11 +931,11 @@ class Health_Check_Site_Status {
 			$headers['Authorization'] = 'Basic ' . base64_encode( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) . ':' . wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
 		}
 
-		$url = rest_url( 'wp/v2/posts' );
+		$url = rest_url( 'wp/v2/types/post' );
 
 		// We only need the first post to ensure this works, to make it low impact.
 		$url = add_query_arg( array(
-			'per_page' => 1,
+			'context' => 'edit',
 		), $url );
 
 		$r = wp_remote_get( $url, compact( 'cookies', 'headers', 'timeout' ) );
@@ -913,11 +965,19 @@ class Health_Check_Site_Status {
 				)
 			);
 		} else {
+			$json = json_decode( wp_remote_retrieve_body( $r ), true );
 
-			printf(
-				'<span class="good"></span> %s',
-				__( 'The REST API is available.', 'health-check' )
-			);
+			if ( false !== $json && ! isset( $json['capabilities'] ) ) {
+				printf(
+					'<span class="warning"></span> %s',
+					esc_html__( 'The REST API did not process the \'context\' query parameter correctly.', 'health-check' )
+				);
+			} else {
+				printf(
+					'<span class="good"></span> %s',
+					__( 'The REST API is available.', 'health-check' )
+				);
+			}
 		}
 	}
 
@@ -976,6 +1036,10 @@ class Health_Check_Site_Status {
 				array(
 					'label' => __( 'Plugin and Theme Updates', 'health-check' ),
 					'test'  => 'extension_updates',
+				),
+				array(
+					'label' => __( 'HTTP Requests', 'health-check' ),
+					'test'  => 'http_requests',
 				),
 			),
 			'async'  => array(

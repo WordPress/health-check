@@ -2,12 +2,15 @@
 /*
 	Plugin Name: Health Check Troubleshooting Mode
 	Description: Conditionally disabled themes or plugins on your site for a given session, used to rule out conflicts during troubleshooting.
-	Version: 1.5.0
+	Version: 1.5.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
+
+// Set the MU plugin version.
+define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.5.1' );
 
 class Health_Check_Troubleshooting_MU {
 	private $disable_hash    = null;
@@ -29,6 +32,7 @@ class Health_Check_Troubleshooting_MU {
 	);
 
 	private $default_themes = array(
+		'twentynineteen',
 		'twentyseventeen',
 		'twentysixteen',
 		'twentyfifteen',
@@ -66,11 +70,12 @@ class Health_Check_Troubleshooting_MU {
 		add_action( 'plugin_action_links', array( $this, 'plugin_actions' ), 50, 4 );
 
 		add_action( 'admin_notices', array( $this, 'display_dashboard_widget' ) );
-		add_action( 'admin_head', array( $this, 'dashboard_widget_styles' ) );
 		add_action( 'admin_footer', array( $this, 'dashboard_widget_scripts' ) );
 
 		add_action( 'wp_logout', array( $this, 'health_check_troubleshooter_mode_logout' ) );
 		add_action( 'init', array( $this, 'health_check_troubleshoot_get_captures' ) );
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 
 		/*
 		 * Plugin activations can be forced by other tools in things like themes, so let's
@@ -94,6 +99,19 @@ class Health_Check_Troubleshooting_MU {
 		$this->default_theme   = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
 		$this->active_plugins  = $this->get_unfiltered_plugin_list();
 		$this->current_theme   = get_option( 'health-check-current-theme', false );
+	}
+
+	/**
+	 * Enqueue styles used by the MU plugin if applicable.
+	 *
+	 * @return void
+	 */
+	public function enqueue_styles() {
+		if ( ! $this->is_troubleshooting() || ! is_admin() ) {
+			return;
+		}
+
+		wp_enqueue_style( 'health-check-troubleshooting-mode', plugins_url( '/health-check/assets/css/health-check-troubleshooting-mode.css' ), array(), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION );
 	}
 
 	/**
@@ -260,7 +278,7 @@ class Health_Check_Troubleshooting_MU {
 	public function is_troubleshooting() {
 		// Check if a session cookie to disable plugins has been set.
 		if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
-			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'];
+			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'] . md5( $_SERVER['REMOTE_ADDR'] );
 		}
 
 		// If the disable hash isn't set, no need to interact with things.
@@ -530,7 +548,7 @@ class Health_Check_Troubleshooting_MU {
 					sprintf(
 						// translators: %s: The plugin slug that was disabled.
 						__( 'When disabling the plugin, %s, a site failure occurred. Because of this the change was automatically reverted.', 'health-check' ),
-						$_GET['health-check-troubleshoot-enable-plugin']
+						$_GET['health-check-troubleshoot-disable-plugin']
 					),
 					'warning'
 				);
@@ -745,73 +763,6 @@ class Health_Check_Troubleshooting_MU {
 		return true;
 	}
 
-	public function dashboard_widget_styles() {
-		if ( ! $this->is_troubleshooting() ) {
-			return;
-		}
-
-		// Check that it's the dashboard page, we don't want to disturb any other pages.
-		$screen = get_current_screen();
-		if ( 'dashboard' !== $screen->id && 'plugins' !== $screen->id ) {
-			return;
-		}
-		?>
-<style type="text/css">
-	@media all and (min-width: 783px) {
-		#health-check-dashboard-widget {
-			margin-top: 3rem;
-		}
-	}
-
-	#health-check-dashboard-widget .welcome-panel-content {
-		max-width: initial;
-	}
-
-	#health-check-dashboard-widget .notices .no-notices p {
-		color: #bfc3c7;
-		font-size: 1.2rem;
-	}
-	#health-check-dashboard-widget .notices .notice {
-		margin-left: 0;
-	}
-	#health-check-dashboard-widget .notices .dismiss-notices {
-		float: right;
-		margin-right: 1rem;
-	}
-
-	#health-check-dashboard-widget .disable-troubleshooting-mode {
-		margin-bottom: 1rem;
-	}
-	@media all and (min-width: 960px) {
-		#health-check-dashboard-widget .disable-troubleshooting-mode {
-			position: absolute;
-			bottom: 1rem;
-			right: 1rem;
-		}
-	}
-
-	#health-check-dashboard-widget .toggle-visibility {
-		display: none;
-	}
-	#health-check-dashboard-widget .toggle-visibility.visible {
-		display: block;
-	}
-
-	#health-check-dashboard-widget .welcome-panel-column-container {
-		position: initial;
-	}
-
-	#health-check-dashboard-widget .welcome-panel-column.is-standalone-button {
-		width: 100%;
-		text-align: right;
-	}
-	#health-check-dashboard-widget .welcome-panel-column.is-standalone-button .disable-troubleshooting-mode {
-		position: relative;
-	}
-</style>
-		<?php
-	}
-
 	public function dashboard_widget_scripts() {
 		if ( ! $this->is_troubleshooting() ) {
 			return;
@@ -825,13 +776,13 @@ class Health_Check_Troubleshooting_MU {
 		?>
 <script type="text/javascript">
 	jQuery( document ).ready(function( $ ) {
-		$( '.health-check-toggle-visibility' ).click(function( e ) {
-			var $elements = $( '.toggle-visibility', $( '#' + $ ( this ).data( 'element' ) ) );
+		$( '.health-check-toggle-visibility' ).click(function() {
+			var $elements = $( '.toggle-visibility', $( '#' + $ ( this ).data( 'element' ) ).closest( '.welcome-panel-column' ) );
 
 			if ( $elements.is( ':visible' ) ) {
-				$elements.attr( 'aria-hidden', 'true' ).toggle();
-			} else {
 				$elements.attr( 'aria-hidden', 'false' ).toggle();
+			} else {
+				$elements.attr( 'aria-hidden', 'true' ).toggle();
 			}
 		});
 	});
@@ -860,11 +811,11 @@ class Health_Check_Troubleshooting_MU {
 					</h2>
 
 					<p class="about-description">
-						<?php esc_html_e( 'Your site is currently in Troubleshooting Mode. This has no effect on your site visitors, they will continue to view your site as usual, but for you it will look as if you had just installed WordPress for the first time.', 'health-check' ); ?>
+						<?php _e( 'Your site is currently in Troubleshooting Mode. This has <strong>no effect on your site visitors</strong>, they will continue to view your site as usual, but for you it will look as if you had just installed WordPress for the first time.', 'health-check' ); ?>
 					</p>
 
 					<p class="about-description">
-						<?php esc_html_e( 'Here you can enable individual plugins or themes, helping you to find out what might be causing strange behaviors on your site. Do note that any changes you make to settings will be kept when you disable Troubleshooting Mode.', 'health-check' ); ?>
+						<?php _e( 'Here you can enable individual plugins or themes, helping you to find out what might be causing strange behaviors on your site. Do note that <strong>any changes you make to settings will be kept</strong> when you disable Troubleshooting Mode.', 'health-check' ); ?>
 					</p>
 
 					<div class="notices">
@@ -984,11 +935,11 @@ class Health_Check_Troubleshooting_MU {
 								<?php if ( count( $this->active_plugins ) > 5 ) : ?>
 								<p>
 									<button type="button" class="button button-link health-check-toggle-visibility toggle-visibility visible" aria-hidden="false" data-element="health-check-plugins">
-										<?php esc_html_e( 'Show all plugins', 'health-check' ); ?>
+										<?php esc_html_e( 'Show all plugins', 'health-check' ); ?> <span class="icon"></span>
 									</button>
 
 									<button type="button" class="button button-link health-check-toggle-visibility toggle-visibility" aria-hidden="true" data-element="health-check-plugins">
-										<?php esc_html_e( 'Show fewer plugins', 'health-check' ); ?>
+										<?php esc_html_e( 'Show fewer plugins', 'health-check' ); ?> <span class="icon icon-up"></span>
 									</button>
 								</p>
 								<?php endif; ?>
@@ -1053,11 +1004,11 @@ class Health_Check_Troubleshooting_MU {
 								<?php if ( count( $themes ) > 5 ) : ?>
 									<p>
 										<button type="button" class="button button-link health-check-toggle-visibility toggle-visibility visible" aria-hidden="false" data-element="health-check-themes">
-											<?php esc_html_e( 'Show all themes', 'health-check' ); ?>
+											<?php esc_html_e( 'Show all themes', 'health-check' ); ?> <span class="icon"></span>
 										</button>
 
-										<button type="button" class="button button-link health-check-toggle-visibility toggle-visibility" aria-hidden="true">
-											<?php esc_html_e( 'Show fewer themes', 'health-check' ); ?>
+										<button type="button" class="button button-link health-check-toggle-visibility toggle-visibility" aria-hidden="true"  data-element="health-check-themes">
+											<?php esc_html_e( 'Show fewer themes', 'health-check' ); ?> <span class="icon icon-up"></span>
 										</button>
 									</p>
 								<?php endif; ?>

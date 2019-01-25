@@ -5,6 +5,11 @@
  * @package Health Check
  */
 
+// Make sure the file is not directly accessible.
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'We\'re sorry, but you can not directly access this file.' );
+}
+
 /**
  * Class HealthCheck
  */
@@ -47,7 +52,7 @@ class Health_Check {
 
 		add_filter( 'plugin_row_meta', array( $this, 'settings_link' ), 10, 2 );
 
-		add_filter( 'plugin_action_links', array( $this, 'troubeshoot_plugin_action' ), 20, 4 );
+		add_filter( 'plugin_action_links', array( $this, 'troubleshoot_plugin_action' ), 20, 4 );
 
 		add_action( 'admin_footer', array( $this, 'show_backup_warning' ) );
 
@@ -103,6 +108,11 @@ class Health_Check {
 			return;
 		}
 
+		// Don't enable troubleshooting if nonces are missing or do not match.
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'health-check-enable-troubleshooting' ) ) {
+			return;
+		}
+
 		Health_Check_Troubleshoot::initiate_troubleshooting_mode();
 	}
 
@@ -127,6 +137,11 @@ class Health_Check {
 	 */
 	public function start_troubleshoot_single_plugin_mode() {
 		if ( ! isset( $_GET['health-check-troubleshoot-plugin'] ) || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		// Don't enable troubleshooting for an individual plugin if the nonce is missing or invalid.
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'health-check-troubleshoot-plugin-' . $_GET['health-check-troubleshoot-plugin'] ) ) {
 			return;
 		}
 
@@ -195,16 +210,13 @@ class Health_Check {
 	 * @return void
 	 */
 	public function enqueues() {
-		// Don't enqueue anything unless we're on the health check page
-		if ( ! isset( $_GET['page'] ) || 'health-check' !== $_GET['page'] ) {
-
-			/*
-			 * Special consideration, if warnings are not dismissed we need to display
-			 * our modal, and thus require our styles, in other locations, before bailing.
-			 */
-			if ( ! Health_Check_Troubleshoot::has_seen_warning() ) {
-				wp_enqueue_style( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/css/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
-			}
+		/*
+		 * Don't enqueue anything unless we're on the health check page
+		 *
+		 * Special consideration, if warnings are not dismissed we need to display
+		 * our modal, and thus require our styles, in other locations, before bailing.
+		 */
+		if ( ( ! isset( $_GET['page'] ) || 'health-check' !== $_GET['page'] ) && Health_Check_Troubleshoot::has_seen_warning() ) {
 			return;
 		}
 
@@ -220,6 +232,16 @@ class Health_Check {
 			),
 			'warning' => array(
 				'seen_backup' => Health_Check_Troubleshoot::has_seen_warning(),
+			),
+			'nonce'   => array(
+				'loopback_no_plugins'         => wp_create_nonce( 'health-check-loopback-no-plugins' ),
+				'loopback_individual_plugins' => wp_create_nonce( 'health-check-loopback-individual-plugins' ),
+				'loopback_default_theme'      => wp_create_nonce( 'health-check-loopback-default-theme' ),
+				'files_integrity_check'       => wp_create_nonce( 'health-check-files-integrity-check' ),
+				'view_file_diff'              => wp_create_nonce( 'health-check-view-file-diff' ),
+				'mail_check'                  => wp_create_nonce( 'health-check-mail-check' ),
+				'confirm_warning'             => wp_create_nonce( 'health-check-confirm-warning' ),
+				'site_status'                 => wp_create_nonce( 'health-check-site-status' ),
 			),
 		) );
 	}
@@ -266,7 +288,7 @@ class Health_Check {
 	 *
 	 * @return array
 	 */
-	public function troubeshoot_plugin_action( $actions, $plugin_file, $plugin_data, $context ) {
+	public function troubleshoot_plugin_action( $actions, $plugin_file, $plugin_data, $context ) {
 		// Don't add anything if this is a Must-Use plugin, we can't touch those.
 		if ( 'mustuse' === $context ) {
 			return $actions;
@@ -282,10 +304,14 @@ class Health_Check {
 			$plugin_data['slug'] = $plugin_file;
 		}
 
+		// If a slug isn't present, use the plugin's name
+		$plugin_name = ( isset( $plugin_data['slug'] ) ? $plugin_data['slug'] : sanitize_title( $plugin_data['Name'] ) );
+
 		$actions['troubleshoot'] = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( add_query_arg( array(
-				'health-check-troubleshoot-plugin' => ( isset( $plugin_data['slug'] ) ? $plugin_data['slug'] : sanitize_title( $plugin_data['Name'] ) ),
+				'health-check-troubleshoot-plugin' => $plugin_name,
+				'_wpnonce'                         => wp_create_nonce( 'health-check-troubleshoot-plugin-' . $plugin_name ),
 			), admin_url( 'plugins.php' ) ) ),
 			esc_html__( 'Troubleshoot', 'health-check' )
 		);
@@ -427,13 +453,13 @@ class Health_Check {
 		);
 
 		$url   = wp_nonce_url( add_query_arg( $args, admin_url() ) );
-		$creds = request_filesystem_credentials( $url, '', false, WP_CONTENT_DIR, array( 'health-check-troubleshoot-mode', 'action' ) );
+		$creds = request_filesystem_credentials( $url, '', false, WP_CONTENT_DIR, array( 'health-check-troubleshoot-mode', 'action', '_wpnonce' ) );
 		if ( false === $creds ) {
 			return false;
 		}
 
 		if ( ! WP_Filesystem( $creds ) ) {
-			request_filesystem_credentials( $url, '', true, WPMU_PLUGIN_DIR, array( 'health-check-troubleshoot-mode', 'action' ) );
+			request_filesystem_credentials( $url, '', true, WPMU_PLUGIN_DIR, array( 'health-check-troubleshoot-mode', 'action', '_wpnonce' ) );
 			return false;
 		}
 
