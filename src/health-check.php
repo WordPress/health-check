@@ -14,7 +14,7 @@
  * Text Domain: health-check
  */
 
-// Check that the file is nto accessed directly.
+// Check that the file is not accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
