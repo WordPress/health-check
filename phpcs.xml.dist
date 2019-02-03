@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Coding Standards">
+<ruleset name="Coding standards for Health Check plugin">
     <description>Apply WordPress Coding Standards to all HelpHub files.</description>
-
-    <config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
 
     <rule ref="WordPress-Core"/>
 
