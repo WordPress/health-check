@@ -223,28 +223,6 @@ class Health_Check {
 
 		wp_enqueue_script( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/javascript/health-check.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION, true );
 
-<<<<<<< HEAD
-		wp_localize_script( 'health-check', 'HealthCheck', array(
-			'string'  => array(
-				'please_wait'   => esc_html__( 'Please wait...', 'health-check' ),
-				'copied'        => esc_html__( 'Copied', 'health-check' ),
-				'running_tests' => esc_html__( 'Currently being tested...', 'health-check' ),
-			),
-			'warning' => array(
-				'seen_backup' => Health_Check_Troubleshoot::has_seen_warning(),
-			),
-			'nonce'   => array(
-				'loopback_no_plugins'         => wp_create_nonce( 'health-check-loopback-no-plugins' ),
-				'loopback_individual_plugins' => wp_create_nonce( 'health-check-loopback-individual-plugins' ),
-				'loopback_default_theme'      => wp_create_nonce( 'health-check-loopback-default-theme' ),
-				'files_integrity_check'       => wp_create_nonce( 'health-check-files-integrity-check' ),
-				'view_file_diff'              => wp_create_nonce( 'health-check-view-file-diff' ),
-				'mail_check'                  => wp_create_nonce( 'health-check-mail-check' ),
-				'confirm_warning'             => wp_create_nonce( 'health-check-confirm-warning' ),
-				'site_status'                 => wp_create_nonce( 'health-check-site-status' ),
-			),
-		) );
-=======
 		wp_localize_script(
 			'health-check',
 			'HealthCheck',
@@ -259,7 +237,6 @@ class Health_Check {
 				),
 			)
 		);
->>>>>>> e14ed537f9d139c36842a9cbf690de45f8d1dc18
 	}
 
 	/**
@@ -325,12 +302,6 @@ class Health_Check {
 
 		$actions['troubleshoot'] = sprintf(
 			'<a href="%s">%s</a>',
-<<<<<<< HEAD
-			esc_url( add_query_arg( array(
-				'health-check-troubleshoot-plugin' => $plugin_name,
-				'_wpnonce'                         => wp_create_nonce( 'health-check-troubleshoot-plugin-' . $plugin_name ),
-			), admin_url( 'plugins.php' ) ) ),
-=======
 			esc_url(
 				add_query_arg(
 					array(
@@ -339,7 +310,6 @@ class Health_Check {
 					admin_url( 'plugins.php' )
 				)
 			),
->>>>>>> e14ed537f9d139c36842a9cbf690de45f8d1dc18
 			esc_html__( 'Troubleshoot', 'health-check' )
 		);
 
