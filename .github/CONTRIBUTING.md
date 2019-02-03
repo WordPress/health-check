@@ -1,6 +1,6 @@
 # Contributing
 
-Contributions can be made either through code or ticket input, both are equally valuable and 
+Contributions can be made either through code or ticket input, both are equally valuable and
 help move the project forward.
 
 It's worth noting that we do not follow traditional semantic versioning, but instead follow the
@@ -27,7 +27,7 @@ developers on the benefits of the plugin and how to use it.
 
 ## Contributing with code
 
-When contributing through code, please start by forking the repository, and then making a clone 
+When contributing through code, please start by forking the repository, and then making a clone
 for your self to work off.
 
 You do not need a local development environment set up to make code changes, although it is useful
@@ -38,16 +38,16 @@ The project has 4 primary directories:
 - `assets`, which holds JavaScript and SASS files.
 - `bin`, which holds a shellscript to install the framework for running unit tests.
 - `src`, which contains general source files for the project.
-- `tests`, where unit tests are created. 
+- `tests`, where unit tests are created.
 
-Please do not change version numbers in when providing code changes, these are bumped by the project 
+Please do not change version numbers in when providing code changes, these are bumped by the project
 maintainers when a new version is released, and any changes outside of this may lead to confusion.
 
 
 ### Setting up a local environment
 
-If you wish to set up a local environment for working with the project, start off by installing 
-[node](https://nodejs.org), [npm](https://www.npmjs.com) (Node Package Manager) 
+If you wish to set up a local environment for working with the project, start off by installing
+[node](https://nodejs.org), [npm](https://www.npmjs.com) (Node Package Manager)
 and [composer](https://getcomposer.org).
 
 Once these are installed, you will want to open the command line in the project directory and
@@ -56,12 +56,12 @@ execute the following commands:
 - `npm install` This will install node modules that we use, as defined in the `package.json` file.
 
 #### Docker setup
- To make it easier to test your code on the go, a [Docker](https://www.docker.com/) configuration is prepared for you.
- Just run `docker-compose up` and wait for things to finish setting up. Once setup is complete, the following tools are available:
- - `http://localhost` the main WordPress site install
- - `http://localhost:8080` Adminer, a lightweight MSQL editor
- - `http://localhost:8025` MailHog, captures emails so you don't need ot worry about spamming inboxes during testing.
- 
+To make it easier to test your code on the go, a [Docker](https://www.docker.com/) configuration is prepared for you.
+Just run `docker-compose up` and wait for things to finish setting up. Once setup is complete, the following tools are available:
+- `http://localhost` the main WordPress site install
+- `http://localhost:8080` Adminer, a lightweight MSQL editor
+- `http://localhost:8025` MailHog, captures emails so you don't need ot worry about spamming inboxes during testing.
+
 The Health Check plugin will also be automatically added to the test site, although deactivated initially. Running the `grunt watch` task during development also guarantees your test site is always showing your latest changes.
 
 ### Submitting Pull Requests

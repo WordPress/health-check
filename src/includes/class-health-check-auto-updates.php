@@ -151,9 +151,12 @@ class Health_Check_Auto_Updates {
 			$headers['Authorization'] = 'Basic ' . base64_encode( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) . ':' . wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
 		}
 
-		$url = add_query_arg( array(
-			'health-check-test-wp_version_check' => true,
-		), admin_url() );
+		$url = add_query_arg(
+			array(
+				'health-check-test-wp_version_check' => true,
+			),
+			admin_url()
+		);
 
 		$test = wp_remote_get( $url, compact( 'cookies', 'headers', 'timeout' ) );
 

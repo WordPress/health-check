@@ -202,13 +202,15 @@ class Health_Check_Site_Status {
 			printf(
 				'<li><span class="error"></span> %s',
 				sprintf(
-					// translators: %d: The amount of outdated plugins.
-					esc_html( _n(
-						'Your site has %d plugin waiting to be updated.',
-						'Your site has %d plugins waiting to be updated.',
-						$plugins_needs_update,
-						'health-check'
-					) ),
+					esc_html(
+						// translators: %d: The amount of outdated plugins.
+						_n(
+							'Your site has %d plugin waiting to be updated.',
+							'Your site has %d plugins waiting to be updated.',
+							$plugins_needs_update,
+							'health-check'
+						)
+					),
 					$plugins_needs_update
 				)
 			);
@@ -216,13 +218,15 @@ class Health_Check_Site_Status {
 			printf(
 				'<li><span class="good"></span> %s',
 				sprintf(
-					// translators: %d: The amount of plugins.
-					esc_html( _n(
-						'Your site has %d active plugin, and it is up to date.',
-						'Your site has %d active plugins, and they are all up to date.',
-						$plugins_active,
-						'health-check'
-					) ),
+					esc_html(
+						// translators: %d: The amount of plugins.
+						_n(
+							'Your site has %d active plugin, and it is up to date.',
+							'Your site has %d active plugins, and they are all up to date.',
+							$plugins_active,
+							'health-check'
+						)
+					),
 					$plugins_active
 				)
 			);
@@ -233,13 +237,15 @@ class Health_Check_Site_Status {
 			printf(
 				'<li><span class="warning"></span> %s',
 				sprintf(
-					// translators: %d: The amount of inactive plugins.
-					esc_html( _n(
-						'Your site has %d inactive plugin, it is recommended to remove any unused plugins to enhance your site security.',
-						'Your site has %d inactive plugins, it is recommended to remove any unused plugins to enhance your site security.',
-						$unused_plugins,
-						'health-check'
-					) ),
+					esc_html(
+						// translators: %d: The amount of inactive plugins.
+						_n(
+							'Your site has %d inactive plugin, it is recommended to remove any unused plugins to enhance your site security.',
+							'Your site has %d inactive plugins, it is recommended to remove any unused plugins to enhance your site security.',
+							$unused_plugins,
+							'health-check'
+						)
+					),
 					$unused_plugins
 				)
 			);
@@ -303,13 +309,15 @@ class Health_Check_Site_Status {
 			printf(
 				'<li><span class="error"></span> %s',
 				sprintf(
-					// translators: %d: The amount of outdated themes.
-					esc_html( _n(
-						'Your site has %d theme waiting to be updated.',
-						'Your site has %d themes waiting to be updated.',
-						$themes_need_updates,
-						'health-check'
-					) ),
+					esc_html(
+						// translators: %d: The amount of outdated themes.
+						_n(
+							'Your site has %d theme waiting to be updated.',
+							'Your site has %d themes waiting to be updated.',
+							$themes_need_updates,
+							'health-check'
+						)
+					),
 					$themes_need_updates
 				)
 			);
@@ -317,13 +325,15 @@ class Health_Check_Site_Status {
 			printf(
 				'<li><span class="good"></span> %s',
 				sprintf(
-					// translators: %d: The amount of themes.
-					esc_html( _n(
-						'Your site has %d installed theme, and it is up to date.',
-						'Your site has %d installed themes, and they are all up to date.',
-						$themes_total,
-						'health-check'
-					) ),
+					esc_html(
+						// translators: %d: The amount of themes.
+						_n(
+							'Your site has %d installed theme, and it is up to date.',
+							'Your site has %d installed themes, and they are all up to date.',
+							$themes_total,
+							'health-check'
+						)
+					),
 					$themes_total
 				)
 			);
@@ -336,13 +346,15 @@ class Health_Check_Site_Status {
 				printf(
 					'<li><span class="warning"></span> %s',
 					sprintf(
-						// translators: %1$d: The amount of inactive themes. %2$s: The default theme for WordPress. %3$s: The currently active theme. %4$s: The active themes parent theme.
-						esc_html( _n(
-							'Your site has %1$d inactive theme. To enhance your sites security it is recommended to remove any unused themes. You should keep %2$s, the default WordPress theme, %3$s, your current theme and %4$s, the parent theme.',
-							'Your site has %1$d inactive themes. To enhance your sites security it is recommended to remove any unused themes. You should keep %2$s, the default WordPress theme, %3$s, your current theme and %4$s, the parent theme.',
-							$themes_inactive,
-							'health-check'
-						) ),
+						esc_html(
+							// translators: %1$d: The amount of inactive themes. %2$s: The default theme for WordPress. %3$s: The currently active theme. %4$s: The active themes parent theme.
+							_n(
+								'Your site has %1$d inactive theme. To enhance your sites security it is recommended to remove any unused themes. You should keep %2$s, the default WordPress theme, %3$s, your current theme and %4$s, the parent theme.',
+								'Your site has %1$d inactive themes. To enhance your sites security it is recommended to remove any unused themes. You should keep %2$s, the default WordPress theme, %3$s, your current theme and %4$s, the parent theme.',
+								$themes_inactive,
+								'health-check'
+							)
+						),
 						$themes_inactive,
 						WP_DEFAULT_THEME,
 						$active_theme->name,
@@ -354,13 +366,15 @@ class Health_Check_Site_Status {
 				printf(
 					'<li><span class="warning"></span> %s',
 					sprintf(
-						// translators: %1$d: The amount of inactive themes. %2$s: The default theme for WordPress. %3$s: The currently active theme.
-						esc_html( _n(
-							'Your site has %1$d inactive theme, other than %2$s, the default WordPress theme, and %3$s, your active theme. It is recommended to remove any unused themes to enhance your sites security.',
-							'Your site has %1$d inactive themes, other than %2$s, the default WordPress theme, and %3$s, your active theme. It is recommended to remove any unused themes to enhance your sites security.',
-							$themes_inactive,
-							'health-check'
-						) ),
+						esc_html(
+							// translators: %1$d: The amount of inactive themes. %2$s: The default theme for WordPress. %3$s: The currently active theme.
+							_n(
+								'Your site has %1$d inactive theme, other than %2$s, the default WordPress theme, and %3$s, your active theme. It is recommended to remove any unused themes to enhance your sites security.',
+								'Your site has %1$d inactive themes, other than %2$s, the default WordPress theme, and %3$s, your active theme. It is recommended to remove any unused themes to enhance your sites security.',
+								$themes_inactive,
+								'health-check'
+							)
+						),
 						$themes_inactive,
 						WP_DEFAULT_THEME,
 						$active_theme->name
@@ -723,9 +737,12 @@ class Health_Check_Site_Status {
 	}
 
 	public function test_dotorg_communication() {
-		$wp_dotorg = wp_remote_get( 'https://wordpress.org', array(
-			'timeout' => 10,
-		) );
+		$wp_dotorg = wp_remote_get(
+			'https://wordpress.org',
+			array(
+				'timeout' => 10,
+			)
+		);
 		if ( ! is_wp_error( $wp_dotorg ) ) {
 			printf(
 				'<span class="good"></span> %s',
@@ -912,6 +929,7 @@ class Health_Check_Site_Status {
 		$timeout = 10;
 		$headers = array(
 			'Cache-Control' => 'no-cache',
+			'X-WP-Nonce'    => wp_create_nonce( 'wp_rest' ),
 		);
 
 		// Include Basic auth in loopback requests.
@@ -921,10 +939,12 @@ class Health_Check_Site_Status {
 
 		$url = rest_url( 'wp/v2/types/post' );
 
-		// We only need the first post to ensure this works, to make it low impact.
-		$url = add_query_arg( array(
-			'context' => 'edit',
-		), $url );
+		$url = add_query_arg(
+			array(
+				'context' => 'edit',
+			),
+			$url
+		);
 
 		$r = wp_remote_get( $url, compact( 'cookies', 'headers', 'timeout' ) );
 
