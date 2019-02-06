@@ -33,6 +33,9 @@ class Health_Check_Debug_Data {
 	}
 
 	static function debug_data( $locale = null ) {
+		// declare the globals used
+		global $wpdb, $_wp_theme_features, $wp_filesystem;
+
 		if ( ! empty( $locale ) ) {
 			// Change the language used for translations
 			if ( function_exists( 'switch_to_locale' ) ) {
@@ -40,7 +43,6 @@ class Health_Check_Debug_Data {
 				$switched_locale = switch_to_locale( $locale );
 			}
 		}
-		global $wpdb;
 
 		$upload_dir = wp_upload_dir();
 		if ( file_exists( ABSPATH . 'wp-config.php' ) ) {
@@ -454,9 +456,9 @@ class Health_Check_Debug_Data {
 		);
 
 		// Check if a .htaccess file exists.
-		if ( is_file( ABSPATH . '/.htaccess' ) ) {
+		if ( $wp_filesystem->is_file( ABSPATH . '/.htaccess' ) ) {
 			// If the file exists, grab the content of it.
-			$htaccess_content = file_get_contents( ABSPATH . '/.htaccess' );
+			$htaccess_content = $wp_filesystem->get_contents( ABSPATH . '/.htaccess' );
 
 			// Filter away the core WordPress rules.
 			$filtered_htaccess_content = trim( preg_replace( '/\# BEGIN WordPress[\s\S]+?# END WordPress/si', '', $htaccess_content ) );
@@ -470,7 +472,7 @@ class Health_Check_Debug_Data {
 			$info['wp-server']['fields'][] = array(
 				'label' => __( 'htaccess rules', 'health-check' ),
 				/* translators: admin url */
-				'value' => ! empty( $filtered_htaccess_content ) ? sprintf( __( 'Custom rules have been added to your htaccess file, you can view the contents <a href="%s">here</a>', 'health-check' ), esc_url( $tools_tab ) ) : __( 'Your htaccess file only contains core WordPress features', 'health-check' ),
+				'value' => ! empty( $filtered_htaccess_content ) ? sprintf( __( 'Custom rules have been added to your htaccess file, would you like to <a href="%s">[view the contents]</a>?', 'health-check' ), esc_url( $tools_tab ) ) : __( 'Your htaccess file only contains core WordPress features', 'health-check' ),
 			);
 		}
 
@@ -608,7 +610,6 @@ class Health_Check_Debug_Data {
 		}
 
 		// Populate the section for the currently active theme.
-		global $_wp_theme_features;
 		$theme_features = array();
 		if ( ! empty( $_wp_theme_features ) ) {
 			foreach ( $_wp_theme_features as $feature => $options ) {
