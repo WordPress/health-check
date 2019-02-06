@@ -150,8 +150,8 @@ class Health_Check_Site_Status {
 
 	/**
 	 * Check if the user is currently in Troubleshooting Mode or not.
-	 *
-	 * @return bool
+	 *'wp-health-check-disable-plugins'
+	 * @return bool'wp-health-check-disable-plugins'
 	 */
 	public function is_troubleshooting() {
 		// Check if a session cookie to disable plugins has been set.
