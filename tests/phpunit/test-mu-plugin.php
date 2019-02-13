@@ -22,7 +22,7 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 
 	public function testTroubleshootingModeDisabledNoCookie() {
 		// Make sure we don't have the troubleshooting cookie.
-		unset( $_COOKIE['health-check-disable-plugins'] );
+		unset( $_COOKIE['wp-health-check-disable-plugins'] );
 
 		// Troubleshooting mode should be disabled by default, with no cookie declared.
 		$this->assertFalse( $this->class_instance->is_troubleshooting() );
@@ -30,7 +30,7 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 
 	public function testTroubleshootingModeDisabledWrongCookie() {
 		// Set a troubleshooting cookie with invalid data.
-		$_COOKIE['health-check-disable-plugins'] = 'abc124';
+		$_COOKIE['wp-health-check-disable-plugins'] = 'abc124';
 
 		// This test should fail, as the hash values do not match.
 		$this->assertFalse( $this->class_instance->is_troubleshooting() );
@@ -38,7 +38,7 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 
 	public function testTroubleshootingModeEnabledRightCookie() {
 		// Set a troubleshooting cookie with valid data.
-		$_COOKIE['health-check-disable-plugins'] = 'abc123';
+		$_COOKIE['wp-health-check-disable-plugins'] = 'abc123';
 
 		// This test should pass, as the hash values does now match.
 		$this->assertTrue( $this->class_instance->is_troubleshooting() );
@@ -46,7 +46,7 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 
 	public function testHasPluginsBeforeTroubleshooting() {
 		// Make sure we are not currently troubleshooting.
-		$_COOKIE['health-check-disable-plugins'] = '';
+		$_COOKIE['wp-health-check-disable-plugins'] = '';
 
 		// Fetch a list of all active plugins.
 		$all_plugins = get_option( 'active_plugins' );
@@ -59,7 +59,7 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 
 	public function testNoPluginsWhenTroubleshooting() {
 		// Enable troubleshooting
-		$_COOKIE['health-check-disable-plugins'] = 'abc123';
+		$_COOKIE['wp-health-check-disable-plugins'] = 'abc123';
 
 		// Fetch a list of all active plugins while troubleshooting.
 		$all_plugins = get_option( 'active_plugins' );
@@ -70,7 +70,7 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 
 	public function testEnableSinglePlugin() {
 		// Make sure troubleshooting is enabled.
-		$_COOKIE['health-check-disable-plugins'] = 'abc123';
+		$_COOKIE['wp-health-check-disable-plugins'] = 'abc123';
 
 		// Add Akismet to the approved plugins list.
 		update_option( 'health-check-allowed-plugins', array( 'akismet' ) );
