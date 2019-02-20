@@ -15,126 +15,110 @@ Health_Check_Debug_Data::check_for_updates();
 $info = Health_Check_Debug_Data::debug_data();
 ?>
 
+<h2>
+    <?php esc_html_e( 'Site info', 'health-check' ); ?>
+</h2>
 
-	<div class="notice notice-info inline">
-		<p>
-			<?php esc_html_e( 'The system information shown below can also be copied and pasted into support requests such as on the WordPress.org forums, or to your theme and plugin developers.', 'health-check' ); ?>
-		</p>
-		<p>
-			<button type="button" class="button button-primary" onclick="document.getElementById('system-information-copy-wrapper').style.display = 'block'; this.style.display = 'none';"><?php esc_html_e( 'Show copy and paste field', 'health-check' ); ?></button>
-			<?php if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) : ?>
-				<button type="button" class="button" onclick="document.getElementById('system-information-english-copy-wrapper').style.display = 'block'; this.style.display = 'none';"><?php esc_html_e( 'Show copy and paste field in English', 'health-check' ); ?></button>
-			<?php endif; ?>
-		</p>
+<textarea id="system-information-default-copy-field" class="system-information-copy-wrapper" rows="10"><?php Health_Check_Debug_Data::textarea_format( $info ); ?></textarea>
 
-		<?php
-		if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) :
+<?php
+if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) :
 
-			$english_info = Health_Check_Debug_Data::debug_data( 'en_US' );
+	$english_info = Health_Check_Debug_Data::debug_data( 'en_US' );
 
-			// Workaround for locales not being properly loaded back, see issue #30 on GitHub.
-			if ( ! is_textdomain_loaded( 'health-check' ) && _get_path_to_translation( 'health-check' ) ) {
-				load_textdomain( 'health-check', _get_path_to_translation( 'health-check' ) );
-			}
-			?>
-			<div id="system-information-english-copy-wrapper" style="display: none;">
-				<textarea id="system-information-english-copy-field" class="widefat" rows="10"><?php Health_Check_Debug_Data::textarea_format( $english_info ); ?></textarea>
-				<p>
-					<?php esc_html_e( 'Some information may be filtered out from the list you are about to copy, this is information that may be considered private, and is not meant to be shared in a public forum.', 'health-check' ); ?>
-					<br>
-					<button type="button" class="button button-primary health-check-copy-field"><?php esc_html_e( 'Mark field for copying', 'health-check' ); ?></button>
-				</p>
-			</div>
+	// Workaround for locales not being properly loaded back, see issue #30 on GitHub.
+	if ( ! is_textdomain_loaded( 'health-check' ) && _get_path_to_translation( 'health-check' ) ) {
+		load_textdomain( 'health-check', _get_path_to_translation( 'health-check' ) );
+	}
+	?>
+    <textarea id="system-information-english-copy-field" class="system-information-copy-wrapper" rows="10"><?php Health_Check_Debug_Data::textarea_format( $english_info ); ?></textarea>
 
-		<?php endif; ?>
+<?php endif; ?>
 
-		<div id="system-information-copy-wrapper" style="display: none;">
-			<textarea id="system-information-copy-field" class="widefat" rows="10"><?php Health_Check_Debug_Data::textarea_format( $info ); ?></textarea>
-			<p>
-				<?php esc_html_e( 'Some information may be filtered out from the list you are about to copy, this is information that may be considered private, and is not meant to be shared in a public forum.', 'health-check' ); ?>
-				<br>
-				<button type="button" class="button button-primary health-check-copy-field"><?php esc_html_e( 'Mark field for copying', 'health-check' ); ?></button>
-			</p>
-		</div>
-	</div>
+<p>
+    <?php esc_html_e( 'You can export the information on this page so it can be easily copied and pasted in support requests such as on the WordPress.org forums, or shared with your website / theme / plugin developers.', 'health-check' ); ?>
+</p>
 
-	<h2 id="system-information-table-of-contents">
-		<?php esc_html_e( 'Table Of Contents', 'health-check' ); ?>
-	</h2>
-	<div>
-		<?php
-		$toc = array();
+<div class="copy-button-wrapper">
+    <button type="button" class="button button-primary health-check-copy-field" data-copy-field="default"><?php esc_html_e( 'Copy to clipboard', 'health-check' ); ?></button>
+    <span class="copy-field-success">Copied!</span>
+</div>
+<?php if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) : ?>
+    <div class="copy-button-wrapper">
+        <button type="button" class="button health-check-copy-field" data-copy-field="english"><?php esc_html_e( 'Copy to clipboard (English)', 'health-check' ); ?></button>
+        <span class="copy-field-success">Copied!</span>
+    </div>
+<?php endif; ?>
 
-		foreach ( $info as $section => $details ) {
-			if ( empty( $details['fields'] ) ) {
-				continue;
-			}
-
-			$toc[] = sprintf(
-				'<a href="#%s" class="health-check-toc">%s</a>',
-				esc_attr( $section ),
-				esc_html( $details['label'] )
-			);
-		}
-
-		echo implode( ' | ', $toc );
-		?>
-	</div>
+<dl id="health-check-debug" role="presentation" class="health-check-accordion">
 
 <?php
 foreach ( $info as $section => $details ) {
 	if ( ! isset( $details['fields'] ) || empty( $details['fields'] ) ) {
 		continue;
 	}
-
-	printf(
-		'<h2 id="%s">%s%s</h2>',
-		esc_attr( $section ),
-		esc_html( $details['label'] ),
-		( isset( $details['show_count'] ) && $details['show_count'] ? sprintf( ' (%d)', count( $details['fields'] ) ) : '' )
-	);
-
-	if ( isset( $details['description'] ) && ! empty( $details['description'] ) ) {
-		printf(
-			'<p>%s</p>',
-			wp_kses( $details['description'], array(
-				'a'      => array(
-					'href' => true,
-				),
-				'strong' => true,
-				'em'     => true,
-			) )
-		);
-	}
 	?>
-	<table class="widefat striped health-check-table">
-		<tbody>
-		<?php
-		foreach ( $details['fields'] as $field ) {
-			if ( is_array( $field['value'] ) ) {
-				$values = '';
-				foreach ( $field['value'] as $name => $value ) {
-					$values .= sprintf(
-						'<li>%s: %s</li>',
-						esc_html( $name ),
-						esc_html( $value )
-					);
-				}
-			} else {
-				$values = esc_html( $field['value'] );
-			}
+	<dt role="heading" aria-level="2">
+		<button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-<?php echo esc_attr( $section ); ?>" id="health-check-accordion-heading-<?php echo esc_attr( $section ); ?>" type="button">
+			<span class="title">
+				<?php echo esc_html( $details['label'] ); ?>
 
-			printf(
-				'<tr><td>%s</td><td>%s</td></tr>',
-				esc_html( $field['label'] ),
-				$values
-			);
-		}
-		?>
-		</tbody>
-	</table>
-	<span style="display: block; width: 100%; text-align: <?php echo ( is_rtl() ? 'left' : 'right' ); ?>">
-		<a href="#system-information-table-of-contents" class="health-check-toc"><?php esc_html_e( 'Return to table of contents', 'health-check' ); ?></a>
-	</span>
-	<?php
-}
+				<?php if ( isset( $details['show_count'] ) && $details['show_count'] ) : ?>
+				    <?php printf( '(%d)', count( $details['fields'] ) ); ?>
+				<?php endif; ?>
+			</span>
+			<span class="icon"></span>
+		</button>
+	</dt>
+
+	<dd id="health-check-accordion-block-<?php echo esc_attr( $section ); ?>" role="region" aria-labelledby="health-check-accordion-heading-<?php echo esc_attr( $section ); ?>" class="health-check-accordion-panel" hidden="hidden">
+        <?php
+        if ( isset( $details['description'] ) && ! empty( $details['description'] ) ) {
+            printf(
+                '<p>%s</p>',
+                wp_kses( $details['description'], array(
+                    'a'      => array(
+                        'href' => true,
+                    ),
+                    'strong' => true,
+                    'em'     => true,
+                ) )
+            );
+        }
+        ?>
+        <table class="widefat striped health-check-table">
+            <tbody>
+            <?php
+            foreach ( $details['fields'] as $field ) {
+                if ( is_array( $field['value'] ) ) {
+                    $values = '';
+                    foreach ( $field['value'] as $name => $value ) {
+                        $values .= sprintf(
+                            '<li>%s: %s</li>',
+                            esc_html( $name ),
+                            esc_html( $value )
+                        );
+                    }
+                } else {
+                    $values = esc_html( $field['value'] );
+                }
+
+                printf(
+                    '<tr><td>%s</td><td>%s</td></tr>',
+                    esc_html( $field['label'] ),
+                    $values
+                );
+            }
+            ?>
+            </tbody>
+        </table>
+    </dd>
+	<?php } ?>
+</dl>
+
+<?php
+printf(
+    '<a href="%s" class="button button-primary">%s</a>',
+    esc_url( admin_url( '?page=health-check&tab=phpinfo') ),
+    esc_html__( 'View extended PHP information', 'health-check' )
+);

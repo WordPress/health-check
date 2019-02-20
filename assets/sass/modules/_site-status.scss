@@ -2,3 +2,221 @@
 
 	display: none;
 }
+
+h2 {
+
+	padding: 0 0.5rem;
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+
+#progressbar {
+
+	display: inline-block;
+	height: 50px;
+	width: 50px;
+	margin: 0;
+	border-radius: 100%;
+	position: relative;
+	font-weight: 600;
+	font-size: 0.5rem;
+
+	&:after {
+
+		position: absolute;
+		display: block;
+		height: 160px;
+		width: 160px;
+		left: 50%;
+		top: 50%;
+		content: attr(data-pct)"%";
+		margin-top: -80px;
+		margin-left: -80px;
+		border-radius: 100%;
+		line-height: 160px;
+		font-size: 2em;
+	}
+
+	&.loading {
+
+		&:after {
+
+			animation: loadingEllipsis 3s infinite ease-in-out;
+		}
+
+		svg {
+
+			#bar {
+
+				stroke-dashoffset: 0;
+				stroke: #adc5d2;
+				animation: loadingPulse 3s infinite ease-in-out;
+			}
+		}
+	}
+
+	svg {
+
+		circle {
+
+			stroke-dashoffset: 0;
+			transition: stroke-dashoffset 1s linear;
+			stroke: #ccc;
+			stroke-width: 2em;
+		}
+
+		#bar {
+
+			stroke-dashoffset: 565;
+			stroke: #dc3232;
+
+			&.green {
+
+				stroke: #46b450;
+			}
+
+			&.orange {
+
+				stroke: #ffb900;
+			}
+		}
+	}
+}
+
+@keyframes loadingPulse {
+
+	0% {
+
+		stroke: #adc5d2;
+	}
+	50% {
+
+		stroke: #00a0d2;
+	}
+	100% {
+
+		stroke: #adc5d2;
+
+	}
+}
+@keyframes loadingEllipsis {
+
+	0% {
+
+		content: '.';
+	}
+
+	50% {
+
+		content: '..';
+	}
+
+	100% {
+
+		content: '...';
+	}
+}
+
+.issues-wrapper {
+
+	margin-bottom: 5rem;
+
+	.issues {
+
+		.issue {
+
+			border-bottom: 1px solid #aaa;
+
+			h3 {
+
+				display: inline-block;
+				margin-right: 0.5rem;
+				padding-left: 0.5rem;
+			}
+
+			.badge {
+
+				display: inline-block;
+				padding: 0 0.5rem;
+				background-color: #dcdcdc;
+				color: #000;
+				font-weight: 600;
+
+				&.blue {
+
+					background-color: #00a0d2;
+					color: #fff;
+				}
+
+				&.orange {
+
+					background-color: #ffb900;
+					color: #000;
+				}
+
+				&.red {
+
+					background-color: #dc3232;
+					color: #fff;
+				}
+
+				&.green {
+
+					background-color: #46b450;
+					color: #fff;
+				}
+			}
+
+			.toggle-more-info {
+
+				display: inline-block;
+				float: right;
+				padding-right: 1.5rem;
+				text-decoration: none;
+				margin: 1.3em 0;
+				position: relative;
+
+				.icon {
+					border: solid #00a0d2;
+					border-width: 0 2px 2px 0;
+					height: 0.4rem;
+					pointer-events: none;
+					position: absolute;
+					right: 0.7em;
+					top: 50%;
+					transform: translateY(-60%) rotate(45deg);
+					width: 0.4rem;
+				}
+			}
+
+			.more-info {
+
+				display: none;
+				padding: 0 0.5rem 1rem;
+
+				.actions {
+
+					display: block;
+					margin-top: 1rem;
+				}
+			}
+
+			&.open {
+
+				.more-info {
+
+					display: block;
+				}
+
+				.toggle-more-info {
+
+					.icon {
+
+						transform: translateY(-50%) rotate(-135deg);
+						top: 65%;
+					}
+				}
+			}
+		}
+	}
+}

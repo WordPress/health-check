@@ -2,6 +2,84 @@ body {
 
 	&.dashboard_page_health-check {
 
+		#wpcontent {
+			padding-left: 0;
+		}
+
+		.wrap {
+
+			margin-right: 0;
+			margin-left: 0;
+		}
+
+		p {
+
+			font-size: 1rem;
+		}
+
+		.wp-core-ui {
+
+			.button {
+
+				font-size: 1rem;
+			}
+		}
+
+		background: #fff;
+
+		.health-check-header {
+
+			text-align: center;
+			margin-bottom: 3rem;
+			border-bottom: 2px solid #ccc;
+
+			h1 {
+
+				display: inline-block;
+				font-weight: 600;
+				font-size: 2.5rem;
+				margin: 2rem 0.8rem 2rem 2rem;
+			}
+
+			.tabs-wrapper {
+
+				display: block;
+
+				.tab {
+
+					float: none;
+					display: inline-block;
+					text-decoration: none;
+					color: inherit;
+					font-size: 1.2rem;
+					padding: 0.5rem;
+					margin: 0 1rem;
+					border-bottom: 4px solid transparent;
+					transition: border 0.5s ease-in-out;
+
+					&.active {
+
+						border-bottom: 4px solid #00a0d2;
+						font-weight: 600;
+					}
+
+					&:focus,
+					&:hover,
+					&:active {
+
+						border-bottom: 4px solid #00a0d2;
+					}
+				}
+			}
+		}
+
+		.health-check-body {
+
+			max-width: 800px;
+			width: 100%;
+			margin: 0 auto;
+		}
+
 		.health-check-table {
 
 			thead {
@@ -9,9 +87,11 @@ body {
 				th,
 				td {
 
+					font-size: 1rem;
+
 					&:first-child {
 
-						width: 20%;
+						width: 30%;
 					}
 				}
 			}
@@ -20,11 +100,12 @@ body {
 
 				td {
 
-					width: 80%;
+					width: 70%;
+					font-size: 1rem;
 
 					&:first-child {
 
-						width: 20%;
+						width: 30%;
 					}
 
 					ul,
@@ -85,6 +166,9 @@ body {
 		.spinner {
 			float: none;
 		}
+
+		/* Info screen styles */
+		@import "modules/info";
 
 		/* Tools screen styles */
 		@import "modules/tools";
