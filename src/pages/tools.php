@@ -12,6 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
+<h2>
+    <?php esc_html_e( 'Tools', 'health-check' ); ?>
+</h2>
+
 <dl id="health-check-tools" role="presentation" class="health-check-accordion">
 	<?php
 	/**
