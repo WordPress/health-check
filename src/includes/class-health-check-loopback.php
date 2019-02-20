@@ -70,10 +70,10 @@ class Health_Check_Loopback {
 
 		if ( is_wp_error( $r ) ) {
 			return (object) array(
-				'status'  => 'error',
+				'status'  => 'critical',
 				'message' => sprintf(
 					'%s<br>%s',
-					esc_html__( 'The loopback request to your site failed, this may prevent WP_Cron from working, along with theme and plugin editors.', 'health-check' ),
+					esc_html__( 'The loopback request to your site failed, this means features relying on them are not currently working as expected.', 'health-check' ),
 					sprintf(
 						/* translators: %1$d: The HTTP response code. %2$s: The error message returned. */
 						esc_html__( 'Error encountered: (%1$d) %2$s', 'health-check' ),
@@ -86,10 +86,10 @@ class Health_Check_Loopback {
 
 		if ( 200 !== wp_remote_retrieve_response_code( $r ) ) {
 			return (object) array(
-				'status'  => 'warning',
+				'status'  => 'recommended',
 				'message' => sprintf(
 					/* translators: %d: The HTTP response code returned. */
-					esc_html__( 'The loopback request returned an unexpected status code, %d, this may affect tools such as WP_Cron, or theme and plugin editors.', 'health-check' ),
+					esc_html__( 'The loopback request returned an unexpected status code, %d, it was not possible to determine if this will prevent features from working as expected.', 'health-check' ),
 					wp_remote_retrieve_response_code( $r )
 				),
 			);

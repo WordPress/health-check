@@ -1,0 +1,14 @@
+.system-information-copy-wrapper {
+
+	display: none;
+}
+
+.copy-field-success {
+
+	display: none;
+
+	&.visible {
+
+		display: inline-block;
+	}
+}
