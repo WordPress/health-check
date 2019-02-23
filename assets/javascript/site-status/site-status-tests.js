@@ -1,13 +1,15 @@
 /* global ajaxurl, HealthCheck, wp */
 jQuery( document ).ready(function( $ ) {
-	$( 'body.dashboard_page_health-check' ).on( 'click', '.site-health-view-passed', function( e ) {
+	var data;
+
+	$( 'body.dashboard_page_health-check' ).on( 'click', '.site-health-view-passed', function() {
 		$( this ).hide();
 
 		$( '#health-check-issues-good' ).show();
 	});
 
 	function HCAppendIssue( issue ) {
-		var htmlOutput = '',
+		var htmlOutput,
 			issueWrapper,
 			issueCounter;
 
@@ -36,13 +38,14 @@ jQuery( document ).ready(function( $ ) {
 	}
 
 	function HCRecalculateProgression() {
+		var r, c, pct;
 		var $progressBar = $( '#progressbar' );
 		var $circle = $( '#progressbar svg #bar' );
-		var total_tests = parseInt( HealthCheck.site_status.issues.good ) + parseInt( HealthCheck.site_status.issues.recommended ) + ( parseInt( HealthCheck.site_status.issues.critical ) * 1.5 );
-		var failed_tests = parseInt( HealthCheck.site_status.issues.recommended ) + ( parseInt( HealthCheck.site_status.issues.critical ) * 1.5 );
-		var val = 100 - Math.ceil( ( failed_tests / total_tests ) * 100 );
+		var totalTests = parseInt( HealthCheck.site_status.issues.good, 0 ) + parseInt( HealthCheck.site_status.issues.recommended, 0 ) + ( parseInt( HealthCheck.site_status.issues.critical, 0 ) * 1.5 );
+		var failedTests = parseInt( HealthCheck.site_status.issues.recommended, 0 ) + ( parseInt( HealthCheck.site_status.issues.critical, 0 ) * 1.5 );
+		var val = 100 - Math.ceil( ( failedTests / totalTests ) * 100 );
 
-		if ( 0 === total_tests ) {
+		if ( 0 === totalTests ) {
 			$progressBar.addClass( 'hidden' );
 			return;
 		}
@@ -53,13 +56,17 @@ jQuery( document ).ready(function( $ ) {
 			val = 100;
 		}
 
-		var r = $circle.attr( 'r' );
-		var c = Math.PI * ( r * 2 );
+		r = $circle.attr( 'r' );
+		c = Math.PI * ( r * 2 );
 
-		if ( val < 0 ) { val = 0;}
-		if ( val > 100 ) { val = 100;}
+		if ( val < 0 ) {
+			val = 0;
+		}
+		if ( val > 100 ) {
+			val = 100;
+		}
 
-		var pct = ( ( 100 - val ) / 100 ) * c;
+		pct = ( ( 100 - val ) / 100 ) * c;
 
 		$circle.css( { strokeDashoffset: pct } );
 
@@ -90,6 +97,12 @@ jQuery( document ).ready(function( $ ) {
 
 		if ( HealthCheck.site_status.async.length >= 1 ) {
 			$.each( HealthCheck.site_status.async, function() {
+				var data = {
+					'action': 'health-check-site-status',
+					'feature': this.test,
+					'_wpnonce': HealthCheck.nonce.site_status
+				};
+
 				if ( this.completed ) {
 					return true;
 				}
@@ -98,16 +111,10 @@ jQuery( document ).ready(function( $ ) {
 
 				this.completed = true;
 
-				var data = {
-					'action': 'health-check-site-status',
-					'feature': this.test,
-					'_wpnonce': HealthCheck.nonce.site_status
-				};
-
 				$.post(
 					ajaxurl,
 					data,
-					function ( response ) {
+					function( response ) {
 						HCAppendIssue( response.data );
 						maybeRunNextAsyncTest();
 					}
@@ -121,7 +128,6 @@ jQuery( document ).ready(function( $ ) {
 			HCRecalculateProgression();
 		}
 	}
-
 
 	if ( 0 === HealthCheck.site_status.direct.length && 0 === HealthCheck.site_status.async.length ) {
 		HCRecalculateProgression();
@@ -140,13 +146,13 @@ jQuery( document ).ready(function( $ ) {
 	}
 
 	if ( HealthCheck.site_status.async.length > 0 ) {
-		HealthCheck.site_status.async[0].completed = true;
-
-		var data = {
+		data = {
 			'action': 'health-check-site-status',
 			'feature': HealthCheck.site_status.async[0].test,
 			'_wpnonce': HealthCheck.nonce.site_status
 		};
+
+		HealthCheck.site_status.async[0].completed = true;
 
 		$.post(
 			ajaxurl,

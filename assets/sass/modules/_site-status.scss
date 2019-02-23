@@ -39,7 +39,7 @@ h3 {
 		width: 160px;
 		left: 50%;
 		top: 50%;
-		content: attr(data-pct)"%";
+		content: attr(data-pct) "%";
 		margin-top: -80px;
 		margin-left: -80px;
 		border-radius: 100%;
@@ -104,31 +104,34 @@ h3 {
 
 		stroke: #adc5d2;
 	}
+
 	50% {
 
 		stroke: #00a0d2;
 	}
+
 	100% {
 
 		stroke: #adc5d2;
 
 	}
 }
+
 @keyframes loadingEllipsis {
 
 	0% {
 
-		content: '.';
+		content: ".";
 	}
 
 	50% {
 
-		content: '..';
+		content: "..";
 	}
 
 	100% {
 
-		content: '...';
+		content: "...";
 	}
 }
 
