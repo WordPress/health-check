@@ -184,15 +184,14 @@ module.exports = function( grunt ) {
 	// Travis CI Task
 	grunt.registerTask( 'travis', 'Runs Travis CI tasks.',[ 'csstest', 'jstest', 'phptest', 'phpcs' ] );
 
+	// Build with all checks included
+	grunt.registerTask( 'checkedBuild', 'Runs the build, and also runs linting etc against the code.', [ 'checkDependencies', 'copy', 'csstest', 'jstest', 'phptest', 'concat', 'sass', 'postcss' ] );
+
 	// Default task.
 	grunt.registerTask( 'default', [
 		'checkDependencies',
 		'copy',
-		'csstest',
-		'jstest',
-		'phptest',
 		'concat',
-		'sass',
-		'postcss'
+		'sass'
 	] );
 };
