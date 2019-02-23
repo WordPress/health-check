@@ -2,6 +2,8 @@ body {
 
 	&.dashboard_page_health-check {
 
+		background: #fff;
+
 		#wpcontent {
 			padding-left: 0;
 		}
@@ -25,12 +27,17 @@ body {
 			}
 		}
 
-		background: #fff;
+		h2 {
+
+			padding: 0 0.5rem;
+			font-size: 1.5rem;
+			font-weight: 600;
+		}
 
 		.health-check-header {
 
 			text-align: center;
-			margin-bottom: 3rem;
+			margin-bottom: 1rem;
 			border-bottom: 2px solid #ccc;
 
 			h1 {

@@ -16,7 +16,7 @@ $info = Health_Check_Debug_Data::debug_data();
 ?>
 
 <h2>
-    <?php esc_html_e( 'Site info', 'health-check' ); ?>
+    <?php esc_html_e( 'Site Info', 'health-check' ); ?>
 </h2>
 
 <textarea id="system-information-default-copy-field" class="system-information-copy-wrapper" rows="10"><?php Health_Check_Debug_Data::textarea_format( $info ); ?></textarea>
