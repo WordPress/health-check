@@ -23,7 +23,7 @@ class Health_Check_Troubleshooting_MU {
 	private $self_fetching_theme = false;
 
 	private $available_query_args = array(
-		'health-check-disable-plugins',
+		'wp-health-check-disable-plugins',
 		'health-check-disable-plugins-hash',
 		'health-check-disable-troubleshooting',
 		'health-check-change-active-theme',
@@ -277,8 +277,8 @@ class Health_Check_Troubleshooting_MU {
 	 */
 	public function is_troubleshooting() {
 		// Check if a session cookie to disable plugins has been set.
-		if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
-			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'] . md5( $_SERVER['REMOTE_ADDR'] );
+		if ( isset( $_COOKIE['wp-health-check-disable-plugins'] ) ) {
+			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['wp-health-check-disable-plugins'] . md5( $_SERVER['REMOTE_ADDR'] );
 		}
 
 		// If the disable hash isn't set, no need to interact with things.
@@ -462,14 +462,14 @@ class Health_Check_Troubleshooting_MU {
 			return;
 		}
 
-		if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
+		if ( isset( $_COOKIE['wp-health-check-disable-plugins'] ) ) {
 			$this->disable_troubleshooting_mode();
 		}
 	}
 
 	function disable_troubleshooting_mode() {
-		unset( $_COOKIE['health-check-disable-plugins'] );
-		setcookie( 'health-check-disable-plugins', null, 0, COOKIEPATH, COOKIE_DOMAIN );
+		unset( $_COOKIE['wp-health-check-disable-plugins'] );
+		setcookie( 'wp-health-check-disable-plugins', null, 0, COOKIEPATH, COOKIE_DOMAIN );
 		delete_option( 'health-check-allowed-plugins' );
 		delete_option( 'health-check-default-theme' );
 		delete_option( 'health-check-current-theme' );
