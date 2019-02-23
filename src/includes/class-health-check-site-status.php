@@ -219,13 +219,13 @@ class Health_Check_Site_Status {
 
 	/**
 	 * Check if the user is currently in Troubleshooting Mode or not.
-	 *'wp-health-check-disable-plugins'
-	 * @return bool'wp-health-check-disable-plugins'
+	 *
+	 * @return bool
 	 */
 	public function is_troubleshooting() {
 		// Check if a session cookie to disable plugins has been set.
-		if ( isset( $_COOKIE['health-check-disable-plugins'] ) ) {
-			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['health-check-disable-plugins'];
+		if ( isset( $_COOKIE['wp-health-check-disable-plugins'] ) ) {
+			$_GET['health-check-disable-plugin-hash'] = $_COOKIE['wp-health-check-disable-plugins'];
 		}
 
 		// If the disable hash isn't set, no need to interact with things.
