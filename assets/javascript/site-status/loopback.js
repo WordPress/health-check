@@ -87,7 +87,7 @@ jQuery( document ).ready(function( $ ) {
 	}).on( 'click', '#loopback-individual-plugins', function( e ) {
 		e.preventDefault();
 
-		$(this).remove();
+		$( this ).remove();
 
 		testSinglePlugin();
 	});
