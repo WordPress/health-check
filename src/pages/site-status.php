@@ -13,25 +13,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $health_check_site_status;
 ?>
 
+    <h2>
+		<?php esc_html_e( 'Site Health Status', 'health-check' ); ?>
+    </h2>
+
     <div class="issues-wrapper" id="health-check-issues-critical">
-        <h2>
+        <h3>
             <span class="issue-count">0</span> <?php esc_html_e( 'Critical issues', 'health-check' ); ?>
-        </h2>
-        <div class="issues"></div>
+        </h3>
+
+        <dl id="health-check-site-status-critical" role="presentation" class="health-check-accordion issues"></dl>
     </div>
 
     <div class="issues-wrapper" id="health-check-issues-recommended">
-        <h2>
+        <h3>
             <span class="issue-count">0</span> <?php esc_html_e( 'Recommended improvements', 'health-check' ); ?>
-        </h2>
-        <div class="issues"></div>
+        </h3>
+
+        <dl id="health-check-site-status-recommended" role="presentation" class="health-check-accordion issues"></dl>
+    </div>
+
+    <div class="view-more">
+        <button type="button" class="button button-link site-health-view-passed">
+            <?php esc_html_e( 'Show passed tests', 'health-check' ); ?>
+        </button>
     </div>
 
     <div class="issues-wrapper" id="health-check-issues-good">
-        <h2>
+        <h3>
             <span class="issue-count">0</span> <?php esc_html_e( 'Items with no issues detected', 'health-check' ); ?>
-        </h2>
-        <div class="issues"></div>
+        </h3>
+
+        <dl id="health-check-site-status-good" role="presentation" class="health-check-accordion issues"></dl>
     </div>
 
 	<?php

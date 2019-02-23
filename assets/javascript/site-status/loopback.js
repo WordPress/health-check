@@ -61,7 +61,7 @@ jQuery( document ).ready(function( $ ) {
 
 	$( '.dashboard_page_health-check' ).on( 'click', '#loopback-no-plugins', function( e ) {
 		var $trigger = $( this ),
-			$parent = $( this ).closest( 'td' ),
+			$parent = $( this ).closest( 'p' ),
 			data = {
 				'action': 'health-check-loopback-no-plugins',
 				'_wpnonce': HealthCheck.nonce.loopback_no_plugins
@@ -86,6 +86,8 @@ jQuery( document ).ready(function( $ ) {
 		);
 	}).on( 'click', '#loopback-individual-plugins', function( e ) {
 		e.preventDefault();
+
+		$(this).remove();
 
 		testSinglePlugin();
 	});
