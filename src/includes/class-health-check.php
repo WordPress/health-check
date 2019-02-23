@@ -222,6 +222,8 @@ class Health_Check {
 				'please_wait'   => esc_html__( 'Please wait...', 'health-check' ),
 				'copied'        => esc_html__( 'Copied', 'health-check' ),
 				'running_tests' => esc_html__( 'Currently being tested...', 'health-check' ),
+				'site_health_complete' => esc_html__( 'All site health tests have finished running.', 'health-check' ),
+				'site_info_copied'     => esc_html__( 'Site information has been added to your clipboard.', 'health-check' ),
 			),
 			'warning' => array(
 				'seen_backup' => Health_Check_Troubleshoot::has_seen_warning(),
@@ -235,12 +237,26 @@ class Health_Check {
 				'mail_check'                  => wp_create_nonce( 'health-check-mail-check' ),
 				'confirm_warning'             => wp_create_nonce( 'health-check-confirm-warning' ),
 				'site_status'                 => wp_create_nonce( 'health-check-site-status' ),
+                'site_status_result'          => wp_create_nonce( 'health-check-site-status-result' ),
 			),
             'site_status' => array(
                 'direct' => array(),
                 'async'  => array(),
+                'issues' => array(
+	                'good'        => 0,
+	                'recommended' => 0,
+	                'critical'    => 0,
+                ),
             ),
 		);
+
+		$issue_counts = get_transient( 'health-check-site-status-result' );
+
+		if ( false !== $issue_counts ) {
+		    $issue_counts = json_decode( $issue_counts );
+
+		    $health_check_js_variables['site_status']['issues'] = $issue_counts;
+        }
 
 		if ( ! isset( $_GET['tab'] ) || ( isset( $_GET['tab'] ) && 'site-status' === $_GET['tab'] ) ) {
 			global $health_check_site_status;
@@ -266,6 +282,7 @@ class Health_Check {
 				if ( method_exists( $health_check_site_status, $test_function ) && is_callable( array( $health_check_site_status, $test_function ) ) ) {
 					$health_check_js_variables['site_status']['async'][] = array(
                         'test'      => $test['test'],
+                        'completed' => false,
                     );
 				}
             }
@@ -273,7 +290,7 @@ class Health_Check {
 
 		wp_enqueue_style( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/css/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
 
-		wp_enqueue_script( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/javascript/health-check.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION, true );
+		wp_enqueue_script( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/javascript/health-check.js', array( 'jquery', 'wp-a11y' ), HEALTH_CHECK_PLUGIN_VERSION, true );
 
 		wp_localize_script( 'health-check', 'HealthCheck', $health_check_js_variables );
 	}
@@ -287,11 +304,20 @@ class Health_Check {
 	 * @return void
 	 */
 	public function action_admin_menu() {
+	    $critical_issues = 0;
+		$issue_counts = get_transient( 'health-check-site-status-result' );
+
+		if ( false !== $issue_counts ) {
+			$issue_counts = json_decode( $issue_counts );
+
+			$critical_issues = esc_html( $issue_counts->critical );
+		}
+
 	    $menu_title =
             sprintf(
                 // translators: %s: Critical issue counter, if any.
                 _x( 'Site Health %s', 'Menu, Section and Page Title', 'health-check' ),
-                ( true ? '<span class="awaiting-mod">12</span>' : '' )
+                ( true ? sprintf('<span class="awaiting-mod">%d</span>', absint( $critical_issues ) ) : '' )
             );
 
 		add_dashboard_page(
@@ -383,14 +409,12 @@ class Health_Check {
 				<?php _ex( 'Site Health', 'Menu, Section and Page Title', 'health-check' ); ?>
 			</h1>
 
-            <?php if ( ! isset( $_GET['tab'] ) || 'site-status' === $_GET['tab'] ) : ?>
             <div id="progressbar" class="loading" data-pct="0" role="progressbar">
                 <svg width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
                     <circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
                     <circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
                 </svg>
             </div>
-            <?php endif; ?>
 
 			<?php
 			$tabs = array(
