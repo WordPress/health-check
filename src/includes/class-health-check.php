@@ -218,17 +218,17 @@ class Health_Check {
 		}
 
 		$health_check_js_variables = array(
-			'string'  => array(
-				'please_wait'   => esc_html__( 'Please wait...', 'health-check' ),
-				'copied'        => esc_html__( 'Copied', 'health-check' ),
-				'running_tests' => esc_html__( 'Currently being tested...', 'health-check' ),
+			'string'      => array(
+				'please_wait'          => esc_html__( 'Please wait...', 'health-check' ),
+				'copied'               => esc_html__( 'Copied', 'health-check' ),
+				'running_tests'        => esc_html__( 'Currently being tested...', 'health-check' ),
 				'site_health_complete' => esc_html__( 'All site health tests have finished running.', 'health-check' ),
 				'site_info_copied'     => esc_html__( 'Site information has been added to your clipboard.', 'health-check' ),
 			),
-			'warning' => array(
+			'warning'     => array(
 				'seen_backup' => Health_Check_Troubleshoot::has_seen_warning(),
 			),
-			'nonce'   => array(
+			'nonce'       => array(
 				'loopback_no_plugins'         => wp_create_nonce( 'health-check-loopback-no-plugins' ),
 				'loopback_individual_plugins' => wp_create_nonce( 'health-check-loopback-individual-plugins' ),
 				'loopback_default_theme'      => wp_create_nonce( 'health-check-loopback-default-theme' ),
@@ -237,26 +237,26 @@ class Health_Check {
 				'mail_check'                  => wp_create_nonce( 'health-check-mail-check' ),
 				'confirm_warning'             => wp_create_nonce( 'health-check-confirm-warning' ),
 				'site_status'                 => wp_create_nonce( 'health-check-site-status' ),
-                'site_status_result'          => wp_create_nonce( 'health-check-site-status-result' ),
+				'site_status_result'          => wp_create_nonce( 'health-check-site-status-result' ),
 			),
-            'site_status' => array(
-                'direct' => array(),
-                'async'  => array(),
-                'issues' => array(
-	                'good'        => 0,
-	                'recommended' => 0,
-	                'critical'    => 0,
-                ),
-            ),
+			'site_status' => array(
+				'direct' => array(),
+				'async'  => array(),
+				'issues' => array(
+					'good'        => 0,
+					'recommended' => 0,
+					'critical'    => 0,
+				),
+			),
 		);
 
 		$issue_counts = get_transient( 'health-check-site-status-result' );
 
 		if ( false !== $issue_counts ) {
-		    $issue_counts = json_decode( $issue_counts );
+			$issue_counts = json_decode( $issue_counts );
 
-		    $health_check_js_variables['site_status']['issues'] = $issue_counts;
-        }
+			$health_check_js_variables['site_status']['issues'] = $issue_counts;
+		}
 
 		if ( ! isset( $_GET['tab'] ) || ( isset( $_GET['tab'] ) && 'site-status' === $_GET['tab'] ) ) {
 			global $health_check_site_status;
@@ -271,7 +271,7 @@ class Health_Check {
 				if ( method_exists( $health_check_site_status, $test_function ) && is_callable( array( $health_check_site_status, $test_function ) ) ) {
 					$health_check_js_variables['site_status']['direct'][] = call_user_func( array( $health_check_site_status, $test_function ) );
 				}
-            }
+			}
 
 			foreach ( $tests['async'] as $test ) {
 				$test_function = sprintf(
@@ -281,12 +281,12 @@ class Health_Check {
 
 				if ( method_exists( $health_check_site_status, $test_function ) && is_callable( array( $health_check_site_status, $test_function ) ) ) {
 					$health_check_js_variables['site_status']['async'][] = array(
-                        'test'      => $test['test'],
-                        'completed' => false,
-                    );
+						'test'      => $test['test'],
+						'completed' => false,
+					);
 				}
-            }
-        }
+			}
+		}
 
 		wp_enqueue_style( 'health-check', HEALTH_CHECK_PLUGIN_URL . '/assets/css/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
 
@@ -304,8 +304,8 @@ class Health_Check {
 	 * @return void
 	 */
 	public function action_admin_menu() {
-	    $critical_issues = 0;
-		$issue_counts = get_transient( 'health-check-site-status-result' );
+		$critical_issues = 0;
+		$issue_counts    = get_transient( 'health-check-site-status-result' );
 
 		if ( false !== $issue_counts ) {
 			$issue_counts = json_decode( $issue_counts );
@@ -313,20 +313,20 @@ class Health_Check {
 			$critical_issues = esc_html( $issue_counts->critical );
 		}
 
-	    $menu_title =
-            sprintf(
-                // translators: %s: Critical issue counter, if any.
-                _x( 'Site Health %s', 'Menu, Section and Page Title', 'health-check' ),
-                ( true ? sprintf('<span class="awaiting-mod">%d</span>', absint( $critical_issues ) ) : '' )
-            );
+		$menu_title =
+			sprintf(
+				// translators: %s: Critical issue counter, if any.
+				_x( 'Site Health %s', 'Menu, Section and Page Title', 'health-check' ),
+				( true ? sprintf( '<span class="awaiting-mod">%d</span>', absint( $critical_issues ) ) : '' )
+			);
 
 		add_dashboard_page(
-            _x( 'Site Health', 'Menu, Section and Page Title', 'health-check' ),
-            $menu_title,
-            'manage_options',
-            'health-check',
-            array( $this, 'dashboard_page' )
-        );
+			_x( 'Site Health', 'Menu, Section and Page Title', 'health-check' ),
+			$menu_title,
+			'manage_options',
+			'health-check',
+			array( $this, 'dashboard_page' )
+		);
 	}
 
 	/**
@@ -404,17 +404,17 @@ class Health_Check {
 	 */
 	public function dashboard_page() {
 		?>
-        <div class="wrap health-check-header">
+		<div class="wrap health-check-header">
 			<h1>
 				<?php _ex( 'Site Health', 'Menu, Section and Page Title', 'health-check' ); ?>
 			</h1>
 
-            <div id="progressbar" class="loading" data-pct="0" role="progressbar">
-                <svg width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                    <circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-                    <circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-                </svg>
-            </div>
+			<div id="progressbar" class="loading" data-pct="0" role="progressbar">
+				<svg width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+					<circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+					<circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+				</svg>
+			</div>
 
 			<?php
 			$tabs = array(
@@ -443,10 +443,10 @@ class Health_Check {
 				}
 				?>
 			</nav>
-            <div class="wp-clearfix"></div>
-        </div>
+			<div class="wp-clearfix"></div>
+		</div>
 
-        <div class="wrap health-check-body">
+		<div class="wrap health-check-body">
 
 			<?php
 			switch ( $current_tab ) {
