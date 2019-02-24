@@ -3,7 +3,7 @@ Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.0
 Tested up to: 5.0
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,11 @@ Are you unfamiliar with how to clear your cookies? No worries, you may also clos
 3. The generic PHP information tab, when more detailed information is required.
 
 == Changelog ==
+
+= v1.2.5 =
+* Fix: Ensure the REST API status test runs as intended.
+* Fix: Remove warning on plugin screens when premium plugins are used.
+* Fix: Backup reminder would not remain dismissed in all scenarios after the recent update.
 
 = v1.2.4 =
 * Security: Prevent arbitrary file viewing through the integrity file actions. Independently reported by Julien Legras of [Synacktiv](https://synacktiv.com) and siliconforks.
