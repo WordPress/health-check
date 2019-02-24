@@ -11,9 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-    <h2>
-		<?php esc_html_e( 'Extended PHP Information', 'health-check' ); ?>
-    </h2>
+<h2>
+	<?php esc_html_e( 'Extended PHP Information', 'health-check' ); ?>
+</h2>
 
 <?php
 if ( ! function_exists( 'phpinfo' ) ) {
