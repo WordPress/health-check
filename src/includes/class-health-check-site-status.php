@@ -38,7 +38,7 @@ class Health_Check_Site_Status {
 	}
 
 	public function enqueue_scripts() {
-		if ( ! is_admin()  ) {
+		if ( ! is_admin() ) {
 			return;
 		}
 
@@ -136,7 +136,7 @@ class Health_Check_Site_Status {
 		if ( ! is_array( $core_updates ) ) {
 			$result['status'] = 'recommended';
 
-			$result['label']  = sprintf(
+			$result['label'] = sprintf(
 				// translators: %s: Your current version of WordPress.
 				esc_html__( 'WordPress version %s', 'health-check' ),
 				$core_current_version
@@ -178,7 +178,7 @@ class Health_Check_Site_Status {
 						$result['status']      = 'recommended';
 						$result['description'] = sprintf(
 							'<p>%s</p>',
-							esc_html__( 'A new version of WordPress is available.','health-check' )
+							esc_html__( 'A new version of WordPress is available.', 'health-check' )
 						);
 					} else {
 						// This is a minor version, sometimes considered more critical.
@@ -978,7 +978,7 @@ class Health_Check_Site_Status {
 			'status'      => '',
 			'badge'       => array(
 				'label' => 'Security',
-				'color' => 'red'
+				'color' => 'red',
 			),
 			'description' => sprintf(
 				'<p>%s</p>',
@@ -1145,7 +1145,7 @@ class Health_Check_Site_Status {
 			$result['description'] = sprintf(
 				'<p>%s</p>',
 				sprintf(
-					//translators: %s: The error message returned while from the cron scheduler.
+					// translators: %s: The error message returned while from the cron scheduler.
 					esc_html__( 'While trying to test your sites scheduled events, the following error was returned: %s', 'health-check' ),
 					$scheduled_events->has_missed_cron()->get_error_message()
 				)
@@ -1482,39 +1482,39 @@ class Health_Check_Site_Status {
 					'label' => __( 'WordPress Version', 'health-check' ),
 					'test'  => 'wordpress_version',
 				),
-				'plugin_version' => array(
+				'plugin_version'    => array(
 					'label' => __( 'Plugin Versions', 'health-check' ),
 					'test'  => 'plugin_version',
 				),
-				'theme_version' => array(
+				'theme_version'     => array(
 					'label' => __( 'Theme Versions', 'health-check' ),
 					'test'  => 'theme_version',
 				),
-				'php_version' => array(
+				'php_version'       => array(
 					'label' => __( 'PHP Version', 'health-check' ),
 					'test'  => 'php_version',
 				),
-				'sql_server' => array(
+				'sql_server'        => array(
 					'label' => __( 'Database Server version', 'health-check' ),
 					'test'  => 'sql_server',
 				),
-				'php_extensions' => array(
+				'php_extensions'    => array(
 					'label' => __( 'PHP Extensions', 'health-check' ),
 					'test'  => 'php_extensions',
 				),
-				'utf8mb4_support' => array(
+				'utf8mb4_support'   => array(
 					'label' => __( 'MySQL utf8mb4 support', 'health-check' ),
 					'test'  => 'utf8mb4_support',
 				),
-				'https_status' => array(
+				'https_status'      => array(
 					'label' => __( 'HTTPS status', 'health-check' ),
 					'test'  => 'https_status',
 				),
-				'ssl_support' => array(
+				'ssl_support'       => array(
 					'label' => __( 'Secure communication', 'health-check' ),
 					'test'  => 'ssl_support',
 				),
-				'scheduled_events' => array(
+				'scheduled_events'  => array(
 					'label' => __( 'Scheduled events', 'health-check' ),
 					'test'  => 'scheduled_events',
 				),
@@ -1522,7 +1522,7 @@ class Health_Check_Site_Status {
 					'label' => __( 'Plugin and Theme Updates', 'health-check' ),
 					'test'  => 'extension_updates',
 				),
-				'http_requests' => array(
+				'http_requests'     => array(
 					'label' => __( 'HTTP Requests', 'health-check' ),
 					'test'  => 'http_requests',
 				),
@@ -1532,11 +1532,11 @@ class Health_Check_Site_Status {
 					'label' => __( 'Communication with WordPress.org', 'health-check' ),
 					'test'  => 'dotorg_communication',
 				),
-				'background_updates' => array(
+				'background_updates'   => array(
 					'label' => __( 'Background updates', 'health-check' ),
 					'test'  => 'background_updates',
 				),
-				'loopback_requests' => array(
+				'loopback_requests'    => array(
 					'label' => __( 'Loopback request', 'health-check' ),
 					'test'  => 'loopback_requests',
 				),
