@@ -874,7 +874,7 @@ class Health_Check_Troubleshooting_MU {
 								</p>
 								<?php endif; ?>
 
-								<ul id="health-check-plugins">
+								<ul id="health-check-plugins" role="list">
 									<?php
 									$active_plugins   = array();
 									$inactive_plugins = array();
@@ -956,7 +956,7 @@ class Health_Check_Troubleshooting_MU {
 								</p>
 								<?php endif; ?>
 
-								<ul id="health-check-themes">
+								<ul id="health-check-themes" role="list">
 									<?php
 									foreach ( $themes as $count => $theme ) {
 										$active = $theme['active'];
