@@ -34,7 +34,7 @@ global $health_check_site_status;
 </div>
 
 <div class="view-more">
-	<button type="button" class="button button-link site-health-view-passed">
+	<button type="button" class="button button-link site-health-view-passed" aria-expanded="false">
 		<?php esc_html_e( 'Show passed tests', 'health-check' ); ?>
 	</button>
 </div>

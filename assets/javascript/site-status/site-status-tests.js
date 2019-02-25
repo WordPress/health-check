@@ -2,10 +2,11 @@
 jQuery( document ).ready(function( $ ) {
 	var data;
 
-	$( 'body.dashboard_page_health-check' ).on( 'click', '.site-health-view-passed', function() {
-		$( this ).hide();
+	$( '.site-health-view-passed' ).on( 'click', function() {
+		var goodIssuesWrapper = $( '#health-check-issues-good' );
 
-		$( '#health-check-issues-good' ).show();
+		goodIssuesWrapper.toggleClass( 'hidden' );
+		$( this ).attr( 'aria-expanded', ! goodIssuesWrapper.hasClass( 'hidden' ) );
 	});
 
 	function HCAppendIssue( issue ) {
