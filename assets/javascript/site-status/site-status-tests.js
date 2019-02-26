@@ -20,7 +20,7 @@ jQuery( document ).ready(function( $ ) {
 
 		issueCounter = $( '.issue-count', issueWrapper );
 
-		htmlOutput = '<dt role="heading" aria-level="2">\n' +
+		htmlOutput = '<dt role="heading" aria-level="4">\n' +
 			'                <button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-' + issue.test + '" id="health-check-accordion-heading-' + issue.test + '" type="button">\n' +
 			'                    <span class="title">\n' +
 			'                        ' + issue.label + '\n' +
