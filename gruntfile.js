@@ -59,10 +59,20 @@ module.exports = function( grunt ) {
 		},
 		copy: {
 			files: {
-				cwd: 'src/',
-				src: '**/*',
-				dest: 'build/',
-				expand: true
+				files: [
+					{
+						cwd: 'src/',
+						src: '**/*',
+						dest: 'build/',
+						expand: true
+					},
+					{
+						cwd: 'assets/',
+						src: 'javascript/health-check-troubleshooting-mode.js',
+						dest: 'build/assets/',
+						expand: true
+					}
+				]
 			},
 			documents: {
 				cwd: 'docs/plugin/',
@@ -130,7 +140,10 @@ module.exports = function( grunt ) {
 		},
 		concat: {
 			healthcheck: {
-				src: [ 'assets/javascript/**/*.js' ],
+				src: [
+					'assets/javascript/**/*.js',
+					'!assets/javascript/health-check-troubleshooting-mode.js'
+				],
 				dest: 'build/assets/javascript/health-check.js'
 			}
 		},
