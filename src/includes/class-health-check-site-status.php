@@ -1212,7 +1212,6 @@ class Health_Check_Site_Status {
 				$severity_string = esc_html__( 'Warning', 'health-check' );
 			}
 
-
 			$output .= sprintf(
 				'<li><span class="%s"><span class="screen-reader-text">%s</span></span> %s</li>',
 				esc_attr( $test->severity ),

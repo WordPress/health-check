@@ -313,20 +313,21 @@ class Health_Check {
 			$critical_issues = absint( $issue_counts->critical );
 		}
 
+		$critical_count = sprintf(
+			'<span class="update-plugins count-%d"><span class="update-count">%s</span></span>',
+			esc_attr( $critical_issues ),
+			sprintf(
+				'%d<span class="screen-reader-text"> %s</span>',
+				esc_html( $critical_issues ),
+				esc_html_x( 'Critical issues', 'Issue counter label for the admin menu', 'health-check' )
+			)
+		);
+
 		$menu_title =
 			sprintf(
 				// translators: %s: Critical issue counter, if any.
 				_x( 'Site Health %s', 'Menu Title', 'health-check' ),
-				( ! $issue_counts || $critical_issues < 1 ? '' : sprintf(
-					'<span class="update-plugins count-%d"><span class="update-count">%s</span></span>',
-					esc_attr( $critical_issues ),
-                    sprintf(
-                        '%d<span class="screen-reader-text"> %s</span>',
-                        esc_html( $critical_issues ),
-                        esc_html_x( 'Critical issues', 'Issue counter label for the admin menu', 'health-check' )
-                        )
-					)
-				)
+				( ! $issue_counts || $critical_issues < 1 ? '' : $critical_count )
 			);
 
 		add_dashboard_page(
