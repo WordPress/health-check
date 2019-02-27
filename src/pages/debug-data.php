@@ -58,7 +58,7 @@ foreach ( $info as $section => $details ) {
 		continue;
 	}
 	?>
-	<dt role="heading" aria-level="2">
+	<dt role="heading" aria-level="3">
 		<button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-<?php echo esc_attr( $section ); ?>" id="health-check-accordion-heading-<?php echo esc_attr( $section ); ?>" type="button">
 			<span class="title">
 				<?php echo esc_html( $details['label'] ); ?>
