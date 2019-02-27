@@ -134,7 +134,7 @@ class Health_Check_Files_Integrity {
 			$output .= '</td></tr></tfoot><tbody>';
 			foreach ( $files as $tampered ) {
 				$output .= '<tr>';
-				$output .= '<td><span class="error"></span></td>';
+				$output .= '<td><span class="error"><span class="screen-reader-text">' . esc_html__( 'Error', 'health-check' ) . '</span></span></td>';
 				$output .= '<td>' . $filepath . $tampered[0] . '</td>';
 				$output .= '<td>' . $tampered[1] . '</td>';
 				$output .= '</tr>';
