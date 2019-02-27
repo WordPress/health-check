@@ -748,8 +748,9 @@ class Health_Check_Site_Status {
 				}
 
 				$failures[ $library ] = sprintf(
-					'<span class="%s"></span> %s',
+					'<span class="%s"><span class="screen-reader-text">%s</span></span> %s',
 					( $module['required'] ? 'error' : 'warning' ),
+					( $module['required'] ? esc_html__( 'Error', 'health-check' ) : esc_html__( 'Warning', 'health-check' ) ),
 					sprintf(
 						// translators: %1$2: If a module is required or recommended. %2$s: The module name.
 						__( 'The %1$s module, %2$s, is not installed, or has been disabled.', 'health-check' ),
@@ -1001,7 +1002,8 @@ class Health_Check_Site_Status {
 			$result['description'] .= sprintf(
 				'<p>%s</p>',
 				sprintf(
-					'<span class="error"></span> %s',
+					'<span class="error"><span class="screen-reader-text">%s</span></span> %s',
+					esc_html__( 'Error', 'health-check' ),
 					sprintf(
 						// translators: %1$s: The IP address WordPress.org resolves to. %2$s: The error returned by the lookup.
 						__( 'Your site is unable to reach WordPress.org at %1$s, and returned the error: %2$s', 'health-check' ),
@@ -1192,21 +1194,28 @@ class Health_Check_Site_Status {
 		$output = '<ul>';
 
 		foreach ( $tests as $test ) {
+			$severity_string = esc_html__( 'Passed', 'health-check' );
+
 			if ( 'fail' === $test->severity ) {
 				$result['label'] = esc_html__( 'Background updates are not working as expected', 'health-check' );
 
 				$result['status'] = 'critical';
+
+				$severity_string = esc_html__( 'Error', 'health-check' );
 			}
 
 			if ( 'warning' === $test->severity && 'good' === $result['status'] ) {
 				$result['label'] = esc_html__( 'Background updates may not be working properly', 'health-check' );
 
 				$result['status'] = 'recommended';
+
+				$severity_string = esc_html__( 'Warning', 'health-check' );
 			}
 
 			$output .= sprintf(
-				'<li><span class="%s"></span> %s</li>',
+				'<li><span class="%s"><span class="screen-reader-text">%s</span></span> %s</li>',
 				esc_attr( $test->severity ),
+				$severity_string,
 				$test->desc
 			);
 		}
@@ -1249,21 +1258,28 @@ class Health_Check_Site_Status {
 		$output = '<ul>';
 
 		foreach ( $tests as $test ) {
+			$severity_string = esc_html__( 'Passed', 'health-check' );
+
 			if ( 'fail' === $test->severity ) {
 				$result['label'] = esc_html__( 'Plugin or theme updates are not working', 'health-check' );
 
 				$result['status'] = 'critical';
+
+				$severity_string = esc_html__( 'Error', 'health-check' );
 			}
 
 			if ( 'warning' === $test->severity && 'good' === $result['status'] ) {
 				$result['label'] = esc_html__( 'Some plugin or theme updates may not work as expected', 'health-check' );
 
 				$result['status'] = 'recommended';
+
+				$severity_string = esc_html__( 'Warning', 'health-check' );
 			}
 
 			$output .= sprintf(
-				'<li><span class="%s"></span> %s</li>',
+				'<li><span class="%s"><span class="screen-reader-text">%s</span></span> %s</li>',
 				esc_attr( $test->severity ),
+				$severity_string,
 				$test->desc
 			);
 		}
