@@ -54,8 +54,6 @@ class Health_Check {
 
 		add_filter( 'plugin_action_links', array( $this, 'troubleshoot_plugin_action' ), 20, 4 );
 
-		add_action( 'admin_footer', array( $this, 'show_backup_warning' ) );
-
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ) );
@@ -69,25 +67,9 @@ class Health_Check {
 		add_action( 'wp_ajax_health-check-files-integrity-check', array( 'Health_Check_Files_Integrity', 'run_files_integrity_check' ) );
 		add_action( 'wp_ajax_health-check-view-file-diff', array( 'Health_Check_Files_Integrity', 'view_file_diff' ) );
 		add_action( 'wp_ajax_health-check-mail-check', array( 'Health_Check_Mail_Check', 'run_mail_check' ) );
-		add_action( 'wp_ajax_health-check-confirm-warning', array( 'Health_Check_Troubleshoot', 'confirm_warning' ) );
 
 		add_filter( 'health_check_tools_tab', array( 'Health_Check_Files_Integrity', 'tools_tab' ) );
 		add_filter( 'health_check_tools_tab', array( 'Health_Check_Mail_Check', 'tools_tab' ) );
-	}
-
-	/**
-	 * Show a warning modal about keeping backups.
-	 *
-	 * @uses Health_Check_Troubleshoot::has_seen_warning()
-	 *
-	 * @return void
-	 */
-	public function show_backup_warning() {
-		if ( Health_Check_Troubleshoot::has_seen_warning() ) {
-			return;
-		}
-
-		include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/modals/backup-warning.php' );
 	}
 
 	/**
@@ -225,9 +207,6 @@ class Health_Check {
 				'site_health_complete' => esc_html__( 'All site health tests have finished running.', 'health-check' ),
 				'site_info_copied'     => esc_html__( 'Site information has been added to your clipboard.', 'health-check' ),
 			),
-			'warning'     => array(
-				'seen_backup' => Health_Check_Troubleshoot::has_seen_warning(),
-			),
 			'nonce'       => array(
 				'loopback_no_plugins'         => wp_create_nonce( 'health-check-loopback-no-plugins' ),
 				'loopback_individual_plugins' => wp_create_nonce( 'health-check-loopback-individual-plugins' ),
@@ -235,7 +214,6 @@ class Health_Check {
 				'files_integrity_check'       => wp_create_nonce( 'health-check-files-integrity-check' ),
 				'view_file_diff'              => wp_create_nonce( 'health-check-view-file-diff' ),
 				'mail_check'                  => wp_create_nonce( 'health-check-mail-check' ),
-				'confirm_warning'             => wp_create_nonce( 'health-check-confirm-warning' ),
 				'site_status'                 => wp_create_nonce( 'health-check-site-status' ),
 				'site_status_result'          => wp_create_nonce( 'health-check-site-status-result' ),
 			),
