@@ -631,6 +631,7 @@ class Health_Check_Troubleshooting_MU {
 		$wp_menu->add_menu( array(
 			'id'    => 'health-check',
 			'title' => esc_html__( 'Troubleshooting Mode', 'health-check' ),
+			'href'  => admin_url( '/' ),
 		) );
 
 		// Add a link to manage plugins if there are more than 20 set to be active.
@@ -646,6 +647,7 @@ class Health_Check_Troubleshooting_MU {
 				'id'     => 'health-check-plugins',
 				'title'  => esc_html__( 'Plugins', 'health-check' ),
 				'parent' => 'health-check',
+				'href'   => admin_url( 'plugins.php' ),
 			) );
 
 			$wp_menu->add_group( array(
@@ -708,6 +710,7 @@ class Health_Check_Troubleshooting_MU {
 			'id'     => 'health-check-theme',
 			'title'  => esc_html__( 'Themes', 'health-check' ),
 			'parent' => 'health-check',
+			'href'   => admin_url( 'themes.php' ),
 		) );
 
 		$themes = wp_prepare_themes_for_js();
@@ -720,8 +723,7 @@ class Health_Check_Troubleshooting_MU {
 				),
 				'title'  => sprintf(
 					'%s %s',
-					// translators: Prefix for the active theme in a listing.
-					( $theme['active'] ? esc_html__( 'Active:', 'health-check' ) : '' ),
+					( $theme['active'] ? esc_html_x( 'Active:', 'Prefix for the active theme in troubleshooting mode', 'health-check' ) : esc_html_x( 'Change to', 'Prefix for inactive themes in troubleshooting mode', 'health-check' ) ),
 					$theme['name']
 				),
 				'parent' => 'health-check-theme',
