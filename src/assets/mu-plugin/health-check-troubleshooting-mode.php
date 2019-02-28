@@ -868,12 +868,10 @@ class Health_Check_Troubleshooting_MU {
 								</h3>
 
 								<?php if ( count( $this->active_plugins ) > 5 ) : ?>
-								<p>
-									<button type="button" class="button button-link health-check-toggle-visibility" data-element="health-check-plugins" aria-expanded="false">
-										<span class="health-check-toggle-text"><?php esc_html_e( 'Show all plugins', 'health-check' ); ?></span>
-										<span class="icon" aria-hidden="true"></span>
-									</button>
-								</p>
+                                <button type="button" class="button button-link health-check-toggle-visibility" data-element="health-check-plugins" aria-expanded="false">
+                                    <span class="health-check-toggle-text"><?php esc_html_e( 'Show all plugins', 'health-check' ); ?></span>
+                                    <span class="icon" aria-hidden="true"></span>
+                                </button>
 								<?php endif; ?>
 
 								<ul id="health-check-plugins" role="list">
@@ -950,12 +948,10 @@ class Health_Check_Troubleshooting_MU {
 								?>
 
 								<?php if ( count( $themes ) > 5 ) : ?>
-								<p>
-									<button type="button" class="button button-link health-check-toggle-visibility" data-element="health-check-themes" aria-expanded="false">
-										<span class="health-check-toggle-text"><?php esc_html_e( 'Show all themes', 'health-check' ); ?></span>
-										<span class="icon" aria-hidden="true"></span>
-									</button>
-								</p>
+                                <button type="button" class="button button-link health-check-toggle-visibility" data-element="health-check-themes" aria-expanded="false">
+                                    <span class="health-check-toggle-text"><?php esc_html_e( 'Show all themes', 'health-check' ); ?></span>
+                                    <span class="icon" aria-hidden="true"></span>
+                                </button>
 								<?php endif; ?>
 
 								<ul id="health-check-themes" role="list">

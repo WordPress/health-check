@@ -10,6 +10,11 @@
 		max-width: initial;
 	}
 
+	h3 {
+
+		display: inline-block;
+	}
+
 	.notices {
 
 		.no-notices {
@@ -45,6 +50,18 @@
 		}
 	}
 
+	ul {
+
+		li {
+
+			@media all and (max-width: 870px) {
+
+				display: inline-block;
+				width: 100%;
+			}
+		}
+	}
+
 	.welcome-panel-column-container {
 
 		position: initial;
@@ -73,8 +90,10 @@
 
 	.health-check-toggle-visibility {
 
+		margin-left: 2rem;
 		position: relative;
 		padding-right: 1.5rem;
+		vertical-align: bottom;
 
 		.icon {
 
@@ -93,6 +112,16 @@
 				transform: translateY(-50%) rotate(-135deg);
 				top: 60%;
 			}
+		}
+	}
+
+	.toggle-visibility {
+
+		display: block;
+
+		&.hidden {
+
+			display: none;
 		}
 	}
 }
