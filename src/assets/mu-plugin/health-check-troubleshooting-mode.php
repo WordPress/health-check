@@ -723,7 +723,7 @@ class Health_Check_Troubleshooting_MU {
 				),
 				'title'  => sprintf(
 					'%s %s',
-					( $theme['active'] ? esc_html_x( 'Active:', 'Prefix for the active theme in troubleshooting mode', 'health-check' ) : esc_html_x( 'Change to', 'Prefix for inactive themes in troubleshooting mode', 'health-check' ) ),
+					( $theme['active'] ? esc_html_x( 'Active:', 'Prefix for the active theme in troubleshooting mode', 'health-check' ) : esc_html_x( 'Switch to', 'Prefix for inactive themes in troubleshooting mode', 'health-check' ) ),
 					$theme['name']
 				),
 				'parent' => 'health-check-theme',
