@@ -17,6 +17,15 @@
 
 	.notices {
 
+		display: inline-block;
+		vertical-align: top;
+		margin-top: 0.5rem;
+
+		@media all and (min-width: 870px) {
+
+			margin-left: 1rem;
+		}
+
 		.no-notices {
 
 			p {
@@ -84,8 +93,15 @@
 
 	.about-description {
 
-		color: inherit;
 		margin: 1em 0;
+		max-width: 700px;
+		display: inline-block;
+
+		p {
+
+			color: inherit;
+			font-size: 16px;
+		}
 	}
 
 	.health-check-toggle-visibility {

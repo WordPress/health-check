@@ -806,13 +806,15 @@ class Health_Check_Troubleshooting_MU {
 						<?php esc_html_e( 'Health Check &mdash; Troubleshooting Mode', 'health-check' ); ?>
 					</h2>
 
-					<p class="about-description">
-						<?php _e( 'Your site is currently in Troubleshooting Mode. This has <strong>no effect on your site visitors</strong>, they will continue to view your site as usual, but for you it will look as if you had just installed WordPress for the first time.', 'health-check' ); ?>
-					</p>
+                    <div class="about-description">
+                        <p>
+                            <?php _e( 'Your site is currently in Troubleshooting Mode. This has <strong>no effect on your site visitors</strong>, they will continue to view your site as usual, but for you it will look as if you had just installed WordPress for the first time.', 'health-check' ); ?>
+                        </p>
 
-					<p class="about-description">
-						<?php _e( 'Here you can enable individual plugins or themes, helping you to find out what might be causing strange behaviors on your site. Do note that <strong>any changes you make to settings will be kept</strong> when you disable Troubleshooting Mode.', 'health-check' ); ?>
-					</p>
+                        <p>
+                            <?php _e( 'Here you can enable individual plugins or themes, helping you to find out what might be causing strange behaviors on your site. Do note that <strong>any changes you make to settings will be kept</strong> when you disable Troubleshooting Mode.', 'health-check' ); ?>
+                        </p>
+                    </div>
 
 					<div class="notices">
 						<h3>
