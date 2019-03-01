@@ -1,3 +1,5 @@
+@import "variables";
+
 body {
 
 	&.dashboard_page_health-check {
@@ -16,7 +18,7 @@ body {
 
 		p {
 
-			font-size: 1rem;
+			font-size: $font_size__text;
 		}
 
 		ul,
@@ -24,7 +26,7 @@ body {
 
 			li {
 
-				font-size: 1rem;
+				font-size: $font_size__text;
 				line-height: 1.5;
 			}
 		}
@@ -33,14 +35,14 @@ body {
 
 			.button {
 
-				font-size: 1rem;
+				font-size: $font_size__text;
 			}
 		}
 
 		h2 {
 
 			padding: 0 0.5rem;
-			font-size: 1.5rem;
+			font-size: $font_size__h2;
 			font-weight: 600;
 		}
 
@@ -60,7 +62,7 @@ body {
 
 					display: inline-block;
 					font-weight: 600;
-					font-size: 2.5rem;
+					font-size: $font_size__h1;
 					margin: 2rem 0.8rem 2rem 2rem;
 				}
 
@@ -190,7 +192,7 @@ body {
 					display: inline-block;
 					text-decoration: none;
 					color: inherit;
-					font-size: 1.2rem;
+					font-size: $font_size__nav;
 					padding: 0.5rem;
 					margin: 0 1rem;
 					border-bottom: 4px solid transparent;
@@ -226,7 +228,7 @@ body {
 				th,
 				td {
 
-					font-size: 1rem;
+					font-size: $font_size__text;
 
 					&:first-child {
 
@@ -240,7 +242,7 @@ body {
 				td {
 
 					width: 70%;
-					font-size: 1rem;
+					font-size: $font_size__text;
 
 					&:first-child {
 
@@ -304,6 +306,11 @@ body {
 
 		.spinner {
 			float: none;
+		}
+
+		.button {
+
+			font-size: $font_size__text;
 		}
 
 		/* Info screen styles */
