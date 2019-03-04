@@ -16,7 +16,7 @@
 
 			p {
 
-				color: #bfc3c7;
+				color: inherit;
 				font-size: 1.2rem;
 			}
 		}
@@ -45,16 +45,6 @@
 		}
 	}
 
-	.toggle-visibility {
-
-		display: none;
-
-		&.visible {
-
-			display: block;
-		}
-	}
-
 	.welcome-panel-column-container {
 
 		position: initial;
@@ -77,6 +67,7 @@
 
 	.about-description {
 
+		color: inherit;
 		margin: 1em 0;
 	}
 

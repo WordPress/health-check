@@ -9,7 +9,13 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
+?>
 
+<h2>
+	<?php esc_html_e( 'Extended PHP Information', 'health-check' ); ?>
+</h2>
+
+<?php
 if ( ! function_exists( 'phpinfo' ) ) {
 	?>
 
