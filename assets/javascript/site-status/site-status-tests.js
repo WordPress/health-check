@@ -90,7 +90,7 @@ jQuery( document ).ready(function( $ ) {
 			}
 		);
 
-		wp.a11y.speak( HealthCheck.string.site_healt_complete, 'polite' );
+		wp.a11y.speak( HealthCheck.string.site_health_complete, 'polite' );
 	}
 
 	function maybeRunNextAsyncTest() {
