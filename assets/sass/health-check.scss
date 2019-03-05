@@ -1,3 +1,5 @@
+@import "variables";
+
 body {
 
 	&.dashboard_page_health-check {
@@ -12,26 +14,37 @@ body {
 
 			margin-right: 0;
 			margin-left: 0;
+
+			> h2 {
+
+				padding: 1rem 0.5rem;
+				font-size: $font_size__h2;
+				font-weight: 600;
+				font-family: $font_family__h2;
+			}
 		}
 
 		p {
 
-			font-size: 1rem;
+			font-size: $font_size__text;
+		}
+
+		ul,
+		ol {
+
+			li {
+
+				font-size: $font_size__text;
+				line-height: 1.5;
+			}
 		}
 
 		.wp-core-ui {
 
 			.button {
 
-				font-size: 1rem;
+				font-size: $font_size__text;
 			}
-		}
-
-		h2 {
-
-			padding: 0 0.5rem;
-			font-size: 1.5rem;
-			font-weight: 600;
 		}
 
 		.health-check-header {
@@ -40,12 +53,135 @@ body {
 			margin-bottom: 1rem;
 			border-bottom: 2px solid #ccc;
 
-			h1 {
+			.title-section {
 
-				display: inline-block;
-				font-weight: 600;
-				font-size: 2.5rem;
-				margin: 2rem 0.8rem 2rem 2rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				h1 {
+
+					display: inline-block;
+					font-weight: 600;
+					font-size: $font_size__h1;
+					margin: 2rem 0.8rem 2rem 2rem;
+					font-family: $font_family__h1;
+				}
+
+				#progressbar {
+
+					display: inline-block;
+					height: 50px;
+					width: 50px;
+					margin: 0;
+					border-radius: 100%;
+					position: relative;
+					font-weight: 600;
+					font-size: 0.5rem;
+
+					&:after {
+
+						position: absolute;
+						display: block;
+						height: 160px;
+						width: 160px;
+						left: 50%;
+						top: 50%;
+						content: attr(data-pct) "%";
+						margin-top: -80px;
+						margin-left: -80px;
+						border-radius: 100%;
+						line-height: 160px;
+						font-size: 2em;
+					}
+
+					&.hidden {
+
+						display: none;
+					}
+
+					&.loading {
+
+						&:after {
+
+							animation: loadingEllipsis 3s infinite ease-in-out;
+						}
+
+						svg {
+
+							#bar {
+
+								stroke-dashoffset: 0;
+								stroke: #adc5d2;
+								animation: loadingPulse 3s infinite ease-in-out;
+							}
+						}
+					}
+
+					svg {
+
+						circle {
+
+							stroke-dashoffset: 0;
+							transition: stroke-dashoffset 1s linear;
+							stroke: #ccc;
+							stroke-width: 2em;
+						}
+
+						#bar {
+
+							stroke-dashoffset: 565;
+							stroke: #dc3232;
+
+							&.green {
+
+								stroke: #46b450;
+							}
+
+							&.orange {
+
+								stroke: #ffb900;
+							}
+						}
+					}
+				}
+
+				@keyframes loadingPulse {
+
+					0% {
+
+						stroke: #adc5d2;
+					}
+
+					50% {
+
+						stroke: #00a0d2;
+					}
+
+					100% {
+
+						stroke: #adc5d2;
+
+					}
+				}
+
+				@keyframes loadingEllipsis {
+
+					0% {
+
+						content: ".";
+					}
+
+					50% {
+
+						content: "..";
+					}
+
+					100% {
+
+						content: "...";
+					}
+				}
 			}
 
 			.tabs-wrapper {
@@ -58,7 +194,7 @@ body {
 					display: inline-block;
 					text-decoration: none;
 					color: inherit;
-					font-size: 1.2rem;
+					font-size: $font_size__nav;
 					padding: 0.5rem;
 					margin: 0 1rem;
 					border-bottom: 4px solid transparent;
@@ -94,7 +230,7 @@ body {
 				th,
 				td {
 
-					font-size: 1rem;
+					font-size: $font_size__text;
 
 					&:first-child {
 
@@ -108,7 +244,7 @@ body {
 				td {
 
 					width: 70%;
-					font-size: 1rem;
+					font-size: $font_size__text;
 
 					&:first-child {
 
@@ -172,6 +308,11 @@ body {
 
 		.spinner {
 			float: none;
+		}
+
+		.button {
+
+			font-size: $font_size__text;
 		}
 
 		/* Info screen styles */

@@ -1,5 +1,5 @@
 jQuery( document ).ready(function( $ ) {
-	$( '.dashboard_page_health-check' ).on( 'click', '.health-check-accordion-trigger', function() {
+	$( '.health-check-accordion' ).on( 'click', '.health-check-accordion-trigger', function() {
 		var isExpanded = ( 'true' === $( this ).attr( 'aria-expanded' ) );
 
 		if ( isExpanded ) {
