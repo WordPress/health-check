@@ -1,8 +1,25 @@
+@import "variables";
+
 #health-check-dashboard-widget {
+
+	display: grid;
+	grid-gap: 2%;
+	grid-template-columns: 100%;
+	padding: 13px;
+	background: #fff;
 
 	@media all and (min-width: 783px) {
 
 		margin-top: 3rem;
+		grid-template-columns: 49% 49%;
+	}
+
+	h2 {
+
+		.green {
+
+			color: #40860a;
+		}
 	}
 
 	.welcome-panel-content {
@@ -10,39 +27,33 @@
 		max-width: initial;
 	}
 
-	h3 {
-
-		display: inline-block;
-	}
-
-	.notices {
-
-		display: inline-block;
-		vertical-align: top;
-		margin-top: 0.5rem;
-
-		@media all and (min-width: 870px) {
-
-			margin-left: 1rem;
-		}
+	#health-check-accordion-block-notices {
 
 		.no-notices {
 
 			p {
 
-				color: inherit;
+				color: $font_color__troubleshooting_mode;
 				font-size: 1.2rem;
 			}
 		}
 
 		.notice {
 
+			p {
+
+				font-size: $font_size__text;
+			}
+
+			color: $font_color__troubleshooting_mode;
 			margin-left: 0;
 		}
 
 		.dismiss-notices {
 
-			float: right;
+			display: block;
+			width: 100%;
+			text-align: right;
 			margin-right: 1rem;
 		}
 	}
@@ -63,32 +74,14 @@
 
 		li {
 
+			font-size: $font_size__text;
+
 			@media all and (max-width: 870px) {
 
 				display: inline-block;
 				width: 100%;
 			}
 		}
-	}
-
-	.welcome-panel-column-container {
-
-		position: initial;
-
-		.welcome-panel-column {
-
-			&.is-standalone-button {
-
-				width: 100%;
-				text-align: right;
-
-				.disable-troubleshooting-mode {
-
-					position: relative;
-				}
-			}
-		}
-
 	}
 
 	.about-description {
@@ -104,40 +97,6 @@
 		}
 	}
 
-	.health-check-toggle-visibility {
-
-		margin-left: 2rem;
-		position: relative;
-		padding-right: 1.5rem;
-		vertical-align: bottom;
-
-		.icon {
-
-			border: solid hsl(0, 0%, 62%);
-			border-width: 0 2px 2px 0;
-			height: 0.3rem;
-			pointer-events: none;
-			position: absolute;
-			right: 0.5em;
-			top: 50%;
-			transform: translateY(-60%) rotate(45deg);
-			width: 0.3rem;
-
-			&.icon-up {
-
-				transform: translateY(-50%) rotate(-135deg);
-				top: 60%;
-			}
-		}
-	}
-
-	.toggle-visibility {
-
-		display: block;
-
-		&.hidden {
-
-			display: none;
-		}
-	}
+	/* Accordion styles */
+	@import "modules/accordion";
 }
