@@ -65,12 +65,6 @@ module.exports = function( grunt ) {
 						src: '**/*',
 						dest: 'build/',
 						expand: true
-					},
-					{
-						cwd: 'assets/',
-						src: 'javascript/health-check-troubleshooting-mode.js',
-						dest: 'build/assets/',
-						expand: true
 					}
 				]
 			},
@@ -141,8 +135,7 @@ module.exports = function( grunt ) {
 		concat: {
 			healthcheck: {
 				src: [
-					'assets/javascript/**/*.js',
-					'!assets/javascript/health-check-troubleshooting-mode.js'
+					'assets/javascript/**/*.js'
 				],
 				dest: 'build/assets/javascript/health-check.js'
 			}

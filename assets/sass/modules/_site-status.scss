@@ -6,128 +6,14 @@
 h3 {
 
 	padding: 0 0.5rem;
-	font-size: 1.5rem;
+	font-size: $font_size__h3;
 	font-weight: 600;
+	font-family: $font_family__h3;
 }
 
 .view-more {
 
 	text-align: center;
-}
-
-#progressbar {
-
-	display: inline-block;
-	height: 50px;
-	width: 50px;
-	margin: 0;
-	border-radius: 100%;
-	position: relative;
-	font-weight: 600;
-	font-size: 0.5rem;
-
-	&:after {
-
-		position: absolute;
-		display: block;
-		height: 160px;
-		width: 160px;
-		left: 50%;
-		top: 50%;
-		content: attr(data-pct) "%";
-		margin-top: -80px;
-		margin-left: -80px;
-		border-radius: 100%;
-		line-height: 160px;
-		font-size: 2em;
-	}
-
-	&.hidden {
-
-		display: none;
-	}
-
-	&.loading {
-
-		&:after {
-
-			animation: loadingEllipsis 3s infinite ease-in-out;
-		}
-
-		svg {
-
-			#bar {
-
-				stroke-dashoffset: 0;
-				stroke: #adc5d2;
-				animation: loadingPulse 3s infinite ease-in-out;
-			}
-		}
-	}
-
-	svg {
-
-		circle {
-
-			stroke-dashoffset: 0;
-			transition: stroke-dashoffset 1s linear;
-			stroke: #ccc;
-			stroke-width: 2em;
-		}
-
-		#bar {
-
-			stroke-dashoffset: 565;
-			stroke: #dc3232;
-
-			&.green {
-
-				stroke: #46b450;
-			}
-
-			&.orange {
-
-				stroke: #ffb900;
-			}
-		}
-	}
-}
-
-@keyframes loadingPulse {
-
-	0% {
-
-		stroke: #adc5d2;
-	}
-
-	50% {
-
-		stroke: #00a0d2;
-	}
-
-	100% {
-
-		stroke: #adc5d2;
-
-	}
-}
-
-@keyframes loadingEllipsis {
-
-	0% {
-
-		content: ".";
-	}
-
-	50% {
-
-		content: "..";
-	}
-
-	100% {
-
-		content: "...";
-	}
 }
 
 .issues-wrapper {
