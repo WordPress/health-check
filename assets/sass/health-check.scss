@@ -20,6 +20,7 @@ body {
 				padding: 1rem 0.5rem;
 				font-size: $font_size__h2;
 				font-weight: 600;
+				font-family: $font_family__h2;
 			}
 		}
 
@@ -64,6 +65,7 @@ body {
 					font-weight: 600;
 					font-size: $font_size__h1;
 					margin: 2rem 0.8rem 2rem 2rem;
+					font-family: $font_family__h1;
 				}
 
 				#progressbar {
