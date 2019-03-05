@@ -138,8 +138,8 @@ jQuery( document ).ready(function( $ ) {
 		}
 	}
 
-	if ( typeof HealthCheck !== 'undefined' ) {
-		if (0 === HealthCheck.site_status.direct.length && 0 === HealthCheck.site_status.async.length) {
+	if ( 'undefined' !== typeof HealthCheck ) {
+		if ( 0 === HealthCheck.site_status.direct.length && 0 === HealthCheck.site_status.async.length ) {
 			HCRecalculateProgression();
 		} else {
 			HealthCheck.site_status.issues = {
@@ -149,13 +149,13 @@ jQuery( document ).ready(function( $ ) {
 			};
 		}
 
-		if (HealthCheck.site_status.direct.length > 0) {
-			$.each(HealthCheck.site_status.direct, function () {
-				HCAppendIssue(this);
+		if ( HealthCheck.site_status.direct.length > 0 ) {
+			$.each( HealthCheck.site_status.direct, function() {
+				HCAppendIssue( this );
 			});
 		}
 
-		if (HealthCheck.site_status.async.length > 0) {
+		if ( HealthCheck.site_status.async.length > 0 ) {
 			data = {
 				'action': 'health-check-site-status',
 				'feature': HealthCheck.site_status.async[0].test,
@@ -167,8 +167,8 @@ jQuery( document ).ready(function( $ ) {
 			$.post(
 				ajaxurl,
 				data,
-				function (response) {
-					HCAppendIssue(response.data);
+				function( response ) {
+					HCAppendIssue( response.data );
 					maybeRunNextAsyncTest();
 				}
 			);
