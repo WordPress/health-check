@@ -66,7 +66,7 @@
 
 			&.blue {
 
-				background-color: #00a0d2;
+				background-color: #0073af;
 				color: #fff;
 			}
 
@@ -84,8 +84,32 @@
 
 			&.green {
 
-				background-color: #46b450;
+				background-color: #40860a;
 				color: #fff;
+			}
+
+			&.pink {
+
+				background-color: #f4b0fc;
+				color: #000;
+			}
+
+			&.gray {
+
+				background-color: #ccc;
+				color: #000;
+			}
+
+			&.light-blue {
+
+				background-color: #10e9fb;
+				color: #000;
+			}
+
+			&.light-green {
+
+				background-color: #60f999;
+				color: #000;
 			}
 		}
 
