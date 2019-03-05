@@ -414,13 +414,14 @@ class Health_Check {
 				<?php
 				foreach ( $tabs as $tab => $label ) {
 					printf(
-						'<a href="%s" class="tab %s">%s</a>',
+						'<a href="%s" class="tab %s"%s>%s</a>',
 						sprintf(
 							'%s&tab=%s',
 							menu_page_url( 'health-check', false ),
 							$tab
 						),
 						( $current_tab === $tab ? 'active' : '' ),
+						( $current_tab === $tab ? ' aria-current="true"' : '' ),
 						$label
 					);
 				}
