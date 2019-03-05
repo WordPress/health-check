@@ -71,6 +71,14 @@ jQuery( document ).ready(function( $ ) {
 
 		$circle.css( { strokeDashoffset: pct } );
 
+		if ( parseInt( HealthCheck.site_status.issues.critical, 0 ) < 1 ) {
+			$( '#health-check-issues-critical' ).addClass( 'hidden' );
+		}
+
+		if ( parseInt( HealthCheck.site_status.issues.recommended, 0 ) < 1 ) {
+			$( '#health-check-issues-recommended' ).addClass( 'hidden' );
+		}
+
 		if ( val >= 50 ) {
 			$circle.addClass( 'orange' ).removeClass( 'red' );
 		}
