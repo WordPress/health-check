@@ -1,8 +1,25 @@
+@import "variables";
+
 #health-check-dashboard-widget {
+
+	display: grid;
+	grid-gap: 2%;
+	grid-template-columns: 100%;
+	padding: 13px;
+	background: #fff;
 
 	@media all and (min-width: 783px) {
 
 		margin-top: 3rem;
+		grid-template-columns: 49% 49%;
+	}
+
+	h2 {
+
+		.green {
+
+			color: #40860a;
+		}
 	}
 
 	.welcome-panel-content {
@@ -10,25 +27,33 @@
 		max-width: initial;
 	}
 
-	.notices {
+	#health-check-accordion-block-notices {
 
 		.no-notices {
 
 			p {
 
-				color: inherit;
+				color: $font_color__troubleshooting_mode;
 				font-size: 1.2rem;
 			}
 		}
 
 		.notice {
 
+			p {
+
+				font-size: $font_size__text;
+			}
+
+			color: $font_color__troubleshooting_mode;
 			margin-left: 0;
 		}
 
 		.dismiss-notices {
 
-			float: right;
+			display: block;
+			width: 100%;
+			text-align: right;
 			margin-right: 1rem;
 		}
 	}
@@ -45,54 +70,33 @@
 		}
 	}
 
-	.welcome-panel-column-container {
+	ul {
 
-		position: initial;
+		li {
 
-		.welcome-panel-column {
+			font-size: $font_size__text;
 
-			&.is-standalone-button {
+			@media all and (max-width: 870px) {
 
+				display: inline-block;
 				width: 100%;
-				text-align: right;
-
-				.disable-troubleshooting-mode {
-
-					position: relative;
-				}
 			}
 		}
-
 	}
 
 	.about-description {
 
-		color: inherit;
 		margin: 1em 0;
-	}
+		max-width: 700px;
+		display: inline-block;
 
-	.health-check-toggle-visibility {
+		p {
 
-		position: relative;
-		padding-right: 1.5rem;
-
-		.icon {
-
-			border: solid hsl(0, 0%, 62%);
-			border-width: 0 2px 2px 0;
-			height: 0.3rem;
-			pointer-events: none;
-			position: absolute;
-			right: 0.5em;
-			top: 50%;
-			transform: translateY(-60%) rotate(45deg);
-			width: 0.3rem;
-
-			&.icon-up {
-
-				transform: translateY(-50%) rotate(-135deg);
-				top: 60%;
-			}
+			color: inherit;
+			font-size: 16px;
 		}
 	}
+
+	/* Accordion styles */
+	@import "modules/accordion";
 }

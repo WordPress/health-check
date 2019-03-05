@@ -71,6 +71,14 @@ jQuery( document ).ready(function( $ ) {
 
 		$circle.css( { strokeDashoffset: pct } );
 
+		if ( parseInt( HealthCheck.site_status.issues.critical, 0 ) < 1 ) {
+			$( '#health-check-issues-critical' ).addClass( 'hidden' );
+		}
+
+		if ( parseInt( HealthCheck.site_status.issues.recommended, 0 ) < 1 ) {
+			$( '#health-check-issues-recommended' ).addClass( 'hidden' );
+		}
+
 		if ( val >= 50 ) {
 			$circle.addClass( 'orange' ).removeClass( 'red' );
 		}
@@ -130,38 +138,40 @@ jQuery( document ).ready(function( $ ) {
 		}
 	}
 
-	if ( 0 === HealthCheck.site_status.direct.length && 0 === HealthCheck.site_status.async.length ) {
-		HCRecalculateProgression();
-	} else {
-		HealthCheck.site_status.issues = {
-			'good': 0,
-			'recommended': 0,
-			'critical': 0
-		};
-	}
+	if ( 'undefined' !== typeof HealthCheck ) {
+		if ( 0 === HealthCheck.site_status.direct.length && 0 === HealthCheck.site_status.async.length ) {
+			HCRecalculateProgression();
+		} else {
+			HealthCheck.site_status.issues = {
+				'good': 0,
+				'recommended': 0,
+				'critical': 0
+			};
+		}
 
-	if ( HealthCheck.site_status.direct.length > 0 ) {
-		$.each( HealthCheck.site_status.direct, function() {
-			HCAppendIssue( this );
-		} );
-	}
+		if ( HealthCheck.site_status.direct.length > 0 ) {
+			$.each( HealthCheck.site_status.direct, function() {
+				HCAppendIssue( this );
+			});
+		}
 
-	if ( HealthCheck.site_status.async.length > 0 ) {
-		data = {
-			'action': 'health-check-site-status',
-			'feature': HealthCheck.site_status.async[0].test,
-			'_wpnonce': HealthCheck.nonce.site_status
-		};
+		if ( HealthCheck.site_status.async.length > 0 ) {
+			data = {
+				'action': 'health-check-site-status',
+				'feature': HealthCheck.site_status.async[0].test,
+				'_wpnonce': HealthCheck.nonce.site_status
+			};
 
-		HealthCheck.site_status.async[0].completed = true;
+			HealthCheck.site_status.async[0].completed = true;
 
-		$.post(
-			ajaxurl,
-			data,
-			function( response ) {
-				HCAppendIssue( response.data );
-				maybeRunNextAsyncTest();
-			}
-		);
+			$.post(
+				ajaxurl,
+				data,
+				function( response ) {
+					HCAppendIssue( response.data );
+					maybeRunNextAsyncTest();
+				}
+			);
+		}
 	}
 });

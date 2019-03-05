@@ -388,15 +388,17 @@ class Health_Check {
 	public function dashboard_page() {
 		?>
 		<div class="wrap health-check-header">
-			<h1>
-				<?php _ex( 'Site Health', 'Menu, Section and Page Title', 'health-check' ); ?>
-			</h1>
+			<div class="title-section">
+				<h1>
+					<?php _ex( 'Site Health', 'Menu, Section and Page Title', 'health-check' ); ?>
+				</h1>
 
-			<div id="progressbar" class="loading" data-pct="0" role="progressbar">
-				<svg width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
-					<circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-					<circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-				</svg>
+				<div id="progressbar" class="loading" data-pct="0" role="progressbar">
+					<svg width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+						<circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+						<circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+					</svg>
+				</div>
 			</div>
 
 			<?php

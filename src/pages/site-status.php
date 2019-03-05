@@ -39,7 +39,7 @@ global $health_check_site_status;
 	</button>
 </div>
 
-<div class="issues-wrapper" id="health-check-issues-good">
+<div class="issues-wrapper hidden" id="health-check-issues-good">
 	<h3>
 		<span class="issue-count">0</span> <?php esc_html_e( 'Items with no issues detected', 'health-check' ); ?>
 	</h3>
