@@ -19,36 +19,44 @@ $info = Health_Check_Debug_Data::debug_data();
 	<?php esc_html_e( 'Site Info', 'health-check' ); ?>
 </h2>
 
-<textarea id="system-information-default-copy-field" class="system-information-copy-wrapper" rows="10"><?php Health_Check_Debug_Data::textarea_format( $info ); ?></textarea>
-
-<?php
-if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) :
-
-	$english_info = Health_Check_Debug_Data::debug_data( 'en_US' );
-
-	// Workaround for locales not being properly loaded back, see issue #30 on GitHub.
-	if ( ! is_textdomain_loaded( 'health-check' ) && _get_path_to_translation( 'health-check' ) ) {
-		load_textdomain( 'health-check', _get_path_to_translation( 'health-check' ) );
-	}
-	?>
-	<textarea id="system-information-english-copy-field" class="system-information-copy-wrapper" rows="10"><?php Health_Check_Debug_Data::textarea_format( $english_info ); ?></textarea>
-
-<?php endif; ?>
-
 <p>
 	<?php esc_html_e( 'You can export the information on this page so it can be easily copied and pasted in support requests such as on the WordPress.org forums, or shared with your website / theme / plugin developers.', 'health-check' ); ?>
 </p>
 
-<div class="copy-button-wrapper">
-	<button type="button" class="button button-primary health-check-copy-field" data-copy-field="default"><?php esc_html_e( 'Copy to clipboard', 'health-check' ); ?></button>
-	<span class="copy-field-success">Copied!</span>
-</div>
-<?php if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) : ?>
+<p>
+	<button type="button" class="button button-link health-check-toggle-copy-section">
+		<?php esc_html_e( 'Show options for copying this information', 'health-check' ); ?>
+	</button>
+</p>
+
+<div class="system-information-copy-wrapper hidden">
+	<textarea id="system-information-default-copy-field" rows="10"><?php Health_Check_Debug_Data::textarea_format( $info ); ?></textarea>
+
+	<?php
+	if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) :
+
+		$english_info = Health_Check_Debug_Data::debug_data( 'en_US' );
+
+		// Workaround for locales not being properly loaded back, see issue #30 on GitHub.
+		if ( ! is_textdomain_loaded( 'health-check' ) && _get_path_to_translation( 'health-check' ) ) {
+			load_textdomain( 'health-check', _get_path_to_translation( 'health-check' ) );
+		}
+		?>
+		<textarea id="system-information-english-copy-field" class="system-information-copy-wrapper" rows="10"><?php Health_Check_Debug_Data::textarea_format( $english_info ); ?></textarea>
+
+	<?php endif; ?>
+
 	<div class="copy-button-wrapper">
-		<button type="button" class="button health-check-copy-field" data-copy-field="english"><?php esc_html_e( 'Copy to clipboard (English)', 'health-check' ); ?></button>
-		<span class="copy-field-success">Copied!</span>
+		<button type="button" class="button button-primary health-check-copy-field" data-copy-field="default"><?php esc_html_e( 'Copy to clipboard', 'health-check' ); ?></button>
+		<span class="copy-field-success" aria-hidden="true">Copied!</span>
 	</div>
-<?php endif; ?>
+	<?php if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) : ?>
+		<div class="copy-button-wrapper">
+			<button type="button" class="button health-check-copy-field" data-copy-field="english"><?php esc_html_e( 'Copy to clipboard (English)', 'health-check' ); ?></button>
+			<span class="copy-field-success" aria-hidden="true">Copied!</span>
+		</div>
+	<?php endif; ?>
+</div>
 
 <dl id="health-check-debug" role="presentation" class="health-check-accordion">
 
