@@ -200,6 +200,8 @@ class Health_Check {
 				'copied'               => esc_html__( 'Copied', 'health-check' ),
 				'running_tests'        => esc_html__( 'Currently being tested...', 'health-check' ),
 				'site_health_complete' => esc_html__( 'All site health tests have finished running.', 'health-check' ),
+				'site_info_show_copy'  => esc_html__( 'Show options for copying this information', 'health-check' ),
+				'site_info_hide_copy'  => esc_html__( 'Hide options for copying this information', 'health-check' ),
 				'site_info_copied'     => esc_html__( 'Site information has been added to your clipboard.', 'health-check' ),
 			),
 			'nonce'       => array(
