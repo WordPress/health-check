@@ -1,17 +1,31 @@
 .system-information-copy-wrapper {
 
-	width: 0;
-	height: 0;
-	overflow: hidden;
-	line-height: 0;
-	padding: 0;
-	resize: none;
-	border: none;
+	display: block;
+	margin: 1rem 0;
+
+	&.hidden {
+
+		display: none;
+	}
+
+	textarea {
+
+		width: 100%;
+	}
+
+	.copy-button-wrapper {
+
+		margin: 0.5rem 0 1rem;
+	}
 }
 
 .copy-field-success {
 
 	display: none;
+	color: #40860a;
+	font-size: $font_size__text;
+	line-height: 1.8;
+	margin-left: 0.5rem;
 
 	&.visible {
 
