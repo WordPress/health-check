@@ -67,41 +67,41 @@ class Health_Check_Debug_Data {
 			'wp-core'             => array(
 				'label'  => __( 'WordPress', 'health-check' ),
 				'fields' => array(
-					array(
+					'version'                => array(
 						'label' => __( 'Version', 'health-check' ),
 						'value' => $core_current_version . $core_update_needed,
 					),
-					array(
+					'language'               => array(
 						'label' => __( 'Language', 'health-check' ),
 						'value' => ( ! empty( $locale ) ? $original_locale : get_locale() ),
 					),
-					array(
+					'home_url'               => array(
 						'label'   => __( 'Home URL', 'health-check' ),
 						'value'   => get_bloginfo( 'url' ),
 						'private' => true,
 					),
-					array(
+					'site_url'               => array(
 						'label'   => __( 'Site URL', 'health-check' ),
 						'value'   => get_bloginfo( 'wpurl' ),
 						'private' => true,
 					),
-					array(
+					'permalink'              => array(
 						'label' => __( 'Permalink structure', 'health-check' ),
 						'value' => get_option( 'permalink_structure' ),
 					),
-					array(
+					'https_status'           => array(
 						'label' => __( 'Is this site using HTTPS?', 'health-check' ),
 						'value' => ( is_ssl() ? __( 'Yes', 'health-check' ) : __( 'No', 'health-check' ) ),
 					),
-					array(
+					'user_registration'      => array(
 						'label' => __( 'Can anyone register on this site?', 'health-check' ),
 						'value' => ( get_option( 'users_can_register' ) ? __( 'Yes', 'health-check' ) : __( 'No', 'health-check' ) ),
 					),
-					array(
+					'default_comment_status' => array(
 						'label' => __( 'Default comment status', 'health-check' ),
-						'value' => get_option( 'default_comment_status' ),
+						'value' => get_option( 'default_comment_status', 'health-check' ),
 					),
-					array(
+					'multisite'              => array(
 						'label' => __( 'Is this a multisite?', 'health-check' ),
 						'value' => ( is_multisite() ? __( 'Yes', 'health-check' ) : __( 'No', 'health-check' ) ),
 					),
@@ -157,55 +157,55 @@ class Health_Check_Debug_Data {
 				'label'       => __( 'WordPress Constants', 'health-check' ),
 				'description' => __( 'These values represent values set in your websites code which affect WordPress in various ways that may be of importance when seeking help with your site.', 'health-check' ),
 				'fields'      => array(
-					array(
+					'ABSPATH'             => array(
 						'label' => 'ABSPATH',
 						'value' => ( ! defined( 'ABSPATH' ) ? __( 'Undefined', 'health-check' ) : ABSPATH ),
 					),
-					array(
+					'WP_HOME'             => array(
 						'label' => 'WP_HOME',
 						'value' => ( ! defined( 'WP_HOME' ) ? __( 'Undefined', 'health-check' ) : WP_HOME ),
 					),
-					array(
+					'WP_SITEURL'          => array(
 						'label' => 'WP_SITEURL',
 						'value' => ( ! defined( 'WP_SITEURL' ) ? __( 'Undefined', 'health-check' ) : WP_SITEURL ),
 					),
-					array(
+					'WP_DEBUG'            => array(
 						'label' => 'WP_DEBUG',
 						'value' => ( ! defined( 'WP_DEBUG' ) ? __( 'Undefined', 'health-check' ) : ( WP_DEBUG ? __( 'Enabled', 'health-check' ) : __( 'Disabled', 'health-check' ) ) ),
 					),
-					array(
+					'WP_MAX_MEMORY_LIMIT' => array(
 						'label' => 'WP_MAX_MEMORY_LIMIT',
 						'value' => ( ! defined( 'WP_MAX_MEMORY_LIMIT' ) ? __( 'Undefined', 'health-check' ) : WP_MAX_MEMORY_LIMIT ),
 					),
-					array(
+					'WP_DEBUG_DISPLAY'    => array(
 						'label' => 'WP_DEBUG_DISPLAY',
 						'value' => ( ! defined( 'WP_DEBUG_DISPLAY' ) ? __( 'Undefined', 'health-check' ) : ( WP_DEBUG_DISPLAY ? __( 'Enabled', 'health-check' ) : __( 'Disabled', 'health-check' ) ) ),
 					),
-					array(
+					'WP_DEBUG_LOG'        => array(
 						'label' => 'WP_DEBUG_LOG',
 						'value' => ( ! defined( 'WP_DEBUG_LOG' ) ? __( 'Undefined', 'health-check' ) : ( WP_DEBUG_LOG ? __( 'Enabled', 'health-check' ) : __( 'Disabled', 'health-check' ) ) ),
 					),
-					array(
+					'SCRIPT_DEBUG'        => array(
 						'label' => 'SCRIPT_DEBUG',
 						'value' => ( ! defined( 'SCRIPT_DEBUG' ) ? __( 'Undefined', 'health-check' ) : ( SCRIPT_DEBUG ? __( 'Enabled', 'health-check' ) : __( 'Disabled', 'health-check' ) ) ),
 					),
-					array(
+					'WP_CACHE'            => array(
 						'label' => 'WP_CACHE',
 						'value' => ( ! defined( 'WP_CACHE' ) ? __( 'Undefined', 'health-check' ) : ( WP_CACHE ? __( 'Enabled', 'health-check' ) : __( 'Disabled', 'health-check' ) ) ),
 					),
-					array(
+					'CONCATENATE_SCRIPTS' => array(
 						'label' => 'CONCATENATE_SCRIPTS',
 						'value' => ( ! defined( 'CONCATENATE_SCRIPTS' ) ? __( 'Undefined', 'health-check' ) : ( CONCATENATE_SCRIPTS ? __( 'Enabled', 'health-check' ) : __( 'Disabled', 'health-check' ) ) ),
 					),
-					array(
+					'COMPRESS_SCRIPTS'    => array(
 						'label' => 'COMPRESS_SCRIPTS',
 						'value' => ( ! defined( 'COMPRESS_SCRIPTS' ) ? __( 'Undefined', 'health-check' ) : ( COMPRESS_SCRIPTS ? __( 'Enabled', 'health-check' ) : __( 'Disabled', 'health-check' ) ) ),
 					),
-					array(
+					'COMPRESS_CSS'        => array(
 						'label' => 'COMPRESS_CSS',
 						'value' => ( ! defined( 'COMPRESS_CSS' ) ? __( 'Undefined', 'health-check' ) : ( COMPRESS_CSS ? __( 'Enabled', 'health-check' ) : __( 'Disabled', 'health-check' ) ) ),
 					),
-					array(
+					'WP_LOCAL_DEV'        => array(
 						'label' => 'WP_LOCAL_DEV',
 						'value' => ( ! defined( 'WP_LOCAL_DEV' ) ? __( 'Undefined', 'health-check' ) : ( WP_LOCAL_DEV ? __( 'Enabled', 'health-check' ) : __( 'Disabled', 'health-check' ) ) ),
 					),
@@ -215,23 +215,23 @@ class Health_Check_Debug_Data {
 				'label'       => __( 'Filesystem Permissions', 'health-check' ),
 				'description' => __( 'The status of various locations WordPress needs to write files in various scenarios.', 'health-check' ),
 				'fields'      => array(
-					array(
+					'all'        => array(
 						'label' => __( 'The main WordPress directory', 'health-check' ),
 						'value' => ( wp_is_writable( ABSPATH ) ? __( 'Writable', 'health-check' ) : __( 'Not writable', 'health-check' ) ),
 					),
-					array(
+					'wp-content' => array(
 						'label' => __( 'The wp-content directory', 'health-check' ),
 						'value' => ( wp_is_writable( WP_CONTENT_DIR ) ? __( 'Writable', 'health-check' ) : __( 'Not writable', 'health-check' ) ),
 					),
-					array(
+					'uploads'    => array(
 						'label' => __( 'The uploads directory', 'health-check' ),
 						'value' => ( wp_is_writable( $upload_dir['basedir'] ) ? __( 'Writable', 'health-check' ) : __( 'Not writable', 'health-check' ) ),
 					),
-					array(
+					'plugins'    => array(
 						'label' => __( 'The plugins directory', 'health-check' ),
 						'value' => ( wp_is_writable( WP_PLUGIN_DIR ) ? __( 'Writable', 'health-check' ) : __( 'Not writable', 'health-check' ) ),
 					),
-					array(
+					'themes'     => array(
 						'label' => __( 'The themes directory', 'health-check' ),
 						'value' => ( wp_is_writable( get_template_directory() . '/..' ) ? __( 'Writable', 'health-check' ) : __( 'Not writable', 'health-check' ) ),
 					),
@@ -252,22 +252,22 @@ class Health_Check_Debug_Data {
 				$site_count += get_blog_count( $network_id );
 			}
 
-			$info['wp-core']['fields'][] = array(
+			$info['wp-core']['fields']['user_count']    = array(
 				'label' => __( 'User Count', 'health-check' ),
 				'value' => get_user_count(),
 			);
-			$info['wp-core']['fields'][] = array(
+			$info['wp-core']['fields']['site_count']    = array(
 				'label' => __( 'Site Count', 'health-check' ),
 				'value' => $site_count,
 			);
-			$info['wp-core']['fields'][] = array(
+			$info['wp-core']['fields']['network_count'] = array(
 				'label' => __( 'Network Count', 'health-check' ),
 				'value' => $network_query->found_networks,
 			);
 		} else {
 			$user_count = count_users();
 
-			$info['wp-core']['fields'][] = array(
+			$info['wp-core']['fields']['user_count'] = array(
 				'label' => __( 'User Count', 'health-check' ),
 				'value' => $user_count['total_users'],
 			);
@@ -278,14 +278,14 @@ class Health_Check_Debug_Data {
 			'timeout' => 10,
 		) );
 		if ( ! is_wp_error( $wp_dotorg ) ) {
-			$info['wp-core']['fields'][] = array(
+			$info['wp-core']['fields']['dotorg_communication'] = array(
 				'label' => __( 'Communication with WordPress.org', 'health-check' ),
 				'value' => sprintf(
 					__( 'WordPress.org is reachable', 'health-check' )
 				),
 			);
 		} else {
-			$info['wp-core']['fields'][] = array(
+			$info['wp-core']['fields']['dotorg_communication'] = array(
 				'label' => __( 'Communication with WordPress.org', 'health-check' ),
 				'value' => sprintf(
 					// translators: %1$s: The IP address WordPress.org resolves to. %2$s: The error returned by the lookup.
@@ -296,24 +296,18 @@ class Health_Check_Debug_Data {
 			);
 		}
 
-		$loopback                    = Health_Check_Loopback::can_perform_loopback();
-		$info['wp-core']['fields'][] = array(
-			'label' => __( 'Create loopback requests', 'health-check' ),
-			'value' => $loopback->message,
-		);
-
 		// Get drop-ins.
 		$dropins            = get_dropins();
 		$dropin_description = _get_dropins();
 		foreach ( $dropins as $dropin_key => $dropin ) {
-			$info['wp-dropins']['fields'][] = array(
+			$info['wp-dropins']['fields'][ sanitize_key( $dropin_key ) ] = array(
 				'label' => $dropin_key,
 				'value' => $dropin_description[ $dropin_key ][0],
 			);
 		}
 
 		// Populate the media fields.
-		$info['wp-media']['fields'][] = array(
+		$info['wp-media']['fields']['image_editor'] = array(
 			'label' => __( 'Active editor', 'health-check' ),
 			'value' => _wp_image_editor_choose(),
 		);
@@ -324,13 +318,13 @@ class Health_Check_Debug_Data {
 			$imagick         = new Imagick();
 			$imagick_version = $imagick->getVersion();
 		} else {
-			$imagick_version = 'Imagick not available';
+			$imagick_version = __( 'Imagick not available', 'health-check' );
 		}
-		$info['wp-media']['fields'][] = array(
+		$info['wp-media']['fields']['imagick_module_version'] = array(
 			'label' => __( 'Imagick Module Version', 'health-check' ),
 			'value' => ( is_array( $imagick_version ) ? $imagick_version['versionNumber'] : $imagick_version ),
 		);
-		$info['wp-media']['fields'][] = array(
+		$info['wp-media']['fields']['imagemagick_version']    = array(
 			'label' => __( 'ImageMagick Version', 'health-check' ),
 			'value' => ( is_array( $imagick_version ) ? $imagick_version['versionString'] : $imagick_version ),
 		);
@@ -338,15 +332,15 @@ class Health_Check_Debug_Data {
 		// If Imagick is used as our editor, provide some more information about its limitations.
 		if ( 'WP_Image_Editor_Imagick' === _wp_image_editor_choose() && isset( $imagick ) && $imagick instanceof Imagick ) {
 			$limits = array(
-				'area'   => ( defined( 'imagick::RESOURCETYPE_AREA' ) ? size_format( $imagick->getResourceLimit( imagick::RESOURCETYPE_AREA ) ) : 'Not Available' ),
-				'disk'   => ( defined( 'imagick::RESOURCETYPE_DISK' ) ? $imagick->getResourceLimit( imagick::RESOURCETYPE_DISK ) : 'Not Available' ),
-				'file'   => ( defined( 'imagick::RESOURCETYPE_FILE' ) ? $imagick->getResourceLimit( imagick::RESOURCETYPE_FILE ) : 'Not Available' ),
-				'map'    => ( defined( 'imagick::RESOURCETYPE_MAP' ) ? size_format( $imagick->getResourceLimit( imagick::RESOURCETYPE_MAP ) ) : 'Not Available' ),
-				'memory' => ( defined( 'imagick::RESOURCETYPE_MEMORY' ) ? size_format( $imagick->getResourceLimit( imagick::RESOURCETYPE_MEMORY ) ) : 'Not Available' ),
-				'thread' => ( defined( 'imagick::RESOURCETYPE_THREAD' ) ? $imagick->getResourceLimit( imagick::RESOURCETYPE_THREAD ) : 'Not Available' ),
+				'area'   => ( defined( 'imagick::RESOURCETYPE_AREA' ) ? size_format( $imagick->getResourceLimit( imagick::RESOURCETYPE_AREA ) ) : __( 'Not Available', 'health-check' ) ),
+				'disk'   => ( defined( 'imagick::RESOURCETYPE_DISK' ) ? $imagick->getResourceLimit( imagick::RESOURCETYPE_DISK ) : __( 'Not Available', 'health-check' ) ),
+				'file'   => ( defined( 'imagick::RESOURCETYPE_FILE' ) ? $imagick->getResourceLimit( imagick::RESOURCETYPE_FILE ) : __( 'Not Available', 'health-check' ) ),
+				'map'    => ( defined( 'imagick::RESOURCETYPE_MAP' ) ? size_format( $imagick->getResourceLimit( imagick::RESOURCETYPE_MAP ) ) : __( 'Not Available', 'health-check' ) ),
+				'memory' => ( defined( 'imagick::RESOURCETYPE_MEMORY' ) ? size_format( $imagick->getResourceLimit( imagick::RESOURCETYPE_MEMORY ) ) : __( 'Not Available', 'health-check' ) ),
+				'thread' => ( defined( 'imagick::RESOURCETYPE_THREAD' ) ? $imagick->getResourceLimit( imagick::RESOURCETYPE_THREAD ) : __( 'Not Available', 'health-check' ) ),
 			);
 
-			$info['wp-media']['fields'][] = array(
+			$info['wp-media']['fields']['imagick_limits'] = array(
 				'label' => __( 'Imagick Resource Limits', 'health-check' ),
 				'value' => $limits,
 			);
@@ -358,7 +352,7 @@ class Health_Check_Debug_Data {
 		} else {
 			$gd = false;
 		}
-		$info['wp-media']['fields'][] = array(
+		$info['wp-media']['fields']['gd_version'] = array(
 			'label' => __( 'GD Version', 'health-check' ),
 			'value' => ( is_array( $gd ) ? $gd['GD Version'] : __( 'GD not available', 'health-check' ) ),
 		);
@@ -370,21 +364,21 @@ class Health_Check_Debug_Data {
 		} else {
 			$gs = __( 'Unable to determine if Ghostscript is installed', 'health-check' );
 		}
-		$info['wp-media']['fields'][] = array(
+		$info['wp-media']['fields']['ghostscript_version'] = array(
 			'label' => __( 'Ghostscript Version', 'health-check' ),
 			'value' => $gs,
 		);
 
 		// Populate the server debug fields.
-		$info['wp-server']['fields'][] = array(
+		$info['wp-server']['fields']['server_architecture'] = array(
 			'label' => __( 'Server architecture', 'health-check' ),
 			'value' => ( ! function_exists( 'php_uname' ) ? __( 'Unable to determine server architecture', 'health-check' ) : sprintf( '%s %s %s', php_uname( 's' ), php_uname( 'r' ), php_uname( 'm' ) ) ),
 		);
-		$info['wp-server']['fields'][] = array(
+		$info['wp-server']['fields']['httpd_software']      = array(
 			'label' => __( 'Web Server Software', 'health-check' ),
 			'value' => ( isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : __( 'Unable to determine what web server software is used', 'health-check' ) ),
 		);
-		$info['wp-server']['fields'][] = array(
+		$info['wp-server']['fields']['php_version']         = array(
 			'label' => __( 'PHP Version', 'health-check' ),
 			'value' => ( ! function_exists( 'phpversion' ) ? __( 'Unable to determine PHP version', 'health-check' ) : sprintf(
 				'%s %s',
@@ -393,62 +387,62 @@ class Health_Check_Debug_Data {
 			)
 			),
 		);
-		$info['wp-server']['fields'][] = array(
+		$info['wp-server']['fields']['php_sapi']            = array(
 			'label' => __( 'PHP SAPI', 'health-check' ),
 			'value' => ( ! function_exists( 'php_sapi_name' ) ? __( 'Unable to determine PHP SAPI', 'health-check' ) : php_sapi_name() ),
 		);
 
 		if ( ! function_exists( 'ini_get' ) ) {
-			$info['wp-server']['fields'][] = array(
+			$info['wp-server']['fields']['ini_get'] = array(
 				'label' => __( 'Server settings', 'health-check' ),
 				'value' => __( 'Unable to determine some settings as the ini_get() function has been disabled', 'health-check' ),
 			);
 		} else {
-			$info['wp-server']['fields'][] = array(
+			$info['wp-server']['fields']['max_input_variables'] = array(
 				'label' => __( 'PHP max input variables', 'health-check' ),
 				'value' => ini_get( 'max_input_vars' ),
 			);
-			$info['wp-server']['fields'][] = array(
+			$info['wp-server']['fields']['time_limit']          = array(
 				'label' => __( 'PHP time limit', 'health-check' ),
 				'value' => ini_get( 'max_execution_time' ),
 			);
-			$info['wp-server']['fields'][] = array(
+			$info['wp-server']['fields']['memory_limit']        = array(
 				'label' => __( 'PHP memory limit', 'health-check' ),
 				'value' => ini_get( 'memory_limit' ),
 			);
-			$info['wp-server']['fields'][] = array(
+			$info['wp-server']['fields']['max_input_time']      = array(
 				'label' => __( 'Max input time', 'health-check' ),
 				'value' => ini_get( 'max_input_time' ),
 			);
-			$info['wp-server']['fields'][] = array(
+			$info['wp-server']['fields']['upload_max_size']     = array(
 				'label' => __( 'Upload max filesize', 'health-check' ),
 				'value' => ini_get( 'upload_max_filesize' ),
 			);
-			$info['wp-server']['fields'][] = array(
+			$info['wp-server']['fields']['php_post_max_size']   = array(
 				'label' => __( 'PHP post max size', 'health-check' ),
 				'value' => ini_get( 'post_max_size' ),
 			);
 		}
 
 		if ( function_exists( 'curl_version' ) ) {
-			$curl                          = curl_version();
-			$info['wp-server']['fields'][] = array(
+			$curl                                        = curl_version();
+			$info['wp-server']['fields']['curl_version'] = array(
 				'label' => __( 'cURL Version', 'health-check' ),
 				'value' => sprintf( '%s %s', $curl['version'], $curl['ssl_version'] ),
 			);
 		} else {
-			$info['wp-server']['fields'][] = array(
+			$info['wp-server']['fields']['curl_version'] = array(
 				'label' => __( 'cURL Version', 'health-check' ),
 				'value' => __( 'Your server does not support cURL', 'health-check' ),
 			);
 		}
 
-		$info['wp-server']['fields'][] = array(
+		$info['wp-server']['fields']['suhosin'] = array(
 			'label' => __( 'SUHOSIN installed', 'health-check' ),
 			'value' => ( ( extension_loaded( 'suhosin' ) || ( defined( 'SUHOSIN_PATCH' ) && constant( 'SUHOSIN_PATCH' ) ) ) ? __( 'Yes', 'health-check' ) : __( 'No', 'health-check' ) ),
 		);
 
-		$info['wp-server']['fields'][] = array(
+		$info['wp-server']['fields']['imagick_availability'] = array(
 			'label' => __( 'Is the Imagick library available', 'health-check' ),
 			'value' => ( extension_loaded( 'imagick' ) ? __( 'Yes', 'health-check' ) : __( 'No', 'health-check' ) ),
 		);
@@ -461,7 +455,7 @@ class Health_Check_Debug_Data {
 			// Filter away the core WordPress rules.
 			$filtered_htaccess_content = trim( preg_replace( '/\# BEGIN WordPress[\s\S]+?# END WordPress/si', '', $htaccess_content ) );
 
-			$info['wp-server']['fields'][] = array(
+			$info['wp-server']['fields']['htaccess_extra_rules'] = array(
 				'label' => __( 'htaccess rules', 'health-check' ),
 				'value' => ( ! empty( $filtered_htaccess_content ) ? __( 'Custom rules have been added to your htaccess file', 'health-check' ) : __( 'Your htaccess file only contains core WordPress features', 'health-check' ) ),
 			);
@@ -502,34 +496,34 @@ class Health_Check_Debug_Data {
 			}
 		}
 
-		$info['wp-database']['fields'][] = array(
+		$info['wp-database']['fields']['extension']       = array(
 			'label' => __( 'Extension', 'health-check' ),
 			'value' => $extension,
 		);
-		$info['wp-database']['fields'][] = array(
+		$info['wp-database']['fields']['server_version']  = array(
 			'label' => __( 'Server version', 'health-check' ),
 			'value' => $server,
 		);
-		$info['wp-database']['fields'][] = array(
+		$info['wp-database']['fields']['client_version']  = array(
 			'label' => __( 'Client version', 'health-check' ),
 			'value' => $client_version,
 		);
-		$info['wp-database']['fields'][] = array(
+		$info['wp-database']['fields']['database_user']   = array(
 			'label'   => __( 'Database user', 'health-check' ),
 			'value'   => $wpdb->dbuser,
 			'private' => true,
 		);
-		$info['wp-database']['fields'][] = array(
+		$info['wp-database']['fields']['database_host']   = array(
 			'label'   => __( 'Database host', 'health-check' ),
 			'value'   => $wpdb->dbhost,
 			'private' => true,
 		);
-		$info['wp-database']['fields'][] = array(
+		$info['wp-database']['fields']['database_name']   = array(
 			'label'   => __( 'Database name', 'health-check' ),
 			'value'   => $wpdb->dbname,
 			'private' => true,
 		);
-		$info['wp-database']['fields'][] = array(
+		$info['wp-database']['fields']['database_prefix'] = array(
 			'label' => __( 'Database prefix', 'health-check' ),
 			'value' => $wpdb->prefix,
 		);
@@ -556,7 +550,7 @@ class Health_Check_Debug_Data {
 				$plugin_version_string = sprintf( __( 'Version %s', 'health-check' ), $plugin_version );
 			}
 
-			$info['wp-mu-plugins']['fields'][] = array(
+			$info['wp-mu-plugins']['fields'][ sanitize_key( $plugin['Name'] ) ] = array(
 				'label' => $plugin['Name'],
 				'value' => $plugin_version_string,
 			);
@@ -594,7 +588,7 @@ class Health_Check_Debug_Data {
 				$plugin_update_needed = '';
 			}
 
-			$info[ $plugin_part ]['fields'][] = array(
+			$info[ $plugin_part ]['fields'][ sanitize_key( $plugin['Name'] ) ] = array(
 				'label' => $plugin['Name'],
 				'value' => $plugin_version_string . $plugin_update_needed,
 			);
@@ -620,30 +614,30 @@ class Health_Check_Debug_Data {
 		}
 
 		$info['wp-active-theme']['fields'] = array(
-			array(
+			'name'           => array(
 				'label' => __( 'Name', 'health-check' ),
 				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 				'value' => $active_theme->Name,
 			),
-			array(
+			'version'        => array(
 				'label' => __( 'Version', 'health-check' ),
 				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 				'value' => $active_theme->Version . $theme_update_needed_active,
 			),
-			array(
+			'author'         => array(
 				'label' => __( 'Author', 'health-check' ),
 				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 				'value' => wp_kses( $active_theme->Author, array() ),
 			),
-			array(
+			'author_website' => array(
 				'label' => __( 'Author website', 'health-check' ),
-				'value' => ( $active_theme->offsetGet( 'Author URI' ) ? $active_theme->offsetGet( 'Author URI' ) : __( 'Undefined', 'health-check' ) ),
+				'value' => ( $active_theme->offsetGet( 'Author URI', 'health-check' ) ? $active_theme->offsetGet( 'Author URI' ) : __( 'Undefined', 'health-check' ) ),
 			),
-			array(
+			'parent_theme'   => array(
 				'label' => __( 'Parent theme', 'health-check' ),
 				'value' => ( $active_theme->parent_theme ? $active_theme->parent_theme : __( 'Not a child theme', 'health-check' ) ),
 			),
-			array(
+			'theme_features' => array(
 				'label' => __( 'Supported theme features', 'health-check' ),
 				'value' => implode( ', ', $theme_features ),
 			),
@@ -684,7 +678,8 @@ class Health_Check_Debug_Data {
 				$theme_update_needed = '';
 			}
 
-			$info['wp-themes']['fields'][] = array(
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+			$info['wp-themes']['fields'][ sanitize_key( $theme->Name ) ] = array(
 				'label' => sprintf(
 					// translators: %1$s: Theme name. %2$s: Theme slug.
 					__( '%1$s (%2$s)', 'health-check' ),
@@ -698,7 +693,7 @@ class Health_Check_Debug_Data {
 
 		// Add more filesystem checks
 		if ( defined( 'WPMU_PLUGIN_DIR' ) && is_dir( WPMU_PLUGIN_DIR ) ) {
-			$info['wp-filesystem']['fields'][] = array(
+			$info['wp-filesystem']['fields']['mu_plugin_directory'] = array(
 				'label' => __( 'The Must Use Plugins directory', 'health-check' ),
 				'value' => ( wp_is_writable( WPMU_PLUGIN_DIR ) ? __( 'Writable', 'health-check' ) : __( 'Not writable', 'health-check' ) ),
 			);
