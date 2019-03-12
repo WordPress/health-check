@@ -196,13 +196,15 @@ class Health_Check {
 
 		$health_check_js_variables = array(
 			'string'      => array(
-				'please_wait'          => esc_html__( 'Please wait...', 'health-check' ),
-				'copied'               => esc_html__( 'Copied', 'health-check' ),
-				'running_tests'        => esc_html__( 'Currently being tested...', 'health-check' ),
-				'site_health_complete' => esc_html__( 'All site health tests have finished running.', 'health-check' ),
-				'site_info_show_copy'  => esc_html__( 'Show options for copying this information', 'health-check' ),
-				'site_info_hide_copy'  => esc_html__( 'Hide options for copying this information', 'health-check' ),
-				'site_info_copied'     => esc_html__( 'Site information has been added to your clipboard.', 'health-check' ),
+				'please_wait'                        => esc_html__( 'Please wait...', 'health-check' ),
+				'copied'                             => esc_html__( 'Copied', 'health-check' ),
+				'running_tests'                      => esc_html__( 'Currently being tested...', 'health-check' ),
+				'site_health_complete'               => esc_html__( 'All site health tests have finished running.', 'health-check' ),
+				'site_info_show_copy'                => esc_html__( 'Show options for copying this information', 'health-check' ),
+				'site_info_hide_copy'                => esc_html__( 'Hide options for copying this information', 'health-check' ),
+				// translators: %s: The percentage score for the tests.
+				'site_health_complete_screen_reader' => esc_html__( 'All site health tests have finished running. Your site scored %s, and the results are now available on the page.', 'health-check' ),
+				'site_info_copied'                   => esc_html__( 'Site information has been added to your clipboard.', 'health-check' ),
 			),
 			'nonce'       => array(
 				'loopback_no_plugins'         => wp_create_nonce( 'health-check-loopback-no-plugins' ),
@@ -395,7 +397,7 @@ class Health_Check {
 					<?php _ex( 'Site Health', 'Menu, Section and Page Title', 'health-check' ); ?>
 				</h1>
 
-				<div id="progressbar" class="loading" data-pct="0" role="progressbar">
+				<div id="progressbar" class="loading" data-pct="0" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-valuetext="<?php esc_attr_e( 'Site tests are running, please wait a moment.', 'health-check' ); ?>">
 					<svg width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
 						<circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
 						<circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
@@ -434,7 +436,7 @@ class Health_Check {
 			<div class="wp-clearfix"></div>
 		</div>
 
-		<div class="wrap health-check-body">
+		<div class="wrap health-check-body" aria-hidden="true">
 
 			<?php
 			switch ( $current_tab ) {
