@@ -88,6 +88,9 @@ jQuery( document ).ready(function( $ ) {
 		}
 
 		$progressBar.attr( 'data-pct', val );
+		$progressBar.attr( 'aria-valuenow', val );
+
+		$( '.health-check-body' ).attr( 'aria-hidden', false );
 
 		$.post(
 			ajaxurl,
@@ -98,7 +101,7 @@ jQuery( document ).ready(function( $ ) {
 			}
 		);
 
-		wp.a11y.speak( HealthCheck.string.site_healt_complete, 'polite' );
+		wp.a11y.speak( HealthCheck.string.site_health_complete_screen_reader.replace( '%s', val + '%' ), 'polite' );
 	}
 
 	function maybeRunNextAsyncTest() {
