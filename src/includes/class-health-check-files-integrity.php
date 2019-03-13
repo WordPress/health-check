@@ -174,7 +174,7 @@ class Health_Check_Files_Integrity {
 		$wpversion = get_bloginfo( 'version' );
 
 		if ( 0 !== validate_file( $filepath . $file ) ) {
-			wp_send_json_error( array( 'message' => esc_html__( 'You do not have access to this file.' , 'health-check' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'You do not have access to this file.', 'health-check' ) ) );
 		}
 
 		$allowed_files = get_transient( 'health-check-checksums' );
@@ -185,7 +185,7 @@ class Health_Check_Files_Integrity {
 		}
 
 		if ( ! isset( $allowed_files['checksums'][ $file ] ) ) {
-			wp_send_json_error( array( 'message' => esc_html__( 'You do not have access to this file.' , 'health-check' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'You do not have access to this file.', 'health-check' ) ) );
 		}
 
 		$local_file_body  = file_get_contents( $filepath . $file, FILE_USE_INCLUDE_PATH );
