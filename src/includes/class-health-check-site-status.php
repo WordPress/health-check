@@ -1022,6 +1022,53 @@ class Health_Check_Site_Status {
 		wp_send_json_success( $this->get_test_dotorg_communication() );
 	}
 
+	public function get_test_is_in_debug_mode() {
+		$result = array(
+			'label'       => esc_html__( 'Your site is not set to output debug information', 'health-check' ),
+			'status'      => 'good',
+			'badge'       => array(
+				'label' => 'Security',
+				'color' => 'red',
+			),
+			'description' => sprintf(
+				'<p>%s</p>',
+				esc_html__( 'Debug mode is often enabled to gather more details about an error or site failure, but may contain sensitive information which should not be available on a publicly available website.', 'health-check' )
+			),
+			'actions'     => '',
+			'test'        => 'is_in_debug_mode',
+		);
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+				$result['label'] = esc_html__( 'Your site is set to log errors to a potentially public file.', 'health-check' );
+
+				$result['status'] = 'critical';
+
+				$result['description'] .= sprintf(
+					'<p>%s</p>',
+					esc_html__( 'The value, WP_DEBUG_LOG, has been added to this websites configuration file. This means any errors on the site will be written to a file which is potentially available to normal users.', 'health-check' )
+				);
+			}
+
+			if ( defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY ) {
+				$result['label'] = esc_html__( 'Your site is set to display errors to site visitors.', 'health-check' );
+
+				$result['status'] = 'critical';
+
+				$result['description'] .= sprintf(
+					'<p>%s</p>',
+					esc_html__( 'The value, WP_DEBUG_DISPLAY, has either been added to your configuration file, or left with its default value. This will make errors display on the front end of your site.', 'health-check' )
+				);
+			}
+		}
+
+		return $result;
+	}
+
+	public function json_test_is_in_debug_mode() {
+		wp_send_json_success( $this->get_test_is_in_debug_mode() );
+	}
+
 	public function get_test_https_status() {
 		$result = array(
 			'label'       => '',
@@ -1542,6 +1589,10 @@ class Health_Check_Site_Status {
 				'http_requests'     => array(
 					'label' => __( 'HTTP Requests', 'health-check' ),
 					'test'  => 'http_requests',
+				),
+				'debug_enabled'     => array(
+					'label' => __( 'Debugging enabled', 'health-check' ),
+					'test'  => 'is_in_debug_mode',
 				),
 			),
 			'async'  => array(
