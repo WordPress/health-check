@@ -682,8 +682,9 @@ class Health_Check_Site_Status {
 				'required' => false,
 			),
 			'libsodium' => array(
-				'function' => 'sodium_compare',
-				'required' => false,
+				'function'            => 'sodium_compare',
+				'required'            => false,
+				'php_bundled_version' => '7.2.0',
 			),
 			'openssl'   => array(
 				'function' => 'openssl_encrypt',
@@ -738,7 +739,7 @@ class Health_Check_Site_Status {
 				}
 			}
 
-			if ( ! $this->child_test_php_extension_availability( $extension, $function ) ) {
+			if ( ! $this->child_test_php_extension_availability( $extension, $function ) && ( ! isset( $module['php_bundled_version'] ) || version_compare( PHP_VERSION, $modules['php_bundled_version'], '>=' ) ) ) {
 				if ( $module['required'] ) {
 					$result['status'] = 'critical';
 				}
