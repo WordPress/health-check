@@ -739,7 +739,7 @@ class Health_Check_Site_Status {
 				}
 			}
 
-			if ( ! $this->child_test_php_extension_availability( $extension, $function ) && ( ! isset( $module['php_bundled_version'] ) || version_compare( PHP_VERSION, $modules['php_bundled_version'], '>=' ) ) ) {
+			if ( ! $this->child_test_php_extension_availability( $extension, $function ) && ( ! isset( $module['php_bundled_version'] ) || version_compare( PHP_VERSION, $module['php_bundled_version'], '<' ) ) ) {
 				if ( $module['required'] ) {
 					$result['status'] = 'critical';
 				}
