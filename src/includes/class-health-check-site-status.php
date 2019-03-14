@@ -106,7 +106,7 @@ class Health_Check_Site_Status {
 		);
 
 		if ( ! method_exists( $this, $function ) || ! is_callable( array( $this, $function ) ) ) {
-			die();
+			return;
 		}
 
 		$call = call_user_func( array( $this, $function ) );
