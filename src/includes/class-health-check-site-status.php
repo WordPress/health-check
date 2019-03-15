@@ -35,6 +35,8 @@ class Health_Check_Site_Status {
 		add_action( 'wp_loaded', array( $this, 'check_wp_version_check_exists' ) );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
+		add_action( 'health-check-scheduled-site-status-check', array( $this, 'scheduled_check' ) );
 	}
 
 	public function enqueue_scripts() {
@@ -1638,6 +1640,48 @@ class Health_Check_Site_Status {
 		$tests = apply_filters( 'health_check_site_status_tests', $tests );
 
 		return $tests;
+	}
+
+	public function scheduled_check() {
+		// Bootstrap wp-admin, as WP_Cron doesn't do this for us.
+		require_once( trailingslashit( ABSPATH ) . 'wp-admin/includes/admin.php' );
+
+		$bulk_tests = Health_Check_Site_Status::get_tests();
+
+		$results = array();
+
+		$site_status = array(
+			'good'        => 0,
+			'recommended' => 0,
+			'critical'    => 0,
+		);
+
+		$tests = array_merge( $bulk_tests['direct'], $bulk_tests['async'] );
+
+		foreach ( $tests as $test ) {
+			$function = sprintf(
+				'get_test_%s',
+				$test['test']
+			);
+
+			if ( method_exists( $this, $function ) && is_callable( array( $this, $function ) ) ) {
+				$results[] = call_user_func( array( $this, $function ) );
+			} else {
+				$results[] = call_user_func( $test['test'] );
+			}
+		}
+
+		foreach ( $results as $result ) {
+			if ( 'critical' === $result['status'] ) {
+				$site_status['critical']++;
+			} elseif ( 'recommended' === $result['status'] ) {
+				$site_status['recommended']++;
+			} else {
+				$site_status['good']++;
+			}
+		}
+
+		set_transient( 'health-check-site-status-result', json_encode( $site_status ) );
 	}
 }
 
