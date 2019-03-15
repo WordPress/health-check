@@ -70,6 +70,8 @@ class Health_Check {
 
 		add_filter( 'health_check_tools_tab', array( 'Health_Check_Files_Integrity', 'tools_tab' ) );
 		add_filter( 'health_check_tools_tab', array( 'Health_Check_Mail_Check', 'tools_tab' ) );
+
+		add_filter( 'cron_schedules', array( $this, 'cron_schedules' ) );
 	}
 
 	/**
@@ -247,21 +249,16 @@ class Health_Check {
 
 				if ( method_exists( $health_check_site_status, $test_function ) && is_callable( array( $health_check_site_status, $test_function ) ) ) {
 					$health_check_js_variables['site_status']['direct'][] = call_user_func( array( $health_check_site_status, $test_function ) );
+				} else {
+					$health_check_js_variables['site_status']['direct'][] = call_user_func( $test['test'] );
 				}
 			}
 
 			foreach ( $tests['async'] as $test ) {
-				$test_function = sprintf(
-					'json_test_%s',
-					$test['test']
+				$health_check_js_variables['site_status']['async'][] = array(
+					'test'      => $test['test'],
+					'completed' => false,
 				);
-
-				if ( method_exists( $health_check_site_status, $test_function ) && is_callable( array( $health_check_site_status, $test_function ) ) ) {
-					$health_check_js_variables['site_status']['async'][] = array(
-						'test'      => $test['test'],
-						'completed' => false,
-					);
-				}
 			}
 		}
 
@@ -500,6 +497,17 @@ class Health_Check {
 		}
 	}
 
+	public function cron_schedules( $schedules ) {
+		if ( ! isset( $schedules['weekly'] ) ) {
+			$schedules['weekly'] = array(
+				'interval' => 7 * DAY_IN_SECONDS,
+				'display'  => __( 'Once weekly', 'health-check' ),
+			);
+		}
+
+		return $schedules;
+	}
+
 
 	/**
 	 * Conditionally show a form for providing filesystem credentials when introducing our troubleshooting mode plugin.
@@ -535,5 +543,15 @@ class Health_Check {
 		}
 
 		return true;
+	}
+
+	public static function plugin_activation() {
+		if ( ! wp_next_scheduled( 'health-check-scheduled-site-status-check' ) ) {
+			wp_schedule_event( time(), 'weekly', 'health-check-scheduled-site-status-check' );
+		}
+	}
+
+	public static function plugin_deactivation() {
+		wp_clear_scheduled_hook( 'health-check-scheduled-site-status-check' );
 	}
 }
