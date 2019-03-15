@@ -63,3 +63,7 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-updates.php' )
 
 // Initialize our plugin.
 new Health_Check();
+
+// Setup up scheduled events.
+register_activation_hook( __FILE__, array( 'Health_Check', 'plugin_activation' ) );
+register_deactivation_hook( __FILE__, array( 'Health_Check', 'plugin_deactivation' ) );
