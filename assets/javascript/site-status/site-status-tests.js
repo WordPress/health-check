@@ -87,6 +87,11 @@ jQuery( document ).ready(function( $ ) {
 			$circle.addClass( 'green' ).removeClass( 'orange' );
 		}
 
+		if ( 100 === val ) {
+		    $( '.site-status-all-clear' ).removeClass( 'hide' );
+		    $( '.site-status-has-issues' ).addClass( 'hide' );
+        }
+
 		$progressBar.attr( 'data-pct', val );
 		$progressBar.attr( 'aria-valuenow', val );
 
