@@ -15,12 +15,17 @@ body {
 			margin-right: 0;
 			margin-left: 0;
 
-			> h2 {
+			h2 {
 
 				padding: 1rem 0.5rem;
 				font-size: $font_size__h2;
 				font-weight: 600;
 				font-family: $font_family__h2;
+
+				@media all and (min-width: $breakpoint_min__large) {
+
+					padding: 1rem 0;
+				}
 			}
 		}
 
