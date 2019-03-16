@@ -89,7 +89,7 @@ class Health_Check_Loopback {
 				'status'  => 'recommended',
 				'message' => sprintf(
 					/* translators: %d: The HTTP response code returned. */
-					esc_html__( 'The loopback request returned an unexpected status code, %d, it was not possible to determine if this will prevent features from working as expected.', 'health-check' ),
+					esc_html__( 'The loopback request returned an unexpected http status code, %d, it was not possible to determine if this will prevent features from working as expected.', 'health-check' ),
 					wp_remote_retrieve_response_code( $r )
 				),
 			);
