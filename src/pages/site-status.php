@@ -13,24 +13,40 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $health_check_site_status;
 ?>
 
-<h2>
-	<?php esc_html_e( 'Site Health Status', 'health-check' ); ?>
-</h2>
+<div class="site-status-all-clear hide">
+	<p class="icon">
+		<span class="dashicons dashicons-yes"></span>
+	</p>
 
-<div class="issues-wrapper" id="health-check-issues-critical">
-	<h3>
-		<span class="issue-count">0</span> <?php esc_html_e( 'Critical issues', 'health-check' ); ?>
-	</h3>
+	<p class="encouragement">
+		<?php esc_html_e( 'Great job!', 'health-check' ); ?>
+	</p>
 
-	<dl id="health-check-site-status-critical" role="presentation" class="health-check-accordion issues"></dl>
+	<p>
+		<?php esc_html_e( 'Everything is running smoothly here.', 'health-check' ); ?>
+	</p>
 </div>
 
-<div class="issues-wrapper" id="health-check-issues-recommended">
-	<h3>
-		<span class="issue-count">0</span> <?php esc_html_e( 'Recommended improvements', 'health-check' ); ?>
-	</h3>
+<div class="site-status-has-issues">
+	<h2>
+		<?php esc_html_e( 'Site Health Status', 'health-check' ); ?>
+	</h2>
 
-	<dl id="health-check-site-status-recommended" role="presentation" class="health-check-accordion issues"></dl>
+	<div class="issues-wrapper" id="health-check-issues-critical">
+		<h3>
+			<span class="issue-count">0</span> <?php esc_html_e( 'Critical issues', 'health-check' ); ?>
+		</h3>
+
+		<dl id="health-check-site-status-critical" role="presentation" class="health-check-accordion issues"></dl>
+	</div>
+
+	<div class="issues-wrapper" id="health-check-issues-recommended">
+		<h3>
+			<span class="issue-count">0</span> <?php esc_html_e( 'Recommended improvements', 'health-check' ); ?>
+		</h3>
+
+		<dl id="health-check-site-status-recommended" role="presentation" class="health-check-accordion issues"></dl>
+	</div>
 </div>
 
 <div class="view-more">
