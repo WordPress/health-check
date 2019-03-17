@@ -470,16 +470,10 @@ class Health_Check {
 	 */
 	static function display_notice( $message, $status = 'success' ) {
 		printf(
-			'<div class="notice notice-%s inline">',
+			'<div class="notice notice-%s inline"><p>%s</p></div>',
+			$status,
 			$status
 		);
-
-		printf(
-			'<p>%s</p>',
-			$message
-		);
-
-		echo '</div>';
 	}
 
 	/**
