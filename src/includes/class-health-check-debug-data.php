@@ -158,8 +158,9 @@ class Health_Check_Debug_Data {
 				'description' => __( 'These values represent values set in your websites code which affect WordPress in various ways that may be of importance when seeking help with your site.', 'health-check' ),
 				'fields'      => array(
 					'ABSPATH'             => array(
-						'label' => 'ABSPATH',
-						'value' => ( ! defined( 'ABSPATH' ) ? __( 'Undefined', 'health-check' ) : ABSPATH ),
+						'label'   => 'ABSPATH',
+						'value'   => ( ! defined( 'ABSPATH' ) ? __( 'Undefined', 'health-check' ) : ABSPATH ),
+						'private' => true,
 					),
 					'WP_HOME'             => array(
 						'label' => 'WP_HOME',
@@ -714,8 +715,6 @@ class Health_Check_Debug_Data {
 		 * Array keys added by core are all prefixed with `wp-`, plugins and themes are encouraged to use their own slug as
 		 * a prefix, both for consistency as well as avoiding key collisions.
 		 *
-		 * @since 4.9.0
-		 *
 		 * @param array $args {
 		 *     The debug information to be added to the core information page.
 		 *
@@ -736,10 +735,7 @@ class Health_Check_Debug_Data {
 		 *     }
 		 * }
 		 */
-		$external_info = apply_filters( 'debug_information', array() );
-
-		// Merge the core and external debug fields.
-		$info = array_replace_recursive( $info, array_replace_recursive( $external_info, $info ) );
+		$info = apply_filters( 'debug_information', $info );
 
 		if ( ! empty( $locale ) ) {
 			// Change the language used for translations
