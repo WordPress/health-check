@@ -735,7 +735,7 @@ class Health_Check_Debug_Data {
 		 *     }
 		 * }
 		 */
-		$info = apply_filters( 'debug_information', array() );
+		$info = apply_filters( 'debug_information', $info );
 
 		if ( ! empty( $locale ) ) {
 			// Change the language used for translations
