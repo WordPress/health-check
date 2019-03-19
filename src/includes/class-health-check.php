@@ -413,7 +413,7 @@ class Health_Check {
 			$current_tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'site-status' );
 			?>
 
-			<nav class="tabs-wrapper">
+			<nav class="tabs-wrapper" aria-label="<?php esc_attr_e( 'Secondary menu', 'health-check' ); ?>">
 				<?php
 				foreach ( $tabs as $tab => $label ) {
 					printf(
