@@ -228,10 +228,11 @@ class Health_Check_Troubleshooting_MU {
 
 		// Set a slug if the plugin lives in the plugins directory root.
 		if ( ! stristr( $plugin_file, '/' ) ) {
-			$plugin_data['slug'] = $plugin_file;
+			$plugin_slug = $plugin_file;
+		} else { // Set the slug for plugin inside a folder.
+			$plugin_slug = explode( '/', $plugin_file );
+			$plugin_slug = $plugin_slug[0];
 		}
-
-		$plugin_slug = ( isset( $plugin_data['slug'] ) ? $plugin_data['slug'] : sanitize_title( $plugin_data['Name'] ) );
 
 		if ( in_array( $plugin_slug, $this->allowed_plugins ) ) {
 			$actions['troubleshoot-disable'] = sprintf(
