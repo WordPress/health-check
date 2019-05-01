@@ -573,7 +573,7 @@ class Health_Check_Site_Status {
 					( $module['required'] ? 'error' : 'warning' ),
 					sprintf(
 						// translators: %1$2: If a module is required or recommended. %2$s: The module name.
-						__( 'The %1$s module, %2$s, is not installer, or has been disabled.', 'health-check' ),
+						__( 'The %1$s module, %2$s, is not installed, or has been disabled.', 'health-check' ),
 						( $module['required'] ? __( 'required', 'health-check' ) : __( 'optional', 'health-check' ) ),
 						$library
 					)
