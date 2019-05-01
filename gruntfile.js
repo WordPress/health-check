@@ -59,10 +59,14 @@ module.exports = function( grunt ) {
 		},
 		copy: {
 			files: {
-				cwd: 'src/',
-				src: '**/*',
-				dest: 'build/',
-				expand: true
+				files: [
+					{
+						cwd: 'src/',
+						src: '**/*',
+						dest: 'build/',
+						expand: true
+					}
+				]
 			},
 			documents: {
 				cwd: 'docs/plugin/',
@@ -130,7 +134,9 @@ module.exports = function( grunt ) {
 		},
 		concat: {
 			healthcheck: {
-				src: [ 'assets/javascript/**/*.js' ],
+				src: [
+					'assets/javascript/**/*.js'
+				],
 				dest: 'build/assets/javascript/health-check.js'
 			}
 		},
@@ -184,15 +190,14 @@ module.exports = function( grunt ) {
 	// Travis CI Task
 	grunt.registerTask( 'travis', 'Runs Travis CI tasks.',[ 'csstest', 'jstest', 'phptest', 'phpcs' ] );
 
+	// Build with all checks included
+	grunt.registerTask( 'checkedBuild', 'Runs the build, and also runs linting etc against the code.', [ 'checkDependencies', 'copy', 'csstest', 'jstest', 'phptest', 'concat', 'sass', 'postcss' ] );
+
 	// Default task.
 	grunt.registerTask( 'default', [
 		'checkDependencies',
 		'copy',
-		'csstest',
-		'jstest',
-		'phptest',
 		'concat',
-		'sass',
-		'postcss'
+		'sass'
 	] );
 };

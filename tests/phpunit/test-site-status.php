@@ -39,7 +39,7 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 			}
 
 			$test_function = sprintf(
-				'test_%s',
+				'get_test_%s',
 				$test['test']
 			);
 
@@ -76,7 +76,7 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 			}
 
 			$test_function = sprintf(
-				'test_%s',
+				'get_test_%s',
 				$test['test']
 			);
 
