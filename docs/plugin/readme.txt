@@ -2,8 +2,8 @@
 Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.0
-Tested up to: 5.0
-Stable tag: 1.2.5
+Tested up to: 5.2
+Stable tag: 1.3.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,40 +39,13 @@ Are you unfamiliar with how to clear your cookies? No worries, you may also clos
 
 == Changelog ==
 
-= v1.2.5 =
-* Fix: Ensure the REST API status test runs as intended.
-* Fix: Remove warning on plugin screens when premium plugins are used.
-* Fix: Backup reminder would not remain dismissed in all scenarios after the recent update.
-
-= v1.2.4 =
-* Security: Prevent arbitrary file viewing through the integrity file actions. Independently reported by Julien Legras of [Synacktiv](https://synacktiv.com) and siliconforks.
-* Security: Site status was available to any user with a subscriber role or higher on a site. Reported by Julien Legras of [Synacktiv](https://synacktiv.com).
-* Security: Hardened the troubleshooting mode session so it is locked to the users location when active.
-* New enhancement: Check that various PHP extensions exist, as recommended by the WordPress Hosting Community.
-* New enhancement: Check if update APIs are being manipulated by plugins or themes.
-* Fix: Copying debug information had the wrong indentation for easier readability.
-* Fix: Toggling plugins and themes from the troubleshooting widget on in the dashboard now lets you expand/collapse them as intended.
-* Fix: When debugging was enabled in WordPress, disabling a plugin in troubleshooting mode would cause a WSOD if the disabled plugin caused a fatal error.
-
-= v1.2.3 =
-* Added REST API availability test to the Site Status
-
-= v 1.2.2 =
-* Added Twenty Nineteen as a recognized core theme.
-
-= v 1.2.1 =
-* Make sure only those with access to the plugin see the backup encouragement notice.
-* Make sure the `is_troubleshooting()` checks are available to the Site Status tester when the MU plugin may not have updated yet.
-* Avoid a warning of an undefined variable if you have the latest WordPress version installed.
-
-= v 1.2.0 =
-* Changed plugin name, it now better describes the plugins two primary purposes.
-* Changed the `Health Check` tab, it's now named `Site Status`, as we used the old name too many places and it was confusing.
-* Site status tests now run asynchronously, making the page load much faster.
-* The HTTPS tests now also check your Site URL settings to make sure they are following recommended best practices.
-* Fixed a warning preventing plugin names from displaying on the front-end in some cases.
-* Fixed an issue where you might get a 500 error if you tried using Troubleshooting Mode while using a child theme.
-* Automatically disable/enable a plugin or theme in Troubleshooting Mode if they are detected to cause errors.
-* Introduce a new dashboard widget during Troubleshooting Mode (and a simplified version on the plugins screen) to better explain what is going on, and make available actions more discoverable than the admin menu is.
-* Some text improvements throughout the plugin.
-* When loopback tests fail, we previously tested all plugins at once, for sites that have many plugins this may fail as the request times out. We now test one plugin at a time to avoid this, while also showing more information at the tests are running to the end user.
+= v1.3.0 =
+* Plugin moved to the Tools section in the admin menu
+* New UI/UX for the plugin pages
+* New troubleshooting mode UI/UX
+* Removed the backup reminder nag
+* Improved security hardening
+* Changed cookie names for improved hosting compatibility
+* Improved accessibility
+* Automatically check for critical issues once a week (adds a counter next to the menu item)
+* Dates in the email tester now follow your site settings
