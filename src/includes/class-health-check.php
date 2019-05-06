@@ -327,7 +327,10 @@ class Health_Check {
 				( ! $issue_counts || $critical_issues < 1 ? '' : $critical_count )
 			);
 
-		add_dashboard_page(
+		remove_submenu_page( 'tools.php', 'site-health.php' );
+
+		add_submenu_page(
+			'tools.php',
 			_x( 'Site Health', 'Page Title', 'health-check' ),
 			$menu_title,
 			'install_plugins',
