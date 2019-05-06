@@ -14,12 +14,12 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 		global $health_check_site_status;
 
 		$this->assertTrue(
-			method_exists( $health_check_site_status, $func ) && is_callable( array( $health_check_site_status, $func ) )
+			method_exists( $func[0], $func[1] ) && is_callable( $func )
 		);
 
 		$start_time = microtime( true );
 		ob_start();
-		call_user_func( array( $health_check_site_status, $func ) );
+		call_user_func( $func );
 		ob_end_clean();
 
 		return round( ( microtime( true ) - $start_time ) * 1000 );
@@ -38,16 +38,11 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 				continue;
 			}
 
-			$test_function = sprintf(
-				'get_test_%s',
-				$test['test']
-			);
-
-			$result = $this->runStatusTest( $test_function );
+			$result = $this->runStatusTest( $test['test'] );
 
 			$message = sprintf(
 				'Function %s exceeded the execution time limit.',
-				$test_function
+				$test['test'][1]
 			);
 
 			/**
@@ -75,16 +70,11 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 				continue;
 			}
 
-			$test_function = sprintf(
-				'get_test_%s',
-				$test['test']
-			);
-
-			$result = $this->runStatusTest( $test_function );
+			$result = $this->runStatusTest( $test['test'] );
 
 			$message = sprintf(
 				'Function %s executed in %dms and should be run directly.',
-				$test_function,
+				$test['test'][1],
 				$result
 			);
 
