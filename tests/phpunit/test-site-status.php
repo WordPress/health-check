@@ -11,19 +11,37 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 	}
 
 	private function runStatusTest( $func ) {
-		$message = sprintf(
-			'Site status test %s could not be accessed.',
-			$func[1]
-		);
+		global $health_check_site_status;
 
-		$this->assertTrue(
-			is_callable( $func ),
-			$message
-		);
+		$callable = $func;
+
+		if ( is_array( $func ) ) {
+			$message = sprintf(
+				'Site status test %s could not be accessed.',
+				$func[1]
+			);
+
+			$this->assertTrue(
+				is_callable( $callable ),
+				$message
+			);
+		} else {
+			$callable = array( $health_check_site_status, $func );
+
+			$message = sprintf(
+				'Site status test %s could not be accessed.',
+				$func
+			);
+
+			$this->assertTrue(
+				method_exists( $health_check_site_status, $func ) && is_callable( $callable ),
+				$message
+			);
+		}
 
 		$start_time = microtime( true );
 		ob_start();
-		call_user_func( $func );
+		call_user_func( $callable );
 		ob_end_clean();
 
 		return round( ( microtime( true ) - $start_time ) * 1000 );
