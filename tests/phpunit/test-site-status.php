@@ -11,8 +11,14 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 	}
 
 	private function runStatusTest( $func ) {
+		$message = sprintf(
+			'Site status test %s could not be accessed.',
+			$func[1]
+		);
+
 		$this->assertTrue(
-			is_callable( $func )
+			is_callable( $func ),
+			$message
 		);
 
 		$start_time = microtime( true );
