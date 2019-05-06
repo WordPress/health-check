@@ -11,8 +11,6 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 	}
 
 	private function runStatusTest( $func ) {
-		global $health_check_site_status;
-
 		$this->assertTrue(
 			method_exists( $func[0], $func[1] ) && is_callable( $func )
 		);
@@ -30,11 +28,11 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 
 		// Certain tests may only appear slow in certain scenarios, although may appear long in testing
 		$skip_testing = array(
-			'rest_availability', // Runs slow on PHP 5.2, but in 5-10ms on other builds.
+			'get_test_rest_availability', // Runs slow on PHP 5.2, but in 5-10ms on other builds.
 		);
 
 		foreach ( $tests as $test ) {
-			if ( in_array( $test['test'], $skip_testing ) ) {
+			if ( in_array( $test['test'][1], $skip_testing ) ) {
 				continue;
 			}
 
@@ -61,12 +59,12 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 
 		// Certain tests are known to be prolonged, but will appear short in testing
 		$skip_testing = array(
-			'loopback_requests', // fail early, as there's no loopback to hit on a unit test.
-			'dotorg_communication', // Time needed to run this test heavily depends on host loads.
+			'get_test_loopback_requests', // fail early, as there's no loopback to hit on a unit test.
+			'get_test_dotorg_communication', // Time needed to run this test heavily depends on host loads.
 		);
 
 		foreach ( $tests as $test ) {
-			if ( in_array( $test['test'], $skip_testing ) ) {
+			if ( in_array( $test['test'][1], $skip_testing ) ) {
 				continue;
 			}
 
