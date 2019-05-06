@@ -1,3 +1,14 @@
+.site-health-issues-wrapper {
+
+	margin-bottom: 3rem;
+	margin-top: 2rem;
+
+	&:first-of-type {
+
+		margin-top: 3rem;
+	}
+}
+
 .site-status-has-issues {
 
 	display: block;
@@ -10,13 +21,11 @@
 
 h3 {
 
-	padding: 0 0.5rem;
-	font-size: $font_size__h3;
-	font-weight: 600;
-	font-family: $font_family__h3;
+	padding: 0;
+	font-weight: 400;
 }
 
-.view-more {
+.site-health-view-more {
 
 	text-align: center;
 }
@@ -64,5 +73,33 @@ h3 {
 	p {
 
 		margin: 0;
+	}
+}
+
+.site-health-view-passed {
+
+	position: relative;
+	padding-right: 40px;
+	padding-left: 20px;
+
+	.icon {
+
+		border: solid #555d66;
+		border-width: 0 2px 2px 0;
+		height: 0.5rem;
+		pointer-events: none;
+		position: absolute;
+		right: 1.5em;
+		top: 50%;
+		transform: translateY(-70%) rotate(45deg);
+		width: 0.5rem;
+	}
+
+	&[aria-expanded="true"] {
+
+		.icon {
+
+			transform: translateY(-30%) rotate(-135deg);
+		}
 	}
 }

@@ -198,15 +198,27 @@ class Health_Check {
 
 		$health_check_js_variables = array(
 			'string'      => array(
-				'please_wait'                        => esc_html__( 'Please wait...', 'health-check' ),
-				'copied'                             => esc_html__( 'Copied', 'health-check' ),
-				'running_tests'                      => esc_html__( 'Currently being tested...', 'health-check' ),
-				'site_health_complete'               => esc_html__( 'All site health tests have finished running.', 'health-check' ),
-				'site_info_show_copy'                => esc_html__( 'Show options for copying this information', 'health-check' ),
-				'site_info_hide_copy'                => esc_html__( 'Hide options for copying this information', 'health-check' ),
-				// translators: %s: The percentage score for the tests.
-				'site_health_complete_screen_reader' => esc_html__( 'All site health tests have finished running. Your site scored %s, and the results are now available on the page.', 'health-check' ),
-				'site_info_copied'                   => esc_html__( 'Site information has been added to your clipboard.', 'health-check' ),
+				'please_wait'                          => esc_html__( 'Please wait...', 'health-check' ),
+				'copied'                               => esc_html__( 'Copied', 'health-check' ),
+				'running_tests'                        => esc_html__( 'Currently being tested...', 'health-check' ),
+				'site_health_complete'                 => esc_html__( 'All site health tests have finished running.', 'health-check' ),
+				'site_info_show_copy'                  => esc_html__( 'Show options for copying this information', 'health-check' ),
+				'site_info_hide_copy'                  => esc_html__( 'Hide options for copying this information', 'health-check' ),
+				// translators: %s: The percentage pass rate for the tests.
+				'site_health_complete_screen_reader'   => esc_html__( 'All site health tests have finished running. Your site passed %s, and the results are now available on the page.', 'health-check' ),
+				'site_info_copied'                     => esc_html__( 'Site information has been added to your clipboard.', 'health-check' ),
+				// translators: %s: Amount of critical issues.
+				'site_info_heading_critical_single'    => esc_html__( '%s Critical issue', 'health-check' ),
+				// translators: %s: Amount of critical issues.
+				'site_info_heading_critical_plural'    => esc_html__( '%s Critical issues', 'health-check' ),
+				// translators: %s: Amount of recommended issues.
+				'site_info_heading_recommended_single' => esc_html__( '%s Recommended improvement', 'health-check' ),
+				// translators: %s: Amount of recommended issues.
+				'site_info_heading_recommended_plural' => esc_html__( '%s Recommended improvements', 'health-check' ),
+				// translators: %s: Amount of passed tests.
+				'site_info_heading_good_single'        => esc_html__( '%s Item with no issues detected', 'health-check' ),
+				// translators: %s: Amount of passed tests.
+				'site_info_heading_good_plural'        => esc_html__( '%s Items with no issues detected', 'health-check' ),
 			),
 			'nonce'       => array(
 				'loopback_no_plugins'         => wp_create_nonce( 'health-check-loopback-no-plugins' ),
@@ -238,35 +250,46 @@ class Health_Check {
 		}
 
 		if ( ! isset( $_GET['tab'] ) || ( isset( $_GET['tab'] ) && 'site-status' === $_GET['tab'] ) ) {
-			global $health_check_site_status;
-
 			$tests = Health_Check_Site_Status::get_tests();
-			foreach ( $tests['direct'] as $test ) {
-				$test_function = sprintf(
-					'get_test_%s',
-					$test['test']
-				);
 
-				if ( method_exists( $health_check_site_status, $test_function ) && is_callable( array( $health_check_site_status, $test_function ) ) ) {
-					$health_check_js_variables['site_status']['direct'][] = call_user_func( array( $health_check_site_status, $test_function ) );
-				} else {
+			// Don't run https test on localhost
+			if ( 'localhost' === preg_replace( '|https?://|', '', get_site_url() ) ) {
+				unset( $tests['direct']['https_status'] );
+			}
+
+			foreach ( $tests['direct'] as $test ) {
+				if ( is_string( $test['test'] ) ) {
+					$test_function = sprintf(
+						'get_test_%s',
+						$test['test']
+					);
+
+					if ( method_exists( $this, $test_function ) && is_callable( array( $this, $test_function ) ) ) {
+						$health_check_js_variables['site_status']['direct'][] = call_user_func( array( $this, $test_function ) );
+						continue;
+					}
+				}
+
+				if ( is_callable( $test['test'] ) ) {
 					$health_check_js_variables['site_status']['direct'][] = call_user_func( $test['test'] );
 				}
 			}
 
 			foreach ( $tests['async'] as $test ) {
-				$health_check_js_variables['site_status']['async'][] = array(
-					'test'      => $test['test'],
-					'completed' => false,
-				);
+				if ( is_string( $test['test'] ) ) {
+					$health_check_js_variables['site_status']['async'][] = array(
+						'test'      => $test['test'],
+						'completed' => false,
+					);
+				}
 			}
 		}
 
 		wp_enqueue_style( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/css/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
 
-		wp_enqueue_script( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/javascript/health-check.js', array( 'jquery', 'wp-a11y' ), HEALTH_CHECK_PLUGIN_VERSION, true );
+		wp_enqueue_script( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/javascript/health-check.js', array( 'jquery', 'wp-a11y', 'clipboard', 'wp-util' ), HEALTH_CHECK_PLUGIN_VERSION, true );
 
-		wp_localize_script( 'health-check', 'HealthCheck', $health_check_js_variables );
+		wp_localize_script( 'health-check', 'SiteHealth', $health_check_js_variables );
 	}
 
 	/**
@@ -387,75 +410,41 @@ class Health_Check {
 	 * @return void
 	 */
 	public function dashboard_page() {
-		?>
-		<div class="wrap health-check-header">
-			<div class="title-section">
-				<h1>
-					<?php _ex( 'Site Health', 'Menu, Section and Page Title', 'health-check' ); ?>
-				</h1>
+		include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-health-header.php' );
 
-				<div id="progressbar" class="loading" data-pct="0" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-valuetext="<?php esc_attr_e( 'Site tests are running, please wait a moment.', 'health-check' ); ?>">
-					<svg width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
-						<circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-						<circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-					</svg>
-				</div>
-			</div>
+		switch ( Health_Check::current_tab() ) {
+			case 'debug':
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/debug-data.php' );
+				break;
+			case 'phpinfo':
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/phpinfo.php' );
+				break;
+			case 'troubleshoot':
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php' );
+				break;
+			case 'tools':
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php' );
+				break;
+			case 'site-status':
+			default:
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-status.php' );
+		}
 
-			<?php
-			$tabs = array(
-				'site-status'  => esc_html__( 'Status', 'health-check' ),
-				'debug'        => esc_html__( 'Info', 'health-check' ),
-				'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
-				'tools'        => esc_html__( 'Tools', 'health-check' ),
-			);
+		// Close out the div tag opened as a wrapper in the header.
+		echo '</div>';
+	}
 
-			$current_tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'site-status' );
-			?>
+	static function tabs() {
+		return array(
+			'site-status'  => esc_html__( 'Status', 'health-check' ),
+			'debug'        => esc_html__( 'Info', 'health-check' ),
+			'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
+			'tools'        => esc_html__( 'Tools', 'health-check' ),
+		);
+	}
 
-			<nav class="tabs-wrapper" aria-label="<?php esc_attr_e( 'Secondary menu', 'health-check' ); ?>">
-				<?php
-				foreach ( $tabs as $tab => $label ) {
-					printf(
-						'<a href="%s" class="tab %s"%s>%s</a>',
-						sprintf(
-							'%s&tab=%s',
-							menu_page_url( 'health-check', false ),
-							$tab
-						),
-						( $current_tab === $tab ? 'active' : '' ),
-						( $current_tab === $tab ? ' aria-current="true"' : '' ),
-						$label
-					);
-				}
-				?>
-			</nav>
-			<div class="wp-clearfix"></div>
-		</div>
-
-		<div class="wrap health-check-body" aria-hidden="true">
-
-			<?php
-			switch ( $current_tab ) {
-				case 'debug':
-					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/debug-data.php' );
-					break;
-				case 'phpinfo':
-					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/phpinfo.php' );
-					break;
-				case 'troubleshoot':
-					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php' );
-					break;
-				case 'tools':
-					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php' );
-					break;
-				case 'site-status':
-				default:
-					include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-status.php' );
-			}
-			?>
-		</div>
-		<?php
+	static function current_tab() {
+		return ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'site-status' );
 	}
 
 	/**
