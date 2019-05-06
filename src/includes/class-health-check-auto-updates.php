@@ -22,43 +22,42 @@ class Health_Check_Auto_Updates {
 		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 	}
 
-	/**
-	 * Run tests to determine if auto-updates can run.
-	 *
-	 * @since 5.2.0
-	 *
-	 * @return array The test results.
-	 */
 	public function run_tests() {
-		$tests = array(
-			$this->test_constants( 'DISALLOW_FILE_MODS', false ),
-			$this->test_constants( 'AUTOMATIC_UPDATER_DISABLED', false ),
-			$this->test_constants( 'WP_AUTO_UPDATE_CORE', true ),
-			$this->test_wp_version_check_attached(),
-			$this->test_filters_automatic_updater_disabled(),
-			$this->test_if_failed_update(),
-			$this->test_vcs_abspath(),
-			$this->test_check_wp_filesystem_method(),
-			$this->test_all_files_writable(),
-			$this->test_accepts_dev_updates(),
-			$this->test_accepts_minor_updates(),
-		);
+		$tests = array();
 
-		$tests = array_filter( $tests );
-		$tests = array_map(
-			function( $test ) {
-				$test = (object) $test;
+		foreach ( get_class_methods( $this ) as $method ) {
+			if ( 'test_' !== substr( $method, 0, 5 ) ) {
+				continue;
+			}
 
-				if ( empty( $test->severity ) ) {
-					$test->severity = 'warning';
-				}
+			$result = call_user_func( array( $this, $method ) );
 
-				return $test;
-			},
-			$tests
-		);
+			if ( false === $result || null === $result ) {
+				continue;
+			}
+
+			$result = (object) $result;
+
+			if ( empty( $result->severity ) ) {
+				$result->severity = 'warning';
+			}
+
+			$tests[ $method ] = $result;
+		}
 
 		return $tests;
+	}
+
+	public function test_contant_DISALLOW_FILE_MODS() {
+		return $this->check_constants( 'DISALLOW_FILE_MODS', false );
+	}
+
+	public function test_contant_AUTOMATIC_UPDATER_DISABLED() {
+		return $this->check_constants( 'AUTOMATIC_UPDATER_DISABLED', false );
+	}
+
+	public function test_contant_WP_AUTO_UPDATE_CORE() {
+		return $this->check_constants( 'WP_AUTO_UPDATE_CORE', true );
 	}
 
 	/**
@@ -70,7 +69,7 @@ class Health_Check_Auto_Updates {
 	 * @param bool   $value    The value that the constant should be, if set.
 	 * @return array The test results.
 	 */
-	public function test_constants( $constant, $value ) {
+	public function check_constants( $constant, $value ) {
 		if ( defined( $constant ) && constant( $constant ) != $value ) {
 			return array(
 				'description' => sprintf(
