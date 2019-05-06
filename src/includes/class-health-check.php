@@ -404,42 +404,42 @@ class Health_Check {
 	 * @return void
 	 */
 	public function dashboard_page() {
-	    include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-health-header.php' );
+		include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-health-header.php' );
 
-        switch ( Health_Check::current_tab() ) {
-            case 'debug':
-                include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/debug-data.php' );
-                break;
-            case 'phpinfo':
-                include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/phpinfo.php' );
-                break;
-            case 'troubleshoot':
-                include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php' );
-                break;
-            case 'tools':
-                include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php' );
-                break;
-            case 'site-status':
-            default:
-                include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-status.php' );
-        }
+		switch ( Health_Check::current_tab() ) {
+			case 'debug':
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/debug-data.php' );
+				break;
+			case 'phpinfo':
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/phpinfo.php' );
+				break;
+			case 'troubleshoot':
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php' );
+				break;
+			case 'tools':
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php' );
+				break;
+			case 'site-status':
+			default:
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-status.php' );
+		}
 
-        // Close out the div tag opened as a wrapper in the header.
-        echo '</div>';
+		// Close out the div tag opened as a wrapper in the header.
+		echo '</div>';
 	}
 
 	static function tabs() {
-	    return array(
-		    'site-status'  => esc_html__( 'Status', 'health-check' ),
-		    'debug'        => esc_html__( 'Info', 'health-check' ),
-		    'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
-		    'tools'        => esc_html__( 'Tools', 'health-check' ),
-	    );
-    }
+		return array(
+			'site-status'  => esc_html__( 'Status', 'health-check' ),
+			'debug'        => esc_html__( 'Info', 'health-check' ),
+			'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
+			'tools'        => esc_html__( 'Tools', 'health-check' ),
+		);
+	}
 
-    static function current_tab() {
-	    return ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'site-status' );
-    }
+	static function current_tab() {
+		return ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'site-status' );
+	}
 
 	/**
 	 * Display styled admin notices.
