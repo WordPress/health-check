@@ -29,6 +29,7 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 		// Certain tests may only appear slow in certain scenarios, although may appear long in testing
 		$skip_testing = array(
 			'get_test_rest_availability', // Runs slow on PHP 5.2, but in 5-10ms on other builds.
+			'get_test_php_version', // Slow on first run, but is ran by core, so will "always" be cached.
 		);
 
 		foreach ( $tests as $test ) {
