@@ -105,6 +105,11 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 				}
 			}
 
+			// async tests are passed without a prefix when not given a method object parent, so we add that here.
+			if ( ! is_array( $test['test'] ) ) {
+				$test['test'] = 'get_test_' . $test['test'];
+			}
+
 			$result = $this->runStatusTest( $test['test'] );
 
 			$message = sprintf(
