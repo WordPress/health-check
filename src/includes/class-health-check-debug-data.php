@@ -96,7 +96,7 @@ class Health_Check_Debug_Data {
 				),
 				'permalink'              => array(
 					'label' => __( 'Permalink structure', 'health-check' ),
-					'value' => $permalink_structure ?: __( 'No permalink structure set', 'health-check' ),
+					'value' => $permalink_structure ? $permalink_structure : __( 'No permalink structure set', 'health-check' ),
 					'debug' => $permalink_structure,
 				),
 				'https_status'           => array(
