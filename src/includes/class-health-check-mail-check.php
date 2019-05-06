@@ -51,7 +51,8 @@ class Health_Check_Mail_Check {
 			$wp_name,
 			$wp_address,
 			$date,
-			$time
+			$time,
+			$email_message
 		);
 
 		if ( ! empty( $email_message ) ) {
