@@ -90,7 +90,7 @@ class Health_Check_Mail_Check {
 	 *
 	 * @param array $tabs
 	 *
-	 * return array
+	 * @return array
 	 */
 	public static function tools_tab( $tabs ) {
 		ob_start();
