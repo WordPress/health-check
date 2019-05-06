@@ -170,7 +170,7 @@ class Health_Check_Files_Integrity {
 	static function view_file_diff() {
 		check_ajax_referer( 'health-check-view-file-diff' );
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'install_plugins' ) ) {
 			wp_send_json_error();
 		}
 
