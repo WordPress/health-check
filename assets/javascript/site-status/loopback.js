@@ -1,10 +1,10 @@
-/* global HealthCheck, ajaxurl, healthCheckFailureModal */
+/* global SiteHealth, ajaxurl, healthCheckFailureModal */
 jQuery( document ).ready(function( $ ) {
 	function testDefaultTheme() {
 		var $parent = $( '.individual-loopback-test-status', '#test-single-no-theme' ),
 			data = {
 				'action': 'health-check-loopback-default-theme',
-				'_wpnonce': HealthCheck.nonce.loopback_default_theme
+				'_wpnonce': SiteHealth.nonce.loopback_default_theme
 			};
 
 		$.post(
@@ -36,12 +36,12 @@ jQuery( document ).ready(function( $ ) {
 		data = {
 			'action': 'health-check-loopback-individual-plugins',
 			'plugin': $testLine.data( 'test-plugin' ),
-			'_wpnonce': HealthCheck.nonce.loopback_individual_plugins
+			'_wpnonce': SiteHealth.nonce.loopback_individual_plugins
 		};
 
 		$parentField = $( '.individual-loopback-test-status', $testLine );
 
-		$parentField.html( HealthCheck.string.running_tests );
+		$parentField.html( SiteHealth.string.running_tests );
 
 		$.post(
 			ajaxurl,
@@ -64,12 +64,12 @@ jQuery( document ).ready(function( $ ) {
 			$parent = $( this ).closest( 'p' ),
 			data = {
 				'action': 'health-check-loopback-no-plugins',
-				'_wpnonce': HealthCheck.nonce.loopback_no_plugins
+				'_wpnonce': SiteHealth.nonce.loopback_no_plugins
 			};
 
 		e.preventDefault();
 
-		$( this ).html( '<span class="spinner" style="visibility: visible;"></span> ' + HealthCheck.string.please_wait );
+		$( this ).html( '<span class="spinner" style="visibility: visible;"></span> ' + SiteHealth.string.please_wait );
 
 		$.post(
 			ajaxurl,

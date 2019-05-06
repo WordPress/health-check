@@ -16,117 +16,105 @@ $info = Health_Check_Debug_Data::debug_data();
 ?>
 
 <h2>
-	<?php esc_html_e( 'Site Info', 'health-check' ); ?>
+	<?php esc_html_e( 'Site Health Info', 'health-check' ); ?>
 </h2>
 
 <p>
-	<?php esc_html_e( 'You can export the information on this page so it can be easily copied and pasted in support requests such as on the WordPress.org forums, or shared with your website / theme / plugin developers.', 'health-check' ); ?>
+	<?php _e( 'This page can show you every detail about the configuration of your WordPress website. If we see anything here that could be improved, we will let you know on the Site Health Status page.', 'health-check' ); ?>
 </p>
-
 <p>
-	<button type="button" class="button button-link health-check-toggle-copy-section">
-		<?php esc_html_e( 'Show options for copying this information', 'health-check' ); ?>
-	</button>
+	<?php _e( 'If you want to export a handy list of all the information on this page, you can use the button below to copy it to the clipboard. You can then paste it in a text file and save it to your harddrive, or paste it in an email exchange with a support engineer or theme/plugin developer for example.', 'health-check' ); ?>
 </p>
 
-<div class="system-information-copy-wrapper hidden">
-	<textarea id="system-information-default-copy-field" rows="10"><?php Health_Check_Debug_Data::textarea_format( $info ); ?></textarea>
-
-	<?php
-	if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) :
-
-		$english_info = Health_Check_Debug_Data::debug_data( 'en_US' );
-
-		// Workaround for locales not being properly loaded back, see issue #30 on GitHub.
-		if ( ! is_textdomain_loaded( 'health-check' ) && _get_path_to_translation( 'health-check' ) ) {
-			load_textdomain( 'health-check', _get_path_to_translation( 'health-check' ) );
-		}
-		?>
-		<textarea id="system-information-english-copy-field" class="system-information-copy-wrapper" rows="10"><?php Health_Check_Debug_Data::textarea_format( $english_info ); ?></textarea>
-
-	<?php endif; ?>
-
+<div class="site-health-copy-buttons">
 	<div class="copy-button-wrapper">
-		<button type="button" class="button button-primary health-check-copy-field" data-copy-field="default"><?php esc_html_e( 'Copy to clipboard', 'health-check' ); ?></button>
-		<span class="copy-field-success" aria-hidden="true">Copied!</span>
+		<button type="button" class="button copy-button" data-clipboard-text="<?php echo esc_attr( Health_Check_Debug_Data::format( $info, 'debug' ) ); ?>">
+			<?php _e( 'Copy site info to clipboard', 'health-check' ); ?>
+		</button>
+		<span class="success" aria-hidden="true"><?php _e( 'Copied!', 'health-check' ); ?></span>
 	</div>
-	<?php if ( 'en_US' !== get_locale() && version_compare( get_bloginfo( 'version' ), '4.7', '>=' ) ) : ?>
-		<div class="copy-button-wrapper">
-			<button type="button" class="button health-check-copy-field" data-copy-field="english"><?php esc_html_e( 'Copy to clipboard (English)', 'health-check' ); ?></button>
-			<span class="copy-field-success" aria-hidden="true">Copied!</span>
-		</div>
-	<?php endif; ?>
 </div>
 
-<dl id="health-check-debug" role="presentation" class="health-check-accordion">
+<div id="health-check-debug" class="health-check-accordion">
 
 <?php
+$sizes_fields = array( 'uploads_size', 'themes_size', 'plugins_size', 'wordpress_size', 'database_size', 'total_size' );
+
 foreach ( $info as $section => $details ) {
 	if ( ! isset( $details['fields'] ) || empty( $details['fields'] ) ) {
 		continue;
 	}
 	?>
-	<dt role="heading" aria-level="3">
-		<button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-<?php echo esc_attr( $section ); ?>" id="health-check-accordion-heading-<?php echo esc_attr( $section ); ?>" type="button">
+	<h3 class="health-check-accordion-heading">
+		<button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-<?php echo esc_attr( $section ); ?>" type="button">
 			<span class="title">
 				<?php echo esc_html( $details['label'] ); ?>
+				<?php
 
-				<?php if ( isset( $details['show_count'] ) && $details['show_count'] ) : ?>
-					<?php printf( '(%d)', count( $details['fields'] ) ); ?>
-				<?php endif; ?>
+				if ( isset( $details['show_count'] ) && $details['show_count'] ) {
+					printf( '(%d)', count( $details['fields'] ) );
+				}
+
+				?>
 			</span>
+			<?php
+
+			if ( 'wp-paths-sizes' === $section ) {
+				?>
+				<span class="health-check-wp-paths-sizes spinner"></span>
+				<?php
+			}
+
+			?>
 			<span class="icon"></span>
 		</button>
-	</dt>
+	</h3>
 
-	<dd id="health-check-accordion-block-<?php echo esc_attr( $section ); ?>" role="region" aria-labelledby="health-check-accordion-heading-<?php echo esc_attr( $section ); ?>" class="health-check-accordion-panel" hidden="hidden">
+	<div id="health-check-accordion-block-<?php echo esc_attr( $section ); ?>" class="health-check-accordion-panel" hidden="hidden">
 		<?php
+
 		if ( isset( $details['description'] ) && ! empty( $details['description'] ) ) {
-			printf(
-				'<p>%s</p>',
-				wp_kses( $details['description'], array(
-					'a'      => array(
-						'href' => true,
-					),
-					'strong' => true,
-					'em'     => true,
-				) )
-			);
+			printf( '<p>%s</p>', $details['description'] );
 		}
+
 		?>
-		<table class="widefat striped health-check-table">
+		<table class="widefat striped health-check-table" role="presentation">
 			<tbody>
 			<?php
-			foreach ( $details['fields'] as $field ) {
+
+			foreach ( $details['fields'] as $field_name => $field ) {
 				if ( is_array( $field['value'] ) ) {
-					$values = '';
+					$values = '<ul>';
+
 					foreach ( $field['value'] as $name => $value ) {
-						$values .= sprintf(
-							'<li>%s: %s</li>',
-							esc_html( $name ),
-							esc_html( $value )
-						);
+						$values .= sprintf( '<li>%s: %s</li>', esc_html( $name ), esc_html( $value ) );
 					}
+
+					$values .= '</ul>';
 				} else {
 					$values = esc_html( $field['value'] );
 				}
 
-				printf(
-					'<tr><td>%s</td><td>%s</td></tr>',
-					esc_html( $field['label'] ),
-					$values
-				);
+				if ( in_array( $field_name, $sizes_fields, true ) ) {
+					printf( '<tr><td>%s</td><td class="%s">%s</td></tr>', esc_html( $field['label'] ), esc_attr( $field_name ), $values );
+				} else {
+					printf( '<tr><td>%s</td><td>%s</td></tr>', esc_html( $field['label'] ), $values );
+				}
 			}
+
 			?>
 			</tbody>
 		</table>
-	</dd>
+	</div>
 	<?php } ?>
-</dl>
+</div>
 
-<?php
-printf(
-	'<a href="%s" class="button button-primary">%s</a>',
-	esc_url( admin_url( '?page=health-check&tab=phpinfo' ) ),
-	esc_html__( 'View extended PHP information', 'health-check' )
-);
+<div class="site-health-view-more">
+	<?php
+	printf(
+		'<a href="%s" class="button button-primary">%s</a>',
+		esc_url( admin_url( '?page=health-check&tab=phpinfo' ) ),
+		esc_html__( 'View extended PHP information', 'health-check' )
+	);
+	?>
+</div>

@@ -39,6 +39,8 @@ services:
       - "./build:/var/www/html/wp-content/plugins/health-check"
       - "./.docker/local/wordpress:/var/www/html"
       - "./.docker/config/php-fpm/php.ini:/usr/local/etc/php/php.ini"
+    extra_hosts:
+      - "health-check.localhost:172.20.0.6"
     restart: always
   nginx:
     image: nginx:latest
