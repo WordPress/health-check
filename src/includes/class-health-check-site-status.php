@@ -90,7 +90,7 @@ class Health_Check_Site_Status {
 	public function site_status_result() {
 		check_ajax_referer( 'health-check-site-status-result' );
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'install_plugins' ) ) {
 			wp_send_json_error();
 		}
 
@@ -100,7 +100,7 @@ class Health_Check_Site_Status {
 	public function site_status() {
 		check_ajax_referer( 'health-check-site-status' );
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'install_plugins' ) ) {
 			wp_send_json_error();
 		}
 
