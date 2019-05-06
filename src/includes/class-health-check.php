@@ -85,7 +85,7 @@ class Health_Check {
 	 * @return void
 	 */
 	public function start_troubleshoot_mode() {
-		if ( ! isset( $_POST['health-check-troubleshoot-mode'] ) || ! current_user_can( 'manage_options' ) ) {
+		if ( ! isset( $_POST['health-check-troubleshoot-mode'] ) || ! current_user_can( 'install_plugins' ) ) {
 			return;
 		}
 
@@ -117,7 +117,7 @@ class Health_Check {
 	 * @return void
 	 */
 	public function start_troubleshoot_single_plugin_mode() {
-		if ( ! isset( $_GET['health-check-troubleshoot-plugin'] ) || ! current_user_can( 'manage_options' ) ) {
+		if ( ! isset( $_GET['health-check-troubleshoot-plugin'] ) || ! current_user_can( 'install_plugins' ) ) {
 			return;
 		}
 
@@ -330,7 +330,7 @@ class Health_Check {
 		add_dashboard_page(
 			_x( 'Site Health', 'Page Title', 'health-check' ),
 			$menu_title,
-			'manage_options',
+			'install_plugins',
 			'health-check',
 			array( $this, 'dashboard_page' )
 		);
