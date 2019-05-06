@@ -57,8 +57,14 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 		);
 
 		foreach ( $tests as $test ) {
-			if ( in_array( $test['test'][1], $skip_testing ) ) {
-				continue;
+			if ( is_array( $test['test'] ) ) {
+				if ( in_array( $test['test'][1], $skip_testing ) ) {
+					continue;
+				}
+			} else {
+				if ( in_array( $test['test'], $skip_testing ) ) {
+					continue;
+				}
 			}
 
 			$result = $this->runStatusTest( $test['test'] );
@@ -84,13 +90,19 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 
 		// Certain tests are known to be prolonged, but will appear short in testing
 		$skip_testing = array(
-			'get_test_loopback_requests', // fail early, as there's no loopback to hit on a unit test.
-			'get_test_dotorg_communication', // Time needed to run this test heavily depends on host loads.
+			'loopback_requests', // fail early, as there's no loopback to hit on a unit test.
+			'dotorg_communication', // Time needed to run this test heavily depends on host loads.
 		);
 
 		foreach ( $tests as $test ) {
-			if ( in_array( $test['test'][1], $skip_testing ) ) {
-				continue;
+			if ( is_array( $test['test'] ) ) {
+				if ( in_array( $test['test'][1], $skip_testing ) ) {
+					continue;
+				}
+			} else {
+				if ( in_array( $test['test'], $skip_testing ) ) {
+					continue;
+				}
 			}
 
 			$result = $this->runStatusTest( $test['test'] );
