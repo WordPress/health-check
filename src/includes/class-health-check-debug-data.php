@@ -964,7 +964,7 @@ class Health_Check_Debug_Data {
 			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 			$info['wp-themes']['fields'][ sanitize_text_field( $theme->Name ) ] = array(
 				'label' => sprintf(
-				// translators: 1: Theme name. 2: Theme slug.
+					// translators: 1: Theme name. 2: Theme slug.
 					__( '%1$s (%2$s)', 'health-check' ),
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 					$theme->Name,
