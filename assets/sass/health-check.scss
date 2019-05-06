@@ -4,10 +4,25 @@ body {
 
 	&.dashboard_page_health-check {
 
-		background: #fff;
-
 		#wpcontent {
 			padding-left: 0;
+		}
+
+		/* Better position for the WordPress admin notices and update nag. */
+		.notice {
+
+			margin: 5px 20px 15px 22px;
+		}
+
+		.update-nag {
+			margin-bottom: 20px;
+			margin-left: 22px;
+		}
+
+		h2 {
+
+			padding: 1rem 0;
+			line-height: 1.4;
 		}
 
 		.wrap {
@@ -27,11 +42,6 @@ body {
 					padding: 1rem 0;
 				}
 			}
-		}
-
-		p {
-
-			font-size: $font_size__text;
 		}
 
 		ul,
@@ -55,61 +65,47 @@ body {
 		.health-check-header {
 
 			text-align: center;
-			margin-bottom: 1rem;
-			border-bottom: 2px solid #ccc;
+			margin: 0 0 1rem;
+			background: #fff;
+			border-bottom: 1px solid #e2e4e7;
 
-			.title-section {
+			.health-check-title-section {
 
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				clear: both;
 
 				h1 {
 
 					display: inline-block;
 					font-weight: 600;
 					font-size: $font_size__h1;
-					margin: 2rem 0.8rem 2rem 2rem;
+					margin: 1rem 0.8rem;
+					padding: 9px 0 4px;
+					line-height: 1.3;
 					font-family: $font_family__h1;
 				}
 
-				#progressbar {
+				.site-health-progress {
 
 					display: inline-block;
-					height: 50px;
-					width: 50px;
+					height: 40px;
+					width: 40px;
 					margin: 0;
 					border-radius: 100%;
 					position: relative;
 					font-weight: 600;
-					font-size: 0.5rem;
-
-					&:after {
-
-						position: absolute;
-						display: block;
-						height: 160px;
-						width: 160px;
-						left: 50%;
-						top: 50%;
-						content: attr(data-pct) "%";
-						margin-top: -80px;
-						margin-left: -80px;
-						border-radius: 100%;
-						line-height: 160px;
-						font-size: 2em;
-					}
-
-					&.hidden {
-
-						display: none;
-					}
+					font-size: 0.4rem;
 
 					&.loading {
 
-						&:after {
+						.site-health-progress-count {
 
-							animation: loadingEllipsis 3s infinite ease-in-out;
+							&:after {
+
+								content: "···";
+							}
 						}
 
 						svg {
@@ -120,6 +116,26 @@ body {
 								stroke: #adc5d2;
 								animation: loadingPulse 3s infinite ease-in-out;
 							}
+						}
+					}
+
+					.site-health-progress-count {
+
+						position: absolute;
+						display: block;
+						height: 80px;
+						width: 80px;
+						left: 50%;
+						top: 50%;
+						margin-top: -40px;
+						margin-left: -40px;
+						border-radius: 100%;
+						line-height: 6.3;
+						font-size: 2em;
+
+						&:after {
+
+							content: "";
 						}
 					}
 
@@ -149,73 +165,52 @@ body {
 							}
 						}
 					}
-				}
 
-				@keyframes loadingPulse {
+					@keyframes loadingPulse {
 
-					0% {
+						0% {
 
-						stroke: #adc5d2;
-					}
+							stroke: #adc5d2;
+						}
 
-					50% {
+						50% {
 
-						stroke: #00a0d2;
-					}
+							stroke: #00a0d2;
+						}
 
-					100% {
+						100% {
 
-						stroke: #adc5d2;
+							stroke: #adc5d2;
 
-					}
-				}
-
-				@keyframes loadingEllipsis {
-
-					0% {
-
-						content: ".";
-					}
-
-					50% {
-
-						content: "..";
-					}
-
-					100% {
-
-						content: "...";
+						}
 					}
 				}
 			}
 
-			.tabs-wrapper {
+			.health-check-tabs-wrapper {
 
 				display: block;
 
-				.tab {
+				.health-check-tab {
 
-					float: none;
 					display: inline-block;
 					text-decoration: none;
 					color: inherit;
-					font-size: $font_size__nav;
-					padding: 0.5rem;
+					padding: 0.5rem 1rem 1rem;
 					margin: 0 1rem;
-					border-bottom: 4px solid transparent;
-					transition: border 0.5s ease-in-out;
+					transition: box-shadow 0.5s ease-in-out;
 
 					&.active {
 
-						border-bottom: 4px solid #00a0d2;
+						box-shadow: inset 0 -3px #007cba;
 						font-weight: 600;
 					}
 
-					&:focus,
-					&:hover,
-					&:active {
+					&:focus {
 
-						border-bottom: 4px solid #00a0d2;
+						color: #191e23;
+						outline: 1px solid #6c7781;
+						box-shadow: none;
 					}
 				}
 			}
@@ -224,7 +219,6 @@ body {
 		.health-check-body {
 
 			max-width: 800px;
-			width: 100%;
 			margin: 0 auto;
 		}
 
@@ -313,11 +307,6 @@ body {
 
 		.spinner {
 			float: none;
-		}
-
-		.button {
-
-			font-size: $font_size__text;
 		}
 
 		/* Info screen styles */

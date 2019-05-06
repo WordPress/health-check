@@ -1,34 +1,40 @@
-.system-information-copy-wrapper {
+.site-health-copy-buttons {
 
 	display: block;
 	margin: 1rem 0;
-
-	&.hidden {
-
-		display: none;
-	}
-
-	textarea {
-
-		width: 100%;
-	}
 
 	.copy-button-wrapper {
 
 		margin: 0.5rem 0 1rem;
 	}
+
+	.success {
+
+		display: none;
+		color: #40860a;
+		height: 28px;
+		line-height: 2.2;
+		margin-left: 0.5rem;
+
+		&.visible {
+
+			display: inline-block;
+		}
+	}
 }
 
-.copy-field-success {
+#health-check-debug {
 
-	display: none;
-	color: #40860a;
-	font-size: $font_size__text;
-	line-height: 1.8;
-	margin-left: 0.5rem;
+	margin-bottom: 3rem;
+}
 
-	&.visible {
+.health-check-wp-paths-sizes {
 
-		display: inline-block;
+	&.spinner {
+
+		position: absolute;
+		visibility: visible;
+		float: none;
+		margin: 0 4px;
 	}
 }

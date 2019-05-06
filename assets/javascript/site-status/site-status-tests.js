@@ -1,69 +1,75 @@
-/* global ajaxurl, HealthCheck, wp */
+/* global ajaxurl, SiteHealth, wp */
 jQuery( document ).ready(function( $ ) {
 	var data;
+	var isDebugTab = $( '.health-check-debug-tab.active' ).length;
 
 	$( '.site-health-view-passed' ).on( 'click', function() {
 		var goodIssuesWrapper = $( '#health-check-issues-good' );
 
 		goodIssuesWrapper.toggleClass( 'hidden' );
 		$( this ).attr( 'aria-expanded', ! goodIssuesWrapper.hasClass( 'hidden' ) );
-	});
+	} );
 
-	function HCAppendIssue( issue ) {
-		var htmlOutput,
-			issueWrapper,
-			issueCounter;
+	function AppendIssue( issue ) {
+		var template = wp.template( 'health-check-issue' ),
+			issueWrapper = $( '#health-check-issues-' + issue.status ),
+			heading,
+			count;
 
-		HealthCheck.site_status.issues[ issue.status ]++;
+		SiteHealth.site_status.issues[ issue.status ]++;
 
-		issueWrapper = $( '#health-check-issues-' + issue.status );
+		count = SiteHealth.site_status.issues[ issue.status ];
 
-		issueCounter = $( '.issue-count', issueWrapper );
+		if ( 'critical' === issue.status ) {
+			if ( count <= 1 ) {
+				heading = SiteHealth.string.site_info_heading_critical_single.replace( '%s', '<span class="issue-count">' + count + '</span>' );
+			} else {
+				heading = SiteHealth.string.site_info_heading_critical_plural.replace( '%s', '<span class="issue-count">' + count + '</span>' );
+			}
+		} else if ( 'recommended' === issue.status ) {
+			if ( count <= 1 ) {
+				heading = SiteHealth.string.site_info_heading_recommended_single.replace( '%s', '<span class="issue-count">' + count + '</span>' );
+			} else {
+				heading = SiteHealth.string.site_info_heading_recommended_plural.replace( '%s', '<span class="issue-count">' + count + '</span>' );
+			}
+		} else if ( 'good' === issue.status ) {
+			if ( count <= 1 ) {
+				heading = SiteHealth.string.site_info_heading_good_single.replace( '%s', '<span class="issue-count">' + count + '</span>' );
+			} else {
+				heading = SiteHealth.string.site_info_heading_good_plural.replace( '%s', '<span class="issue-count">' + count + '</span>' );
+			}
+		}
 
-		htmlOutput = '<dt role="heading" aria-level="4">\n' +
-			'                <button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-' + issue.test + '" id="health-check-accordion-heading-' + issue.test + '" type="button">\n' +
-			'                    <span class="title">\n' +
-			'                        ' + issue.label + '\n' +
-			'                    </span>\n' +
-			'                    <span class="badge ' + issue.badge.color + '">' + issue.badge.label + '</span>\n' +
-			'                    <span class="icon"></span>\n' +
-			'                </button>\n' +
-			'            </dt>\n' +
-			'            <dd id="health-check-accordion-block-' + issue.test + '" aria-labelledby="health-check-accordion-heading-' + issue.test + '" role="region" class="health-check-accordion-panel" hidden="hidden">\n' +
-			'                ' + issue.description + '\n' +
-			'                <div class="actions"><p>' + issue.actions + '</p></div>' +
-			'            </dd>';
+		if ( heading ) {
+			$( '.site-health-issue-count-title', issueWrapper ).html( heading );
+		}
 
-		issueCounter.text( HealthCheck.site_status.issues[ issue.status ] );
-		$( '.issues', '#health-check-issues-' + issue.status ).append( htmlOutput );
+		$( '.issues', '#health-check-issues-' + issue.status ).append( template( issue ) );
 	}
 
-	function HCRecalculateProgression() {
+	function RecalculateProgression() {
 		var r, c, pct;
-		var $progressBar = $( '#progressbar' );
-		var $circle = $( '#progressbar svg #bar' );
-		var totalTests = parseInt( HealthCheck.site_status.issues.good, 0 ) + parseInt( HealthCheck.site_status.issues.recommended, 0 ) + ( parseInt( HealthCheck.site_status.issues.critical, 0 ) * 1.5 );
-		var failedTests = parseInt( HealthCheck.site_status.issues.recommended, 0 ) + ( parseInt( HealthCheck.site_status.issues.critical, 0 ) * 1.5 );
+		var $progress = $( '.site-health-progress' );
+		var $progressCount = $progress.find( '.site-health-progress-count' );
+		var $circle = $( '.site-health-progress svg #bar' );
+		var totalTests = parseInt( SiteHealth.site_status.issues.good, 0 ) + parseInt( SiteHealth.site_status.issues.recommended, 0 ) + ( parseInt( SiteHealth.site_status.issues.critical, 0 ) * 1.5 );
+		var failedTests = parseInt( SiteHealth.site_status.issues.recommended, 0 ) + ( parseInt( SiteHealth.site_status.issues.critical, 0 ) * 1.5 );
 		var val = 100 - Math.ceil( ( failedTests / totalTests ) * 100 );
 
 		if ( 0 === totalTests ) {
-			$progressBar.addClass( 'hidden' );
+			$progress.addClass( 'hidden' );
 			return;
 		}
 
-		$progressBar.removeClass( 'loading' );
-
-		if ( isNaN( val ) ) {
-			val = 100;
-		}
+		$progress.removeClass( 'loading' );
 
 		r = $circle.attr( 'r' );
 		c = Math.PI * ( r * 2 );
 
-		if ( val < 0 ) {
+		if ( 0 > val ) {
 			val = 0;
 		}
-		if ( val > 100 ) {
+		if ( 100 < val ) {
 			val = 100;
 		}
 
@@ -71,53 +77,52 @@ jQuery( document ).ready(function( $ ) {
 
 		$circle.css( { strokeDashoffset: pct } );
 
-		if ( parseInt( HealthCheck.site_status.issues.critical, 0 ) < 1 ) {
+		if ( 1 > parseInt( SiteHealth.site_status.issues.critical, 0 ) ) {
 			$( '#health-check-issues-critical' ).addClass( 'hidden' );
 		}
 
-		if ( parseInt( HealthCheck.site_status.issues.recommended, 0 ) < 1 ) {
+		if ( 1 > parseInt( SiteHealth.site_status.issues.recommended, 0 ) ) {
 			$( '#health-check-issues-recommended' ).addClass( 'hidden' );
 		}
 
-		if ( val >= 50 ) {
+		if ( 50 <= val ) {
 			$circle.addClass( 'orange' ).removeClass( 'red' );
 		}
 
-		if ( val >= 90 ) {
+		if ( 90 <= val ) {
 			$circle.addClass( 'green' ).removeClass( 'orange' );
 		}
 
 		if ( 100 === val ) {
-		    $( '.site-status-all-clear' ).removeClass( 'hide' );
-		    $( '.site-status-has-issues' ).addClass( 'hide' );
-        }
+			$( '.site-status-all-clear' ).removeClass( 'hide' );
+			$( '.site-status-has-issues' ).addClass( 'hide' );
+		}
 
-		$progressBar.attr( 'data-pct', val );
-		$progressBar.attr( 'aria-valuenow', val );
+		$progressCount.text( val + '%' );
 
-		$( '.health-check-body' ).attr( 'aria-hidden', false );
+		if ( ! isDebugTab ) {
+			$.post(
+				ajaxurl,
+				{
+					'action': 'health-check-site-status-result',
+					'_wpnonce': SiteHealth.nonce.site_status_result,
+					'counts': SiteHealth.site_status.issues
+				}
+			);
+		}
 
-		$.post(
-			ajaxurl,
-			{
-				'action': 'health-check-site-status-result',
-				'_wpnonce': HealthCheck.nonce.site_status_result,
-				'counts': HealthCheck.site_status.issues
-			}
-		);
-
-		wp.a11y.speak( HealthCheck.string.site_health_complete_screen_reader.replace( '%s', val + '%' ), 'polite' );
+		wp.a11y.speak( SiteHealth.string.site_health_complete_screen_reader.replace( '%s', val + '%' ) );
 	}
 
 	function maybeRunNextAsyncTest() {
 		var doCalculation = true;
 
-		if ( HealthCheck.site_status.async.length >= 1 ) {
-			$.each( HealthCheck.site_status.async, function() {
+		if ( 1 <= SiteHealth.site_status.async.length ) {
+			$.each( SiteHealth.site_status.async, function() {
 				var data = {
 					'action': 'health-check-site-status',
 					'feature': this.test,
-					'_wpnonce': HealthCheck.nonce.site_status
+					'_wpnonce': SiteHealth.nonce.site_status
 				};
 
 				if ( this.completed ) {
@@ -132,7 +137,7 @@ jQuery( document ).ready(function( $ ) {
 					ajaxurl,
 					data,
 					function( response ) {
-						HCAppendIssue( response.data );
+						AppendIssue( response.data );
 						maybeRunNextAsyncTest();
 					}
 				);
@@ -142,44 +147,46 @@ jQuery( document ).ready(function( $ ) {
 		}
 
 		if ( doCalculation ) {
-			HCRecalculateProgression();
+			RecalculateProgression();
 		}
 	}
 
-	if ( 'undefined' !== typeof HealthCheck ) {
-		if ( 0 === HealthCheck.site_status.direct.length && 0 === HealthCheck.site_status.async.length ) {
-			HCRecalculateProgression();
+	if ( 'undefined' !== typeof SiteHealth ) {
+		if ( 0 === SiteHealth.site_status.direct.length && 0 === SiteHealth.site_status.async.length ) {
+			RecalculateProgression();
 		} else {
-			HealthCheck.site_status.issues = {
+			SiteHealth.site_status.issues = {
 				'good': 0,
 				'recommended': 0,
 				'critical': 0
 			};
 		}
 
-		if ( HealthCheck.site_status.direct.length > 0 ) {
-			$.each( HealthCheck.site_status.direct, function() {
-				HCAppendIssue( this );
-			});
+		if ( 0 < SiteHealth.site_status.direct.length ) {
+			$.each( SiteHealth.site_status.direct, function() {
+				AppendIssue( this );
+			} );
 		}
 
-		if ( HealthCheck.site_status.async.length > 0 ) {
+		if ( 0 < SiteHealth.site_status.async.length ) {
 			data = {
 				'action': 'health-check-site-status',
-				'feature': HealthCheck.site_status.async[0].test,
-				'_wpnonce': HealthCheck.nonce.site_status
+				'feature': SiteHealth.site_status.async[0].test,
+				'_wpnonce': SiteHealth.nonce.site_status
 			};
 
-			HealthCheck.site_status.async[0].completed = true;
+			SiteHealth.site_status.async[0].completed = true;
 
 			$.post(
 				ajaxurl,
 				data,
 				function( response ) {
-					HCAppendIssue( response.data );
+					AppendIssue( response.data );
 					maybeRunNextAsyncTest();
 				}
 			);
+		} else {
+			RecalculateProgression();
 		}
 	}
 });
