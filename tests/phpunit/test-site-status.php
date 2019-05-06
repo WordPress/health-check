@@ -12,7 +12,7 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 
 	private function runStatusTest( $func ) {
 		$this->assertTrue(
-			method_exists( $func[0], $func[1] ) && is_callable( $func )
+			is_callable( $func )
 		);
 
 		$start_time = microtime( true );
