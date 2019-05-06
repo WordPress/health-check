@@ -179,10 +179,10 @@ class Health_Check_Auto_Updates {
 			$description .= ' ' . __( 'You would have received an email because of this.', 'health-check' );
 			$description .= ' ' . __( "When you've been able to update using the \"Update Now\" button on Dashboard > Updates, we'll clear this error for future update attempts.", 'health-check' );
 			$description .= ' ' . sprintf(
-					/* translators: %s: Code of error shown. */
-					__( 'The error code was %s.', 'health-check' ),
-					'<code>' . $failed['error_code'] . '</code>'
-				);
+				/* translators: %s: Code of error shown. */
+				__( 'The error code was %s.', 'health-check' ),
+				'<code>' . $failed['error_code'] . '</code>'
+			);
 			return array(
 				'description' => $description,
 				'severity'    => 'warning',
@@ -196,10 +196,10 @@ class Health_Check_Auto_Updates {
 
 		$description .= ' ' . __( "We'll try again with the next release.", 'health-check' );
 		$description .= ' ' . sprintf(
-				/* translators: %s: Code of error shown. */
-				__( 'The error code was %s.', 'health-check' ),
-				'<code>' . $failed['error_code'] . '</code>'
-			);
+			/* translators: %s: Code of error shown. */
+			__( 'The error code was %s.', 'health-check' ),
+			'<code>' . $failed['error_code'] . '</code>'
+		);
 		return array(
 			'description' => $description,
 			'severity'    => 'warning',

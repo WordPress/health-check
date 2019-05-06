@@ -395,7 +395,7 @@ class Health_Check_Debug_Data {
 			$info['wp-core']['fields']['dotorg_communication'] = array(
 				'label' => __( 'Communication with WordPress.org', 'health-check' ),
 				'value' => sprintf(
-				// translators: 1: The IP address WordPress.org resolves to. 2: The error returned by the lookup.
+					// translators: 1: The IP address WordPress.org resolves to. 2: The error returned by the lookup.
 					__( 'Unable to reach WordPress.org at %1$s: %2$s', 'health-check' ),
 					gethostbyname( 'api.wordpress.org' ),
 					$wp_dotorg->get_error_message()
@@ -868,7 +868,7 @@ class Health_Check_Debug_Data {
 		$active_theme  = wp_get_theme();
 		$theme_updates = get_theme_updates();
 
-		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 		$active_theme_version       = $active_theme->Version;
 		$active_theme_version_debug = $active_theme_version;
 
@@ -885,7 +885,7 @@ class Health_Check_Debug_Data {
 		$info['wp-active-theme']['fields'] = array(
 			'name'           => array(
 				'label' => __( 'Name', 'health-check' ),
-				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 				'value' => $active_theme->Name,
 			),
 			'version'        => array(
@@ -895,7 +895,7 @@ class Health_Check_Debug_Data {
 			),
 			'author'         => array(
 				'label' => __( 'Author', 'health-check' ),
-				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 				'value' => wp_kses( $active_theme->Author, array() ),
 			),
 			'author_website' => array(
@@ -926,9 +926,9 @@ class Health_Check_Debug_Data {
 			if ( $active_theme->stylesheet === $theme_slug ) {
 				continue;
 			}
-			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 			$theme_version = $theme->Version;
-			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 			$theme_author = $theme->Author;
 
 			// Sanitize
@@ -961,12 +961,12 @@ class Health_Check_Debug_Data {
 				$theme_version_string_debug .= sprintf( ' (latest version: %s)', $theme_updates[ $theme_slug ]->update['new_version'] );
 			}
 
-			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 			$info['wp-themes']['fields'][ sanitize_text_field( $theme->Name ) ] = array(
 				'label' => sprintf(
 				// translators: 1: Theme name. 2: Theme slug.
 					__( '%1$s (%2$s)', 'health-check' ),
-					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 					$theme->Name,
 					$theme_slug
 				),

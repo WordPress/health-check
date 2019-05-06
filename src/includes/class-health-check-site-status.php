@@ -578,7 +578,7 @@ class Health_Check_Site_Status {
 					$result['description'] .= sprintf(
 						'<p>%s %s</p>',
 						sprintf(
-						/* translators: 1: The amount of inactive themes. 2: The currently active theme. */
+							/* translators: 1: The amount of inactive themes. 2: The currently active theme. */
 							_n(
 								'Your site has %1$d inactive theme, other than %2$s, your active theme.',
 								'Your site has %1$d inactive themes, other than %2$s, your active theme.',
@@ -744,7 +744,7 @@ class Health_Check_Site_Status {
 			),
 			'actions'     => sprintf(
 				'<p><a href="%s" target="_blank" rel="noopener noreferrer">%s <span class="screen-reader-text">%s</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a></p>',
-				esc_url( ( function_exists( 'wp_get_update_php_url' ) ? wp_get_update_php_url() : $this->wp_get_update_php_url()) ),
+				esc_url( ( function_exists( 'wp_get_update_php_url' ) ? wp_get_update_php_url() : $this->wp_get_update_php_url() ) ),
 				__( 'Learn more about updating PHP', 'health-check' ),
 				/* translators: accessibility text */
 				__( '(opens in a new tab)', 'health-check' )
@@ -1133,7 +1133,7 @@ class Health_Check_Site_Status {
 				$result['description'] .= sprintf(
 					'<p>%s</p>',
 					sprintf(
-					/* translators: %s: Version number. */
+						/* translators: %s: Version number. */
 						__( 'WordPress&#8217; utf8mb4 support requires MySQL version %s or greater. Please contact your server administrator.', 'health-check' ),
 						'5.5.3'
 					)
@@ -1153,7 +1153,7 @@ class Health_Check_Site_Status {
 				$result['description'] .= sprintf(
 					'<p>%s</p>',
 					sprintf(
-					/* translators: %s: Version number. */
+						/* translators: %s: Version number. */
 						__( 'WordPress&#8217; utf8mb4 support requires MariaDB version %s or greater. Please contact your server administrator.', 'health-check' ),
 						'5.5.0'
 					)
@@ -1188,7 +1188,7 @@ class Health_Check_Site_Status {
 				$result['description'] .= sprintf(
 					'<p>%s</p>',
 					sprintf(
-					/* translators: 1: Name of the library, 2: Number of version. */
+						/* translators: 1: Name of the library, 2: Number of version. */
 						__( 'WordPress&#8217; utf8mb4 support requires MySQL client library (%1$s) version %2$s or newer. Please contact your server administrator.', 'health-check' ),
 						'mysqlnd',
 						'5.0.9'
@@ -1204,7 +1204,7 @@ class Health_Check_Site_Status {
 				$result['description'] .= sprintf(
 					'<p>%s</p>',
 					sprintf(
-					/* translators: 1: Name of the library, 2: Number of version. */
+						/* translators: 1: Name of the library, 2: Number of version. */
 						__( 'WordPress&#8217; utf8mb4 support requires MySQL client library (%1$s) version %2$s or newer. Please contact your server administrator.', 'health-check' ),
 						'libmysql',
 						'5.5.3'

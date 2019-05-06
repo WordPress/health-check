@@ -207,11 +207,17 @@ class Health_Check {
 				// translators: %s: The percentage pass rate for the tests.
 				'site_health_complete_screen_reader'   => esc_html__( 'All site health tests have finished running. Your site passed %s, and the results are now available on the page.', 'health-check' ),
 				'site_info_copied'                     => esc_html__( 'Site information has been added to your clipboard.', 'health-check' ),
+				// translators: %s: Amount of critical issues.
 				'site_info_heading_critical_single'    => esc_html__( '%s Critical issue', 'health-check' ),
+				// translators: %s: Amount of critical issues.
 				'site_info_heading_critical_plural'    => esc_html__( '%s Critical issues', 'health-check' ),
+				// translators: %s: Amount of recommended issues.
 				'site_info_heading_recommended_single' => esc_html__( '%s Recommended improvement', 'health-check' ),
+				// translators: %s: Amount of recommended issues.
 				'site_info_heading_recommended_plural' => esc_html__( '%s Recommended improvements', 'health-check' ),
+				// translators: %s: Amount of passed tests.
 				'site_info_heading_good_single'        => esc_html__( '%s Item with no issues detected', 'health-check' ),
+				// translators: %s: Amount of passed tests.
 				'site_info_heading_good_plural'        => esc_html__( '%s Items with no issues detected', 'health-check' ),
 			),
 			'nonce'       => array(
