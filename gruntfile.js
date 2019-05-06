@@ -73,6 +73,12 @@ module.exports = function( grunt ) {
 				src: [ '**/*', '!assets/*' ],
 				dest: 'build/',
 				expand: true
+			},
+			dependencies: {
+				cwd: 'node_modules/clipboard/dist/',
+				src: [ '**/*.min.js' ],
+				dest: 'build/assets/javascript/',
+				expand: true
 			}
 		},
 		jscs: {
