@@ -228,7 +228,7 @@ class Health_Check_Troubleshoot {
 		}
 
 		?>
-		<div class="notice inline">
+		<div>
 
 		<?php
 		$troubleshooting = null;

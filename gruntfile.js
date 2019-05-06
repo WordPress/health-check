@@ -160,7 +160,7 @@ module.exports = function( grunt ) {
 			},
 			js: {
 				files: PATH_JS,
-				tasks: [ 'javascript' ]
+				tasks: [ 'concat' ]
 			},
 			php: {
 				files: PATH_PHP,

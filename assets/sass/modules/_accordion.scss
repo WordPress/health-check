@@ -1,15 +1,18 @@
 .health-check-accordion {
 
-	border: 1px solid hsl(0, 0%, 82%);
+	border: 1px solid #e2e4e7;
 
-	dt {
+	.health-check-accordion-heading {
 
+		margin: 0;
+		border-top: 1px solid #e2e4e7;
+		font-size: inherit;
+		line-height: inherit;
 		font-weight: 600;
-		border-top: 1px solid hsl(0, 0%, 82%);
+		color: inherit;
 
 		&:first-child {
 
-			border-radius: 0.3em 0.3em 0 0;
 			border-top: none;
 		}
 	}
@@ -18,22 +21,29 @@
 
 		background: #fff;
 		border: 0;
-		color: hsl(0, 0%, 13%);
+		color: #32373c;
 		cursor: pointer;
 		display: block;
-		font-size: $font_size__text;
 		font-weight: 400;
 		margin: 0;
-		padding: 1em 1.5em;
+		padding: 1em 3.5em 1em 1.5em;
 		position: relative;
 		text-align: left;
 		width: 100%;
 
 		&:hover,
-		&:focus,
 		&:active {
 
-			background: hsl(0, 0%, 87%);
+			background: #f8f9f9;
+		}
+
+		&:focus {
+
+			color: #191e23;
+			border: none;
+			box-shadow: none;
+			outline-offset: -2px;
+			outline: 1px dotted #555d66;
 		}
 
 		.title {
@@ -45,72 +55,53 @@
 
 		.icon {
 
-			border: solid #191e23;
+			border: solid #555d66;
 			border-width: 0 2px 2px 0;
 			height: 0.5rem;
 			pointer-events: none;
 			position: absolute;
 			right: 1.5em;
 			top: 50%;
-			transform: translateY(-60%) rotate(45deg);
+			transform: translateY(-70%) rotate(45deg);
 			width: 0.5rem;
 		}
 
 		.badge {
 
-			display: inline-block;
-			padding: 0.1rem 0.5rem;
-			background-color: #dcdcdc;
-			color: #000;
+			float: right;
+			padding: 0.1rem 0.5rem 0.15rem;
+			color: #32373c;
 			font-weight: 600;
-			margin: 0 0.5rem;
+			margin-left: 0.5rem;
 
 			&.blue {
 
-				background-color: #0073af;
-				color: #fff;
+				border: 1px solid #bfe7f3;
 			}
 
 			&.orange {
 
-				background-color: #ffb900;
-				color: #000;
+				border: 1px solid #ffb900;
 			}
 
 			&.red {
 
-				background-color: #dc3232;
-				color: #fff;
+				border: 1px solid #dc3232;
 			}
 
 			&.green {
 
-				background-color: #40860a;
-				color: #fff;
+				border: 1px solid #46b450;
 			}
 
-			&.pink {
+			&.purple {
 
-				background-color: #f4b0fc;
-				color: #000;
+				border: 1px solid #826eb4;
 			}
 
 			&.gray {
 
-				background-color: #ccc;
-				color: #000;
-			}
-
-			&.light-blue {
-
-				background-color: #10e9fb;
-				color: #000;
-			}
-
-			&.light-green {
-
-				background-color: #60f999;
-				color: #000;
+				border: 1px solid #ccd0d4;
 			}
 		}
 
@@ -118,7 +109,7 @@
 
 			.icon {
 
-				transform: translateY(-50%) rotate(-135deg);
+				transform: translateY(-30%) rotate(-135deg);
 			}
 		}
 	}
@@ -137,6 +128,14 @@
 		&[hidden] {
 
 			display: none;
+		}
+
+		a {
+
+			.dashicons {
+
+				text-decoration: none;
+			}
 		}
 	}
 

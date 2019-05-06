@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php esc_html_e( 'Tools', 'health-check' ); ?>
 </h2>
 
-<dl id="health-check-tools" role="presentation" class="health-check-accordion">
+<div id="health-check-tools" role="presentation" class="health-check-accordion">
 	<?php
 	/**
 	 * Filter the features available under the Tools tab.
@@ -43,20 +43,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	foreach ( $tabs as $count => $tab ) :
 		?>
 
-	<dt role="heading" aria-level="3">
-		<button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-<?php echo esc_attr( $count ); ?>" id="health-check-accordion-heading-<?php echo esc_attr( $count ); ?>" type="button">
+	<h3 class="health-check-accordion-heading">
+		<button aria-expanded="false" class="health-check-accordion-trigger" aria-controls="health-check-accordion-block-<?php echo esc_attr( $count ); ?>" type="button">
 			<span class="title">
 				<?php echo $tab['label']; ?>
 			</span>
 			<span class="icon"></span>
 		</button>
-	</dt>
-	<dd id="health-check-accordion-block-<?php echo esc_attr( $count ); ?>" role="region" aria-labelledby="health-check-accordion-heading-<?php echo esc_attr( $count ); ?>" class="health-check-accordion-panel" hidden="hidden">
+	</h3>
+	<div id="health-check-accordion-block-<?php echo esc_attr( $count ); ?>" class="health-check-accordion-panel" hidden="hidden">
 		<?php echo $tab['content']; ?>
-	</dd>
+	</div>
 
 	<?php endforeach; ?>
-</dl>
+</div>
 
 <?php
 include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/modals/diff.php' );
