@@ -1351,10 +1351,11 @@ class Health_Check_Debug_Data {
 			}
 		}
 
-		if ( $handle = opendir( $directory ) ) {
+		$handle = opendir( $directory );
+		if ( $handle ) {
 			while ( ( $file = readdir( $handle ) ) !== false ) {
 				$path = $directory . '/' . $file;
-				if ( $file != '.' && $file != '..' ) {
+				if ( '.' != $file && '..' != $file ) {
 					if ( is_file( $path ) ) {
 						$size += filesize( $path );
 					} elseif ( is_dir( $path ) ) {
