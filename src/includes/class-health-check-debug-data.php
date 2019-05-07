@@ -1336,7 +1336,7 @@ class Health_Check_Debug_Data {
 			return false;
 		}
 
-		if ( $max_execution_time === null ) {
+		if ( null === $max_execution_time ) {
 			// Keep the previous behavior but attempt to prevent fatal errors from timeout if possible.
 			if ( function_exists( 'ini_get' ) ) {
 				$max_execution_time = ini_get( 'max_execution_time' );
@@ -1351,10 +1351,11 @@ class Health_Check_Debug_Data {
 			}
 		}
 
-		if ( $handle = opendir( $directory ) ) {
+		$handle = opendir( $directory );
+		if ( $handle ) {
 			while ( ( $file = readdir( $handle ) ) !== false ) {
 				$path = $directory . '/' . $file;
-				if ( $file != '.' && $file != '..' ) {
+				if ( '.' != $file && '..' != $file ) {
 					if ( is_file( $path ) ) {
 						$size += filesize( $path );
 					} elseif ( is_dir( $path ) ) {
