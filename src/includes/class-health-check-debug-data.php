@@ -1123,6 +1123,50 @@ class Health_Check_Debug_Data {
 		return (int) $size;
 	}
 
+	public static function ajax_get_sizes() {
+		check_ajax_referer( 'health-check-site-status-result' );
+
+		if ( ! current_user_can( 'install_plugins' ) || is_multisite() ) {
+			wp_send_json_error();
+		}
+
+		$sizes_data = Health_Check_Debug_Data::get_sizes();
+		$all_sizes  = array( 'raw' => 0 );
+
+		foreach ( $sizes_data as $name => $value ) {
+			$name = sanitize_text_field( $name );
+			$data = array();
+
+			if ( isset( $value['size'] ) ) {
+				if ( is_string( $value['size'] ) ) {
+					$data['size'] = sanitize_text_field( $value['size'] );
+				} else {
+					$data['size'] = (int) $value['size'];
+				}
+			}
+
+			if ( isset( $value['debug'] ) ) {
+				if ( is_string( $value['debug'] ) ) {
+					$data['debug'] = sanitize_text_field( $value['debug'] );
+				} else {
+					$data['debug'] = (int) $value['debug'];
+				}
+			}
+
+			if ( ! empty( $value['raw'] ) ) {
+				$data['raw'] = (int) $value['raw'];
+			}
+
+			$all_sizes[ $name ] = $data;
+		}
+
+		if ( isset( $all_sizes['total_size']['debug'] ) && 'not available' === $all_sizes['total_size']['debug'] ) {
+			wp_send_json_error( $all_sizes );
+		}
+
+		wp_send_json_success( $all_sizes );
+	}
+
 	/**
 	 * Fetch the sizes of the WordPress directories: `wordpress` (ABSPATH), `plugins`, `themes`, and `uploads`.
 	 * Intended to supplement the array returned by `WP_Debug_Data::debug_data()`.
@@ -1156,6 +1200,15 @@ class Health_Check_Debug_Data {
 			$max_execution_time -= 2;
 		}
 
+		if ( ! defined( 'WP_START_TIMESTAMP' ) ) {
+			global $timestart;
+			if ( version_compare( phpversion(), '5.4.0', '>=' ) && isset( $_SERVER['REQUEST_TIME_FLOAT'] ) ) {
+				define( 'WP_START_TIMESTAMP', $_SERVER['REQUEST_TIME_FLOAT'] );
+			} else {
+				define( 'WP_START_TIMESTAMP', $timestart );
+			}
+		}
+
 		// Go through the various installation directories and calculate their sizes.
 		// No trailing slashes.
 		$paths = array(
@@ -1182,9 +1235,17 @@ class Health_Check_Debug_Data {
 
 			if ( microtime( true ) - WP_START_TIMESTAMP < $max_execution_time ) {
 				if ( 'wordpress_size' === $name ) {
-					$dir_size = recurse_dirsize( $path, $exclude, $max_execution_time );
+					if ( version_compare( get_bloginfo( 'version' ), '5.2.0', '<' ) ) {
+						$dir_size = Health_Check_Debug_Data::recurse_dirsize( $path, $exclude, $max_execution_time );
+					} else {
+						$dir_size = recurse_dirsize( $path, $exclude, $max_execution_time );
+					}
 				} else {
-					$dir_size = recurse_dirsize( $path, null, $max_execution_time );
+					if ( version_compare( get_bloginfo( 'version' ), '5.2.0', '<' ) ) {
+						$dir_size = Health_Check_Debug_Data::recurse_dirsize( $path, null, $max_execution_time );
+					} else {
+						$dir_size = recurse_dirsize( $path, null, $max_execution_time );
+					}
 				}
 			}
 
@@ -1247,5 +1308,72 @@ class Health_Check_Debug_Data {
 		}
 
 		return $all_sizes;
+	}
+
+	/**
+	 * Fallback function for directory size calculation on sites running WordPress <5.2
+	 *
+	 * @param string $directory       Full path of a directory.
+	 * @param string|array $exclude   Optional. Full path of a subdirectory to exclude from the total, or array of paths.
+	 *                                Expected without trailing slash(es).
+	 * @param int $max_execution_time Maximum time to run before giving up. In seconds.
+	 *                                The timeout is global and is measured from the moment WordPress started to load.
+	 * @return int|false|null Size in bytes if a valid directory. False if not. Null if timeout.
+	 */
+	static function recurse_dirsize( $directory, $exclude = null, $max_execution_time = null ) {
+		$size = 0;
+
+		$directory = untrailingslashit( $directory );
+
+		if ( ! file_exists( $directory ) || ! is_dir( $directory ) || ! is_readable( $directory ) ) {
+			return false;
+		}
+
+		if (
+			( is_string( $exclude ) && $directory === $exclude ) ||
+			( is_array( $exclude ) && in_array( $directory, $exclude, true ) )
+		) {
+			return false;
+		}
+
+		if ( null === $max_execution_time ) {
+			// Keep the previous behavior but attempt to prevent fatal errors from timeout if possible.
+			if ( function_exists( 'ini_get' ) ) {
+				$max_execution_time = ini_get( 'max_execution_time' );
+			} else {
+				// Disable...
+				$max_execution_time = 0;
+			}
+
+			// Leave 1 second "buffer" for other operations if $max_execution_time has reasonable value.
+			if ( $max_execution_time > 10 ) {
+				$max_execution_time -= 1;
+			}
+		}
+
+		$handle = opendir( $directory );
+		if ( $handle ) {
+			while ( ( $file = readdir( $handle ) ) !== false ) {
+				$path = $directory . '/' . $file;
+				if ( '.' != $file && '..' != $file ) {
+					if ( is_file( $path ) ) {
+						$size += filesize( $path );
+					} elseif ( is_dir( $path ) ) {
+						$handlesize = Health_Check_Debug_Data::recurse_dirsize( $path, $exclude, $max_execution_time );
+						if ( $handlesize > 0 ) {
+							$size += $handlesize;
+						}
+					}
+
+					if ( $max_execution_time > 0 && microtime( true ) - WP_START_TIMESTAMP > $max_execution_time ) {
+						// Time exceeded. Give up instead of risking a fatal timeout.
+						$size = null;
+						break;
+					}
+				}
+			}
+			closedir( $handle );
+		}
+		return $size;
 	}
 }
