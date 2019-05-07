@@ -113,7 +113,7 @@ foreach ( $info as $section => $details ) {
 	<?php
 	printf(
 		'<a href="%s" class="button button-primary">%s</a>',
-		esc_url( admin_url( '?page=health-check&tab=phpinfo' ) ),
+		esc_url( admin_url( 'tools.php?page=health-check&tab=phpinfo' ) ),
 		esc_html__( 'View extended PHP information', 'health-check' )
 	);
 	?>
