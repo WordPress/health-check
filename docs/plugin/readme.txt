@@ -3,7 +3,7 @@ Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.0
 Tested up to: 5.2
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,10 @@ Are you unfamiliar with how to clear your cookies? No worries, you may also clos
 3. The generic PHP information tab, when more detailed information is required.
 
 == Changelog ==
+
+= v1.3.2 =
+* Add polyfill for directory size calculations for sites running WordPress versions older than 5.2.0
+* Fix link for the extended PHP information
 
 = v1.3.1 =
 * Include missing dependency for JavaScript files, first introduced in WordPress 5.2
