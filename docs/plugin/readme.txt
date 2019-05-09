@@ -2,6 +2,7 @@
 Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.0
+Requires PHP: 5.2
 Tested up to: 5.2
 Stable tag: 1.3.2
 License: GPLv2
@@ -10,6 +11,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Health Check identifies common problems, and helps you troubleshoot plugin and theme conflicts.
 
 == Description ==
+
+*The plugins menu position has changed, and can now be found under **Tools** > **Site Health**, where it replaces the Site Health feature included with WordPress 5.2*
 
 This plugin will perform a number of checks on your WordPress install to detect common configuration errors and known issues.
 
@@ -35,7 +38,8 @@ Are you unfamiliar with how to clear your cookies? No worries, you may also clos
 
 1. The health check screen after the automated tests have gone over the system.
 2. The debug information, with the copy and paste field expanded.
-3. The generic PHP information tab, when more detailed information is required.
+3. A selection of tools that can be ran on your site.
+4. Troubleshooting mode enabled, showing your website Dashboard
 
 == Changelog ==
 
