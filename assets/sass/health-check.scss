@@ -189,16 +189,43 @@ body {
 
 			.health-check-tabs-wrapper {
 
-				display: block;
+				/* IE 11 */
+				display: -ms-inline-grid;
+				-ms-grid-columns: 1fr 1fr 1fr 1fr;
+				vertical-align: top;
+
+				/* modern browsers */
+				display: inline-grid; /* stylelint-disable-line declaration-block-no-duplicate-properties */
+				grid-template-columns: 1fr 1fr 1fr 1fr;
 
 				.health-check-tab {
 
-					display: inline-block;
+					display: block; /* IE 11 */
 					text-decoration: none;
 					color: inherit;
 					padding: 0.5rem 1rem 1rem;
 					margin: 0 1rem;
 					transition: box-shadow 0.5s ease-in-out;
+
+					&:nth-child(1) {
+
+						-ms-grid-column: 1; /* IE 11 */
+					}
+
+					&:nth-child(2) {
+
+						-ms-grid-column: 2; /* IE 11 */
+					}
+
+					&:nth-child(3) {
+
+						-ms-grid-column: 3; /* IE 11 */
+					}
+
+					&:nth-child(4) {
+
+						-ms-grid-column: 4; /* IE 11 */
+					}
 
 					&.active {
 
@@ -224,6 +251,8 @@ body {
 
 		.health-check-table {
 
+			table-layout: fixed;
+
 			thead {
 
 				th,
@@ -242,12 +271,18 @@ body {
 
 				td {
 
-					width: 70%;
+					width: 100%;
+					box-sizing: border-box;
+					display: block;
 					font-size: $font_size__text;
+					word-wrap: break-word;
 
 					&:first-child {
 
-						width: 30%;
+						width: 100%;
+						padding-bottom: 0;
+						font-weight: 600;
+
 					}
 
 					ul,

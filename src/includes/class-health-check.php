@@ -73,6 +73,33 @@ class Health_Check {
 		add_filter( 'health_check_tools_tab', array( 'Health_Check_Mail_Check', 'tools_tab' ) );
 
 		add_filter( 'cron_schedules', array( $this, 'cron_schedules' ) );
+
+		add_filter( 'user_has_cap', array( $this, 'maybe_grant_site_health_caps' ), 1, 4 );
+	}
+
+	/**
+	 * Filters the user capabilities to grant the 'view_site_health_checks' capabilities as necessary.
+	 *
+	 * @since 5.2.2
+	 *
+	 * @param bool[]   $allcaps An array of all the user's capabilities.
+	 * @param string[] $caps    Required primitive capabilities for the requested capability.
+	 * @param array    $args {
+	 *     Arguments that accompany the requested capability check.
+	 *
+	 *     @type string    $0 Requested capability.
+	 *     @type int       $1 Concerned user ID.
+	 *     @type mixed  ...$2 Optional second and further parameters, typically object ID.
+	 * }
+	 * @param WP_User  $user    The user object.
+	 * @return bool[] Filtered array of the user's capabilities.
+	 */
+	function maybe_grant_site_health_caps( $allcaps, $caps, $args, $user ) {
+		if ( ! empty( $allcaps['install_plugins'] ) && ( ! is_multisite() || is_super_admin( $user->ID ) ) ) {
+			$allcaps['view_site_health_checks'] = true;
+		}
+
+		return $allcaps;
 	}
 
 	/**
@@ -86,7 +113,7 @@ class Health_Check {
 	 * @return void
 	 */
 	public function start_troubleshoot_mode() {
-		if ( ! isset( $_POST['health-check-troubleshoot-mode'] ) || ! current_user_can( 'install_plugins' ) ) {
+		if ( ! isset( $_POST['health-check-troubleshoot-mode'] ) || ! current_user_can( 'view_site_health_checks' ) ) {
 			return;
 		}
 
@@ -118,7 +145,7 @@ class Health_Check {
 	 * @return void
 	 */
 	public function start_troubleshoot_single_plugin_mode() {
-		if ( ! isset( $_GET['health-check-troubleshoot-plugin'] ) || ! current_user_can( 'install_plugins' ) ) {
+		if ( ! isset( $_GET['health-check-troubleshoot-plugin'] ) || ! current_user_can( 'view_site_health_checks' ) ) {
 			return;
 		}
 
@@ -338,7 +365,7 @@ class Health_Check {
 			'tools.php',
 			_x( 'Site Health', 'Page Title', 'health-check' ),
 			$menu_title,
-			'install_plugins',
+			'view_site_health_checks',
 			'health-check',
 			array( $this, 'dashboard_page' )
 		);
