@@ -1126,7 +1126,7 @@ class Health_Check_Debug_Data {
 	public static function ajax_get_sizes() {
 		check_ajax_referer( 'health-check-site-status-result' );
 
-		if ( ! current_user_can( 'install_plugins' ) || is_multisite() ) {
+		if ( ! current_user_can( 'view_site_health_checks' ) || is_multisite() ) {
 			wp_send_json_error();
 		}
 

@@ -29,7 +29,7 @@ class Health_Check_Mail_Check {
 	static function run_mail_check() {
 		check_ajax_referer( 'health-check-mail-check' );
 
-		if ( ! current_user_can( 'install_plugins' ) ) {
+		if ( ! current_user_can( 'view_site_health_checks' ) ) {
 			wp_send_json_error();
 		}
 
