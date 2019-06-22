@@ -99,7 +99,7 @@ class Health_Check {
 			$allcaps['view_site_health_checks'] = true;
 		}
 
- 	    return $allcaps;
+		return $allcaps;
 	}
 
 	/**
