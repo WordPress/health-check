@@ -112,7 +112,7 @@ class Health_Check_Troubleshooting_MU {
 		}
 
 		wp_enqueue_style( 'health-check-troubleshooting-mode', plugins_url( '/health-check/assets/css/health-check-troubleshooting-mode.css' ), array(), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION );
-		wp_enqueue_script( 'health-check', plugins_url( '/health-check/assets/javascript/health-check.js' ), array( 'jquery' ), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION, true );
+		wp_enqueue_script( 'health-check', plugins_url( '/health-check/assets/javascript/health-check.js' ), array( 'jquery', 'wp-a11y', 'clipboard', 'wp-util' ), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION, true );
 	}
 
 	/**
