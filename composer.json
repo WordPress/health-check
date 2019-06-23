@@ -1,5 +1,23 @@
 {
-  "require" : {
-    "wp-coding-standards/wpcs"  : "^0.14.0"
+  "name": "wordpress/health-check",
+  "type": "wordpress-plugin",
+  "description": "WordPress site health tester, and troubleshooting tools for end users and anyone providing support",
+  "keywords": [
+    "support",
+    "plugin",
+    "WordPress"
+  ],
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "wp-coding-standards/wpcs": "~2.0.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "~0.5.0"
+  },
+  "scripts": {
+    "check-cs": "@php ./vendor/bin/phpcs --extensions=php --ignore=/vendor/",
+    "fix-cs": "@php ./vendor/bin/phpcbf --extensions=php --ignore=/vendor/"
+  },
+  "support": {
+    "issues": "https://github.com/WordPress/health-check/issues",
+    "source": "https://github.com/WordPress/health-check"
   }
 }

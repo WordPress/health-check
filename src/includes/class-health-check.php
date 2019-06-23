@@ -183,9 +183,11 @@ class Health_Check {
 			return;
 		}
 
-		Health_Check_Troubleshoot::initiate_troubleshooting_mode( array(
-			$_GET['health-check-troubleshoot-plugin'] => $_GET['health-check-troubleshoot-plugin'],
-		) );
+		Health_Check_Troubleshoot::initiate_troubleshooting_mode(
+			array(
+				$_GET['health-check-troubleshoot-plugin'] => $_GET['health-check-troubleshoot-plugin'],
+			)
+		);
 
 		wp_redirect( admin_url( 'plugins.php' ) );
 	}
@@ -422,10 +424,15 @@ class Health_Check {
 
 		$actions['troubleshoot'] = sprintf(
 			'<a href="%s">%s</a>',
-			esc_url( add_query_arg( array(
-				'health-check-troubleshoot-plugin' => $plugin_slug,
-				'_wpnonce'                         => wp_create_nonce( 'health-check-troubleshoot-plugin-' . $plugin_slug ),
-			), admin_url( 'plugins.php' ) ) ),
+			esc_url(
+				add_query_arg(
+					array(
+						'health-check-troubleshoot-plugin' => $plugin_slug,
+						'_wpnonce'                         => wp_create_nonce( 'health-check-troubleshoot-plugin-' . $plugin_slug ),
+					),
+					admin_url( 'plugins.php' )
+				)
+			),
 			esc_html__( 'Troubleshoot', 'health-check' )
 		);
 
