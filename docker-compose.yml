@@ -11,14 +11,14 @@ services:
       MYSQL_USER: healthcheck
       MYSQL_PASSWORD: healthcheck
       MYSQL_DATABASE: healthcheck
-    restart: always
+    restart: on-failure
   adminer:
     image: adminer:latest
     depends_on:
       - database
     ports:
       - 8080:8080
-    restart: always
+    restart: on-failure
   mail:
     image: mailhog/mailhog
     ports:
@@ -41,7 +41,7 @@ services:
       - "./.docker/config/php-fpm/php.ini:/usr/local/etc/php/php.ini"
     extra_hosts:
       - "health-check.localhost:172.20.0.6"
-    restart: always
+    restart: on-failure
   nginx:
     image: nginx:latest
     depends_on:
@@ -54,4 +54,4 @@ services:
       - "./.docker/local/wordpress:/var/www/html"
       - "./.docker/config/nginx/default.conf:/etc/nginx/conf.d/default.conf"
       - "./.docker/config/certs:/etc/nginx/certs"
-    restart: always
+    restart: on-failure
