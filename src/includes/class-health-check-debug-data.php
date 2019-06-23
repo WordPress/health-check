@@ -868,7 +868,7 @@ class Health_Check_Debug_Data {
 		$active_theme  = wp_get_theme();
 		$theme_updates = get_theme_updates();
 
-		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$active_theme_version       = $active_theme->Version;
 		$active_theme_version_debug = $active_theme_version;
 
@@ -885,7 +885,7 @@ class Health_Check_Debug_Data {
 		$info['wp-active-theme']['fields'] = array(
 			'name'           => array(
 				'label' => __( 'Name', 'health-check' ),
-				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				'value' => $active_theme->Name,
 			),
 			'version'        => array(
@@ -895,7 +895,7 @@ class Health_Check_Debug_Data {
 			),
 			'author'         => array(
 				'label' => __( 'Author', 'health-check' ),
-				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				'value' => wp_kses( $active_theme->Author, array() ),
 			),
 			'author_website' => array(
@@ -926,9 +926,9 @@ class Health_Check_Debug_Data {
 			if ( $active_theme->stylesheet === $theme_slug ) {
 				continue;
 			}
-			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$theme_version = $theme->Version;
-			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$theme_author = $theme->Author;
 
 			// Sanitize
@@ -961,12 +961,12 @@ class Health_Check_Debug_Data {
 				$theme_version_string_debug .= sprintf( ' (latest version: %s)', $theme_updates[ $theme_slug ]->update['new_version'] );
 			}
 
-			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$info['wp-themes']['fields'][ sanitize_text_field( $theme->Name ) ] = array(
 				'label' => sprintf(
 					// translators: 1: Theme name. 2: Theme slug.
 					__( '%1$s (%2$s)', 'health-check' ),
-					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$theme->Name,
 					$theme_slug
 				),

@@ -121,7 +121,7 @@ module.exports = function( grunt ) {
 			},
 			healthcheck: {
 				expand: true,
-				src: [ 'build/assets/css/health-check.css', 'build/assets/css/health-check-troubleshooting-mods.css' ]
+				src: [ 'build/assets/css/health-check.css', 'build/assets/css/health-check-troubleshooting-mode.css' ]
 			}
 		},
 		sass: {
@@ -178,7 +178,7 @@ module.exports = function( grunt ) {
 				src: [ 'src/**/*.php' ]
 			},
 			options: {
-				bin: 'vendor/bin/phpcs --standard=phpcs.ruleset.xml',
+				bin: 'vendor/bin/phpcs --standard=phpcs.xml.dist',
 				showSniffCodes: true
 			}
 		}
