@@ -790,12 +790,13 @@ class Health_Check_Site_Status {
 	 *
 	 * @param string $extension Optional. The extension name to test. Default null.
 	 * @param string $function  Optional. The function name to test. Default null.
+	 * @param string $constant  Optional. The constant to text for. Default null.
 	 *
 	 * @return bool Whether or not the extension and function are available.
 	 */
-	private function test_php_extension_availability( $extension = null, $function = null ) {
+	private function test_php_extension_availability( $extension = null, $function = null, $constant = null ) {
 		// If no extension or function is passed, claim to fail testing, as we have nothing to test against.
-		if ( ! $extension && ! $function ) {
+		if ( ! $extension && ! $function && ! $constant ) {
 			return false;
 		}
 
@@ -803,6 +804,9 @@ class Health_Check_Site_Status {
 			return false;
 		}
 		if ( $function && ! function_exists( $function ) ) {
+			return false;
+		}
+		if ( $constant && ! defined( $constant ) ) {
 			return false;
 		}
 
@@ -877,7 +881,7 @@ class Health_Check_Site_Status {
 				'required' => false,
 			),
 			'libsodium' => array(
-				'function'            => 'sodium_compare',
+				'constant'            => 'SODIUM_LIBRARY_VERSION',
 				'required'            => false,
 				'php_bundled_version' => '7.2.0',
 			),
@@ -929,6 +933,7 @@ class Health_Check_Site_Status {
 		 *
 		 *         string $function     Optional. A function name to test for the existence of.
 		 *         string $extension    Optional. An extension to check if is loaded in PHP.
+		 *         string $constant     Optional. A constant to check for to verify an extension exists.
 		 *         bool   $required     Is this a required feature or not.
 		 *         string $fallback_for Optional. The module this module replaces as a fallback.
 		 *     }
@@ -941,6 +946,7 @@ class Health_Check_Site_Status {
 		foreach ( $modules as $library => $module ) {
 			$extension = ( isset( $module['extension'] ) ? $module['extension'] : null );
 			$function  = ( isset( $module['function'] ) ? $module['function'] : null );
+			$constant  = ( isset( $module['constant'] ) ? $module['constant'] : null );
 
 			// If this module is a fallback for another function, check if that other function passed.
 			if ( isset( $module['fallback_for'] ) ) {
@@ -955,7 +961,7 @@ class Health_Check_Site_Status {
 				}
 			}
 
-			if ( ! $this->test_php_extension_availability( $extension, $function ) && ( ! isset( $module['php_bundled_version'] ) || version_compare( PHP_VERSION, $module['php_bundled_version'], '<' ) ) ) {
+			if ( ! $this->test_php_extension_availability( $extension, $function, $constant ) && ( ! isset( $module['php_bundled_version'] ) || version_compare( PHP_VERSION, $module['php_bundled_version'], '<' ) ) ) {
 				if ( $module['required'] ) {
 					$result['status'] = 'critical';
 
