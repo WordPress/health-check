@@ -50,10 +50,11 @@ jQuery( document ).ready(function( $ ) {
 	function RecalculateProgression() {
 		var r, c, pct;
 		var $progress = $( '.site-health-progress' );
-		var $progressCount = $progress.find( '.site-health-progress-count' );
+		var $wrapper = $progress.closest( '.site-health-progress-wrapper' );
+		var $progressLabel = $( '.site-health-progress-label', $wrapper );
 		var $circle = $( '.site-health-progress svg #bar' );
 		var totalTests = parseInt( SiteHealth.site_status.issues.good, 0 ) + parseInt( SiteHealth.site_status.issues.recommended, 0 ) + ( parseInt( SiteHealth.site_status.issues.critical, 0 ) * 1.5 );
-		var failedTests = parseInt( SiteHealth.site_status.issues.recommended, 0 ) + ( parseInt( SiteHealth.site_status.issues.critical, 0 ) * 1.5 );
+		var failedTests = ( parseInt( SiteHealth.site_status.issues.recommended, 0 ) * 0.5 ) + ( parseInt( SiteHealth.site_status.issues.critical, 0 ) * 1.5 );
 		var val = 100 - Math.ceil( ( failedTests / totalTests ) * 100 );
 
 		if ( 0 === totalTests ) {
@@ -61,7 +62,7 @@ jQuery( document ).ready(function( $ ) {
 			return;
 		}
 
-		$progress.removeClass( 'loading' );
+		$wrapper.removeClass( 'loading' );
 
 		r = $circle.attr( 'r' );
 		c = Math.PI * ( r * 2 );
@@ -85,21 +86,6 @@ jQuery( document ).ready(function( $ ) {
 			$( '#health-check-issues-recommended' ).addClass( 'hidden' );
 		}
 
-		if ( 50 <= val ) {
-			$circle.addClass( 'orange' ).removeClass( 'red' );
-		}
-
-		if ( 90 <= val ) {
-			$circle.addClass( 'green' ).removeClass( 'orange' );
-		}
-
-		if ( 100 === val ) {
-			$( '.site-status-all-clear' ).removeClass( 'hide' );
-			$( '.site-status-has-issues' ).addClass( 'hide' );
-		}
-
-		$progressCount.text( val + '%' );
-
 		if ( ! isDebugTab ) {
 			$.post(
 				ajaxurl,
@@ -111,7 +97,22 @@ jQuery( document ).ready(function( $ ) {
 			);
 		}
 
-		wp.a11y.speak( SiteHealth.string.site_health_complete_screen_reader.replace( '%s', val + '%' ) );
+		if ( 80 <= val && 0 === parseInt( SiteHealth.site_status.issues.critical, 0 ) ) {
+			$wrapper.addClass( 'green' ).removeClass( 'orange' );
+
+			$progressLabel.text( SiteHealth.string.site_health_complete_pass );
+			wp.a11y.speak( SiteHealth.string.site_health_complete_pass_sr );
+		} else {
+			$wrapper.addClass( 'orange' ).removeClass( 'green' );
+
+			$progressLabel.text( SiteHealth.string.site_health_complete_fail );
+			wp.a11y.speak( SiteHealth.string.site_health_complete_fail_sr );
+		}
+
+		if ( 100 === val ) {
+			$( '.site-status-all-clear' ).removeClass( 'hide' );
+			$( '.site-status-has-issues' ).addClass( 'hide' );
+		}
 	}
 
 	function maybeRunNextAsyncTest() {
