@@ -232,10 +232,10 @@ class Health_Check {
 				'copied'                               => esc_html__( 'Copied', 'health-check' ),
 				'running_tests'                        => esc_html__( 'Currently being tested...', 'health-check' ),
 				'site_health_complete'                 => esc_html__( 'All site health tests have finished running.', 'health-check' ),
-				'site_info_show_copy'                  => esc_html__( 'Show options for copying this information', 'health-check' ),
-				'site_info_hide_copy'                  => esc_html__( 'Hide options for copying this information', 'health-check' ),
-				// translators: %s: The percentage pass rate for the tests.
-				'site_health_complete_screen_reader'   => esc_html__( 'All site health tests have finished running. Your site passed %s, and the results are now available on the page.', 'health-check' ),
+				'site_health_complete_pass_sr'         => esc_html__( 'All site health tests have finished running. Your site is looking good, and the results are now available on the page.', 'health-check' ),
+				'site_health_complete_fail_sr'         => esc_html__( 'All site health tests have finished running. There are items that should be addressed, and the results are now available on the page.', 'health-check' ),
+				'site_health_complete_pass'            => esc_html__( 'Good', 'health-check' ),
+				'site_health_complete_fail'            => esc_html__( 'Should be improved', 'health-check' ),
 				'site_info_copied'                     => esc_html__( 'Site information has been added to your clipboard.', 'health-check' ),
 				// translators: %s: Amount of critical issues.
 				'site_info_heading_critical_single'    => esc_html__( '%s Critical issue', 'health-check' ),
