@@ -64,7 +64,7 @@ class Health_Check_Troubleshooting_MU {
 		add_filter( 'pre_option_template', array( $this, 'health_check_troubleshoot_theme_template' ) );
 		add_filter( 'pre_option_stylesheet', array( $this, 'health_check_troubleshoot_theme_stylesheet' ) );
 
-		add_filter( 'wp_fatal_error_handler_enabled', array( $this, 'wp_fatal_error_handler_enabled' ) ) ;
+		add_filter( 'wp_fatal_error_handler_enabled', array( $this, 'wp_fatal_error_handler_enabled' ) );
 
 		add_action( 'admin_notices', array( $this, 'prompt_install_default_theme' ) );
 		add_filter( 'user_has_cap', array( $this, 'remove_plugin_theme_install' ) );
@@ -118,22 +118,22 @@ class Health_Check_Troubleshooting_MU {
 	}
 
 	/**
-     * Allow troubleshooting Mode to override the WSOD protection introduced in WordPress 5.2.0
-     *
-     * This will prevent incorrect reporting of errors while testing sites, without touching the
-     * settings put in by site admins in regular scenarios.
-     *
+	 * Allow troubleshooting Mode to override the WSOD protection introduced in WordPress 5.2.0
+	 *
+	 * This will prevent incorrect reporting of errors while testing sites, without touching the
+	 * settings put in by site admins in regular scenarios.
+	 *
 	 * @param bool $enabled
 	 *
 	 * @return bool
 	 */
 	public function wp_fatal_error_handler_enabled( $enabled ) {
-	    if ( ! $this->is_troubleshooting() ) {
-	        return $enabled;
-        }
+		if ( ! $this->is_troubleshooting() ) {
+			return $enabled;
+		}
 
-	    return false;
-    }
+		return false;
+	}
 
 	/**
 	 * Add a prompt to install a default theme.
