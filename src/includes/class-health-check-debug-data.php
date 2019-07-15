@@ -43,7 +43,7 @@ class Health_Check_Debug_Data {
 	 * @return array The debug data for the site.
 	 */
 	static function debug_data() {
-		global $wpdb;
+		global $wpdb, $is_apache;
 
 		// Save few function calls.
 		$upload_dir             = wp_get_upload_dir();
@@ -682,7 +682,7 @@ class Health_Check_Debug_Data {
 		);
 
 		// Check if a .htaccess file exists.
-		if ( is_file( ABSPATH . '.htaccess' ) ) {
+		if ( $is_apache && is_file( ABSPATH . '.htaccess' ) ) {
 			// If the file exists, grab the content of it.
 			$htaccess_content = file_get_contents( ABSPATH . '.htaccess' );
 
