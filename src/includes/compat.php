@@ -1,6 +1,6 @@
 <?php
 
-if ( ! function_exists( 'wp_check_php_version' ) ) {
+if ( ! function_exists( 'wp_check_php_version' ) && version_compare( '5.1.0', get_bloginfo( 'version' ), '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 5.1.0 to check PHP versions.
 	 *
@@ -62,7 +62,7 @@ if ( ! function_exists( 'wp_check_php_version' ) ) {
 	}
 }
 
-if ( ! function_exists( 'wp_get_update_php_url' ) ) {
+if ( ! function_exists( 'wp_get_update_php_url' ) && version_compare( '5.1.0', get_bloginfo( 'version' ), '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 5.1.0 to check PHP versions.
 	 *
@@ -96,7 +96,7 @@ if ( ! function_exists( 'wp_get_update_php_url' ) ) {
 	}
 }
 
-if ( ! function_exists( 'is_countable' ) ) {
+if ( ! function_exists( 'is_countable' ) && version_compare( '4.9.6', get_bloginfo( 'version' ), '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 4.9.6 to check PHP versions.
 	 *
@@ -118,7 +118,7 @@ if ( ! function_exists( 'is_countable' ) ) {
 	}
 }
 
-if ( ! function_exists( 'get_user_count' ) ) {
+if ( ! function_exists( 'get_user_count' ) && version_compare( '4.8.0', get_bloginfo( 'version' ), '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 4.8.0 to check PHP versions.
 	 *
@@ -129,7 +129,7 @@ if ( ! function_exists( 'get_user_count' ) ) {
 	}
 }
 
-if ( ! function_exists( 'get_user_locale' ) ) {
+if ( ! function_exists( 'get_user_locale' ) && version_compare( '4.7.0', get_bloginfo( 'version' ), '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 4.7.0 to check PHP versions.
 	 *
@@ -154,7 +154,7 @@ if ( ! function_exists( 'get_user_locale' ) ) {
 	}
 }
 
-if ( ! function_exists( 'wp_get_upload_dir' ) ) {
+if ( ! function_exists( 'wp_get_upload_dir' ) && version_compare( '4.5.0', get_bloginfo( 'version' ), '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 4.5.0 to check PHP versions.
 	 *
