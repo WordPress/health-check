@@ -49,6 +49,9 @@ define( 'HEALTH_CHECK_CURL_VERSION', '7.58' );
 // Set the minimum cURL version that we've tested that core works with.
 define( 'HEALTH_CHECK_CURL_MIN_VERSION', '7.38' );
 
+// Always include our compatibility file first.
+require_once( dirname( __FILE__ ) . '/includes/compat.php' );
+
 // Include class-files used by our plugin.
 require_once( dirname( __FILE__ ) . '/includes/class-health-check.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-auto-updates.php' );

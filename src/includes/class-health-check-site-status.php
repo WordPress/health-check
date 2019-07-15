@@ -627,93 +627,6 @@ class Health_Check_Site_Status {
 	}
 
 	/**
-	 * Fallback function replicating core behavior from WordPress 5.1 to check PHP versions.
-	 *
-	 * @return array|bool|mixed|object|WP_Error
-	 */
-	private function wp_check_php_version() {
-		$version = phpversion();
-		$key     = md5( $version );
-
-		$response = get_site_transient( 'php_check_' . $key );
-		if ( false === $response ) {
-			$url = 'http://api.wordpress.org/core/serve-happy/1.0/';
-			if ( wp_http_supports( array( 'ssl' ) ) ) {
-				$url = set_url_scheme( $url, 'https' );
-			}
-
-			$url = add_query_arg( 'php_version', $version, $url );
-
-			$response = wp_remote_get( $url );
-
-			if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-				return false;
-			}
-
-			/**
-			 * Response should be an array with:
-			 *  'recommended_version' - string - The PHP version recommended by WordPress.
-			 *  'is_supported' - boolean - Whether the PHP version is actively supported.
-			 *  'is_secure' - boolean - Whether the PHP version receives security updates.
-			 *  'is_acceptable' - boolean - Whether the PHP version is still acceptable for WordPress.
-			 */
-			$response = json_decode( wp_remote_retrieve_body( $response ), true );
-
-			if ( ! is_array( $response ) ) {
-				return false;
-			}
-
-			set_site_transient( 'php_check_' . $key, $response, WEEK_IN_SECONDS );
-		}
-
-		if ( isset( $response['is_acceptable'] ) && $response['is_acceptable'] ) {
-			/**
-			 * Filters whether the active PHP version is considered acceptable by WordPress.
-			 *
-			 * Returning false will trigger a PHP version warning to show up in the admin dashboard to administrators.
-			 *
-			 * This filter is only run if the wordpress.org Serve Happy API considers the PHP version acceptable, ensuring
-			 * that this filter can only make this check stricter, but not loosen it.
-			 *
-			 * @since 5.1.1
-			 *
-			 * @param bool   $is_acceptable Whether the PHP version is considered acceptable. Default true.
-			 * @param string $version       PHP version checked.
-			 */
-			$response['is_acceptable'] = (bool) apply_filters( 'wp_is_php_version_acceptable', true, $version );
-		}
-
-		return $response;
-	}
-
-	private function wp_get_update_php_url() {
-		$default_url = _x( 'https://wordpress.org/support/update-php/', 'localized PHP upgrade information page', 'health-check' );
-
-		$update_url = $default_url;
-		if ( false !== getenv( 'WP_UPDATE_PHP_URL' ) ) {
-			$update_url = getenv( 'WP_UPDATE_PHP_URL' );
-		}
-
-		/**
-		 * Filters the URL to learn more about updating the PHP version the site is running on.
-		 *
-		 * Providing an empty string is not allowed and will result in the default URL being used. Furthermore
-		 * the page the URL links to should preferably be localized in the site language.
-		 *
-		 * @since 5.1.0
-		 *
-		 * @param string $update_url URL to learn more about updating PHP.
-		 */
-		$update_url = apply_filters( 'wp_update_php_url', $update_url );
-
-		if ( empty( $update_url ) ) {
-			$update_url = $default_url;
-		}
-
-		return $update_url;
-	}
-
-	/**
 	 * Test if the supplied PHP version is supported.
 	 *
 	 * @since 5.2.0
@@ -721,11 +634,7 @@ class Health_Check_Site_Status {
 	 * @return array The test results.
 	 */
 	public function get_test_php_version() {
-		if ( ! function_exists( 'wp_check_php_version' ) ) {
-			$response = $this->wp_check_php_version();
-		} else {
-			$response = wp_check_php_version();
-		}
+		$response = wp_check_php_version();
 
 		$result = array(
 			'label'       => sprintf(
@@ -744,7 +653,7 @@ class Health_Check_Site_Status {
 			),
 			'actions'     => sprintf(
 				'<p><a href="%s" target="_blank" rel="noopener noreferrer">%s <span class="screen-reader-text">%s</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a></p>',
-				esc_url( ( function_exists( 'wp_get_update_php_url' ) ? wp_get_update_php_url() : $this->wp_get_update_php_url() ) ),
+				esc_url( wp_get_update_php_url() ),
 				__( 'Learn more about updating PHP', 'health-check' ),
 				/* translators: accessibility text */
 				__( '(opens in a new tab)', 'health-check' )
