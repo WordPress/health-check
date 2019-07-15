@@ -108,7 +108,7 @@ class Health_Check_Mail_Check {
 								<?php
 								$current_user = wp_get_current_user();
 								?>
-								<label for="email"><?php _e( 'E-mail', 'health-check' ); ?></label>
+								<label for="email"><?php _e( 'Email', 'health-check' ); ?></label>
 								<input type="text" name="email" id="email" value="<?php echo $current_user->user_email; ?>">
 							</p>
 						</td>
