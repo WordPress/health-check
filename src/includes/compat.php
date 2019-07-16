@@ -1,6 +1,9 @@
 <?php
 
-if ( ! function_exists( 'wp_check_php_version' ) && version_compare( '5.1.0', get_bloginfo( 'version' ), '>' ) ) {
+// Manually include the versions file as we can't always rely on `get_bloginfo()` to fetch versions.
+include_once( ABSPATH . '/wp-includes/version.php' );
+
+if ( ! function_exists( 'wp_check_php_version' ) && version_compare( '5.1.0', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 5.1.0 to check PHP versions.
 	 *
@@ -62,7 +65,7 @@ if ( ! function_exists( 'wp_check_php_version' ) && version_compare( '5.1.0', ge
 	}
 }
 
-if ( ! function_exists( 'wp_get_update_php_url' ) && version_compare( '5.1.0', get_bloginfo( 'version' ), '>' ) ) {
+if ( ! function_exists( 'wp_get_update_php_url' ) && version_compare( '5.1.0', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 5.1.0 to check PHP versions.
 	 *
@@ -96,7 +99,7 @@ if ( ! function_exists( 'wp_get_update_php_url' ) && version_compare( '5.1.0', g
 	}
 }
 
-if ( ! function_exists( 'is_countable' ) && version_compare( '4.9.6', get_bloginfo( 'version' ), '>' ) ) {
+if ( ! function_exists( 'is_countable' ) && version_compare( '4.9.6', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 4.9.6 to check PHP versions.
 	 *
@@ -118,7 +121,7 @@ if ( ! function_exists( 'is_countable' ) && version_compare( '4.9.6', get_blogin
 	}
 }
 
-if ( ! function_exists( 'get_user_count' ) && version_compare( '4.8.0', get_bloginfo( 'version' ), '>' ) ) {
+if ( ! function_exists( 'get_user_count' ) && version_compare( '4.8.0', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 4.8.0 to check PHP versions.
 	 *
@@ -129,7 +132,7 @@ if ( ! function_exists( 'get_user_count' ) && version_compare( '4.8.0', get_blog
 	}
 }
 
-if ( ! function_exists( 'get_user_locale' ) && version_compare( '4.7.0', get_bloginfo( 'version' ), '>' ) ) {
+if ( ! function_exists( 'get_user_locale' ) && version_compare( '4.7.0', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 4.7.0 to check PHP versions.
 	 *
@@ -154,7 +157,7 @@ if ( ! function_exists( 'get_user_locale' ) && version_compare( '4.7.0', get_blo
 	}
 }
 
-if ( ! function_exists( 'wp_get_upload_dir' ) && version_compare( '4.5.0', get_bloginfo( 'version' ), '>' ) ) {
+if ( ! function_exists( 'wp_get_upload_dir' ) && version_compare( '4.5.0', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 4.5.0 to check PHP versions.
 	 *
