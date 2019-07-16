@@ -141,8 +141,13 @@ class Health_Check_Debug_Data {
 			'fields' => array(),
 		);
 
-		$info['wp-themes'] = array(
-			'label'      => __( 'Other Themes', 'health-check' ),
+		$info['wp-parent-theme'] = array(
+			'label'  => __( 'Parent Theme', 'health-check' ),
+			'fields' => array(),
+		);
+
+		$info['wp-themes-inactive'] = array(
+			'label'      => __( 'Inactive Themes', 'health-check' ),
 			'show_count' => true,
 			'fields'     => array(),
 		);
@@ -885,8 +890,13 @@ class Health_Check_Debug_Data {
 		$info['wp-active-theme']['fields'] = array(
 			'name'           => array(
 				'label' => __( 'Name', 'health-check' ),
-				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-				'value' => $active_theme->Name,
+				'value' => sprintf(
+					// translators: 1: Parent theme name. 2: Parent theme slug.
+					__( '%1$s (%2$s)', 'health-check' ),
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+					$active_theme->Name,
+					$active_theme->stylesheet
+				),
 			),
 			'version'        => array(
 				'label' => __( 'Version', 'health-check' ),
@@ -905,8 +915,8 @@ class Health_Check_Debug_Data {
 			),
 			'parent_theme'   => array(
 				'label' => __( 'Parent theme', 'health-check' ),
-				'value' => ( $active_theme->parent_theme ? $active_theme->parent_theme : __( 'None', 'health-check' ) ),
-				'debug' => ( $active_theme->parent_theme ? $active_theme->parent_theme : 'none' ),
+				'value' => ( $active_theme->parent_theme ? $active_theme->parent_theme . ' (' . $active_theme->template . ')' : __( 'None', 'health-check' ) ),
+				'debug' => ( $active_theme->parent_theme ? $active_theme->parent_theme . ' (' . $active_theme->template . ')' : 'none' ),
 			),
 			'theme_features' => array(
 				'label' => __( 'Theme features', 'health-check' ),
@@ -914,9 +924,59 @@ class Health_Check_Debug_Data {
 			),
 			'theme_path'     => array(
 				'label' => __( 'Theme directory location', 'health-check' ),
-				'value' => get_template_directory(),
+				'value' => get_stylesheet_directory(),
 			),
 		);
+
+		$parent_theme = $active_theme->parent();
+
+		if ( $parent_theme ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$parent_theme_version       = $parent_theme->Version;
+			$parent_theme_version_debug = $parent_theme_version;
+
+			if ( array_key_exists( $parent_theme->stylesheet, $theme_updates ) ) {
+				$parent_theme_update_new_version = $theme_updates[ $parent_theme->stylesheet ]->update['new_version'];
+
+				// translators: %s: Latest theme version number.
+				$parent_theme_version       .= ' ' . sprintf( __( '(Latest version: %s)', 'health-check' ), $parent_theme_update_new_version );
+				$parent_theme_version_debug .= sprintf( ' (latest version: %s)', $parent_theme_update_new_version );
+			}
+
+			$parent_theme_author_uri = $parent_theme->offsetGet( 'Author URI' );
+
+			$info['wp-parent-theme']['fields'] = array(
+				'name'           => array(
+					'label' => __( 'Name', 'health-check' ),
+					'value' => sprintf(
+						// translators: 1: Parent theme name. 2: Parent theme slug.
+						__( '%1$s (%2$s)', 'health-check' ),
+						// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+						$parent_theme->Name,
+						$parent_theme->stylesheet
+					),
+				),
+				'version'        => array(
+					'label' => __( 'Version', 'health-check' ),
+					'value' => $parent_theme_version,
+					'debug' => $parent_theme_version_debug,
+				),
+				'author'         => array(
+					'label' => __( 'Author', 'health-check' ),
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+					'value' => wp_kses( $parent_theme->Author, array() ),
+				),
+				'author_website' => array(
+					'label' => __( 'Author website', 'health-check' ),
+					'value' => ( $parent_theme_author_uri ? $parent_theme_author_uri : __( 'Undefined', 'health-check' ) ),
+					'debug' => ( $parent_theme_author_uri ? $parent_theme_author_uri : '(undefined)' ),
+				),
+				'theme_path'     => array(
+					'label' => __( 'Theme directory location', 'health-check' ),
+					'value' => get_template_directory(),
+				),
+			);
+		}
 
 		// Populate a list of all themes available in the install.
 		$all_themes = wp_get_themes();
@@ -926,6 +986,12 @@ class Health_Check_Debug_Data {
 			if ( $active_theme->stylesheet === $theme_slug ) {
 				continue;
 			}
+
+			// Ignore the currently active parent theme from the list of all themes.
+			if ( ! empty( $parent_theme ) && $parent_theme->stylesheet === $theme_slug ) {
+				continue;
+			}
+
 			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$theme_version = $theme->Version;
 			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
@@ -962,7 +1028,7 @@ class Health_Check_Debug_Data {
 			}
 
 			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			$info['wp-themes']['fields'][ sanitize_text_field( $theme->Name ) ] = array(
+			$info['wp-themes-inactive']['fields'][ sanitize_text_field( $theme->Name ) ] = array(
 				'label' => sprintf(
 					// translators: 1: Theme name. 2: Theme slug.
 					__( '%1$s (%2$s)', 'health-check' ),
