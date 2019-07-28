@@ -1,9 +1,9 @@
 <?php
 
 // Manually include the versions file as we can't always rely on `get_bloginfo()` to fetch versions.
-include_once( ABSPATH . '/wp-includes/version.php' );
+include ABSPATH . WPINC . '/version.php';
 
-if ( ! function_exists( 'wp_check_php_version' ) && version_compare( '5.1.0', $wp_version, '>' ) ) {
+if ( ! function_exists( 'wp_check_php_version' ) && version_compare( '5.1', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 5.1.0 to check PHP versions.
 	 *
@@ -65,7 +65,7 @@ if ( ! function_exists( 'wp_check_php_version' ) && version_compare( '5.1.0', $w
 	}
 }
 
-if ( ! function_exists( 'wp_get_update_php_url' ) && version_compare( '5.1.0', $wp_version, '>' ) ) {
+if ( ! function_exists( 'wp_get_update_php_url' ) && version_compare( '5.1', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 5.1.0 to check PHP versions.
 	 *
@@ -121,7 +121,7 @@ if ( ! function_exists( 'is_countable' ) && version_compare( '4.9.6', $wp_versio
 	}
 }
 
-if ( ! function_exists( 'get_user_count' ) && version_compare( '4.8.0', $wp_version, '>' ) ) {
+if ( ! function_exists( 'get_user_count' ) && version_compare( '4.8', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 4.8.0 to check PHP versions.
 	 *
@@ -132,7 +132,7 @@ if ( ! function_exists( 'get_user_count' ) && version_compare( '4.8.0', $wp_vers
 	}
 }
 
-if ( ! function_exists( 'get_user_locale' ) && version_compare( '4.7.0', $wp_version, '>' ) ) {
+if ( ! function_exists( 'get_user_locale' ) && version_compare( '4.7', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 4.7.0 to check PHP versions.
 	 *
@@ -157,7 +157,7 @@ if ( ! function_exists( 'get_user_locale' ) && version_compare( '4.7.0', $wp_ver
 	}
 }
 
-if ( ! function_exists( 'wp_get_upload_dir' ) && version_compare( '4.5.0', $wp_version, '>' ) ) {
+if ( ! function_exists( 'wp_get_upload_dir' ) && version_compare( '4.5', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 4.5.0 to check PHP versions.
 	 *
