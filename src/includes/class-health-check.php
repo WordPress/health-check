@@ -50,9 +50,8 @@ class Health_Check {
 
 		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
 
-		add_filter( 'plugin_row_meta', array( $this, 'settings_link' ), 10, 2 );
-
 		add_filter( 'plugin_action_links', array( $this, 'troubleshoot_plugin_action' ), 20, 4 );
+		add_filter( 'plugin_action_links_' . plugin_basename( HEALTH_CHECK_PLUGIN_FILE ), array( $this, 'page_plugin_action' ) );
 
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
@@ -374,26 +373,6 @@ class Health_Check {
 	}
 
 	/**
-	 * Add a quick-access link under our plugin name on the plugins-list.
-	 *
-	 * @uses plugin_basename()
-	 * @uses sprintf()
-	 * @uses menu_page_url()
-	 *
-	 * @param array  $meta An array containing meta links.
-	 * @param string $name The plugin slug that these metas relate to.
-	 *
-	 * @return array
-	 */
-	public function settings_link( $meta, $name ) {
-		if ( plugin_basename( __FILE__ ) === $name ) {
-			$meta[] = sprintf( '<a href="%s">' . _x( 'Health Check', 'Menu, Section and Page Title', 'health-check' ) . '</a>', menu_page_url( 'health-check', false ) );
-		}
-
-		return $meta;
-	}
-
-	/**
 	 * Add a troubleshooting action link to plugins.
 	 *
 	 * @param $actions
@@ -436,6 +415,24 @@ class Health_Check {
 			esc_html__( 'Troubleshoot', 'health-check' )
 		);
 
+		return $actions;
+	}
+
+	/**
+	 * Add a quick-access action link to the Heath Check page.
+	 *
+	 * @param $actions
+	 *
+	 * @return array
+	 */
+	public function page_plugin_action( $actions ) {
+
+		$page_link = sprintf(
+			'<a href="%s">%s</a>',
+			menu_page_url( 'health-check', false ),
+			_x( 'Health Check', 'Menu, Section and Page Title', 'health-check' )
+		);
+		array_unshift( $actions, $page_link );
 		return $actions;
 	}
 
