@@ -37,6 +37,9 @@ define( 'HEALTH_CHECK_MYSQL_REC_VERSION', '5.6' );
 // Set the plugin version.
 define( 'HEALTH_CHECK_PLUGIN_VERSION', '1.3.2' );
 
+// Set the plugin file.
+define( 'HEALTH_CHECK_PLUGIN_FILE', __FILE__ );
+
 // Set the absolute path for the plugin.
 define( 'HEALTH_CHECK_PLUGIN_DIRECTORY', plugin_dir_path( __FILE__ ) );
 
