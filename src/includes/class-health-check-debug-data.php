@@ -598,10 +598,26 @@ class Health_Check_Debug_Data {
 			$php_sapi = 'unknown';
 		}
 
+		if ( function_exists( 'get_current_user' ) && function_exists( 'getmyuid' ) ) {
+			$php_getuid = sprintf(
+				'%s (%s)',
+				get_current_user(),
+				getmyuid()
+			);
+		} else {
+			$php_getuid = 'unknown';
+		}
+
 		$info['wp-server']['fields']['server_architecture'] = array(
 			'label' => __( 'Server architecture', 'health-check' ),
 			'value' => ( 'unknown' !== $server_architecture ? $server_architecture : __( 'Unable to determine server architecture', 'health-check' ) ),
 			'debug' => $server_architecture,
+		);
+		$info['wp-server']['fields']['php-uid']             = array(
+			'label'   => __( 'Website server user', 'health-check' ),
+			'value'   => ( 'unknown' !== $php_getuid ? $php_getuid : __( 'Unable to determine the websites server user', 'health-check' ) ),
+			'debug'   => $php_getuid,
+			'private' => true,
 		);
 		$info['wp-server']['fields']['httpd_software']      = array(
 			'label' => __( 'Web server', 'health-check' ),
