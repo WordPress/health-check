@@ -702,6 +702,23 @@ class Health_Check_Debug_Data {
 			'debug' => $imagick_loaded,
 		);
 
+		$server_request = wp_remote_get( site_url(), compact( 'cookies', 'headers', 'timeout' ) );
+		if ( is_wp_error( $server_request ) ) {
+			$info['wp-server']['fields']['server-headers'] = array(
+				'label' => __( 'Server headers', 'health-check' ),
+				'value' => __( 'Could not retrieve server headers', 'health-check' ),
+				'debug' => 'unknown',
+			);
+		} else {
+			$server_headers = wp_remote_retrieve_headers( $server_request );
+
+			$info['wp-server']['fields']['server-headers'] = array(
+				'label' => __( 'Server headers', 'health-check' ),
+				'value' => ( $server_headers instanceof \Requests_Utility_CaseInsensitiveDictionary ? $server_headers->getAll() : $server_headers ),
+				'debug' => ( $server_headers instanceof \Requests_Utility_CaseInsensitiveDictionary ? $server_headers->getAll() : $server_headers ),
+			);
+		}
+
 		// Check if a .htaccess file exists.
 		if ( $is_apache && is_file( ABSPATH . '.htaccess' ) ) {
 			// If the file exists, grab the content of it.
