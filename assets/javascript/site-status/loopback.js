@@ -1,10 +1,10 @@
 /* global SiteHealth, ajaxurl, healthCheckFailureModal */
-jQuery( document ).ready(function( $ ) {
+jQuery( document ).ready( function( $ ) {
 	function testDefaultTheme() {
-		var $parent = $( '.individual-loopback-test-status', '#test-single-no-theme' ),
+		const $parent = $( '.individual-loopback-test-status', '#test-single-no-theme' ),
 			data = {
-				'action': 'health-check-loopback-default-theme',
-				'_wpnonce': SiteHealth.nonce.loopback_default_theme
+				action: 'health-check-loopback-default-theme',
+				_wpnonce: SiteHealth.nonce.loopback_default_theme,
 			};
 
 		$.post(
@@ -22,24 +22,21 @@ jQuery( document ).ready(function( $ ) {
 	}
 
 	function testSinglePlugin() {
-		var $testLines = $( '.not-tested', '#loopback-individual-plugins-list' );
-		var $parentField,
-			$testLine,
-			data;
+		const $testLines = $( '.not-tested', '#loopback-individual-plugins-list' );
 
 		if ( $testLines.length < 1 ) {
 			testDefaultTheme();
 			return null;
 		}
 
-		$testLine = $testLines.first();
-		data = {
-			'action': 'health-check-loopback-individual-plugins',
-			'plugin': $testLine.data( 'test-plugin' ),
-			'_wpnonce': SiteHealth.nonce.loopback_individual_plugins
+		const $testLine = $testLines.first();
+		const data = {
+			action: 'health-check-loopback-individual-plugins',
+			plugin: $testLine.data( 'test-plugin' ),
+			_wpnonce: SiteHealth.nonce.loopback_individual_plugins,
 		};
 
-		$parentField = $( '.individual-loopback-test-status', $testLine );
+		const $parentField = $( '.individual-loopback-test-status', $testLine );
 
 		$parentField.html( SiteHealth.string.running_tests );
 
@@ -60,11 +57,11 @@ jQuery( document ).ready(function( $ ) {
 	}
 
 	$( '.dashboard_page_health-check' ).on( 'click', '#loopback-no-plugins', function( e ) {
-		var $trigger = $( this ),
+		const $trigger = $( this ),
 			$parent = $( this ).closest( 'p' ),
 			data = {
-				'action': 'health-check-loopback-no-plugins',
-				'_wpnonce': SiteHealth.nonce.loopback_no_plugins
+				action: 'health-check-loopback-no-plugins',
+				_wpnonce: SiteHealth.nonce.loopback_no_plugins,
 			};
 
 		e.preventDefault();
@@ -84,11 +81,11 @@ jQuery( document ).ready(function( $ ) {
 			},
 			'json'
 		);
-	}).on( 'click', '#loopback-individual-plugins', function( e ) {
+	} ).on( 'click', '#loopback-individual-plugins', function( e ) {
 		e.preventDefault();
 
 		$( this ).remove();
 
 		testSinglePlugin();
-	});
-});
+	} );
+} );

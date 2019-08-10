@@ -1,84 +1,82 @@
 /* global ajaxurl, SiteHealth */
-jQuery( document ).ready(function( $ ) {
-    var isDebugTab = $( '.health-check-debug-tab.active' ).length;
-    var pathsSizesSection = $( '#health-check-accordion-block-wp-paths-sizes' );
+jQuery( document ).ready( function( $ ) {
+	const isDebugTab = $( '.health-check-debug-tab.active' ).length;
+	const pathsSizesSection = $( '#health-check-accordion-block-wp-paths-sizes' );
 
-    function getDirectorySizes() {
-        var data = {
-            action: 'health-check-get-sizes',
-            _wpnonce: SiteHealth.nonce.site_status_result
-        };
+	function getDirectorySizes() {
+		const data = {
+			action: 'health-check-get-sizes',
+			_wpnonce: SiteHealth.nonce.site_status_result,
+		};
 
-        var timestamp = ( new Date().getTime() );
+		const timestamp = ( new Date().getTime() );
 
-        // After 3 seconds announce that we're still waiting for directory sizes.
-        var timeout = window.setTimeout( function() {
-            wp.a11y.speak( SiteHealth.string.please_wait );
-        }, 3000 );
+		// After 3 seconds announce that we're still waiting for directory sizes.
+		const timeout = window.setTimeout( function() {
+			wp.a11y.speak( SiteHealth.string.please_wait );
+		}, 3000 );
 
-        $.post( {
-            type: 'POST',
-            url: ajaxurl,
-            data: data,
-            dataType: 'json'
-        } ).done( function( response ) {
-            updateDirSizes( response.data || {} );
-        } ).always( function() {
-            var delay = ( new Date().getTime() ) - timestamp;
+		$.post( {
+			type: 'POST',
+			url: ajaxurl,
+			data,
+			dataType: 'json',
+		} ).done( function( response ) {
+			updateDirSizes( response.data || {} );
+		} ).always( function() {
+			let delay = ( new Date().getTime() ) - timestamp;
 
-            $( '.health-check-wp-paths-sizes.spinner' ).css( 'visibility', 'hidden' );
+			$( '.health-check-wp-paths-sizes.spinner' ).css( 'visibility', 'hidden' );
 
-            if ( delay > 3000 ) {
+			if ( delay > 3000 ) {
+				// We have announced that we're waiting.
+				// Announce that we're ready after giving at least 3 seconds for the first announcement
+				// to be read out, or the two may collide.
+				if ( delay > 6000 ) {
+					delay = 0;
+				} else {
+					delay = 6500 - delay;
+				}
 
-                // We have announced that we're waiting.
-                // Announce that we're ready after giving at least 3 seconds for the first announcement
-                // to be read out, or the two may collide.
-                if ( delay > 6000 ) {
-                    delay = 0;
-                } else {
-                    delay = 6500 - delay;
-                }
+				window.setTimeout( function() {
+					wp.a11y.speak( SiteHealth.string.site_health_complete );
+				}, delay );
+			} else {
+				// Cancel the announcement.
+				window.clearTimeout( timeout );
+			}
 
-                window.setTimeout( function() {
-                    wp.a11y.speak( SiteHealth.string.site_health_complete );
-                }, delay );
-            } else {
+			$( document ).trigger( 'site-health-info-dirsizes-done' );
+		} );
+	}
 
-                // Cancel the announcement.
-                window.clearTimeout( timeout );
-            }
+	function updateDirSizes( data ) {
+		const copyButton = $( 'button.button.copy-button' );
+		let clipdoardText = copyButton.attr( 'data-clipboard-text' );
 
-            $( document ).trigger( 'site-health-info-dirsizes-done' );
-        } );
-    }
+		$.each( data, function( name, value ) {
+			const text = value.debug || value.size;
 
-    function updateDirSizes( data ) {
-        var copyButton = $( 'button.button.copy-button' );
-        var clipdoardText = copyButton.attr( 'data-clipboard-text' );
+			if ( 'undefined' !== typeof text ) {
+				clipdoardText = clipdoardText.replace( name + ': loading...', name + ': ' + text );
+			}
+		} );
 
-        $.each( data, function( name, value ) {
-            var text = value.debug || value.size;
+		copyButton.attr( 'data-clipboard-text', clipdoardText );
 
-            if ( 'undefined' !== typeof text ) {
-                clipdoardText = clipdoardText.replace( name + ': loading...', name + ': ' + text );
-            }
-        } );
+		pathsSizesSection.find( 'td[class]' ).each( function( i, element ) {
+			const td = $( element );
+			const name = td.attr( 'class' );
 
-        copyButton.attr( 'data-clipboard-text', clipdoardText );
+			if ( data.hasOwnProperty( name ) && data[ name ].size ) {
+				td.text( data[ name ].size );
+			}
+		} );
+	}
 
-        pathsSizesSection.find( 'td[class]' ).each( function( i, element ) {
-            var td = $( element );
-            var name = td.attr( 'class' );
-
-            if ( data.hasOwnProperty( name ) && data[ name ].size ) {
-                td.text( data[ name ].size );
-            }
-        } );
-    }
-
-    if ( isDebugTab ) {
-        if ( pathsSizesSection.length ) {
-            getDirectorySizes();
-        }
-    }
-});
+	if ( isDebugTab ) {
+		if ( pathsSizesSection.length ) {
+			getDirectorySizes();
+		}
+	}
+} );
