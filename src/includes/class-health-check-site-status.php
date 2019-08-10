@@ -1207,6 +1207,48 @@ class Health_Check_Site_Status {
 	}
 
 	/**
+	 * Test if the site is using timezones relative to their location, or by using an offset value.
+	 *
+	 * Daylight Savings Time (DST) may affect the times used and shown by your site, and using an UTC offset,
+	 * instead of a localized timezone, means that the site does not get automatic DST updates.
+	 *
+	 * This check looks for default or UTC values and recommends changing to a fixed location.
+	 *
+	 * @return array The test results.
+	 */
+	public function get_test_timezone_not_utc() {
+		$result = array(
+			'label'       => __( 'Your site uses localized timezones', 'health-check' ),
+			'status'      => 'good',
+			'badge'       => array(
+				'label' => __( 'Performance', 'health-check' ),
+				'color' => 'blue',
+			),
+			'description' => sprintf(
+				'<p>%s</p>',
+				__( 'Daylight Savings Time (DST) may affect the times used and shown by your site, and using an UTC offset, instead of a localized timezone, means that the site does not get automatic DST updates.', 'health-check' )
+			),
+			'actions'     => '',
+			'test'        => 'timezone_not_utc',
+		);
+
+		$timezone = get_option( 'timezone_string', null );
+
+		if ( empty( $timezone ) || 'UTC' === substr( $timezone, 0, 3 ) ) {
+			$result['status'] = 'recommended';
+			$result['label']  = __( 'Your site is not using localized timezones', 'health-check' );
+
+			$result['actions'] .= sprintf(
+				'<p><a href="%s">%s</a></p>',
+				esc_url( admin_url( 'options-general.php' ) ),
+				__( 'Update your site timezone', 'health-check' )
+			);
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Test if debug information is enabled.
 	 *
 	 * When WP_DEBUG is enabled, errors and information may be disclosed to site visitors, or it may be
@@ -1874,6 +1916,10 @@ class Health_Check_Site_Status {
 				'debug_enabled'     => array(
 					'label' => __( 'Debugging enabled', 'health-check' ),
 					'test'  => array( $health_check_site_status, 'get_test_is_in_debug_mode' ),
+				),
+				'timezones'         => array(
+					'label' => __( 'Timezone', 'health-check' ),
+					'test'  => array( $health_check_site_status, 'get_test_timezone_not_utc' ),
 				),
 			),
 			'async'  => array(
