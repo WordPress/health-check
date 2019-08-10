@@ -915,6 +915,8 @@ class Health_Check_Troubleshooting_MU {
 						<dd id="health-check-accordion-block-plugins" role="region" aria-labelledby="health-check-accordion-heading-plugins" class="health-check-accordion-panel" hidden="hidden">
 							<ul id="health-check-plugins" role="list">
 								<?php
+								$has_toggle = false;
+
 								foreach ( $this->active_plugins as $count => $single_plugin ) {
 									$plugin_slug = explode( '/', $single_plugin );
 									$plugin_slug = $plugin_slug[0];
@@ -968,6 +970,19 @@ class Health_Check_Troubleshooting_MU {
 										);
 									}
 
+									if ( ! $plugin_is_visible && ! $has_toggle ) {
+										$has_toggle = true;
+
+										printf(
+											'<li><button type="button" class="show-remaining button button-link">%s</button></li>',
+											sprintf(
+												// translators: %d: Amount of hidden plugins.
+												__( 'Show %d remaining plugins', 'health-check' ),
+												( is_countable( $this->active_plugins ) ? ( count( $this->active_plugins ) - 5 ) : 0 )
+											)
+										);
+									}
+
 									printf(
 										'<li class="%s">%s - %s</li>',
 										( ! $plugin_is_visible ? 'toggle-visibility hidden' : '' ),
@@ -996,6 +1011,8 @@ class Health_Check_Troubleshooting_MU {
 						<dd id="health-check-accordion-block-themes" role="region" aria-labelledby="health-check-accordion-heading-themes" class="health-check-accordion-panel" hidden="hidden">
 							<ul id="health-check-themes" role="list">
 								<?php
+								$has_toggle = false;
+
 								foreach ( $themes as $count => $theme ) {
 									$theme_is_visible = true;
 									if ( $count >= 5 ) {
@@ -1030,6 +1047,19 @@ class Health_Check_Troubleshooting_MU {
 
 									if ( ! $theme['active'] ) {
 										$plugin_label .= ' - ' . $actions;
+									}
+
+									if ( ! $theme_is_visible && ! $has_toggle ) {
+										$has_toggle = true;
+
+										printf(
+											'<li><button type="button" class="show-remaining button button-link">%s</button></li>',
+											sprintf(
+												// translators: %d: Amount of hidden themes.
+												__( 'Show %d remaining themes', 'health-check' ),
+												( is_countable( $themes ) ? ( count( $themes ) - 5 ) : 0 )
+											)
+										);
 									}
 
 									printf(
