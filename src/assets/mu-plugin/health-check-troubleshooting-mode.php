@@ -66,6 +66,9 @@ class Health_Check_Troubleshooting_MU {
 
 		add_filter( 'wp_fatal_error_handler_enabled', array( $this, 'wp_fatal_error_handler_enabled' ) );
 
+		add_filter( 'bulk_actions-plugins', array( $this, 'remove_plugin_bulk_actions' ) );
+		add_filter( 'handle_bulk_actions-plugins', array( $this, 'handle_plugin_bulk_actions' ), 10, 3 );
+
 		add_action( 'admin_notices', array( $this, 'prompt_install_default_theme' ) );
 		add_filter( 'user_has_cap', array( $this, 'remove_plugin_theme_install' ) );
 
@@ -211,6 +214,104 @@ class Health_Check_Troubleshooting_MU {
 
 		// Force the database entry for active plugins if someone tried changing plugins while in Troubleshooting Mode.
 		update_option( 'active_plugins', $this->active_plugins );
+	}
+
+	public function handle_plugin_bulk_actions( $sendback, $action, $plugins ) {
+		if ( ! $this->is_troubleshooting() && 'health-check-troubleshoot' !== $action ) {
+			return $sendback;
+		}
+
+		$sendback = self_admin_url( 'plugins.php' );
+
+		if ( 'health-check-troubleshoot' === $action ) {
+			foreach ( $plugins as $single_plugin ) {
+				$plugin_slug = explode( '/', $single_plugin );
+				$plugin_slug = $plugin_slug[0];
+
+				if ( in_array( $single_plugin, $this->active_plugins ) ) {
+					$this->allowed_plugins[ $plugin_slug ] = $plugin_slug;
+				}
+			}
+
+			Health_Check_Troubleshoot::initiate_troubleshooting_mode( $this->allowed_plugins );
+
+			if ( ! $this->test_site_state() ) {
+				$this->allowed_plugins = array();
+				update_option( 'health-check-allowed-plugins', $this->allowed_plugins );
+
+				$this->add_dashboard_notice(
+					__( 'When enabling troubleshooting on the selected plugins, a site failure occurred. Because of this the selected plugins were kept disabled while troubleshooting mode started.', 'health-check' ),
+					'warning'
+				);
+			}
+		}
+
+		if ( 'health-check-enable' === $action ) {
+			$old_allowed_plugins = $this->allowed_plugins;
+
+			foreach ( $plugins as $single_plugin ) {
+				$plugin_slug = explode( '/', $single_plugin );
+				$plugin_slug = $plugin_slug[0];
+
+				if ( in_array( $single_plugin, $this->active_plugins ) ) {
+					$this->allowed_plugins[ $plugin_slug ] = $plugin_slug;
+				}
+			}
+
+			update_option( 'health-check-allowed-plugins', $this->allowed_plugins );
+
+			if ( ! $this->test_site_state() ) {
+				$this->allowed_plugins = $old_allowed_plugins;
+				update_option( 'health-check-allowed-plugins', $old_allowed_plugins );
+
+				$this->add_dashboard_notice(
+					__( 'When bulk-enabling plugins, a site failure occurred. Because of this the change was automatically reverted.', 'health-check' ),
+					'warning'
+				);
+			}
+		}
+
+		if ( 'health-check-disable' === $action ) {
+			$old_allowed_plugins = $this->allowed_plugins;
+
+			foreach ( $plugins as $single_plugin ) {
+				$plugin_slug = explode( '/', $single_plugin );
+				$plugin_slug = $plugin_slug[0];
+
+				if ( in_array( $single_plugin, $this->active_plugins ) ) {
+					unset( $this->allowed_plugins[ $plugin_slug ] );
+				}
+			}
+
+			update_option( 'health-check-allowed-plugins', $this->allowed_plugins );
+
+			if ( ! $this->test_site_state() ) {
+				$this->allowed_plugins = $old_allowed_plugins;
+				update_option( 'health-check-allowed-plugins', $old_allowed_plugins );
+
+				$this->add_dashboard_notice(
+					__( 'When bulk-disabling plugins, a site failure occurred. Because of this the change was automatically reverted.', 'health-check' ),
+					'warning'
+				);
+			}
+		}
+
+		return $sendback;
+	}
+
+	public function remove_plugin_bulk_actions( $actions ) {
+		if ( ! $this->is_troubleshooting() ) {
+			$actions['health-check-troubleshoot'] = __( 'Troubleshoot', 'health-check' );
+
+			return $actions;
+		}
+
+		$actions = array(
+			'health-check-enable'  => __( 'Enable while troubleshooting', 'health-check' ),
+			'health-check-disable' => __( 'Disable while troubleshooting', 'health-check' ),
+		);
+
+		return $actions;
 	}
 
 	/**
