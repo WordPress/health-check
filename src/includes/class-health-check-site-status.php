@@ -826,6 +826,14 @@ class Health_Check_Site_Status {
 				'required'     => false,
 				'fallback_for' => 'zip',
 			),
+			'mbstring'  => array(
+				'extension' => 'mbstring',
+				'required'  => true,
+			),
+			'json'      => array(
+				'extension' => 'json',
+				'required'  => true,
+			),
 		);
 
 		/**
