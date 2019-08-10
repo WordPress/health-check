@@ -1,9 +1,9 @@
 /* global ajaxurl, SiteHealth */
-jQuery( document ).ready(function( $ ) {
+jQuery( document ).ready( function( $ ) {
 	$( '#health-check-file-integrity' ).submit( function( e ) {
-		var data = {
-			'action': 'health-check-files-integrity-check',
-			'_wpnonce': SiteHealth.nonce.files_integrity_check
+		const data = {
+			action: 'health-check-files-integrity-check',
+			_wpnonce: SiteHealth.nonce.files_integrity_check,
 		};
 
 		e.preventDefault();
@@ -20,21 +20,20 @@ jQuery( document ).ready(function( $ ) {
 				$( '#tools-file-integrity-response-holder' ).html( response.data.message );
 			}
 		);
-	});
+	} );
 
 	$( '#tools-file-integrity-response-holder' ).on( 'click', 'a[href="#health-check-diff"]', function( e ) {
-		var file = $( this ).data( 'file' ),
-			data;
+		const file = $( this ).data( 'file' );
 
 		e.preventDefault();
 
 		$( '#health-check-diff-modal' ).toggle();
 		$( '#health-check-diff-modal #health-check-diff-modal-content .spinner' ).addClass( 'is-active' );
 
-		data = {
-			'action': 'health-check-view-file-diff',
-			'file': file,
-			'_wpnonce': SiteHealth.nonce.view_file_diff
+		const data = {
+			action: 'health-check-view-file-diff',
+			file,
+			_wpnonce: SiteHealth.nonce.view_file_diff,
 		};
 
 		$.post(
@@ -46,5 +45,5 @@ jQuery( document ).ready(function( $ ) {
 				$( '#health-check-diff-modal #health-check-diff-modal-content .spinner' ).removeClass( 'is-active' );
 			}
 		);
-	});
-});
+	} );
+} );

@@ -1,0 +1,7 @@
+.docker
+.github
+build
+node_modules
+vendor
+
+!.eslintrc.js

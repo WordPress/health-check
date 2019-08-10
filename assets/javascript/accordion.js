@@ -1,6 +1,6 @@
-jQuery( document ).ready(function( $ ) {
+jQuery( document ).ready( function( $ ) {
 	$( '.health-check-accordion' ).on( 'click', '.health-check-accordion-trigger', function() {
-		var isExpanded = ( 'true' === $( this ).attr( 'aria-expanded' ) );
+		const isExpanded = ( 'true' === $( this ).attr( 'aria-expanded' ) );
 
 		if ( isExpanded ) {
 			$( this ).attr( 'aria-expanded', 'false' );
@@ -10,4 +10,4 @@ jQuery( document ).ready(function( $ ) {
 			$( '#' + $( this ).attr( 'aria-controls' ) ).attr( 'hidden', false );
 		}
 	} );
-});
+} );

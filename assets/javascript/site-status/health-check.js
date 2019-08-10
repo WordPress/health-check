@@ -1,5 +1,5 @@
 /* global ajaxurl */
-jQuery( document ).ready(function( $ ) {
+jQuery( document ).ready( function( $ ) {
 	function healthCheckFailureModal( markup, action, parent ) {
 		$( '#dynamic-content' ).html( markup );
 		$( '.health-check-modal' ).data( 'modal-action', action ).data( 'parent-field', parent ).show();
@@ -9,13 +9,13 @@ jQuery( document ).ready(function( $ ) {
 		modal.hide();
 	}
 
-	$( '.modal-close' ).click(function( e ) {
+	$( '.modal-close' ).click( function( e ) {
 		e.preventDefault();
 		healthCheckFailureModalClose( $( this ).closest( '.health-check-modal' ) );
-	});
+	} );
 
 	$( '.health-check-modal' ).on( 'submit', 'form', function( e ) {
-		var data = $( this ).serializeArray(),
+		const data = $( this ).serializeArray(),
 			modal = $( this ).closest( '.health-check-modal' );
 
 		e.preventDefault();
@@ -33,5 +33,5 @@ jQuery( document ).ready(function( $ ) {
 		);
 
 		healthCheckFailureModalClose( modal );
-	});
-});
+	} );
+} );

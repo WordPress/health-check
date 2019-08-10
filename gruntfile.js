@@ -1,4 +1,3 @@
-/* jshint node:true */
 /* global module */
 module.exports = function( grunt ) {
 	var PATH_SCSS = [
@@ -81,32 +80,8 @@ module.exports = function( grunt ) {
 				expand: true
 			}
 		},
-		jscs: {
-			src: PATH_JS,
-			options: {
-				config: '.jscsrc',
-				fix: false // Autofix code style violations when possible.
-			}
-		},
-		jshint: {
-			options: grunt.file.readJSON( '.jshintrc' ),
-			grunt: {
-				src: [ 'gruntfile.js' ]
-			},
-			core: {
-				expand: true,
-				src: PATH_JS
-			}
-		},
-		jsvalidate:{
-			options:{
-				globals: {},
-				esprimaOptions:{},
-				verbose: false
-			},
-			files: {
-				src: PATH_JS
-			}
+		eslint: {
+			target: PATH_JS
 		},
 		postcss: {
 			options: {
@@ -187,17 +162,14 @@ module.exports = function( grunt ) {
 	// CSS test task.
 	grunt.registerTask( 'csstest', 'Runs all CSS tasks.', [ 'stylelint' ] );
 
-	// JavaScript test task.
-	grunt.registerTask( 'jstest', 'Runs all JavaScript tasks.', [ 'jsvalidate', 'jshint', 'jscs' ] );
-
 	// PHP test task.
 	grunt.registerTask( 'phptest', 'Runs all PHP tasks.', [ 'checktextdomain' ] );
 
 	// Travis CI Task
-	grunt.registerTask( 'travis', 'Runs Travis CI tasks.',[ 'csstest', 'jstest', 'phptest', 'phpcs' ] );
+	grunt.registerTask( 'travis', 'Runs Travis CI tasks.',[ 'csstest', 'eslint', 'phptest', 'phpcs' ] );
 
 	// Build with all checks included
-	grunt.registerTask( 'checkedBuild', 'Runs the build, and also runs linting etc against the code.', [ 'checkDependencies', 'copy', 'csstest', 'jstest', 'phptest', 'concat', 'sass', 'postcss' ] );
+	grunt.registerTask( 'checkedBuild', 'Runs the build, and also runs linting etc against the code.', [ 'checkDependencies', 'copy', 'csstest', 'eslint', 'phptest', 'concat', 'sass', 'postcss' ] );
 
 	// Default task.
 	grunt.registerTask( 'default', [
