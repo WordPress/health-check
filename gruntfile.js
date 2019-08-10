@@ -165,8 +165,11 @@ module.exports = function( grunt ) {
 	// PHP test task.
 	grunt.registerTask( 'phptest', 'Runs all PHP tasks.', [ 'checktextdomain' ] );
 
+	// JavaScript test task.
+	grunt.registerTask( 'jstest', 'Runs all JavaScript tasks.', [ 'eslint' ] );
+
 	// Travis CI Task
-	grunt.registerTask( 'travis', 'Runs Travis CI tasks.',[ 'csstest', 'eslint', 'phptest', 'phpcs' ] );
+	grunt.registerTask( 'travis', 'Runs Travis CI tasks.',[ 'csstest', 'jstest', 'phptest', 'phpcs' ] );
 
 	// Build with all checks included
 	grunt.registerTask( 'checkedBuild', 'Runs the build, and also runs linting etc against the code.', [ 'checkDependencies', 'copy', 'csstest', 'eslint', 'phptest', 'concat', 'sass', 'postcss' ] );
