@@ -131,6 +131,6 @@ script:
       node --version
       npm install
       npm install -g grunt-cli
-      grunt travis
+      grunt travis --verbose
     fi
   - phpunit
