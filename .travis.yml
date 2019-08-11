@@ -126,7 +126,7 @@ script:
     if [ "${WP_HC_CS_TEST}" == "yes" ]; then
       node --version
       npm --version
-      nvm install 6
+      nvm install 8
       npm --version
       node --version
       npm install
