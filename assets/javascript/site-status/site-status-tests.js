@@ -137,7 +137,11 @@ jQuery( document ).ready( function( $ ) {
 					ajaxurl,
 					data,
 					function( response ) {
-						AppendIssue( response.data );
+						if ( typeof wp.hooks !== 'undefined' ) {
+							AppendIssue( wp.hooks.applyFilters( 'site_status_test_result', response.data ) );
+						} else {
+							AppendIssue( response.data );
+						}
 						maybeRunNextAsyncTest();
 					}
 				);
