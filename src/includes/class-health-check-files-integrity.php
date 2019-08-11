@@ -51,21 +51,18 @@ class Health_Check_Files_Integrity {
 		$wplocale  = get_locale();
 
 		// Setup API Call.
-		$checksumapi = wp_remote_get( 'https://api.wordpress.org/core/checksums/1.0/?version=' . $wpversion . '&locale=' . $wplocale, array( 'timeout' => 10000 ) );
+		$checksums = get_core_checksums( $wpversion, $wplocale );
 
-		// Encode the API response body.
-		$checksumapibody = json_decode( wp_remote_retrieve_body( $checksumapi ), true );
-
-		set_transient( 'health-check-checksums', $checksumapibody, 2 * HOUR_IN_SECONDS );
+		set_transient( 'health-check-checksums', $checksums, 2 * HOUR_IN_SECONDS );
 
 		// Remove the wp-content/ files from checking
-		foreach ( $checksumapibody['checksums'] as $file => $checksum ) {
+		foreach ( $checksums as $file => $checksum ) {
 			if ( false !== strpos( $file, 'wp-content/' ) ) {
-				unset( $checksumapibody['checksums'][ $file ] );
+				unset( $checksums[ $file ] );
 			}
 		}
 
-		return $checksumapibody;
+		return $checksums;
 	}
 
 	/**
@@ -83,7 +80,7 @@ class Health_Check_Files_Integrity {
 		$filepath = ABSPATH;
 		$files    = array();
 		// Parse the results.
-		foreach ( $checksums['checksums'] as $file => $checksum ) {
+		foreach ( $checksums as $file => $checksum ) {
 			// Check the files.
 			if ( file_exists( $filepath . $file ) && md5_file( $filepath . $file ) !== $checksum ) {
 				$reason = esc_html__( 'Content changed', 'health-check' ) . ' <a href="#health-check-diff" data-file="' . $file . '">' . esc_html__( '(View Diff)', 'health-check' ) . '</a>';
@@ -184,12 +181,10 @@ class Health_Check_Files_Integrity {
 
 		$allowed_files = get_transient( 'health-check-checksums' );
 		if ( false === $allowed_files ) {
-			Health_Check_Files_Integrity::call_checksum_api();
-
-			$allowed_files = get_transient( 'health-check-checksums' );
+			$allowed_files = Health_Check_Files_Integrity::call_checksum_api();
 		}
 
-		if ( ! isset( $allowed_files['checksums'][ $file ] ) ) {
+		if ( ! isset( $allowed_files[ $file ] ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'You do not have access to this file.', 'health-check' ) ) );
 		}
 
