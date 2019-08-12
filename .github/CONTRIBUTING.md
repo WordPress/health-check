@@ -61,9 +61,9 @@ execute the following commands:
 #### Docker setup
  To make it easier to test your code on the go, a [Docker](https://www.docker.com/) configuration is prepared for you.
  Just run `docker-compose up` and wait for things to finish setting up. Once setup is complete, the following tools are available:
- - `http://localhost` the main WordPress site install
- - `http://localhost:8080` Adminer, a lightweight MSQL editor
- - `http://localhost:8025` MailHog, captures emails so you don't need ot worry about spamming inboxes during testing.
+ - `http://health-check.localhost` the main WordPress site install
+ - `http://health-check.localhost:8080` Adminer, a lightweight SQL editor
+ - `http://health-check.localhost:8025` MailHog, captures emails so you don't need ot worry about spamming inboxes during testing.
  
 The Health Check plugin will also be automatically added to the test site, although deactivated initially. Running the `grunt watch` task during development also guarantees your test site is always showing your latest changes.
 

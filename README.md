@@ -22,7 +22,7 @@ In the future we may introduce more checks, and welcome feedback both through th
 
 ## Contributing
 
-Contributions are more than welcome, both through issues, and pull requests. Ideas and thoughts may also be discussed in the [#forums](https://wordpress.slack.com/messages/forums/) channel
+Contributions are more than welcome, both through issues, and pull requests. Ideas and thoughts may also be discussed in the [#core-site-health](https://wordpress.slack.com/messages/core-site-health/) channel
 on the [Making WordPress Slack](https://make.wordpress.org/chat) team.
 
 For further information about contributing, see our [guide on contributing](https://github.com/WordPress/health-check/blob/master/.github/CONTRIBUTING.md).
