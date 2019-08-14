@@ -1474,21 +1474,32 @@ class Health_Check_Site_Status {
 					$schedule->has_missed_cron()->get_error_message()
 				)
 			);
-		} else {
-			if ( $schedule->has_missed_cron() ) {
-				$result['status'] = 'recommended';
+		} elseif ( $schedule->has_missed_cron() ) {
+			$result['status'] = 'recommended';
 
-				$result['label'] = __( 'A scheduled event has failed', 'health-check' );
+			$result['label'] = __( 'A scheduled event has failed', 'health-check' );
 
-				$result['description'] = sprintf(
-					'<p>%s</p>',
-					sprintf(
-						/* translators: %s: The name of the failed cron event. */
-						__( 'The scheduled event, %s, failed to run. Your site still works, but this may indicate that scheduling posts or automated updates may not work as intended.', 'health-check' ),
-						$schedule->last_missed_cron
-					)
-				);
-			}
+			$result['description'] = sprintf(
+				'<p>%s</p>',
+				sprintf(
+					/* translators: %s: The name of the failed cron event. */
+					__( 'The scheduled event, %s, failed to run. Your site still works, but this may indicate that scheduling posts or automated updates may not work as intended.', 'health-check' ),
+					$schedule->last_missed_cron
+				)
+			);
+		} elseif ( $schedule->has_late_cron() ) {
+			$result['status'] = 'recommended';
+
+			$result['label'] = __( 'A scheduled event is late', 'health-check' );
+
+			$result['description'] = sprintf(
+				'<p>%s</p>',
+				sprintf(
+					/* translators: %s: The name of the late cron event. */
+					__( 'The scheduled event, %s, is late to run. Your site still works, but this may indicate that scheduling posts or automated updates may not work as intended.', 'health-check' ),
+					$schedule->last_late_cron
+				)
+			);
 		}
 
 		return $result;

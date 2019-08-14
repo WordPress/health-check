@@ -16,13 +16,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Health_Check_WP_Cron {
 	public $schedules;
 	public $crons;
-	public $last_missed_cron = null;
+	public $last_missed_cron     = null;
+	public $last_late_cron       = null;
+	private $timeout_missed_cron = null;
+	private $timeout_late_cron   = null;
 
 	/**
 	 * Health_Check_WP_Cron constructor.
 	 */
 	public function __construct() {
 		$this->init();
+
+		$this->timeout_late_cron   = 0;
+		$this->timeout_missed_cron = - 5 * MINUTE_IN_SECONDS;
+
+		if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) {
+			$this->timeout_late_cron   = - 15 * MINUTE_IN_SECONDS;
+			$this->timeout_missed_cron = - 1 * HOUR_IN_SECONDS;
+		}
 	}
 
 	/**
@@ -94,8 +105,35 @@ class Health_Check_WP_Cron {
 		}
 
 		foreach ( $this->crons as $id => $cron ) {
-			if ( ( $cron->time - time() ) < 0 ) {
+			if ( ( $cron->time - time() ) < $this->timeout_missed_cron ) {
 				$this->last_missed_cron = $cron->hook;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if any scheduled tasks are late.
+	 *
+	 * Returns a boolean value of `true` if a scheduled task is late and ends processing. If the list of
+	 * crons is an instance of WP_Error, return the instance instead of a boolean value.
+	 *
+	 * @return bool|WP_Error true if a cron is late, false if it wasn't. WP_Error if the cron is set to that.
+	 */
+	public function has_late_cron() {
+		if ( is_wp_error( $this->crons ) ) {
+			return $this->crons;
+		}
+
+		foreach ( $this->crons as $id => $cron ) {
+			$cron_offset = $cron->time - time();
+			if (
+				$cron_offset >= $this->timeout_missed_cron &&
+				$cron_offset < $this->timeout_late_cron
+			) {
+				$this->last_late_cron = $cron->hook;
 				return true;
 			}
 		}
