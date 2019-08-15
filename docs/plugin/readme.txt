@@ -12,11 +12,11 @@ Health Check identifies common problems, and helps you troubleshoot plugin and t
 
 == Description ==
 
-This plugin will perform a number of checks on your WordPress install to detect common configuration errors and known issues, and also allows plugins and themes to add their own checks.
+This plugin will perform a number of checks on your WordPress installation to detect common configuration errors and known issues, and also allows plugins and themes to add their own checks.
 
 The debug section, which allows you to gather information about your WordPress and server configuration that you may easily share with support representatives for themes, plugins or on the official WordPress.org support forums.
 
-Troubleshooting allows you to have a vanilla WordPress session, where all plugins are disabled, and a default theme is used, but only for your user until you disable it or log out.
+Troubleshooting allows you to have a clean WordPress session, where all plugins are disabled, and a default theme is used, but only for your user until you disable it or log out.
 
 The Tools section allows you to check that WordPress files have not been tampered with, that emails can be sent, and if your plugins are compatible with any PHP version updates in the future.
 
@@ -58,13 +58,13 @@ At this time, the plugin has been tested with every version of PHP from 5.2 thro
 * Improved the PHP module checks to allow for constant checks as well. Should help with some edge case tests.
 * Improved the core file integrity checker.
 * Improved testing of WP_cron, now works properly for those running a "real cron" outside of WordPress.
-* Improved the  htaccess rule test to only run if using an Apache server that supports these.
+* Improved the htaccess rule test to only run if using an Apache server that supports these.
 * Modify the Site Health grading indicator.
 * Modified strings to make them clearer.
 * Added server headers to the Debug information.
 * Added polyfills for core features from WordPress 5.2 so they work for older sites.
-* Added a link to the Site Health page form the plugin overview.
-* Added a custom role, `view_site_health_checks` for the plugin.
+* Added a link to the Site Health page from the plugin overview.
+* Added a custom capability, `view_site_health_checks` for the plugin.
 * Added support for parent/child theme output in the Debug screen.
 * Added system user information to the Debug information.
 * Added a Site Health test for timezone localization.
