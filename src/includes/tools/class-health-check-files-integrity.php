@@ -14,22 +14,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Files_Integrity
  */
-class Health_Check_Files_Integrity {
+class Health_Check_Files_Integrity extends Health_Check_Tool {
+
+	public function __construct() {
+		$this->label       = __( 'File integrity', 'health-check' );
+		$this->description = __( 'The File Integrity checks all the core files with the <code>checksums</code> provided by the WordPress API to see if they are intact. If there are changes you will be able to make a Diff between the files hosted on WordPress.org and your installation to see what has been changed.', 'health-check' );
+
+		add_action( 'wp_ajax_health-check-files-integrity-check', array( $this, 'run_files_integrity_check' ) );
+		add_action( 'wp_ajax_health-check-view-file-diff', array( $this, 'view_file_diff' ) );
+
+		parent::__construct();
+	}
 
 	/**
 	 * Gathers checksums from WordPress API and cross checks the core files in the current installation.
 	 *
 	 * @return void
 	 */
-	static function run_files_integrity_check() {
+	function run_files_integrity_check() {
 		check_ajax_referer( 'health-check-files-integrity-check' );
 
-		$checksums = Health_Check_Files_Integrity::call_checksum_api();
+		$checksums = $this->call_checksum_api();
 
-		$files = Health_Check_Files_Integrity::parse_checksum_results( $checksums );
+		$files = $this->parse_checksum_results( $checksums );
 
-		Health_Check_Files_Integrity::create_the_response( $files );
-
+		$this->create_the_response( $files );
 	}
 
 	/**
@@ -45,13 +54,17 @@ class Health_Check_Files_Integrity {
 	*
 	* @return array
 	*/
-	static function call_checksum_api() {
+	function call_checksum_api() {
 		// Setup variables.
 		$wpversion = get_bloginfo( 'version' );
 		$wplocale  = get_locale();
 
 		// Setup API Call.
 		$checksums = get_core_checksums( $wpversion, $wplocale );
+
+		if ( false === $checksums ) {
+			return $checksums;
+		}
 
 		set_transient( 'health-check-checksums', $checksums, 2 * HOUR_IN_SECONDS );
 
@@ -74,9 +87,14 @@ class Health_Check_Files_Integrity {
 	*
 	* @param array $checksums
 	*
-	* @return array
+	* @return array|bool
 	*/
-	static function parse_checksum_results( $checksums ) {
+	function parse_checksum_results( $checksums ) {
+		// Check if the checksums are valid
+		if ( false === $checksums ) {
+			return false;
+		}
+
 		$filepath = ABSPATH;
 		$files    = array();
 		// Parse the results.
@@ -104,7 +122,7 @@ class Health_Check_Files_Integrity {
 	*
 	* @return void
 	*/
-	static function create_the_response( $files ) {
+	function create_the_response( $files ) {
 		$filepath = ABSPATH;
 		$output   = '';
 
@@ -164,7 +182,7 @@ class Health_Check_Files_Integrity {
 	*
 	* @return void
 	*/
-	static function view_file_diff() {
+	function view_file_diff() {
 		check_ajax_referer( 'health-check-view-file-diff' );
 
 		if ( ! current_user_can( 'view_site_health_checks' ) ) {
@@ -181,7 +199,7 @@ class Health_Check_Files_Integrity {
 
 		$allowed_files = get_transient( 'health-check-checksums' );
 		if ( false === $allowed_files ) {
-			$allowed_files = Health_Check_Files_Integrity::call_checksum_api();
+			$allowed_files = $this->call_checksum_api();
 		}
 
 		if ( ! isset( $allowed_files[ $file ] ) ) {
@@ -213,37 +231,22 @@ class Health_Check_Files_Integrity {
 	/**
 	 * Add the Files integrity checker to the tools tab.
 	 *
-	 * @param array $tabs
-	 *
-	 * @return array
+	 * @return void
 	 */
-	static function tools_tab( $tabs ) {
-		ob_start();
+	public function tab_content() {
 		?>
-
-		<div>
+		<form action="#" id="health-check-file-integrity" method="POST">
 			<p>
-				<?php _e( 'The File Integrity checks all the core files with the <code>checksums</code> provided by the WordPress API to see if they are intact. If there are changes you will be able to make a Diff between the files hosted on WordPress.org and your installation to see what has been changed.', 'health-check' ); ?>
+				<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the Files Integrity', 'health-check' ); ?>">
 			</p>
-			<form action="#" id="health-check-file-integrity" method="POST">
-				<p>
-					<input type="submit" class="button button-primary" value="<?php esc_html_e( 'Check the Files Integrity', 'health-check' ); ?>">
-				</p>
-			</form>
+		</form>
 
-			<div id="tools-file-integrity-response-holder">
-				<span class="spinner"></span>
-			</div>
+		<div id="tools-file-integrity-response-holder">
+			<span class="spinner"></span>
 		</div>
 
 		<?php
-		$tab_content = ob_get_clean();
-
-		$tabs[] = array(
-			'label'   => esc_html__( 'File Integrity', 'health-check' ),
-			'content' => $tab_content,
-		);
-
-		return $tabs;
 	}
 }
+
+new Health_Check_Files_Integrity();

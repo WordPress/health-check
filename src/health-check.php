@@ -62,10 +62,13 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-wp-cron.php' )
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-debug-data.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-loopback.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-troubleshoot.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-files-integrity.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-health-check-mail-check.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-site-status.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-updates.php' );
+
+// Tools section.
+require_once( dirname( __FILE__ ) . '/includes/tools/class-health-check-tool.php' );
+require_once( dirname( __FILE__ ) . '/includes/tools/class-health-check-files-integrity.php' );
+require_once( dirname( __FILE__ ) . '/includes/tools/class-health-check-mail-check.php' );
 
 // Initialize our plugin.
 new Health_Check();
