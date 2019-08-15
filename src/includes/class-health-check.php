@@ -214,8 +214,10 @@ class Health_Check {
 	 * @return void
 	 */
 	public function enqueues() {
+		$screen = get_current_screen();
+
 		// Don't enqueue anything unless we're on the health check page.
-		if ( ! isset( $_GET['page'] ) || 'health-check' !== $_GET['page'] ) {
+		if ( ( ! isset( $_GET['page'] ) || 'health-check' !== $_GET['page'] ) && 'dashboard' !== $screen->base ) {
 			return;
 		}
 
@@ -273,7 +275,7 @@ class Health_Check {
 			$health_check_js_variables['site_status']['issues'] = $issue_counts;
 		}
 
-		if ( ! isset( $_GET['tab'] ) || ( isset( $_GET['tab'] ) && 'site-status' === $_GET['tab'] ) ) {
+		if ( 'dashboard' !== $screen->base && ( ! isset( $_GET['tab'] ) || ( isset( $_GET['tab'] ) && 'site-status' === $_GET['tab'] ) ) ) {
 			$tests = Health_Check_Site_Status::get_tests();
 
 			// Don't run https test on localhost
