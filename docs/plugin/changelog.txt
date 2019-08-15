@@ -1,3 +1,21 @@
+= v1.3.2 =
+* Add polyfill for directory size calculations for sites running WordPress versions older than 5.2.0
+* Fix link for the extended PHP information
+
+= v1.3.1 =
+* Include missing dependency for JavaScript files, first introduced in WordPress 5.2
+
+= v1.3.0 =
+* Plugin moved to the Tools section in the admin menu
+* New UI/UX for the plugin pages
+* New troubleshooting mode UI/UX
+* Removed the backup reminder nag
+* Improved security hardening
+* Changed cookie names for improved hosting compatibility
+* Improved accessibility
+* Automatically check for critical issues once a week (adds a counter next to the menu item)
+* Dates in the email tester now follow your site settings
+
 = v1.2.5 =
 * Fix: Ensure the REST API status test runs as intended.
 * Fix: Remove warning on plugin screens when premium plugins are used.
