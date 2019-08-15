@@ -34,7 +34,7 @@ services:
     networks:
       - health_check
   wordpress:
-    image: wordpress:5.0.0-fpm-alpine
+    image: wordpress:5.2.2-php7.3-fpm-alpine
     depends_on:
       - database
     environment:
