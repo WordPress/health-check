@@ -10,11 +10,11 @@ class Health_Check_Tools_Test extends WP_UnitTestCase {
 
 		$this->test_files_integrity = new Health_Check_Files_Integrity();
 
-		$this->core_checksums = Health_Check_Files_Integrity::call_checksum_api();
+		$this->core_checksums = $this->test_files_integrity->call_checksum_api();
 	}
 
 	public function testFilesIntegrityUntampered() {
-		$files = Health_Check_Files_Integrity::parse_checksum_results( $this->core_checksums );
+		$files = $this->test_files_integrity->parse_checksum_results( $this->core_checksums );
 
 		$this->assertEmpty( $files );
 	}
@@ -25,7 +25,7 @@ class Health_Check_Tools_Test extends WP_UnitTestCase {
 
 		rename( $original_file, $renamed_file );
 
-		$files = Health_Check_Files_Integrity::parse_checksum_results( $this->core_checksums );
+		$files = $this->test_files_integrity->parse_checksum_results( $this->core_checksums );
 
 		$this->assertEquals( array(
 			array(
@@ -42,7 +42,7 @@ class Health_Check_Tools_Test extends WP_UnitTestCase {
 
 		file_put_contents( $filename, PHP_EOL . '// Modified file content.' . PHP_EOL,  FILE_APPEND );
 
-		$files = Health_Check_Files_Integrity::parse_checksum_results( $this->core_checksums );
+		$files = $this->test_files_integrity->parse_checksum_results( $this->core_checksums );
 
 		$this->assertEquals( array(
 			array(
