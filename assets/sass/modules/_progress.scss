@@ -1,0 +1,119 @@
+.health-check-title-section {
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	clear: both;
+
+	h1 {
+
+		display: inline-block;
+		font-weight: 600;
+		font-size: $font_size__h1;
+		margin: 0 0.8rem 1rem;
+		padding: 9px 0 4px;
+		line-height: 1.3;
+		font-family: $font_family__h1;
+	}
+
+	&.site-health-progress-wrapper {
+
+		margin-bottom: 1rem;
+
+		&.loading {
+
+			.site-health-progress {
+
+				svg {
+
+					#bar {
+
+						stroke-dashoffset: 0;
+						stroke: #adc5d2;
+						animation: loadingPulse 3s infinite ease-in-out;
+					}
+				}
+			}
+		}
+
+		@keyframes loadingPulse {
+
+			0% {
+
+				stroke: #adc5d2;
+			}
+
+			50% {
+
+				stroke: #00a0d2;
+			}
+
+			100% {
+
+				stroke: #adc5d2;
+
+			}
+		}
+
+		&.green {
+
+			#bar {
+
+				stroke: #46b450;
+			}
+
+			.site-health-progress-label {
+
+				color: #46b450;
+			}
+		}
+
+		&.orange {
+
+			#bar {
+
+				stroke: #ffb900;
+			}
+
+			.site-health-progress-label {
+
+				color: #ffb900;
+			}
+		}
+
+		.site-health-progress {
+
+			display: inline-block;
+			height: 20px;
+			width: 20px;
+			margin: 0;
+			border-radius: 100%;
+			position: relative;
+			font-weight: 600;
+			font-size: 0.4rem;
+
+			svg {
+
+				circle {
+
+					stroke-dashoffset: 0;
+					transition: stroke-dashoffset 1s linear;
+					stroke: #ccc;
+					stroke-width: 3em;
+				}
+
+				#bar {
+
+					stroke-dashoffset: 565;
+				}
+			}
+		}
+
+		.site-health-progress-label {
+
+			font-weight: 600;
+			line-height: 20px;
+			margin-left: 0.3rem;
+		}
+	}
+}

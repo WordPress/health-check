@@ -64,6 +64,7 @@ require_once( dirname( __FILE__ ) . '/includes/class-health-check-loopback.php' 
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-troubleshoot.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-site-status.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-health-check-updates.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-health-check-dashboard-widget.php' );
 
 // Tools section.
 require_once( dirname( __FILE__ ) . '/includes/tools/class-health-check-tool.php' );
@@ -73,6 +74,9 @@ require_once( dirname( __FILE__ ) . '/includes/tools/class-health-check-plugin-c
 
 // Initialize our plugin.
 new Health_Check();
+
+// Initialize the dashboard widget.
+new Health_Check_Dashboard_Widget();
 
 // Setup up scheduled events.
 register_activation_hook( __FILE__, array( 'Health_Check', 'plugin_activation' ) );
