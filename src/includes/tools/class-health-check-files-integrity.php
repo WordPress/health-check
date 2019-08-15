@@ -193,7 +193,7 @@ class Health_Check_Files_Integrity extends Health_Check_Tool {
 		$file      = $_POST['file'];
 		$wpversion = get_bloginfo( 'version' );
 
-		if ( 0 !== validate_file( $filepath . $file ) ) {
+		if ( 0 !== validate_file( $file ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'You do not have access to this file.', 'health-check' ) ) );
 		}
 
