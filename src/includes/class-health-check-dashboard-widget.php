@@ -61,7 +61,7 @@ class Health_Check_Dashboard_Widget {
 			<?php
 			printf(
 				// translators: 1: Count of issues. 2: URL for the Site Health page.
-				__( 'Take a look at the <strong>%1$d items</strong> on the <a href="%2$s">Site Health Check status page.</a>', 'health-check' ),
+				__( 'Take a look at the <strong>%1$d items</strong> on the <a href="%2$s">Site Health Check status page</a>.', 'health-check' ),
 				$issues_total,
 				esc_url( admin_url( 'tools.php?page=health-check' ) )
 			);
