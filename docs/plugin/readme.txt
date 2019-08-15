@@ -53,6 +53,7 @@ At this time, the plugin has been tested with every version of PHP from 5.2 thro
 * Fix a bug when viewing the Site Health page if enabling the Health Check plugin in troubleshooting mode.
 * Fix an inconsistency with how database versions are checked.
 * Fix the file comparison view on Windows systems if there are modified core files.
+* Fix a bug where some premium plugins could not be enabled in troubleshooting mode
 * Improved styles for older browsers.
 * Improved the PHP module checks to allow for constant checks as well. Should help with some edge case tests.
 * Improved the core file integrity checker.
