@@ -115,7 +115,11 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 
 			$json = json_decode( $tide_response );
 
-			$tide_versions = $json[0]->reports->phpcs_phpcompatibility->compatible_versions;
+			if ( empty( $json ) ) {
+				$tide_versions = array();
+			} else {
+				$tide_versions = $json[0]->reports->phpcs_phpcompatibility->compatible_versions;
+			}
 
 			set_transient( $transient_name, $tide_versions, 1 * WEEK_IN_SECONDS );
 		}
