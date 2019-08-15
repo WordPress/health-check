@@ -6,7 +6,7 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		$this->label       = __( 'Plugin compatibility', 'health-check' );
 		$this->description = sprintf(
 			'%s<br>%s',
-			__( 'Attempt to identify the compatibility of your plugins before upgrading PHP, note that a compatibility check may not always be accurate.', 'health-check' ),
+			__( 'Attempt to identify the compatibility of your plugins before upgrading PHP, note that a compatibility check may not always be accurate, and you may want to contact the plugin author to confirm that things will continue working.', 'health-check' ),
 			__( 'The compatibility check will need to send requests to the <a href="https://wptide.org">WPTide</a> project to fetch the test results for each of your plugins.', 'health-check' )
 		);
 
