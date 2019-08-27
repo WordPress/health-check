@@ -747,7 +747,7 @@ class Health_Check_Debug_Data {
 			$extension = null;
 		}
 
-		$server = $wpdb->db_version();
+		$server = $wpdb->get_var( 'SELECT VERSION()' );
 
 		if ( isset( $wpdb->use_mysqli ) && $wpdb->use_mysqli ) {
 			$client_version = $wpdb->dbh->client_info;
