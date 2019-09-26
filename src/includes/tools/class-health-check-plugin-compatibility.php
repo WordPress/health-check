@@ -20,10 +20,10 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		<table class="wp-list-table widefat fixed striped" id="health-check-tool-plugin-compat-list">
 			<thead>
 				<tr>
-					<th>Plugin</th>
-					<th>Version</th>
-					<th>Minimum PHP</th>
-					<th>Highest supported PHP</th>
+					<th><?php _e( 'Plugin', 'health-check' ); ?></th>
+					<th><?php _e( 'Version', 'health-check' ); ?></th>
+					<th><?php _e( 'Minimum PHP', 'health-check' ); ?></th>
+					<th><?php _e( 'Highest supported PHP', 'health-check' ); ?></th>
 				</tr>
 			</thead>
 
