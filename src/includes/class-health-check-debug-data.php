@@ -702,6 +702,16 @@ class Health_Check_Debug_Data {
 			'debug' => $imagick_loaded,
 		);
 
+		$cookies = wp_unslash( $_COOKIE );
+		$timeout = 10;
+		$headers = array(
+			'Cache-Control' => 'no-cache',
+			'X-WP-Nonce'    => wp_create_nonce( 'wp_rest' ),
+		);
+		if ( isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['PHP_AUTH_PW'] ) ) {
+			$headers['Authorization'] = 'Basic ' . base64_encode( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) . ':' . wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
+		}
+
 		$server_request = wp_remote_get( site_url(), compact( 'cookies', 'headers', 'timeout' ) );
 		if ( is_wp_error( $server_request ) ) {
 			$info['wp-server']['fields']['server-headers'] = array(
