@@ -11,6 +11,10 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	function AppendIssue( issue ) {
+		if ( typeof issue === 'undefined' || typeof issue.status === 'undefined' ) {
+			return;
+		}
+
 		const template = wp.template( 'health-check-issue' ),
 			issueWrapper = $( '#health-check-issues-' + issue.status );
 

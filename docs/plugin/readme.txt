@@ -4,7 +4,7 @@ Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.0
 Requires PHP: 5.2
 Tested up to: 5.2
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,11 @@ At this time, the plugin has been tested with every version of PHP from 5.2 thro
 4. Troubleshooting mode enabled, showing your website Dashboard
 
 == Changelog ==
+
+= v1.4.1 =
+* Fixed SQL version checks for various MariaDB installs.
+* Fixed a warning being generated in logfiles for first-time users with no existing Site Health history.
+* Added missing translation function for the new PHP compatibility tool.
 
 = v1.4.0 =
 * Fix a bug when viewing the Site Health page if enabling the Health Check plugin in troubleshooting mode.

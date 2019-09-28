@@ -20,12 +20,12 @@ class Health_Check_Dashboard_Widget {
 	}
 
 	function widget_render() {
-		$issue_counts = get_transient( 'health-check-site-status-result' );
+		$get_issues = get_transient( 'health-check-site-status-result' );
 
-		if ( false !== $issue_counts ) {
-			$issue_counts = json_decode( $issue_counts );
+		if ( false !== $get_issues ) {
+			$issue_counts = json_decode( $get_issues );
 		} else {
-			$issue_counts = array(
+			$issue_counts = (object) array(
 				'good'        => 0,
 				'recommended' => 0,
 				'critical'    => 0,
@@ -42,10 +42,30 @@ class Health_Check_Dashboard_Widget {
 				</svg>
 			</div>
 			<div class="site-health-progress-label">
-				<?php _e( 'Results are still loading&hellip;', 'health-check' ); ?>
+				<?php if ( false === $get_issues ) : ?>
+					<?php _e( 'No information yet&hellip;', 'health-check' ); ?>
+				<?php else : ?>
+					<?php _e( 'Results are still loading&hellip;', 'health-check' ); ?>
+				<?php endif; ?>
 			</div>
 		</div>
 
+		<?php if ( false === $get_issues ) : ?>
+		<p>
+			<?php _e( 'No Site Health information has been gathered yet, you can do so by visiting the Site Health page, alternatively the checks will run automatically once every week.', 'health-check' ); ?>
+		</p>
+
+		<p>
+			<?php
+			printf(
+				// translators: %s: URL for the Site Health page.
+				__( '<a href="%s">Visit the Site Health page</a> to gather information on about your site..', 'health-check' ),
+				esc_url( admin_url( 'tools.php?page=health-check' ) )
+			);
+			?>
+		</p>
+
+		<?php else : ?>
 		<p>
 			<?php if ( $issue_counts->critical > 0 ) : ?>
 				<?php _e( 'Your site has critical issues that should be addressed as soon as possible to improve the performance or security of your website.', 'health-check' ); ?>
@@ -55,8 +75,9 @@ class Health_Check_Dashboard_Widget {
 				<?php _e( 'Your site scores pretty well on the Health Check, but there are still some things you can do to improve the performance and security of your website.', 'health-check' ); ?>
 			<?php endif; ?>
 		</p>
+		<?php endif; ?>
 
-		<?php if ( $issues_total > 0 ) : ?>
+		<?php if ( $issues_total > 0 && false !== $get_issues ) : ?>
 		<p>
 			<?php
 			printf(
