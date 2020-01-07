@@ -15,17 +15,21 @@ dist: trusty
 env:
   global:
     # WordPress Health Check Coding Standard test indicator.
-    WP_HC_CS_TEST=no
+    CHECK_CODE_STYLE=no
     WP_VERSION=latest
     WP_MULTISITE=0
 
 # Create a matrix for testing against multiple PHP versions.
 # We do this as the Health Check plugin should be available
-# to all versions core supports.
+# to all versions core supports, and some legacy versions
+# in a transitional phase.
 matrix:
   include:
+    - php: 7.4
+      env:
+        - CHECK_CODE_STYLE=yes
+        - WP_VERSION=5.3
     - php: 7.3
-      env: WP_HC_CS_TEST=yes
     - php: 7.2
     - php: 7.2
       env: WP_VERSION=4.9
@@ -70,7 +74,7 @@ cache:
 
 before_install:
   - |
-    if [ "${WP_HC_CS_TEST}" == "yes" ]; then
+    if [ "${CHECK_CODE_STYLE}" == "yes" ]; then
       npm prune
       npm update
     fi
@@ -105,9 +109,9 @@ before_script:
     fi
   - which phpunit
   - phpunit --version
-  # Only update composer with other dependencies from composer.json if we are doing CS tests.
+  # Only update composer with other dependencies from composer.json if we are doing code style tests and linting.
   - |
-    if [ "${WP_HC_CS_TEST}" == "yes" ]; then
+    if [ "${CHECK_CODE_STYLE}" == "yes" ]; then
       composer update
     fi
 
@@ -124,7 +128,7 @@ script:
   # We really only need to run coding standards and linting tests once, on the most recent PHP build
   # as any failure will be reported any way. This saves a fair amount of time during test runs.
   - |
-    if [ "${WP_HC_CS_TEST}" == "yes" ]; then
+    if [ "${CHECK_CODE_STYLE}" == "yes" ]; then
       node --version
       npm --version
       nvm install 8
