@@ -427,7 +427,7 @@ class Health_Check_Troubleshooting_MU {
 			return false;
 		}
 
-		// If the plugin hash is not valid, we also break out
+		// If the plugin hash is not valid, we also break out.
 		if ( $this->disable_hash !== $_GET['health-check-disable-plugin-hash'] ) {
 			return false;
 		}

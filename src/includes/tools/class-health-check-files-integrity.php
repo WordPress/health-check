@@ -68,7 +68,7 @@ class Health_Check_Files_Integrity extends Health_Check_Tool {
 
 		set_transient( 'health-check-checksums', $checksums, 2 * HOUR_IN_SECONDS );
 
-		// Remove the wp-content/ files from checking
+		// Remove the wp-content/ files from checking.
 		foreach ( $checksums as $file => $checksum ) {
 			if ( false !== strpos( $file, 'wp-content/' ) ) {
 				unset( $checksums[ $file ] );
@@ -90,7 +90,7 @@ class Health_Check_Files_Integrity extends Health_Check_Tool {
 	* @return array|bool
 	*/
 	function parse_checksum_results( $checksums ) {
-		// Check if the checksums are valid
+		// Check if the checksums are valid.
 		if ( false === $checksums ) {
 			return false;
 		}

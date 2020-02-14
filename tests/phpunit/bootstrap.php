@@ -10,7 +10,7 @@ if ( ! $_tests_dir ) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';
 }
 
-// Set up some server variables if they're missing
+// Set up some server variables if they're missing.
 if ( ! isset( $_SERVER['REMOTE_ADDR'] ) ) {
 	$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 }
@@ -22,7 +22,7 @@ require_once $_tests_dir . '/includes/functions.php';
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
-	// Load in our MU plugin first
+	// Load in our MU plugin first.
 	require dirname( dirname( dirname( __FILE__ ) ) ) . '/src/assets/mu-plugin/health-check-troubleshooting-mode.php';
 
 	require dirname( dirname( dirname( __FILE__ ) ) ) . '/src/health-check.php';

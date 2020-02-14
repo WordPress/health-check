@@ -184,7 +184,7 @@ class Health_Check_Updates {
 			return $pre; // Not a plugin update request.
 		}
 
-		// If not false something is blocking update checks
+		// If not false something is blocking update checks.
 		if ( false !== $pre ) {
 			self::$plugins_blocked = (bool) true;
 		}
@@ -424,7 +424,7 @@ class Health_Check_Updates {
 			return $pre; // Not a theme update request.
 		}
 
-		// If not false something is blocking update checks
+		// If not false something is blocking update checks.
 		if ( false !== $pre ) {
 			self::$themes_blocked = (bool) true;
 		}

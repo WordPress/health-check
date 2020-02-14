@@ -89,7 +89,7 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 	}
 
 	function get_supported_php( $slug, $version ) {
-		// Clean up the slug, in case it's got more details
+		// Clean up the slug, in case it's got more details.
 		if ( stristr( $slug, '/' ) ) {
 			$parts = explode( '/', $slug );
 			$slug  = $parts[0];

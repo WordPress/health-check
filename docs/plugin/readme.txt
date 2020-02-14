@@ -1,6 +1,6 @@
 === Health Check & Troubleshooting ===
 Tags: health check
-Contributors: wordpressdotorg, westi, pento, Clorith
+Contributors: wordpressdotorg, westi, pento, Clorith, passoniate
 Requires at least: 4.0
 Requires PHP: 5.2
 Tested up to: 5.2

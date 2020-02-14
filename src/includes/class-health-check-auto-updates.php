@@ -330,12 +330,12 @@ class Health_Check_Auto_Updates {
 
 		$checksums = get_core_checksums( $wp_version, 'en_US' );
 		$dev       = ( false !== strpos( $wp_version, '-' ) );
-		// Get the last stable version's files and test against that
+		// Get the last stable version's files and test against that.
 		if ( ! $checksums && $dev ) {
 			$checksums = get_core_checksums( (float) $wp_version - 0.1, 'en_US' );
 		}
 
-		// There aren't always checksums for development releases, so just skip the test if we still can't find any
+		// There aren't always checksums for development releases, so just skip the test if we still can't find any.
 		if ( ! $checksums && $dev ) {
 			return false;
 		}

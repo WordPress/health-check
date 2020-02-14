@@ -167,7 +167,7 @@
 * Fixed a bunch of PHP warnings
 
 = v 0.2.1 =
-* Fixed version comparision bug - When the server had the exact required versions we reported it as out of date.
+* Fixed version comparison bug - When the server had the exact required versions we reported it as out of date.
 
 = v 0.2 =
 * Updated with actual PHP and MySQL version requirements for WordPress 3.2
