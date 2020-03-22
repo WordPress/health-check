@@ -131,11 +131,13 @@ script:
     if [ "${CHECK_CODE_STYLE}" == "yes" ]; then
       node --version
       npm --version
-      nvm install 8
+      nvm install 12
       npm --version
       node --version
       npm install
-      npm install -g grunt-cli
-      grunt travis --verbose
+      npm run build
+      npm run lint:css
+      npm run lint:js
+      composer run phpcs
     fi
   - phpunit

@@ -18,11 +18,11 @@ this kind of valuable input.
 
 
 ## Contributing with documentation
-The directory `docs` has our plugins readme, changelog and handbook content.
+The directory `docs` has our plugins readme and changelog.
+
+Plugin assets, like screenshtos and similar is found in the `assets` directory.
 
 The handbook lives on the WordPress.org Support Team's site, at https://make.wordpress.org/support/handbook/appendix/troubleshooting-using-the-health-check/.
-The structure of this document will be replicated to the website, and allows us to educate users and
-developers on the benefits of the plugin and how to use it.
 
 
 ## Contributing with code
@@ -37,8 +37,7 @@ You do not need a local development environment set up to make code changes, alt
 when making changes to JavaScript or SASS (CSS styles) as these are concatenated by our build tools,
 and are only provided in raw form in the repository.
 
-The project has 4 primary directories:
-- `assets`, which holds JavaScript and SASS files.
+The project has 3 primary directories:
 - `bin`, which holds a shellscript to install the framework for running unit tests.
 - `src`, which contains general source files for the project.
 - `tests`, where unit tests are created. 
@@ -57,6 +56,7 @@ Once these are installed, you will want to open the command line in the project 
 execute the following commands:
 - `composer install` This will install composer dependencies, as defined in the `composer.json` file.
 - `npm install` This will install node modules that we use, as defined in the `package.json` file.
+- `npm run build` creates the `build` directory with all files for a finished plugin.
 
 #### Docker setup
  To make it easier to test your code on the go, a [Docker](https://www.docker.com/) configuration is prepared for you.
@@ -65,7 +65,7 @@ execute the following commands:
  - `http://health-check.localhost:8080` Adminer, a lightweight SQL editor
  - `http://health-check.localhost:8025` MailHog, captures emails so you don't need ot worry about spamming inboxes during testing.
  
-The Health Check plugin will also be automatically added to the test site, although deactivated initially. Running the `grunt watch` task during development also guarantees your test site is always showing your latest changes.
+The Health Check plugin will also be automatically added to the test site, although deactivated initially. Running the `npm run start` task during development also guarantees your test site is always showing your latest changes.
 
 ### Submitting Pull Requests
 
@@ -73,7 +73,7 @@ Once you've got your development environment set up, and you are ready to push y
 are some items you should take note of
 - Does the code follow the [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/)?
 - Did you include unit tests (if applicable)?
-- Was your local copy recently pulled from `master`, so it's a clean patch?
+- Was your local copy recently pulled from `develop`, so it's a clean patch?
 
 When pushing, you should use a branch name that is short and describes what your code does.
 For example, if your code adds a feature for showing colors, naming it `feature-show-colors` makes

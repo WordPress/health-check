@@ -48,8 +48,8 @@ class Health_Check_Mail_Check extends Health_Check_Tool {
 		$email_message = sanitize_text_field( $_POST['email_message'] );
 		$wp_address    = get_bloginfo( 'url' );
 		$wp_name       = get_bloginfo( 'name' );
-		$date          = date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) );
-		$time          = date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) );
+		$date          = date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
+		$time          = date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 
 		// translators: %s: website url.
 		$email_subject = sprintf( esc_html__( 'Health Check – Test Message from %s', 'health-check' ), $wp_address );

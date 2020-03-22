@@ -12,6 +12,13 @@ class Health_Check_Dashboard_Widget {
 	}
 
 	function dashboard_setup() {
+		global $wp_version;
+
+		// Don't add the dashboard widget if core already does so.
+		if ( version_compare( $wp_version, '5.4.0', '>=' ) ) {
+			return;
+		}
+
 		wp_add_dashboard_widget(
 			'health_check_status',
 			__( 'Site Health Status', 'health-check' ),

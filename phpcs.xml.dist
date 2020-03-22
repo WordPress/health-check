@@ -11,7 +11,7 @@
     <!-- Show sniff codes in all reports -->
     <arg value="s"/>
 
-    <file>.</file>
+    <file>src</file>
 
     <rule ref="Internal.NoCodeFound">
         <severity>0</severity>

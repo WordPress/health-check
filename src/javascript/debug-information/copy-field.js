@@ -1,3 +1,5 @@
+import 'clipboard';
+
 /* global ClipboardJS, SiteHealth */
 jQuery( document ).ready( function( $ ) {
 	let clipboard;
