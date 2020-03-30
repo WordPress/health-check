@@ -1,4 +1,5 @@
-.docker/local/
+.idea/
+
 node_modules/
 wordpress-coding-standards
 php-codesniffer
@@ -8,3 +9,5 @@ src/assets/css/
 src/assets/javascript/
 build/
 vendor/
+
+health-check.zip
