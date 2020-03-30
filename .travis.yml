@@ -75,6 +75,7 @@ cache:
 before_install:
   - |
     if [ "${CHECK_CODE_STYLE}" == "yes" ]; then
+      nvm install 12
       yarn install
     fi
 
