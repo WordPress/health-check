@@ -65,9 +65,9 @@ matrix:
 
 # Setup NPM modules for Travis CI cache maintanence.
 cache:
+  yarn: true
   apt: true
   directories:
-    - $HOME/.npm
     - node_modules
     - vendor
     - $HOME/.composer/cache
@@ -75,8 +75,8 @@ cache:
 before_install:
   - |
     if [ "${CHECK_CODE_STYLE}" == "yes" ]; then
-      npm prune
-      npm update
+      yarn prune
+      npm install
     fi
 
 # Use this to prepare your build for testing.
@@ -130,14 +130,11 @@ script:
   - |
     if [ "${CHECK_CODE_STYLE}" == "yes" ]; then
       node --version
-      npm --version
-      nvm install 12
-      npm --version
-      node --version
-      npm install
-      npm run build
-      npm run lint:css
-      npm run lint:js
+      yarn --version
+      yarn install
+      yarn run build
+      yarn run lint:css
+      yarn run lint:js
       composer run phpcs
     fi
   - phpunit
