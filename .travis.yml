@@ -75,8 +75,7 @@ cache:
 before_install:
   - |
     if [ "${CHECK_CODE_STYLE}" == "yes" ]; then
-      yarn prune
-      npm install
+      yarn install
     fi
 
 # Use this to prepare your build for testing.
