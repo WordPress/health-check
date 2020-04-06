@@ -3,11 +3,8 @@
 node_modules/
 wordpress-coding-standards
 php-codesniffer
-package-lock.json
-composer.lock
-src/assets/css/
-src/assets/javascript/
 build/
+health-check/
 vendor/
 
 health-check.zip

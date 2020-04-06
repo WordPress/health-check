@@ -18,9 +18,9 @@ this kind of valuable input.
 
 
 ## Contributing with documentation
-The directory `docs` has our plugins readme and changelog.
+The directory `docs` has any documentation that for the plugin which will be included in a release, such as the readme and changelog.
 
-Plugin assets, like screenshtos and similar is found in the `assets` directory.
+Plugin assets, like screenshots and similar are found in the `assets` directory.
 
 The handbook lives on the WordPress.org Support Team's site, at https://make.wordpress.org/support/handbook/appendix/troubleshooting-using-the-health-check/.
 
@@ -38,7 +38,6 @@ when making changes to JavaScript or SASS (CSS styles) as these are concatenated
 and are only provided in raw form in the repository.
 
 The project has 3 primary directories:
-- `bin`, which holds a shellscript to install the framework for running unit tests.
 - `src`, which contains general source files for the project.
 - `tests`, where unit tests are created. 
 
@@ -49,24 +48,26 @@ maintainers when a new version is released, and any changes outside of this may 
 ### Setting up a local environment
 
 If you wish to set up a local environment for working with the project, start off by installing 
-[node](https://nodejs.org), [npm](https://www.npmjs.com) (Node Package Manager) 
+[node](https://nodejs.org), [npm](https://www.npmjs.com) (Node Package Manager) or [yarn](https://yarnpkg.com/), 
 and [composer](https://getcomposer.org).
+
+This project favors yarn, but you may substitute `yarn` for `npm` in the commands below during your local development if you are more comfortable doing so.
 
 Once these are installed, you will want to open the command line in the project directory and
 execute the following commands:
 - `composer install` This will install composer dependencies, as defined in the `composer.json` file.
-- `npm install` This will install node modules that we use, as defined in the `package.json` file.
-- `npm run build` creates the `build` directory with all files for a finished plugin.
+- `yarn install` This will install node modules that we use, as defined in the `package.json` file.
+- `yarn run build` creates the `health-check` directory with all files for a finished plugin.
 
 #### Docker setup
- To make it easier to test your code on the go, a [Docker](https://www.docker.com/) configuration is prepared for you.
- Just run `docker-compose up` and wait for things to finish setting up. Once setup is complete, the following tools are available:
- - `http://health-check.localhost` the main WordPress site install
- - `http://health-check.localhost:8080` Adminer, a lightweight SQL editor
- - `http://health-check.localhost:8025` MailHog, captures emails so you don't need ot worry about spamming inboxes during testing.
- 
-The Health Check plugin will also be automatically added to the test site, although deactivated initially. Running the `npm run start` task during development also guarantees your test site is always showing your latest changes.
+This project uses [wp-env](https://developer.wordpress.org/block-editor/packages/packages-env/) for it's Docker setup.
 
+Once you have built the project, you may use the `yarn run wp-env start` command to test your code. 
+
+The `yarn run wp-env` command is a placeholder, and you may pass any command that `wp-env` supports to it.
+
+For convenience sake, you may also run `yarn run watch` to automatically build any changes you make to the code during development.
+ 
 ### Submitting Pull Requests
 
 Once you've got your development environment set up, and you are ready to push your code, here

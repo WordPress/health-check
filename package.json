@@ -8,6 +8,7 @@
 	"@wordpress/scripts": "^7.1.3",
 	"@wordpress/browserslist-config": "^2.6.0",
 	"@wordpress/eslint-plugin": "^4.0.0",
+	"@wordpress/env": "^1.1.0",
 	"clipboard": "^2.0.6",
     "matchdep": "^2.0.0",
     "select2": "^4.0.13",
@@ -36,6 +37,7 @@
 	"build": "wp-scripts build",
 	"lint:css": "wp-scripts lint-style './src/sass/**/*.scss'",
 	"lint:js": "wp-scripts lint-js ./src/javascript/**/*.js",
-	"start": "wp-scripts start"
+	"watch": "wp-scripts start",
+	"wp-env": "wp-env"
   }
 }
