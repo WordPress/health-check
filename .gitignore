@@ -7,4 +7,5 @@ build/
 health-check/
 vendor/
 
+.wp-env.override.json
 health-check.zip
