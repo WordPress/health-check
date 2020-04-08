@@ -19,21 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
-// Set the minimum PHP version WordPress supports.
-define( 'HEALTH_CHECK_PHP_MIN_VERSION', '5.2.4' );
-
-// Set the lowest PHP version still receiving security updates.
-define( 'HEALTH_CHECK_PHP_SUPPORTED_VERSION', '5.6' );
-
-// Set the PHP version WordPress recommends.
-define( 'HEALTH_CHECK_PHP_REC_VERSION', '7.2' );
-
-// Set the minimum MySQL version WordPress supports.
-define( 'HEALTH_CHECK_MYSQL_MIN_VERSION', '5.0' );
-
-// Set the MySQL version WordPress recommends.
-define( 'HEALTH_CHECK_MYSQL_REC_VERSION', '5.6' );
-
 // Set the plugin version.
 define( 'HEALTH_CHECK_PLUGIN_VERSION', '1.4.2' );
 
