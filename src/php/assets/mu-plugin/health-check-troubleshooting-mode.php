@@ -120,11 +120,7 @@ class Health_Check_Troubleshooting_MU {
 		wp_enqueue_style( 'health-check', plugins_url( '/health-check/assets/css/health-check.css' ), array(), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION );
 
 		if ( ! wp_script_is( 'site-health', 'registered' ) ) {
-			wp_enqueue_script( 'site-health', plugins_url( '/health-check/assets/javascript/health-check.js' ), array(
-				'jquery',
-				'wp-a11y',
-				'wp-util'
-			), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION, true );
+			wp_enqueue_script( 'site-health', plugins_url( '/health-check/assets/javascript/health-check.js' ), array( 'jquery', 'wp-a11y', 'wp-util' ), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION, true );
 		}
 
 		wp_enqueue_script( 'health-check', plugins_url( '/health-check/assets/javascript/troubleshooting-mode.js' ), array( 'site-health' ), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION, true );
