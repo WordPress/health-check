@@ -9,10 +9,11 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		"health-check": path.resolve( process.cwd(), 'src/javascript', 'health-check.js' ),
+		"troubleshooting-mode": path.resolve( process.cwd(), 'src/javascript', 'troubleshooting-mode.js' ),
 	},
 	output: {
 		filename: '[name].js',
-		path: path.resolve( process.cwd(), 'build/assets/javascript/' ),
+		path: path.resolve( process.cwd(), 'health-check/assets/javascript/' ),
 	},
 	module: {
 		rules: [
@@ -31,11 +32,11 @@ module.exports = {
 		new CopyPlugin([
 			{
 				from: path.resolve( process.cwd(), 'src/php' ),
-				to: path.resolve( process.cwd(), 'build' )
+				to: path.resolve( process.cwd(), 'health-check' )
 			},
 			{
 				from: path.resolve( process.cwd(), 'docs' ),
-				to: path.resolve( process.cwd(), 'build' )
+				to: path.resolve( process.cwd(), 'health-check' )
 			}
 		]),
 		new MiniCssExtractPlugin({

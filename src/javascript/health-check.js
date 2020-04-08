@@ -9,7 +9,6 @@ import './modules/accordion.js';
 import './site-status/health-check.js';
 import './site-status/loopback.js';
 import './site-status/site-status-tests.js';
-import './site-status/troubleshooting.js';
 
 import './tools/check-file-integrity.js';
 import './tools/diff-modal.js';
