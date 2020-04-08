@@ -178,47 +178,47 @@ body {
 		.pass,
 		.good {
 
-			&:before {
+			&::before {
 
 				content: "\f147";
 				display: inline-block;
 				color: #46b450;
-				font-family: dashicons;
+				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
 			}
 		}
 
 		.warning {
 
-			&:before {
+			&::before {
 
 				content: "\f460";
 				display: inline-block;
 				color: #ffb900;
-				font-family: dashicons;
+				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
 
 			}
 		}
 
 		.info {
 
-			&:before {
+			&::before {
 
 				content: "\f348";
 				display: inline-block;
 				color: #00a0d2;
-				font-family: dashicons;
+				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
 			}
 		}
 
 		.fail,
 		.error {
 
-			&:before {
+			&::before {
 
 				content: "\f335";
 				display: inline-block;
 				color: #dc3232;
-				font-family: dashicons;
+				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
 			}
 		}
 

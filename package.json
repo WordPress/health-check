@@ -39,5 +39,11 @@
 	"lint:js": "wp-scripts lint-js ./src/javascript/**/*.js",
 	"watch": "wp-scripts start",
 	"wp-env": "wp-env"
+  },
+  "stylelint": {
+	"extends": "stylelint-config-wordpress",
+	"rules": {
+	  "no-descending-specificity": null
+	}
   }
 }
