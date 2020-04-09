@@ -9,7 +9,6 @@
 	"@wordpress/browserslist-config": "^2.6.0",
 	"@wordpress/eslint-plugin": "^4.0.0",
 	"@wordpress/env": "^1.1.0",
-	"clipboard": "^2.0.6",
     "matchdep": "^2.0.0",
     "select2": "^4.0.13",
 	"mini-css-extract-plugin": "^0.9.0",
@@ -17,6 +16,11 @@
 	"sass-loader": "^8.0.2",
 	"node-sass": "^4.13.1",
 	"copy-webpack-plugin": "^5.1.1"
+  },
+  "dependencies": {
+	"clipboard": "^2.0.6",
+	"react": "16.9.0",
+	"react-dom": "16.9.0"
   },
   "engines": {
     "node": ">=6.9.1"

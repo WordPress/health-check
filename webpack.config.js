@@ -9,6 +9,8 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		"clipboard": "clipboard",
+		"react": "react",
+		"react-dom": "react-dom",
 		"health-check": [ path.resolve( process.cwd(), 'src/javascript', 'health-check.js' ), path.resolve( process.cwd(), 'src/sass', 'health-check.scss' ) ],
 		"troubleshooting-mode": path.resolve( process.cwd(), 'src/javascript', 'troubleshooting-mode.js' ),
 	},
