@@ -8,7 +8,8 @@ const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 module.exports = {
 	...defaultConfig,
 	entry: {
-		"health-check": path.resolve( process.cwd(), 'src/javascript', 'health-check.js' ),
+		"clipboard": "clipboard",
+		"health-check": [ path.resolve( process.cwd(), 'src/javascript', 'health-check.js' ), path.resolve( process.cwd(), 'src/sass', 'health-check.scss' ) ],
 		"troubleshooting-mode": path.resolve( process.cwd(), 'src/javascript', 'troubleshooting-mode.js' ),
 	},
 	output: {

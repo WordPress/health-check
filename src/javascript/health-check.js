@@ -1,6 +1,3 @@
-// Load styles.
-import '../sass/health-check.scss';
-
 import './debug-information/copy-field.js';
 import './debug-information/fetch-directory-sizes.js';
 
