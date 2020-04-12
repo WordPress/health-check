@@ -1,7 +1,7 @@
 === Health Check & Troubleshooting ===
 Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
-Requires at least: 4.0
+Requires at least: 4.4
 Requires PHP: 5.2
 Tested up to: 5.4
 Stable tag: 1.4.4
