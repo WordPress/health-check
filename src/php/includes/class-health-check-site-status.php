@@ -2009,7 +2009,7 @@ class Health_Check_Site_Status {
 		$tests = array_merge( $bulk_tests['direct'], $bulk_tests['async'] );
 
 		foreach ( $tests as $test ) {
-			if( is_array( $test['test'] ) && is_callable( $test['test'] ) ) {
+			if ( is_array( $test['test'] ) && is_callable( $test['test'] ) ) {
 				$results[] = call_user_func( $test['test'] );
 			} else {
 				$function = sprintf(
