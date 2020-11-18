@@ -66,7 +66,7 @@ class Health_Check_Debug_Data {
 				}
 			}
 		}
-		
+
 		// Set up the array that holds all debug information.
 		$info = array();
 
