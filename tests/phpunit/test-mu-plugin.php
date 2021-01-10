@@ -52,9 +52,12 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 		$all_plugins = get_option( 'active_plugins' );
 
 		// Test that the plugin list is what we expect it to be.
-		$this->assertEquals( array(
-			plugin_basename( trim( $this->test_plugin ) )
-		), $all_plugins );
+		$this->assertEquals(
+			array(
+				plugin_basename( trim( $this->test_plugin ) ),
+			),
+			$all_plugins
+		);
 	}
 
 	public function testNoPluginsWhenTroubleshooting() {
@@ -82,15 +85,17 @@ class Health_Check_MU_Plugin_Test extends WP_UnitTestCase {
 		$all_plugins = get_option( 'active_plugins' );
 
 		// Test that the plugin list is what we expect it to be.
-		$this->assertEquals( array(
-			plugin_basename( trim( $this->test_plugin ) )
-		), $all_plugins );
+		$this->assertEquals(
+			array(
+				plugin_basename( trim( $this->test_plugin ) ),
+			),
+			$all_plugins
+		);
 
 		// Empty out the approved plugins list after asserting tests.
 		update_option( 'health-check-allowed-plugins', array() );
 
 		// Re-load the options entries so we know they're after our changes.
 		$this->class_instance->load_options();
-
 	}
 }

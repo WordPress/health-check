@@ -27,12 +27,15 @@ class Health_Check_Tools_Test extends WP_UnitTestCase {
 
 		$files = $this->test_files_integrity->parse_checksum_results( $this->core_checksums );
 
-		$this->assertEquals( array(
+		$this->assertEquals(
 			array(
-				'xmlrpc.php',
-				'File not found'
-			)
-		), $files );
+				array(
+					'xmlrpc.php',
+					'File not found',
+				),
+			),
+			$files
+		);
 
 		rename( $renamed_file, $original_file );
 	}

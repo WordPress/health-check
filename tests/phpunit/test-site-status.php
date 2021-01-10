@@ -58,11 +58,11 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 
 		foreach ( $tests as $test ) {
 			if ( is_array( $test['test'] ) ) {
-				if ( in_array( $test['test'][1], $skip_testing ) ) {
+				if ( in_array( $test['test'][1], $skip_testing, true ) ) {
 					continue;
 				}
 			} else {
-				if ( in_array( $test['test'], $skip_testing ) ) {
+				if ( in_array( $test['test'], $skip_testing, true ) ) {
 					continue;
 				}
 			}
@@ -96,11 +96,11 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 
 		foreach ( $tests as $test ) {
 			if ( is_array( $test['test'] ) ) {
-				if ( in_array( $test['test'][1], $skip_testing ) ) {
+				if ( in_array( $test['test'][1], $skip_testing, true ) ) {
 					continue;
 				}
 			} else {
-				if ( in_array( $test['test'], $skip_testing ) ) {
+				if ( in_array( $test['test'], $skip_testing, true ) ) {
 					continue;
 				}
 			}
