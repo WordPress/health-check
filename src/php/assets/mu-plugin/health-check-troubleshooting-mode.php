@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check Troubleshooting Mode
 	Description: Conditionally disabled themes or plugins on your site for a given session, used to rule out conflicts during troubleshooting.
-	Version: 1.7.1
+	Version: 1.7.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Set the MU plugin version.
-define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.7.1' );
+define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.7.2' );
 
 class Health_Check_Troubleshooting_MU {
 	private $disable_hash    = null;
@@ -756,6 +756,11 @@ class Health_Check_Troubleshooting_MU {
 		// We need some admin functions to make this a better user experience, so include that file.
 		if ( ! is_admin() ) {
 			require_once( trailingslashit( ABSPATH ) . 'wp-admin/includes/plugin.php' );
+		}
+
+		// Make sure the updater tools are available since WordPress 5.5.0 auto-updates were introduced.
+		if ( ! function_exists( 'wp_is_auto_update_enabled_for_type' ) ) {
+			require_once( trailingslashit( ABSPATH ) . 'wp-admin/includes/update.php' );
 		}
 
 		// Ensure the theme functions are available to us on every page.

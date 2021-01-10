@@ -3,8 +3,8 @@ Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.4
 Requires PHP: 5.2
-Tested up to: 5.4
-Stable tag: 1.4.4
+Tested up to: 5.6
+Stable tag: 1.4.5
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,9 @@ At this time, the plugin has been tested with every version of PHP from 5.2 thro
 4. Troubleshooting mode enabled, showing your website Dashboard
 
 == Changelog ==
+
+= v1.4.5 =
+* Fix Troubleshooting Mode throwing errors in frontend on WordPress 5.5
 
 = v1.4.4 =
 * Fixed hidden JavaScript warning when using troubleshooting mode on the Dashboard
