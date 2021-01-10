@@ -2009,15 +2009,17 @@ class Health_Check_Site_Status {
 		$tests = array_merge( $bulk_tests['direct'], $bulk_tests['async'] );
 
 		foreach ( $tests as $test ) {
-			$function = sprintf(
-				'get_test_%s',
-				$test['test']
-			);
-
-			if ( method_exists( $this, $function ) && is_callable( array( $this, $function ) ) ) {
-				$results[] = call_user_func( array( $this, $function ) );
-			} else {
+			if ( is_array( $test['test'] ) && is_callable( $test['test'] ) ) {
 				$results[] = call_user_func( $test['test'] );
+			} else {
+				$function = sprintf(
+					'get_test_%s',
+					$test['test']
+				);
+
+				if ( method_exists( $this, $function ) && is_callable( array( $this, $function ) ) ) {
+					$results[] = call_user_func( array( $this, $function ) );
+				}
 			}
 		}
 
