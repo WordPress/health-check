@@ -43,5 +43,6 @@
 	<!-- Whitelist backwards compatible use of the `mysql_` extension in PHP < 7.0. -->
 	<rule ref="PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved">
 		<exclude-pattern>/src/php/includes/class-health-check-site-status\.php</exclude-pattern>
+		<exclude-pattern>/src/php/includes/class-health-check-debug-data\.php</exclude-pattern>
 	</rule>
 </ruleset>
