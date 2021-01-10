@@ -12,13 +12,15 @@
 	"php": ">=5.2"
   },
   "require-dev": {
-	"dealerdirect/phpcodesniffer-composer-installer": "~0.6.2",
-	"wp-coding-standards/wpcs": "~2.2.1",
-	"phpcompatibility/phpcompatibility-wp": "^2.1.0"
+	"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+	"wp-coding-standards/wpcs": "~2.3.0",
+	"phpcompatibility/phpcompatibility-wp": "^2.1.0",
+	"phpunit/phpunit": "^7.5"
   },
   "scripts": {
-    "phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
-    "fix-phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+	"compat": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcompat.xml.dist --report=summary,source",
+    "phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --report=summary,source",
+    "fix-phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf --report=summary,source"
   },
   "support": {
     "issues": "https://github.com/WordPress/health-check/issues",
