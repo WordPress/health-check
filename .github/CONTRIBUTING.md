@@ -27,11 +27,9 @@ The handbook lives on the WordPress.org Support Team's site, at https://make.wor
 
 ## Contributing with code
 
-When contributing through code, please make sure each feature is developed as a separate, forked, branch of `develop`.
+When contributing through code, please make sure each feature is developed as a separate, forked, branch of `trunk`.
 
-The `master` branch of the repository is kept in a stable state, and should at any given time always be the most recent public release of the plugin.
-
-By splitting them up, we are able to make point releases without affecting already developed features intended for future major versions.
+The `trunk` branch is the most recent beta of the plugin at any given time, stable releases of the plugin may be downloaded from the [GitHub releases page](https://github.com/WordPress/health-check/releases), or from the [WordPress.org plugins page](https://wordpress.org/plugins/health-check/).
 
 You do not need a local development environment set up to make code changes, although it is useful
 when making changes to JavaScript or SASS (CSS styles) as these are concatenated by our build tools,
@@ -39,7 +37,8 @@ and are only provided in raw form in the repository.
 
 The project has 3 primary directories:
 - `src`, which contains general source files for the project.
-- `tests`, where unit tests are created. 
+- `tests`, where unit tests are created.
+- `docs`, which houses the plugin readme, its changelog, and potentially any other documentation which may prove valuable.
 
 Please do not change version numbers in when providing code changes, these are bumped by the project 
 maintainers when a new version is released, and any changes outside of this may lead to confusion.
@@ -74,7 +73,6 @@ Once you've got your development environment set up, and you are ready to push y
 are some items you should take note of
 - Does the code follow the [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/)?
 - Did you include unit tests (if applicable)?
-- Was your local copy recently pulled from `develop`, so it's a clean patch?
 
 When pushing, you should use a branch name that is short and describes what your code does.
 For example, if your code adds a feature for showing colors, naming it `feature-show-colors` makes

@@ -1,17 +1,11 @@
 ## Short introduction
-- What ticket is the PR related to.
-- What is the gist of the solution.
+- What ticket, if any, is this pull request related to.
+- Give a short summary of the problem you are trying to solve.
 
 
 ## Description of what the PR accomplishes
-- A more thorough description of what problem the PR addresses and how.
+- A more thorough description of what problem the PR addresses and how the changes improve on them.
 
 
 ## Screenshots
 - If the changes included are visual, always include screenshots or screen casts, preferably showing both before and after.
-
-
-## PR Checklist
-These are things to ensure are covered by your PR.
-- [ ] This PR is created against the `develop` branch
-- [ ] This PR is feature ready and can be reviewed in its entirety
