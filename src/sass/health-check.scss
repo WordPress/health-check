@@ -1,0 +1,253 @@
+@import "variables";
+
+body {
+
+	&.tools_page_health-check {
+
+		#wpcontent {
+			padding-left: 0;
+		}
+
+		/* Better position for the WordPress admin notices and update nag. */
+		.notice {
+
+			margin: 5px 20px 15px 22px;
+		}
+
+		.update-nag {
+			margin-bottom: 20px;
+			margin-left: 22px;
+		}
+
+		h2 {
+
+			padding: 1rem 0;
+			line-height: 1.4;
+		}
+
+		.wrap {
+
+			margin-right: 0;
+			margin-left: 0;
+
+			h2 {
+
+				padding: 1rem 0.5rem;
+				font-size: $font_size__h2;
+				font-weight: 600;
+				font-family: $font_family__h2;
+
+				@media all and (min-width: $breakpoint_min__large) {
+
+					padding: 1rem 0;
+				}
+			}
+		}
+
+		ul,
+		ol {
+
+			li {
+
+				font-size: $font_size__text;
+				line-height: 1.5;
+			}
+		}
+
+		.wp-core-ui {
+
+			.button {
+
+				font-size: $font_size__text;
+			}
+		}
+
+		.health-check-header {
+
+			text-align: center;
+			margin: 0 0 1rem;
+			background: #fff;
+			border-bottom: 1px solid #e2e4e7;
+
+			.health-check-tabs-wrapper {
+
+				/* IE 11 */
+				display: -ms-inline-grid;
+				-ms-grid-columns: 1fr 1fr 1fr 1fr;
+				vertical-align: top;
+
+				/* modern browsers */
+				display: inline-grid; /* stylelint-disable-line declaration-block-no-duplicate-properties */
+				grid-template-columns: 1fr 1fr 1fr 1fr;
+
+				.health-check-tab {
+
+					display: block; /* IE 11 */
+					text-decoration: none;
+					color: inherit;
+					padding: 0.5rem 1rem 1rem;
+					margin: 0 1rem;
+					transition: box-shadow 0.5s ease-in-out;
+
+					&:nth-child(1) {
+
+						-ms-grid-column: 1; /* IE 11 */
+					}
+
+					&:nth-child(2) {
+
+						-ms-grid-column: 2; /* IE 11 */
+					}
+
+					&:nth-child(3) {
+
+						-ms-grid-column: 3; /* IE 11 */
+					}
+
+					&:nth-child(4) {
+
+						-ms-grid-column: 4; /* IE 11 */
+					}
+
+					&.active {
+
+						box-shadow: inset 0 -3px #007cba;
+						font-weight: 600;
+					}
+
+					&:focus {
+
+						color: #191e23;
+						outline: 1px solid #6c7781;
+						box-shadow: none;
+					}
+				}
+			}
+		}
+
+		.health-check-body {
+
+			max-width: 800px;
+			margin: 0 auto;
+		}
+
+		.health-check-table {
+
+			table-layout: fixed;
+
+			thead {
+
+				th,
+				td {
+
+					font-size: $font_size__text;
+
+					&:first-child {
+
+						width: 30%;
+					}
+				}
+			}
+
+			tbody {
+
+				td {
+
+					width: 100%;
+					box-sizing: border-box;
+					display: block;
+					font-size: $font_size__text;
+					word-wrap: break-word;
+
+					&:first-child {
+
+						width: 100%;
+						padding-bottom: 0;
+						font-weight: 600;
+
+					}
+
+					ul,
+					ol {
+						margin: 0;
+					}
+				}
+			}
+		}
+
+		.pass,
+		.good {
+
+			&::before {
+
+				content: "\f147";
+				display: inline-block;
+				color: #46b450;
+				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
+			}
+		}
+
+		.warning {
+
+			&::before {
+
+				content: "\f460";
+				display: inline-block;
+				color: #ffb900;
+				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
+
+			}
+		}
+
+		.info {
+
+			&::before {
+
+				content: "\f348";
+				display: inline-block;
+				color: #00a0d2;
+				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
+			}
+		}
+
+		.fail,
+		.error {
+
+			&::before {
+
+				content: "\f335";
+				display: inline-block;
+				color: #dc3232;
+				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
+			}
+		}
+
+		.spinner {
+			float: none;
+		}
+
+		/* Info screen styles */
+		@import "modules/info";
+
+		/* Tools screen styles */
+		@import "modules/tools";
+
+		/* Diff viewer styles */
+		@import "modules/diff-viewer";
+
+		/* Site Status styles */
+		@import "modules/site-status";
+	}
+
+	/* Accordion styles */
+	@import "modules/accordion";
+}
+
+/* Modal styles */
+@import "modules/modal";
+
+/* Progress indicator styles */
+@import "modules/progress";
+
+/* Troubleshooting Mode styles */
+@import "modules/troubleshooting-mode";

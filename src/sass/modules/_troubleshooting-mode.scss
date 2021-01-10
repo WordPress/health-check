@@ -1,0 +1,97 @@
+#health-check-dashboard-widget {
+
+	display: grid;
+	grid-gap: 2%;
+	grid-template-columns: 100%;
+	padding: 13px;
+	background: #fff;
+
+	@media all and (min-width: 783px) {
+
+		margin-top: 3rem;
+		grid-template-columns: 49% 49%;
+	}
+
+	h2 {
+
+		.green {
+
+			color: #40860a;
+		}
+	}
+
+	.welcome-panel-content {
+
+		max-width: initial;
+	}
+
+	#health-check-accordion-block-notices {
+
+		.no-notices {
+
+			p {
+
+				color: $font_color__troubleshooting_mode;
+				font-size: 1.2rem;
+			}
+		}
+
+		.notice {
+
+			p {
+
+				font-size: $font_size__text;
+			}
+
+			color: $font_color__troubleshooting_mode;
+			margin-left: 0;
+		}
+
+		.dismiss-notices {
+
+			display: block;
+			width: 100%;
+			text-align: right;
+			margin-right: 1rem;
+		}
+	}
+
+	.disable-troubleshooting-mode {
+
+		margin-bottom: 1rem;
+
+		@media all and (min-width: 960px) {
+
+			position: absolute;
+			bottom: 1rem;
+			right: 1rem;
+		}
+	}
+
+	ul {
+
+		li {
+
+			font-size: $font_size__text;
+
+			@media all and (max-width: 870px) {
+
+				display: inline-block;
+				width: 100%;
+			}
+		}
+	}
+
+	.about-description {
+
+		margin: 1em 0;
+		max-width: 700px;
+		display: inline-block;
+
+		p {
+
+			color: inherit;
+			font-size: 16px;
+		}
+	}
+}

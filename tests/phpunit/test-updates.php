@@ -79,7 +79,7 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 		add_filter( 'http_request_args', array( $this, 'hideTheme' ), 10, 2 );
 		$diff = (array) $this->test_updates->check_theme_update_request_args();
 		remove_filter( 'http_request_args', array( $this, 'hideTheme' ) );
-		$this->assertCount( 1, $diff );
+		$this->assertGreaterThanOrEqual( 1, count( $diff ) );
 	}
 
 	public function hidePlugin( $r, $url ) {

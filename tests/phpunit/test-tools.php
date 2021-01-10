@@ -27,12 +27,15 @@ class Health_Check_Tools_Test extends WP_UnitTestCase {
 
 		$files = $this->test_files_integrity->parse_checksum_results( $this->core_checksums );
 
-		$this->assertEquals( array(
+		$this->assertEquals(
 			array(
-				'xmlrpc.php',
-				'File not found'
-			)
-		), $files );
+				array(
+					'xmlrpc.php',
+					'File not found',
+				),
+			),
+			$files
+		);
 
 		rename( $renamed_file, $original_file );
 	}
@@ -40,15 +43,18 @@ class Health_Check_Tools_Test extends WP_UnitTestCase {
 	public function testFilesIntegrityModifiedFiles() {
 		$filename = trailingslashit( ABSPATH ) . 'xmlrpc.php';
 
-		file_put_contents( $filename, PHP_EOL . '// Modified file content.' . PHP_EOL,  FILE_APPEND );
+		file_put_contents( $filename, PHP_EOL . '// Modified file content.' . PHP_EOL, FILE_APPEND );
 
 		$files = $this->test_files_integrity->parse_checksum_results( $this->core_checksums );
 
-		$this->assertEquals( array(
+		$this->assertEquals(
 			array(
-				'xmlrpc.php',
-				'Content changed <a href="#health-check-diff" data-file="xmlrpc.php">(View Diff)</a>'
-			)
-		), $files );
+				array(
+					'xmlrpc.php',
+					'Content changed <a href="#health-check-diff" data-file="xmlrpc.php">(View Diff)</a>',
+				),
+			),
+			$files
+		);
 	}
 }

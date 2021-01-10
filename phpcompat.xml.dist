@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress PHP Compatibility">
+	<description>Apply PHP compatibility checks to plugin files</description>
+
+	<rule ref="PHPCompatibilityWP"/>
+
+	<!-- WordPress Core currently supports PHP 5.6+. -->
+	<config name="testVersion" value="5.6-"/>
+
+	<!-- Only scan PHP files. -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Whenever possible, cache the scan results and re-use those for unchanged files on the next scan. -->
+	<arg name="cache"/>
+
+	<!-- Set the memory limit to 256M.
+		 For most standard PHP configurations, this means the memory limit will temporarily be raised.
+		 Ref: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#specifying-phpini-settings
+	-->
+	<ini name="memory_limit" value="256M"/>
+
+	<!-- Strip the filepaths down to the relevant bit. -->
+	<arg name="basepath" value="./"/>
+
+	<!-- Check up to 20 files simultaneously. -->
+	<arg name="parallel" value="20"/>
+
+	<!-- Show sniff codes in all reports. -->
+	<arg value="ps"/>
+
+	<!-- For now, only the PHP files in src are scanned. -->
+	<file>./src/php/</file>
+
+	<!-- Code which doesn't go into production may have different requirements. -->
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+
+	<!--
+		Currently, there are no dependencies managed by Composer.
+		This will need to be modified when that changes to ensure external packages meet compatibility requirements.
+	-->
+	<exclude-pattern>/vendor/*</exclude-pattern>
+
+	<!-- Whitelist backwards compatible use of the `mysql_` extension in PHP < 7.0. -->
+	<rule ref="PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved">
+		<exclude-pattern>/src/php/includes/class-health-check-site-status\.php</exclude-pattern>
+		<exclude-pattern>/src/php/includes/class-health-check-debug-data\.php</exclude-pattern>
+	</rule>
+</ruleset>
