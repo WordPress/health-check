@@ -3,7 +3,6 @@
 node_modules/
 wordpress-coding-standards
 php-codesniffer
-build/
 health-check/
 vendor/
 
