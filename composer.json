@@ -12,10 +12,11 @@
 	"php": ">=5.2"
   },
   "require-dev": {
-	"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+	"dealerdirect/phpcodesniffer-composer-installer": "~0.7.0",
 	"wp-coding-standards/wpcs": "~2.3.0",
-	"phpcompatibility/phpcompatibility-wp": "^2.1.0",
-	"phpunit/phpunit": "^7.5"
+	"phpcompatibility/phpcompatibility-wp": "~2.1.0",
+	"phpunit/phpunit": "~7.5.20",
+    "wp-cli/wp-cli-bundle": "~2.4.0"
   },
   "scripts": {
 	"compat": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcompat.xml.dist --report=summary,source",
