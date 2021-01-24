@@ -38,10 +38,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 		foreach ( $tabs as $tab => $label ) {
 			printf(
 				'<a href="%s" class="health-check-tab health-check-%s-tab %s"%s>%s</a>',
-				sprintf(
-					'%s&tab=%s',
-					menu_page_url( 'health-check', false ),
-					$tab
+				esc_url(
+					add_query_arg(
+						array(
+							'tab' => $tab,
+						),
+						admin_url( 'site-health.php' )
+					)
 				),
 				esc_attr( $tab ),
 				( $current_tab === $tab ? 'active' : '' ),

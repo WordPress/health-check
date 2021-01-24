@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
-Health_Check_Debug_Data::check_for_updates();
+WP_Debug_Data::check_for_updates();
 
-$info = Health_Check_Debug_Data::debug_data();
+$info = WP_Debug_Data::debug_data();
 ?>
 
 <h2>
@@ -34,7 +34,7 @@ $info = Health_Check_Debug_Data::debug_data();
 
 <div class="site-health-copy-buttons">
 	<div class="copy-button-wrapper">
-		<button type="button" class="button copy-button" data-clipboard-text="<?php echo esc_attr( Health_Check_Debug_Data::format( $info, 'debug' ) ); ?>">
+		<button type="button" class="button copy-button" data-clipboard-text="<?php echo esc_attr( WP_Debug_Data::format( $info, 'debug' ) ); ?>">
 			<?php _e( 'Copy site info to clipboard', 'health-check' ); ?>
 		</button>
 		<span class="success" aria-hidden="true"><?php _e( 'Copied!', 'health-check' ); ?></span>
@@ -119,7 +119,7 @@ foreach ( $info as $section => $details ) {
 	<?php
 	printf(
 		'<a href="%s" class="button button-primary">%s</a>',
-		esc_url( admin_url( 'tools.php?page=health-check&tab=phpinfo' ) ),
+		esc_url( add_query_arg( array( 'tab' => 'phpinfo' ), admin_url( 'site-health.php' ) ) ),
 		esc_html__( 'View extended PHP information', 'health-check' )
 	);
 	?>

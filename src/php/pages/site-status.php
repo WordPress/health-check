@@ -9,8 +9,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
-
-global $health_check_site_status;
+$health_check_site_status = WP_Site_Health::get_instance();
+//global $health_check_site_status;
 ?>
 
 <div class="site-status-all-clear hide">

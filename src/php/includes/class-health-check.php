@@ -25,6 +25,13 @@ class Health_Check {
 	public $admin_notices = array();
 
 	/**
+	 * Should the current page be output buffered and overwritten.
+	 *
+	 * @var bool
+	 */
+	private $override_page = false;
+
+	/**
 	 * HealthCheck constructor.
 	 *
 	 * @uses Health_Check::init()
@@ -63,11 +70,75 @@ class Health_Check {
 		add_action( 'wp_ajax_health-check-loopback-no-plugins', array( 'Health_Check_Loopback', 'loopback_no_plugins' ) );
 		add_action( 'wp_ajax_health-check-loopback-individual-plugins', array( 'Health_Check_Loopback', 'loopback_test_individual_plugins' ) );
 		add_action( 'wp_ajax_health-check-loopback-default-theme', array( 'Health_Check_Loopback', 'loopback_test_default_theme' ) );
-		add_action( 'wp_ajax_health-check-get-sizes', array( 'Health_Check_Debug_Data', 'ajax_get_sizes' ) );
 
 		add_filter( 'cron_schedules', array( $this, 'cron_schedules' ) );
 
 		add_filter( 'user_has_cap', array( $this, 'maybe_grant_site_health_caps' ), 1, 4 );
+
+		add_action( 'admin_head', array( $this, 'maybe_capture_page_content' ) );
+		add_action( 'admin_footer', array( $this, 'maybe_override_page_content' ) );
+	}
+
+	public function maybe_capture_page_content() {
+		$screen = get_current_screen();
+
+		if ( 'site-health' !== $screen->id ) {
+			return;
+		}
+
+		$this->override_page = true;
+
+		ob_start();
+	}
+
+	public function maybe_override_page_content() {
+		if ( ! $this->override_page ) {
+			return;
+		}
+
+		// Finish output buffering the content of the page at this point.
+		$screen_content = ob_get_clean();
+
+		// Fetch our plugins replacement content for the pages.
+		ob_start();
+
+		// Always start with the header.
+		include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/site-health-header.php';
+
+		// Run a switch to see if a tab is selected.
+		$tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' );
+		switch ( $tab ) {
+			case 'debug':
+				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/debug-data.php';
+				break;
+			case 'troubleshoot':
+				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/troubleshoot.php';
+				break;
+			case 'tools':
+				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/tools.php';
+				break;
+			case 'phpinfo':
+				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/phpinfo.php';
+			case 'site-status':
+			default:
+				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/site-status.php';
+		}
+
+		// Fetch the content as a variable for in-page replacement.
+		$plugin_page = ob_get_clean();
+
+		$content_start_string = '<div id="wpbody-content">';
+		$content_end_string = '</div><!-- wpbody-content -->';
+
+		$replace_start = strpos( $screen_content, $content_start_string );
+		$replace_start += strlen( $content_start_string );
+
+		$replace_end = strpos( $screen_content, $content_end_string, $replace_start );
+		$replace_end -= $replace_start;
+
+		$output = substr_replace( $screen_content, $plugin_page, $replace_start, $replace_end );
+
+		echo $output;
 	}
 
 	/**
@@ -217,130 +288,11 @@ class Health_Check {
 		$screen = get_current_screen();
 
 		// Don't enqueue anything unless we're on the health check page.
-		if ( ( ! isset( $_GET['page'] ) || 'health-check' !== $_GET['page'] ) && 'dashboard' !== $screen->base ) {
+		if ( 'site-health' !== $screen->id && 'dashboard' !== $screen->base ) {
 			return;
 		}
 
-		$health_check_js_variables = array(
-			'string'      => array(
-				'please_wait'                          => esc_html__( 'Please wait...', 'health-check' ),
-				'copied'                               => esc_html__( 'Copied', 'health-check' ),
-				'running_tests'                        => esc_html__( 'Currently being tested...', 'health-check' ),
-				'site_health_complete'                 => esc_html__( 'All site health tests have finished running.', 'health-check' ),
-				'site_health_complete_pass_sr'         => esc_html__( 'All site health tests have finished running. Your site is looking good, and the results are now available on the page.', 'health-check' ),
-				'site_health_complete_fail_sr'         => esc_html__( 'All site health tests have finished running. There are items that should be addressed, and the results are now available on the page.', 'health-check' ),
-				'site_health_complete_pass'            => esc_html__( 'Good', 'health-check' ),
-				'site_health_complete_fail'            => esc_html__( 'Should be improved', 'health-check' ),
-				'site_info_copied'                     => esc_html__( 'Site information has been added to your clipboard.', 'health-check' ),
-				// translators: %s: Amount of critical issues.
-				'site_info_heading_critical_single'    => esc_html__( '%s Critical issue', 'health-check' ),
-				// translators: %s: Amount of critical issues.
-				'site_info_heading_critical_plural'    => esc_html__( '%s Critical issues', 'health-check' ),
-				// translators: %s: Amount of recommended issues.
-				'site_info_heading_recommended_single' => esc_html__( '%s Recommended improvement', 'health-check' ),
-				// translators: %s: Amount of recommended issues.
-				'site_info_heading_recommended_plural' => esc_html__( '%s Recommended improvements', 'health-check' ),
-				// translators: %s: Amount of passed tests.
-				'site_info_heading_good_single'        => esc_html__( '%s Item with no issues detected', 'health-check' ),
-				// translators: %s: Amount of passed tests.
-				'site_info_heading_good_plural'        => esc_html__( '%s Items with no issues detected', 'health-check' ),
-			),
-			'nonce'       => array(
-				'loopback_no_plugins'         => wp_create_nonce( 'health-check-loopback-no-plugins' ),
-				'loopback_individual_plugins' => wp_create_nonce( 'health-check-loopback-individual-plugins' ),
-				'loopback_default_theme'      => wp_create_nonce( 'health-check-loopback-default-theme' ),
-				'files_integrity_check'       => wp_create_nonce( 'health-check-files-integrity-check' ),
-				'view_file_diff'              => wp_create_nonce( 'health-check-view-file-diff' ),
-				'mail_check'                  => wp_create_nonce( 'health-check-mail-check' ),
-				'site_status'                 => wp_create_nonce( 'health-check-site-status' ),
-				'site_status_result'          => wp_create_nonce( 'health-check-site-status-result' ),
-				'tools_plugin_compat'         => wp_create_nonce( 'health-check-tools-plugin-compat' ),
-			),
-			'site_status' => array(
-				'direct' => array(),
-				'async'  => array(),
-				'issues' => array(
-					'good'        => 0,
-					'recommended' => 0,
-					'critical'    => 0,
-				),
-			),
-		);
-
-		$issue_counts = get_transient( 'health-check-site-status-result' );
-
-		if ( false !== $issue_counts ) {
-			$issue_counts = json_decode( $issue_counts );
-
-			$health_check_js_variables['site_status']['issues'] = $issue_counts;
-		}
-
-		if ( 'dashboard' !== $screen->base && ( ! isset( $_GET['tab'] ) || ( isset( $_GET['tab'] ) && 'site-status' === $_GET['tab'] ) ) ) {
-			$tests = Health_Check_Site_Status::get_tests();
-
-			// Don't run https test on localhost
-			if ( 'localhost' === preg_replace( '|https?://|', '', get_site_url() ) ) {
-				unset( $tests['direct']['https_status'] );
-			}
-
-			foreach ( $tests['direct'] as $test ) {
-				if ( is_string( $test['test'] ) ) {
-					$test_function = sprintf(
-						'get_test_%s',
-						$test['test']
-					);
-
-					if ( method_exists( $this, $test_function ) && is_callable( array( $this, $test_function ) ) ) {
-						/**
-						 * Filter the output of a finished Site Health test.
-						 *
-						 * @since 5.3.0
-						 *
-						 * @param array $test_result {
-						 *     An associated array of test result data.
-						 *
-						 *     @param string $label  A label describing the test, and is used as a header in the output.
-						 *     @param string $status The status of the test, which can be a value of `good`, `recommended` or `critical`.
-						 *     @param array  $badge {
-						 *         Tests are put into categories which have an associated badge shown, these can be modified and assigned here.
-						 *
-						 *         @param string $label The test label, for example `Performance`.
-						 *         @param string $color Default `blue`. A string representing a color to use for the label.
-						 *     }
-						 *     @param string $description A more descriptive explanation of what the test looks for, and why it is important for the end user.
-						 *     @param string $actions     An action to direct the user to where they can resolve the issue, if one exists.
-						 *     @param string $test        The name of the test being ran, used as a reference point.
-						 * }
-						 */
-						$health_check_js_variables['site_status']['direct'][] = apply_filters( 'site_status_test_result', call_user_func( array( $this, $test_function ) ) );
-						continue;
-					}
-				}
-
-				if ( is_callable( $test['test'] ) ) {
-					$health_check_js_variables['site_status']['direct'][] = apply_filters( 'site_status_test_result', call_user_func( $test['test'] ) );
-				}
-			}
-
-			foreach ( $tests['async'] as $test ) {
-				if ( is_string( $test['test'] ) ) {
-					$health_check_js_variables['site_status']['async'][] = array(
-						'test'      => $test['test'],
-						'completed' => false,
-					);
-				}
-			}
-		}
-
-		if ( ! wp_script_is( 'clipboard', 'registered' ) ) {
-			wp_register_script( 'clipboard', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/javascript/clipboard.min.js', array(), '2.0.4' );
-		}
-
 		wp_enqueue_style( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/css/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
-
-		wp_enqueue_script( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/javascript/health-check.js', array( 'jquery', 'wp-a11y', 'clipboard', 'wp-util' ), HEALTH_CHECK_PLUGIN_VERSION, true );
-
-		wp_localize_script( 'health-check', 'SiteHealth', $health_check_js_variables );
 	}
 
 	/**
@@ -378,16 +330,14 @@ class Health_Check {
 				( ! $issue_counts || $critical_issues < 1 ? '' : $critical_count )
 			);
 
-		remove_submenu_page( 'tools.php', 'site-health.php' );
+		global $submenu;
 
-		add_submenu_page(
-			'tools.php',
-			_x( 'Site Health', 'Page Title', 'health-check' ),
-			$menu_title,
-			'view_site_health_checks',
-			'health-check',
-			array( $this, 'dashboard_page' )
-		);
+		// Override the global submenu object to extend the Site Health title.
+		foreach ( $submenu['tools.php'] as $priority => $item ) {
+			if ( 'site-health.php' === $item[2] ) {
+				$submenu['tools.php'][ $priority ][0] = $menu_title;
+			}
+		}
 	}
 
 	/**
