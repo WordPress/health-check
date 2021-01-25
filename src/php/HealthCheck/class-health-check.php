@@ -119,6 +119,7 @@ class Health_Check {
 				break;
 			case 'phpinfo':
 				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/phpinfo.php';
+				break;
 			case 'site-status':
 			default:
 				if ( version_compare( get_bloginfo( 'version' ), '5.2', '>=' ) ) {
