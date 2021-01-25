@@ -121,7 +121,11 @@ class Health_Check {
 				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/phpinfo.php';
 			case 'site-status':
 			default:
-				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/site-status.php';
+				if ( version_compare( get_bloginfo( 'version' ), '5.2', '>=' ) ) {
+					include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/site-status.php';
+				} else {
+					include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/site-status-outdated.php';
+				}
 		}
 
 		// Fetch the content as a variable for in-page replacement.
