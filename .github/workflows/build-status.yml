@@ -69,3 +69,19 @@ jobs:
 
       - name: Build plugin
         run: yarn run build
+
+      # Build a zip of master, but only if this is a push workflow scenario.
+      - name: Set plugin build version
+        if: github.event == 'push'
+        run: |
+          current_plugin_version_string=$(grep -oP '`.+?\* Version:\s+\K\S+$' health-check/health-check.php)
+          current_commit_reference=$(git rev-parse --short "$GITHUB_SHA")
+          new_plugin_version_string="${current_plugin_version_string}-${current_commit_reference}"
+          grep -rl current_plugin_version_string . | xargs sed -i "s/current_plugin_version_string/$new_plugin_version_string/g"
+
+      - name: Create zip of master at this time
+        uses: actions/upload-artifact@v2
+        if: github.event == 'push'
+        with:
+          name: health-check-latest
+          path: health-check
