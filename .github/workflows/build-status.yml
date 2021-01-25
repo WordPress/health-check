@@ -72,7 +72,7 @@ jobs:
 
       # Build a zip of master, but only if this is a push workflow scenario.
       - name: Set plugin build version
-        if: ${{ github.event == 'push' }}
+        if: ${{ github.event_name == 'push' }}
         run: |
           current_plugin_version_string=$(grep -oP '`.+?\* Version:\s+\K\S+$' health-check/health-check.php)
           current_commit_reference=$(git rev-parse --short "$GITHUB_SHA")
@@ -81,7 +81,7 @@ jobs:
 
       - name: Create zip of master at this time
         uses: actions/upload-artifact@v2
-        if: ${{ github.event == 'push' }}
+        if: ${{ github.event_name == 'push' }}
         with:
           name: health-check-latest
           path: health-check
