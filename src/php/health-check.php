@@ -18,7 +18,6 @@ namespace HealthCheck;
 
 // Check that the file is not accessed directly.
 use Health_Check;
-use Health_Check_Dashboard_Widget;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
@@ -57,11 +56,8 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 
 // Include class-files used by our plugin.
 require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check.php' );
-require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-wp-cron.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-loopback.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-troubleshoot.php' );
-require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-updates.php' );
-require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-dashboard-widget.php' );
 
 // Tools section.
 require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-tool.php' );
@@ -71,9 +67,6 @@ require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-plugi
 
 // Initialize our plugin.
 new Health_Check();
-
-// Initialize the dashboard widget.
-new Health_Check_Dashboard_Widget();
 
 // Setup up scheduled events.
 register_activation_hook( __FILE__, array( 'Health_Check', 'plugin_activation' ) );
