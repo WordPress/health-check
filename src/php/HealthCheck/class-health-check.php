@@ -133,12 +133,12 @@ class Health_Check {
 		$plugin_page = ob_get_clean();
 
 		$content_start_string = '<div id="wpbody-content">';
-		$content_end_string = '</div><!-- wpbody-content -->';
+		$content_end_string   = '</div><!-- wpbody-content -->';
 
-		$replace_start = strpos( $screen_content, $content_start_string );
+		$replace_start  = strpos( $screen_content, $content_start_string );
 		$replace_start += strlen( $content_start_string );
 
-		$replace_end = strpos( $screen_content, $content_end_string, $replace_start );
+		$replace_end  = strpos( $screen_content, $content_end_string, $replace_start );
 		$replace_end -= $replace_start;
 
 		$output = substr_replace( $screen_content, $plugin_page, $replace_start, $replace_end );

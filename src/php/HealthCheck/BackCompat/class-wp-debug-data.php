@@ -1058,7 +1058,7 @@ class WP_Debug_Data {
 		$active_theme_author_uri = $active_theme->display( 'AuthorURI' );
 
 		if ( $active_theme->parent_theme ) {
-			$active_theme_parent_theme       = sprintf(
+			$active_theme_parent_theme = sprintf(
 			/* translators: 1: Theme name. 2: Theme slug. */
 				__( '%1$s (%2$s)' ),
 				$active_theme->parent_theme,
