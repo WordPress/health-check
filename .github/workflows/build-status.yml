@@ -84,7 +84,7 @@ jobs:
           new_plugin_version_string="${current_plugin_version_string}-${current_commit_reference}"
           echo "::endgroup::"
           echo "::group::Replace version strings in plugin"
-          grep -rl $current_plugin_version_string . | xargs sed -i "s/$current_plugin_version_string/$new_plugin_version_string/g"
+          grep -rl $current_plugin_version_string health-check | xargs sed -i "s/$current_plugin_version_string/$new_plugin_version_string/g"
           echo "::endgroup::"
 
       - name: Create zip of master at this time
