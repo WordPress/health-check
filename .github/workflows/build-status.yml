@@ -74,10 +74,18 @@ jobs:
       - name: Set plugin build version
         if: ${{ github.event_name == 'push' }}
         run: |
-          current_plugin_version_string=$(grep -oP '`.+?\* Version:\s+\K\S+$' health-check/health-check.php)
+          echo "::group::Get current plugin version"
+          current_plugin_version_string=$(grep -oP '^.+?\* Version:\s+\K\S+$' health-check/health-check.php)
+          echo "::endgroup::
+          echo "::group::Fetch current commit hash"
           current_commit_reference=$(git rev-parse --short "$GITHUB_SHA")
+          echo "::endgroup::"
+          echo "::group::Create new temporary version string"
           new_plugin_version_string="${current_plugin_version_string}-${current_commit_reference}"
-          grep -rl current_plugin_version_string . | xargs sed -i "s/current_plugin_version_string/$new_plugin_version_string/g"
+          echo "::endgroup::"
+          echo "::group::Replace version strings in plugin"
+          grep -rl $current_plugin_version_string . | xargs sed -i "s/$current_plugin_version_string/$new_plugin_version_string/g"
+          echo "::endgroup::"
 
       - name: Create zip of master at this time
         uses: actions/upload-artifact@v2
