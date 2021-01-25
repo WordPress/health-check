@@ -1,42 +1,16 @@
 <?php
-/**
- * WP-CLI Commands for the Health Check plugin
- *
- * @package Health Check
- */
 
-use WP_CLI\Utils;
+namespace HealthCheck\WP_CLI;
 
-// Make sure the file is not directly accessible.
-if ( ! defined( 'ABSPATH' ) ) {
-	die( 'We\'re sorry, but you can not directly access this file.' );
-}
+class Status {
 
-/**
- * Class Health_Check_WP_CLI
- */
-class Health_Check_WP_CLI {
-	/**
-	 * See the sites status based on best practices and WordPress recommendations.
-	 *
-	 * ## EXAMPLES
-	 *
-	 * wp health-check status
-	 *
-	 * ## OPTIONS
-	 *
-	 * [--format=<format>]
-	 * : Render the output in a particular format.
-	 * ---
-	 * default: table
-	 * options:
-	 *   - table
-	 *   - csv
-	 *   - json
-	 *   - yaml
-	 * ---
-	 */
-	public function status( $args, $assoc_args ) {
+	private $format;
+
+	public function __construct( $format ) {
+		$this->format = $format;
+	}
+
+	public function run() {
 		global $health_check_site_status;
 
 		$all_tests = $health_check_site_status::get_tests();
@@ -62,16 +36,15 @@ class Health_Check_WP_CLI {
 			);
 		}
 
-		if ( WP_CLI\Utils\get_flag_value( $assoc_args, 'format' ) === 'json' ) {
+		if ( 'json' === $this->format ) {
 			WP_CLI\Utils\format_items( 'json', $test_result, array( 'test', 'type', 'result' ) );
-		} elseif ( WP_CLI\Utils\get_flag_value( $assoc_args, 'format' ) === 'csv' ) {
+		} elseif ( 'csv' === $this->format ) {
 			WP_CLI\Utils\format_items( 'csv', $test_result, array( 'test', 'type', 'result' ) );
-		} elseif ( WP_CLI\Utils\get_flag_value( $assoc_args, 'format' ) === 'yaml' ) {
+		} elseif ( 'yaml' === $this->format ) {
 			WP_CLI\Utils\format_items( 'yaml', $test_result, array( 'test', 'type', 'result' ) );
 		} else {
 			WP_CLI\Utils\format_items( 'table', $test_result, array( 'test', 'type', 'result' ) );
 		}
 	}
-}
 
-WP_CLI::add_command( 'health-check', 'Health_Check_WP_CLI' );
+}
