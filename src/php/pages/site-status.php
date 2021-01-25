@@ -9,9 +9,36 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
-$health_check_site_status = WP_Site_Health::get_instance();
-//global $health_check_site_status;
+
+if ( ! is_wp_version_compatible( '5.2.0' ) ) :
 ?>
+
+<div class="site-status-all-clear">
+	<p class="icon wp-logo">
+		<span class="dashicons dashicons-wordpress"></span>
+	</p>
+
+	<p class="encouragement">
+		<?php _e( 'WordPress update needed!', 'health-check' ); ?>
+	</p>
+
+	<p>
+		<?php
+			printf(
+				// translators: %s: The current WordPress version used on this site.
+				__( 'You are running WordPress version, %s. To fully utilize the Site Health features, you need WordPress 5.2 or newer.', 'health-check' ),
+				get_bloginfo( 'version' )
+			);
+		?>
+	</p>
+</div>
+
+<?php
+return;
+endif;
+?>
+
+<?php $health_check_site_status = WP_Site_Health::get_instance(); ?>
 
 <div class="site-status-all-clear hide">
 	<p class="icon">
