@@ -75,8 +75,8 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: |
           echo "::group::Get current plugin version"
-          current_plugin_version_string=$(grep -oP "^.+?\* Version:\s+\K\S+$" health-check/health-check.php)
-          echo "::endgroup::
+          current_plugin_version_string=$(grep -oP '^.+?\* Version:\s+\K\S+$' health-check/health-check.php)
+          echo "::endgroup::"
           echo "::group::Fetch current commit hash"
           current_commit_reference=$(git rev-parse --short "$GITHUB_SHA")
           echo "::endgroup::"
