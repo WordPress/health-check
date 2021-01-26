@@ -87,9 +87,14 @@ jobs:
           grep -rl $current_plugin_version_string health-check | xargs sed -i "s/$current_plugin_version_string/$new_plugin_version_string/g"
           echo "::endgroup::"
 
+      - name: Move plugin to a subfolder for correct architecture of a plugin
+        run: |
+          mkdir output
+          mv health-check output/health-check
+
       - name: Create zip of master at this time
         uses: actions/upload-artifact@v2
         if: ${{ github.event_name == 'push' }}
         with:
           name: health-check-latest
-          path: health-check
+          path: output
