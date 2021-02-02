@@ -8,6 +8,7 @@
 namespace HealthCheck;
 
 use HealthCheck\WP_CLI\Status;
+use WP_CLI;
 use WP_CLI\Utils;
 
 // Make sure the file is not directly accessible.
@@ -16,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Health_Check_WP_CLI
+ * Class Health_Check_CLI
  */
-class WP_CLI {
+class CLI {
 	/**
 	 * See the sites status based on best practices and WordPress recommendations.
 	 *
@@ -46,4 +47,4 @@ class WP_CLI {
 	}
 }
 
-WP_CLI::add_command( 'health-check', __NAMESPACE__ . '\\WP_CLI' );
+WP_CLI::add_command( 'health-check', __NAMESPACE__ . '\\CLI' );
