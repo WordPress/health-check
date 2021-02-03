@@ -38,10 +38,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 		foreach ( $tabs as $tab => $label ) {
 			if ( ! empty( $tab ) ) {
 				$url = add_query_arg(
-						array(
-								'tab' => $tab,
-						),
-						admin_url( 'site-health.php' )
+					array(
+						'tab' => $tab,
+					),
+					admin_url( 'site-health.php' )
 				);
 			} else {
 				$url = admin_url( 'site-health.php' );
