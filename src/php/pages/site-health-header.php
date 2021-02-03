@@ -36,16 +36,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 		$current_tab = Health_Check::current_tab();
 
 		foreach ( $tabs as $tab => $label ) {
-			printf(
-				'<a href="%s" class="health-check-tab health-check-%s-tab %s"%s>%s</a>',
-				esc_url(
-					add_query_arg(
+			if ( ! empty( $tab ) ) {
+				$url = add_query_arg(
 						array(
-							'tab' => $tab,
+								'tab' => $tab,
 						),
 						admin_url( 'site-health.php' )
-					)
-				),
+				);
+			} else {
+				$url = admin_url( 'site-health.php' );
+			}
+
+			printf(
+				'<a href="%s" class="health-check-tab health-check-%s-tab %s"%s>%s</a>',
+				esc_url( $url ),
 				esc_attr( $tab ),
 				( $current_tab === $tab ? 'active' : '' ),
 				( $current_tab === $tab ? ' aria-current="true"' : '' ),

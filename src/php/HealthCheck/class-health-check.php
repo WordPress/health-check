@@ -450,7 +450,7 @@ class Health_Check {
 
 	static function tabs() {
 		return array(
-			'site-status'  => esc_html__( 'Status', 'health-check' ),
+			''             => esc_html__( 'Status', 'health-check' ), // The status tab is the front page, and therefore has no tab key relation.
 			'debug'        => esc_html__( 'Info', 'health-check' ),
 			'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
 			'tools'        => esc_html__( 'Tools', 'health-check' ),
