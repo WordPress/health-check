@@ -1089,7 +1089,12 @@ class Health_Check_Troubleshooting_MU {
 											'<li><button type="button" class="show-remaining button button-link">%s</button></li>',
 											sprintf(
 												// translators: %d: Amount of hidden plugins.
-												__( 'Show %d remaining plugins', 'health-check' ),
+												_n(
+													'Show %d remaining plugin',
+													'Show %d remaining plugins',
+													( is_countable( $this->active_plugins ) ? ( count( $this->active_plugins ) - 5 ) : 0 ),
+													'health-check'
+												),
 												( is_countable( $this->active_plugins ) ? ( count( $this->active_plugins ) - 5 ) : 0 )
 											)
 										);
@@ -1168,7 +1173,12 @@ class Health_Check_Troubleshooting_MU {
 											'<li><button type="button" class="show-remaining button button-link">%s</button></li>',
 											sprintf(
 												// translators: %d: Amount of hidden themes.
-												__( 'Show %d remaining themes', 'health-check' ),
+												_n(
+													'Show %d remaining theme',
+													'Show %d remaining themes',
+													( is_countable( $themes ) ? ( count( $themes ) - 5 ) : 0 ),
+													'health-check'
+												),
 												( is_countable( $themes ) ? ( count( $themes ) - 5 ) : 0 )
 											)
 										);
