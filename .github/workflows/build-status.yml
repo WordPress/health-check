@@ -5,6 +5,7 @@ on:
     branches:
       - trunk
   pull_request:
+  workflow_dispatch:
 
 jobs:
 
@@ -45,7 +46,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
 
@@ -54,7 +55,7 @@ jobs:
           php --version
           node --version
           composer --version
-          yarn --version
+          npm --version
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v1
@@ -65,10 +66,10 @@ jobs:
         run: echo "${PWD}/vendor/bin" >> $GITHUB_PATH
 
       - name: Install Node dependencies
-        run: yarn install
+        run: npm install
 
       - name: Build plugin
-        run: yarn run build
+        run: npm run build
 
       # Build a zip of master, but only if this is a push workflow scenario.
       - name: Set plugin build version
