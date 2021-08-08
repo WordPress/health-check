@@ -1,4 +1,4 @@
-/* global ajaxurl, HealthCheck */
+/* global HealthCheck */
 jQuery( document ).ready( function( $ ) {
 	$( '#health-check-tool-plugin-compat' ).click( function() {
 		$( 'tr', '#health-check-tool-plugin-compat-list' ).data( 'plugin-checked', false );
