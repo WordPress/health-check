@@ -47,25 +47,23 @@ maintainers when a new version is released, and any changes outside of this may 
 ### Setting up a local environment
 
 If you wish to set up a local environment for working with the project, start off by installing 
-[node](https://nodejs.org), [npm](https://www.npmjs.com) (Node Package Manager) or [yarn](https://yarnpkg.com/), 
+[node](https://nodejs.org), [npm](https://www.npmjs.com) (Node Package Manager), 
 and [composer](https://getcomposer.org).
-
-This project favors yarn, but you may substitute `yarn` for `npm` in the commands below during your local development if you are more comfortable doing so.
 
 Once these are installed, you will want to open the command line in the project directory and
 execute the following commands:
 - `composer install` This will install composer dependencies, as defined in the `composer.json` file.
-- `yarn install` This will install node modules that we use, as defined in the `package.json` file.
-- `yarn run build` creates the `health-check` directory with all files for a finished plugin.
+- `npm install` This will install node modules that we use, as defined in the `package.json` file.
+- `npm run build` creates the `health-check` directory with all files for a finished plugin.
 
 #### Docker setup
 This project uses [wp-env](https://developer.wordpress.org/block-editor/packages/packages-env/) for it's Docker setup.
 
-Once you have built the project, you may use the `yarn run wp-env start` command to test your code. 
+Once you have built the project, you may use the `npm run wp-env start` command to test your code. 
 
-The `yarn run wp-env` command is a placeholder, and you may pass any command that `wp-env` supports to it.
+The `npm run wp-env` command is a placeholder, and you may pass any command that `wp-env` supports to it.
 
-For convenience sake, you may also run `yarn run watch` to automatically build any changes you make to the code during development.
+For convenience sake, you may also run `npm run watch` to automatically build any changes you make to the code during development.
  
 ### Submitting Pull Requests
 
