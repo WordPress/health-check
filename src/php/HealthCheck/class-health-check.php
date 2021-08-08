@@ -300,6 +300,21 @@ class Health_Check {
 		wp_enqueue_style( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
 
 		wp_enqueue_script( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/health-check.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION );
+
+		wp_localize_script(
+			'health-check',
+			'HealthCheck',
+			array(
+				'rest_api' => array(
+					'tools' => array(
+						'plugin_compat' => rest_url( 'health-check/v1/plugin-compat' ),
+					),
+				),
+				'nonce' => array(
+					'rest_api' => wp_create_nonce( 'wp_rest' ),
+				),
+			)
+		);
 	}
 
 	/**

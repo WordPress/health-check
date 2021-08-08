@@ -10,9 +10,23 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 			__( 'The compatibility check will need to send requests to the <a href="https://wptide.org">WPTide</a> project to fetch the test results for each of your plugins.', 'health-check' )
 		);
 
-		add_action( 'wp_ajax_health-check-tools-plugin-compat', array( $this, 'check_plugin_version' ) );
+		add_action( 'rest_api_init', array( $this, 'register_plugin_compat_rest_route' ) );
 
 		parent::__construct();
+	}
+
+	public function register_plugin_compat_rest_route() {
+		register_rest_route(
+			'health-check/v1',
+			'plugin-compat',
+			array(
+				'methods' => 'POST',
+				'callback' => array( $this, 'check_plugin_version' ),
+				'permission_callback' => function() {
+					return current_user_can( 'view_site_health_checks' );
+				}
+			)
+		);
 	}
 
 	public function tab_content() {
@@ -54,20 +68,30 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		<?php
 	}
 
-	function check_plugin_version() {
-		check_ajax_referer( 'health-check-tools-plugin-compat' );
-
-		if ( ! current_user_can( 'view_site_health_checks' ) ) {
-			wp_send_json_error();
+	function check_plugin_version( $request ) {
+		if ( ! $request->has_param( 'slug' ) || ! $request->has_param( 'version' ) ) {
+			return new WP_Error( 'missing_arg', __( 'The slug, or version, is missing from the request.', 'health-check' ) );
 		}
 
-		$response = array(
-			'version' => $this->get_highest_supported_php( $_POST['slug'], $_POST['version'] ),
-		);
+		$slug = $request->get_param( 'slug' );
+		$version = $request->get_param( 'version' );
 
-		wp_send_json_success( $response );
+		/*
+		 * Override for the Health Check plugin, which has back-compat code we are aware
+		 * of and can account for early on. It should not become a habit to add exceptions for
+		 * plugins in this field, this is rather to avoid confusion and concern in users of this plugin specifically.
+		 */
+		if ( 'health-check/health-check.php' === $slug ) {
+			$response = array(
+				'version' => '7.4',
+			);
+		} else {
+			$response = array(
+				'version' => $this->get_highest_supported_php( $slug, $version ),
+			);
+		}
 
-		wp_die();
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	function get_highest_supported_php( $slug, $version ) {
