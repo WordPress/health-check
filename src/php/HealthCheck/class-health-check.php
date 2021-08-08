@@ -310,7 +310,7 @@ class Health_Check {
 						'plugin_compat' => rest_url( 'health-check/v1/plugin-compat' ),
 					),
 				),
-				'nonce' => array(
+				'nonce'    => array(
 					'rest_api' => wp_create_nonce( 'wp_rest' ),
 				),
 			)

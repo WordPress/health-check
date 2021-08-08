@@ -20,11 +20,11 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 			'health-check/v1',
 			'plugin-compat',
 			array(
-				'methods' => 'POST',
-				'callback' => array( $this, 'check_plugin_version' ),
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'check_plugin_version' ),
 				'permission_callback' => function() {
 					return current_user_can( 'view_site_health_checks' );
-				}
+				},
 			)
 		);
 	}
@@ -73,7 +73,7 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 			return new WP_Error( 'missing_arg', __( 'The slug, or version, is missing from the request.', 'health-check' ) );
 		}
 
-		$slug = $request->get_param( 'slug' );
+		$slug    = $request->get_param( 'slug' );
 		$version = $request->get_param( 'version' );
 
 		/*
