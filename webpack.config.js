@@ -12,6 +12,7 @@ module.exports = {
 		"react": "react",
 		"react-dom": "react-dom",
 		"health-check": [ path.resolve( process.cwd(), 'src/javascript', 'health-check.js' ), path.resolve( process.cwd(), 'src/sass', 'health-check.scss' ) ],
+		"health-check-tools": [ path.resolve( process.cwd(), 'src/javascript', 'tools.js' ) ],
 		"troubleshooting-mode": path.resolve( process.cwd(), 'src/javascript', 'troubleshooting-mode.js' ),
 	},
 	output: {
