@@ -25,13 +25,6 @@ class Health_Check {
 	public $admin_notices = array();
 
 	/**
-	 * Should the current page be output buffered and overwritten.
-	 *
-	 * @var bool
-	 */
-	private $override_page = false;
-
-	/**
 	 * HealthCheck constructor.
 	 *
 	 * @uses Health_Check::init()
@@ -55,8 +48,6 @@ class Health_Check {
 	public function init() {
 		add_action( 'plugins_loaded', array( $this, 'load_i18n' ) );
 
-		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
-
 		add_filter( 'plugin_action_links', array( $this, 'troubleshoot_plugin_action' ), 20, 4 );
 		add_filter( 'plugin_action_links_' . plugin_basename( HEALTH_CHECK_PLUGIN_FILE ), array( $this, 'page_plugin_action' ) );
 
@@ -71,79 +62,10 @@ class Health_Check {
 		add_action( 'wp_ajax_health-check-loopback-individual-plugins', array( 'Health_Check_Loopback', 'loopback_test_individual_plugins' ) );
 		add_action( 'wp_ajax_health-check-loopback-default-theme', array( 'Health_Check_Loopback', 'loopback_test_default_theme' ) );
 
-		add_filter( 'cron_schedules', array( $this, 'cron_schedules' ) );
-
 		add_filter( 'user_has_cap', array( $this, 'maybe_grant_site_health_caps' ), 1, 4 );
 
-		add_action( 'admin_head', array( $this, 'maybe_capture_page_content' ) );
-		add_action( 'admin_footer', array( $this, 'maybe_override_page_content' ) );
-	}
-
-	public function maybe_capture_page_content() {
-		$screen = get_current_screen();
-
-		if ( 'site-health' !== $screen->id ) {
-			return;
-		}
-
-		$this->override_page = true;
-
-		ob_start();
-	}
-
-	public function maybe_override_page_content() {
-		if ( ! $this->override_page ) {
-			return;
-		}
-
-		// Finish output buffering the content of the page at this point.
-		$screen_content = ob_get_clean();
-
-		// Fetch our plugins replacement content for the pages.
-		ob_start();
-
-		// Always start with the header.
-		include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/site-health-header.php';
-
-		// Run a switch to see if a tab is selected.
-		$tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : '' );
-		switch ( $tab ) {
-			case 'debug':
-				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/debug-data.php';
-				break;
-			case 'troubleshoot':
-				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/troubleshoot.php';
-				break;
-			case 'tools':
-				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/tools.php';
-				break;
-			case 'phpinfo':
-				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/phpinfo.php';
-				break;
-			case 'site-status':
-			default:
-				if ( version_compare( get_bloginfo( 'version' ), '5.2', '>=' ) ) {
-					include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/site-status.php';
-				} else {
-					include_once HEALTH_CHECK_PLUGIN_DIRECTORY . 'pages/site-status-outdated.php';
-				}
-		}
-
-		// Fetch the content as a variable for in-page replacement.
-		$plugin_page = ob_get_clean();
-
-		$content_start_string = '<div id="wpbody-content">';
-		$content_end_string   = '</div><!-- wpbody-content -->';
-
-		$replace_start  = strpos( $screen_content, $content_start_string );
-		$replace_start += strlen( $content_start_string );
-
-		$replace_end  = strpos( $screen_content, $content_end_string, $replace_start );
-		$replace_end -= $replace_start;
-
-		$output = substr_replace( $screen_content, $plugin_page, $replace_start, $replace_end );
-
-		echo $output;
+		add_filter( 'site_health_navigation_tabs', array( $this, 'add_site_health_navigation_tabs' ) );
+		add_action( 'site_health_tab_content', array( $this, 'add_site_health_tab_content' ) );
 	}
 
 	/**
@@ -293,16 +215,28 @@ class Health_Check {
 		$screen = get_current_screen();
 
 		// Don't enqueue anything unless we're on the health check page.
-		if ( 'site-health' !== $screen->id && 'dashboard' !== $screen->base ) {
+		if ( 'tools_page_site-health' !== $screen->id && 'site-health' !== $screen->id ) {
 			return;
+		}
+
+		// If the WordPress 5.2+ version of Site Health is used, do some extra checks to not mess with core scripts and styles.
+		if ( 'site-health' === $screen->id ) {
+			$plugin_tabs = array(
+				'tools',
+				'troubleshoot',
+			);
+
+			if ( ! isset( $_GET['tab'] ) || ! in_array( $_GET['tab'], $plugin_tabs ) ) {
+				return;
+			}
 		}
 
 		wp_enqueue_style( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
 
-		wp_enqueue_script( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/health-check.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION );
+		wp_enqueue_script( 'health-check-tools', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/health-check-tools.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION );
 
 		wp_localize_script(
-			'health-check',
+			'health-check-tools',
 			'HealthCheck',
 			array(
 				'rest_api' => array(
@@ -311,55 +245,13 @@ class Health_Check {
 					),
 				),
 				'nonce'    => array(
-					'rest_api' => wp_create_nonce( 'wp_rest' ),
+					'rest_api'              => wp_create_nonce( 'wp_rest' ),
+					'files_integrity_check' => wp_create_nonce( 'health-check-files-integrity-check' ),
+					'view_file_diff'        => wp_create_nonce( 'health-check-view-file-diff' ),
+					'mail_check'            => wp_create_nonce( 'health-check-mail-check' ),
 				),
 			)
 		);
-	}
-
-	/**
-	 * Add item to the admin menu.
-	 *
-	 * @uses add_dashboard_page()
-	 * @uses __()
-	 *
-	 * @return void
-	 */
-	public function action_admin_menu() {
-		$critical_issues = 0;
-		$issue_counts    = get_transient( 'health-check-site-status-result' );
-
-		if ( false !== $issue_counts ) {
-			$issue_counts = json_decode( $issue_counts );
-
-			$critical_issues = absint( $issue_counts->critical );
-		}
-
-		$critical_count = sprintf(
-			'<span class="update-plugins count-%d"><span class="update-count">%s</span></span>',
-			esc_attr( $critical_issues ),
-			sprintf(
-				'%d<span class="screen-reader-text"> %s</span>',
-				esc_html( $critical_issues ),
-				esc_html_x( 'Critical issues', 'Issue counter label for the admin menu', 'health-check' )
-			)
-		);
-
-		$menu_title =
-			sprintf(
-				// translators: %s: Critical issue counter, if any.
-				_x( 'Site Health %s', 'Menu Title', 'health-check' ),
-				( ! $issue_counts || $critical_issues < 1 ? '' : $critical_count )
-			);
-
-		global $submenu;
-
-		// Override the global submenu object to extend the Site Health title.
-		foreach ( $submenu['tools.php'] as $priority => $item ) {
-			if ( 'site-health.php' === $item[2] ) {
-				$submenu['tools.php'][ $priority ][0] = $menu_title;
-			}
-		}
 	}
 
 	/**
@@ -426,43 +318,6 @@ class Health_Check {
 		return $actions;
 	}
 
-	/**
-	 * Render our admin page.
-	 *
-	 * @uses _e()
-	 * @uses esc_html__()
-	 * @uses printf()
-	 * @uses sprintf()
-	 * @uses menu_page_url()
-	 * @uses dirname()
-	 *
-	 * @return void
-	 */
-	public function dashboard_page() {
-		include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-health-header.php' );
-
-		switch ( Health_Check::current_tab() ) {
-			case 'debug':
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/debug-data.php' );
-				break;
-			case 'phpinfo':
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/phpinfo.php' );
-				break;
-			case 'troubleshoot':
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php' );
-				break;
-			case 'tools':
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php' );
-				break;
-			case 'site-status':
-			default:
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-status.php' );
-		}
-
-		// Close out the div tag opened as a wrapper in the header.
-		echo '</div>';
-	}
-
 	static function tabs() {
 		return array(
 			''             => esc_html__( 'Status', 'health-check' ), // The status tab is the front page, and therefore has no tab key relation.
@@ -470,6 +325,27 @@ class Health_Check {
 			'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
 			'tools'        => esc_html__( 'Tools', 'health-check' ),
 		);
+	}
+
+	public function add_site_health_navigation_tabs( $tabs ) {
+		return array_merge(
+			$tabs,
+			array(
+				'troubleshoot' => esc_html__( 'Troubleshooting', 'health-check' ),
+				'tools'        => esc_html__( 'Tools', 'health-check' ),
+			)
+		);
+	}
+
+	public function add_site_health_tab_content( $tab ) {
+		switch ( $tab ) {
+			case 'troubleshoot':
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php' );
+				break;
+			case 'tools':
+				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php' );
+				break;
+		}
 	}
 
 	static function current_tab() {
@@ -508,18 +384,6 @@ class Health_Check {
 			);
 		}
 	}
-
-	public function cron_schedules( $schedules ) {
-		if ( ! isset( $schedules['weekly'] ) ) {
-			$schedules['weekly'] = array(
-				'interval' => 7 * DAY_IN_SECONDS,
-				'display'  => __( 'Once weekly', 'health-check' ),
-			);
-		}
-
-		return $schedules;
-	}
-
 
 	/**
 	 * Conditionally show a form for providing filesystem credentials when introducing our troubleshooting mode plugin.

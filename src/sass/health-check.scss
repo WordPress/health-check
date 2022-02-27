@@ -2,7 +2,8 @@
 
 body {
 
-	&.site-health-php {
+  	&.wp-admin.site-health-php,
+	&.tools_page_site-health {
 
 		#wpcontent {
 			padding-left: 0;

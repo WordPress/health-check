@@ -1,6 +1,6 @@
 /* global HealthCheck */
 jQuery( document ).ready( function( $ ) {
-	$( '#health-check-tool-plugin-compat' ).click( function() {
+	$( '#health-check-tool-plugin-compat' ).on( 'click', function() {
 		$( 'tr', '#health-check-tool-plugin-compat-list' ).data( 'plugin-checked', false );
 		$( '.spinner', '#health-check-tool-plugin-compat-list' ).addClass( 'is-active' );
 

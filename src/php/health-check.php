@@ -9,7 +9,7 @@
  * Plugin URI: https://wordpress.org/plugins/health-check/
  * Description: Checks the health of your WordPress install.
  * Author: The WordPress.org community
- * Version: 1.4.6-beta
+ * Version: 1.5.0-alpha
  * Author URI: https://wordpress.org/plugins/health-check/
  * Text Domain: health-check
  */
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Set the plugin version.
-define( 'HEALTH_CHECK_PLUGIN_VERSION', '1.4.6-beta' );
+define( 'HEALTH_CHECK_PLUGIN_VERSION', '1.5.0-alpha' );
 
 // Set the plugin file.
 define( 'HEALTH_CHECK_PLUGIN_FILE', __FILE__ );
@@ -46,11 +46,17 @@ require_once( dirname( __FILE__ ) . '/compat.php' );
 
 // Backwards compatible pull in of extra resources
 if ( ! class_exists( 'WP_Debug_Data' ) ) {
-	$original_path = ABSPATH . '/wp-admin/includes/class-wp-debug-data.php';
-	if ( file_exists( $original_path ) ) {
-		require_once $original_path;
-	} else {
-		require_once __DIR__ . '/HealthCheck/BackCompat/class-wp-debug-data.php';
+	$original_paths = array(
+		'class-wp-site-health.php' => ABSPATH . '/wp-admin/includes/class-wp-site-health.php',
+		'class-wp-debug-data.php'  => ABSPATH . '/wp-admin/includes/class-wp-debug-data.php',
+	);
+
+	foreach ( $original_paths as $filename => $original_path ) {
+		if ( file_exists( $original_path ) ) {
+			require_once $original_path;
+		} else {
+			require_once __DIR__ . '/HealthCheck/BackCompat/' . $filename;
+		}
 	}
 }
 

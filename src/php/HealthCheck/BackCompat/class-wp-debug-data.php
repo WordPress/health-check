@@ -438,60 +438,6 @@ class WP_Debug_Data {
 			);
 		}
 
-		// Remove accordion for Directories and Sizes if in Multisite.
-		if ( ! $is_multisite ) {
-			$loading = __( 'Loading&hellip;' );
-
-			$info['wp-paths-sizes']['fields'] = array(
-				'wordpress_path' => array(
-					'label' => __( 'WordPress directory location' ),
-					'value' => untrailingslashit( ABSPATH ),
-				),
-				'wordpress_size' => array(
-					'label' => __( 'WordPress directory size' ),
-					'value' => $loading,
-					'debug' => 'loading...',
-				),
-				'uploads_path'   => array(
-					'label' => __( 'Uploads directory location' ),
-					'value' => $upload_dir['basedir'],
-				),
-				'uploads_size'   => array(
-					'label' => __( 'Uploads directory size' ),
-					'value' => $loading,
-					'debug' => 'loading...',
-				),
-				'themes_path'    => array(
-					'label' => __( 'Themes directory location' ),
-					'value' => get_theme_root(),
-				),
-				'themes_size'    => array(
-					'label' => __( 'Themes directory size' ),
-					'value' => $loading,
-					'debug' => 'loading...',
-				),
-				'plugins_path'   => array(
-					'label' => __( 'Plugins directory location' ),
-					'value' => WP_PLUGIN_DIR,
-				),
-				'plugins_size'   => array(
-					'label' => __( 'Plugins directory size' ),
-					'value' => $loading,
-					'debug' => 'loading...',
-				),
-				'database_size'  => array(
-					'label' => __( 'Database size' ),
-					'value' => $loading,
-					'debug' => 'loading...',
-				),
-				'total_size'     => array(
-					'label' => __( 'Total installation size' ),
-					'value' => $loading,
-					'debug' => 'loading...',
-				),
-			);
-		}
-
 		// Get a list of all drop-in replacements.
 		$dropins = get_dropins();
 
@@ -710,21 +656,10 @@ class WP_Debug_Data {
 				'value' => ini_get( 'max_execution_time' ),
 			);
 
-			if ( WP_Site_Health::get_instance()->php_memory_limit !== ini_get( 'memory_limit' ) ) {
-				$info['wp-server']['fields']['memory_limit']       = array(
-					'label' => __( 'PHP memory limit' ),
-					'value' => WP_Site_Health::get_instance()->php_memory_limit,
-				);
-				$info['wp-server']['fields']['admin_memory_limit'] = array(
-					'label' => __( 'PHP memory limit (only for admin screens)' ),
-					'value' => ini_get( 'memory_limit' ),
-				);
-			} else {
-				$info['wp-server']['fields']['memory_limit'] = array(
-					'label' => __( 'PHP memory limit' ),
-					'value' => ini_get( 'memory_limit' ),
-				);
-			}
+			$info['wp-server']['fields']['memory_limit'] = array(
+				'label' => __( 'PHP memory limit' ),
+				'value' => ini_get( 'memory_limit' ),
+			);
 
 			$info['wp-server']['fields']['max_input_time']      = array(
 				'label' => __( 'Max input time' ),
@@ -922,14 +857,6 @@ class WP_Debug_Data {
 		$plugin_updates = get_plugin_updates();
 		$transient      = get_site_transient( 'update_plugins' );
 
-		$auto_updates = array();
-
-		$auto_updates_enabled = wp_is_auto_update_enabled_for_type( 'plugin' );
-
-		if ( $auto_updates_enabled ) {
-			$auto_updates = (array) get_site_option( 'auto_update_plugins', array() );
-		}
-
 		foreach ( $plugins as $plugin_path => $plugin ) {
 			$plugin_part = ( is_plugin_active( $plugin_path ) ) ? 'wp-plugins-active' : 'wp-plugins-inactive';
 
@@ -963,60 +890,6 @@ class WP_Debug_Data {
 				$plugin_version_string_debug .= sprintf( ' (latest version: %s)', $plugin_updates[ $plugin_path ]->update->new_version );
 			}
 
-			if ( $auto_updates_enabled ) {
-				if ( isset( $transient->response[ $plugin_path ] ) ) {
-					$item = $transient->response[ $plugin_path ];
-				} elseif ( isset( $transient->no_update[ $plugin_path ] ) ) {
-					$item = $transient->no_update[ $plugin_path ];
-				} else {
-					$item = array(
-						'id'            => $plugin_path,
-						'slug'          => '',
-						'plugin'        => $plugin_path,
-						'new_version'   => '',
-						'url'           => '',
-						'package'       => '',
-						'icons'         => array(),
-						'banners'       => array(),
-						'banners_rtl'   => array(),
-						'tested'        => '',
-						'requires_php'  => '',
-						'compatibility' => new stdClass(),
-					);
-					$item = wp_parse_args( $plugin, $item );
-				}
-
-				$auto_update_forced = wp_is_auto_update_forced_for_item( 'plugin', null, (object) $item );
-
-				if ( ! is_null( $auto_update_forced ) ) {
-					$enabled = $auto_update_forced;
-				} else {
-					$enabled = in_array( $plugin_path, $auto_updates, true );
-				}
-
-				if ( $enabled ) {
-					$auto_updates_string = __( 'Auto-updates enabled' );
-				} else {
-					$auto_updates_string = __( 'Auto-updates disabled' );
-				}
-
-				/**
-				 * Filters the text string of the auto-updates setting for each plugin in the Site Health debug data.
-				 *
-				 * @param string $auto_updates_string The string output for the auto-updates column.
-				 * @param string $plugin_path The path to the plugin file.
-				 * @param array $plugin An array of plugin data.
-				 * @param bool $enabled Whether auto-updates are enabled for this item.
-				 *
-				 * @since 5.5.0
-				 *
-				 */
-				$auto_updates_string = apply_filters( 'plugin_auto_update_debug_string', $auto_updates_string, $plugin_path, $plugin, $enabled );
-
-				$plugin_version_string       .= ' | ' . $auto_updates_string;
-				$plugin_version_string_debug .= ', ' . $auto_updates_string;
-			}
-
 			$info[ $plugin_part ]['fields'][ sanitize_text_field( $plugin['Name'] ) ] = array(
 				'label' => $plugin['Name'],
 				'value' => $plugin_version_string,
@@ -1040,12 +913,6 @@ class WP_Debug_Data {
 
 		$active_theme_version       = $active_theme->version;
 		$active_theme_version_debug = $active_theme_version;
-
-		$auto_updates         = array();
-		$auto_updates_enabled = wp_is_auto_update_enabled_for_type( 'theme' );
-		if ( $auto_updates_enabled ) {
-			$auto_updates = (array) get_site_option( 'auto_update_themes', array() );
-		}
 
 		if ( array_key_exists( $active_theme->stylesheet, $theme_updates ) ) {
 			$theme_update_new_version = $theme_updates[ $active_theme->stylesheet ]->update['new_version'];
@@ -1113,46 +980,6 @@ class WP_Debug_Data {
 			),
 		);
 
-		if ( $auto_updates_enabled ) {
-			if ( isset( $transient->response[ $active_theme->stylesheet ] ) ) {
-				$item = $transient->response[ $active_theme->stylesheet ];
-			} elseif ( isset( $transient->no_update[ $active_theme->stylesheet ] ) ) {
-				$item = $transient->no_update[ $active_theme->stylesheet ];
-			} else {
-				$item = array(
-					'theme'        => $active_theme->stylesheet,
-					'new_version'  => $active_theme->version,
-					'url'          => '',
-					'package'      => '',
-					'requires'     => '',
-					'requires_php' => '',
-				);
-			}
-
-			$auto_update_forced = wp_is_auto_update_forced_for_item( 'theme', null, (object) $item );
-
-			if ( ! is_null( $auto_update_forced ) ) {
-				$enabled = $auto_update_forced;
-			} else {
-				$enabled = in_array( $active_theme->stylesheet, $auto_updates, true );
-			}
-
-			if ( $enabled ) {
-				$auto_updates_string = __( 'Enabled' );
-			} else {
-				$auto_updates_string = __( 'Disabled' );
-			}
-
-			/** This filter is documented in wp-admin/includes/class-wp-debug-data.php */
-			$auto_updates_string = apply_filters( 'theme_auto_update_debug_string', $auto_updates_string, $active_theme, $enabled );
-
-			$info['wp-active-theme']['fields']['auto_update'] = array(
-				'label' => __( 'Auto-updates' ),
-				'value' => $auto_updates_string,
-				'debug' => $auto_updates_string,
-			);
-		}
-
 		$parent_theme = $active_theme->parent();
 
 		if ( $parent_theme ) {
@@ -1198,46 +1025,6 @@ class WP_Debug_Data {
 					'value' => get_template_directory(),
 				),
 			);
-
-			if ( $auto_updates_enabled ) {
-				if ( isset( $transient->response[ $parent_theme->stylesheet ] ) ) {
-					$item = $transient->response[ $parent_theme->stylesheet ];
-				} elseif ( isset( $transient->no_update[ $parent_theme->stylesheet ] ) ) {
-					$item = $transient->no_update[ $parent_theme->stylesheet ];
-				} else {
-					$item = array(
-						'theme'        => $parent_theme->stylesheet,
-						'new_version'  => $parent_theme->version,
-						'url'          => '',
-						'package'      => '',
-						'requires'     => '',
-						'requires_php' => '',
-					);
-				}
-
-				$auto_update_forced = wp_is_auto_update_forced_for_item( 'theme', null, (object) $item );
-
-				if ( ! is_null( $auto_update_forced ) ) {
-					$enabled = $auto_update_forced;
-				} else {
-					$enabled = in_array( $parent_theme->stylesheet, $auto_updates, true );
-				}
-
-				if ( $enabled ) {
-					$parent_theme_auto_update_string = __( 'Enabled' );
-				} else {
-					$parent_theme_auto_update_string = __( 'Disabled' );
-				}
-
-				/** This filter is documented in wp-admin/includes/class-wp-debug-data.php */
-				$parent_theme_auto_update_string = apply_filters( 'theme_auto_update_debug_string', $auto_updates_string, $parent_theme, $enabled );
-
-				$info['wp-parent-theme']['fields']['auto_update'] = array(
-					'label' => __( 'Auto-update' ),
-					'value' => $parent_theme_auto_update_string,
-					'debug' => $parent_theme_auto_update_string,
-				);
-			}
 		}
 
 		// Populate a list of all themes available in the install.
@@ -1285,52 +1072,6 @@ class WP_Debug_Data {
 				/* translators: %s: Latest theme version number. */
 				$theme_version_string       .= ' ' . sprintf( __( '(Latest version: %s)' ), $theme_updates[ $theme_slug ]->update['new_version'] );
 				$theme_version_string_debug .= sprintf( ' (latest version: %s)', $theme_updates[ $theme_slug ]->update['new_version'] );
-			}
-
-			if ( $auto_updates_enabled ) {
-				if ( isset( $transient->response[ $theme_slug ] ) ) {
-					$item = $transient->response[ $theme_slug ];
-				} elseif ( isset( $transient->no_update[ $theme_slug ] ) ) {
-					$item = $transient->no_update[ $theme_slug ];
-				} else {
-					$item = array(
-						'theme'        => $theme_slug,
-						'new_version'  => $theme->version,
-						'url'          => '',
-						'package'      => '',
-						'requires'     => '',
-						'requires_php' => '',
-					);
-				}
-
-				$auto_update_forced = wp_is_auto_update_forced_for_item( 'theme', null, (object) $item );
-
-				if ( ! is_null( $auto_update_forced ) ) {
-					$enabled = $auto_update_forced;
-				} else {
-					$enabled = in_array( $theme_slug, $auto_updates, true );
-				}
-
-				if ( $enabled ) {
-					$auto_updates_string = __( 'Auto-updates enabled' );
-				} else {
-					$auto_updates_string = __( 'Auto-updates disabled' );
-				}
-
-				/**
-				 * Filters the text string of the auto-updates setting for each theme in the Site Health debug data.
-				 *
-				 * @param string $auto_updates_string The string output for the auto-updates column.
-				 * @param WP_Theme $theme An object of theme data.
-				 * @param bool $enabled Whether auto-updates are enabled for this item.
-				 *
-				 * @since 5.5.0
-				 *
-				 */
-				$auto_updates_string = apply_filters( 'theme_auto_update_debug_string', $auto_updates_string, $theme, $enabled );
-
-				$theme_version_string       .= ' | ' . $auto_updates_string;
-				$theme_version_string_debug .= ', ' . $auto_updates_string;
 			}
 
 			$info['wp-themes-inactive']['fields'][ sanitize_text_field( $theme->name ) ] = array(
@@ -1492,131 +1233,5 @@ class WP_Debug_Data {
 		}
 
 		return (int) $size;
-	}
-
-	/**
-	 * Fetch the sizes of the WordPress directories: `wordpress` (ABSPATH), `plugins`, `themes`, and `uploads`.
-	 * Intended to supplement the array returned by `WP_Debug_Data::debug_data()`.
-	 *
-	 * @return array The sizes of the directories, also the database size and total installation size.
-	 * @since 5.2.0
-	 *
-	 */
-	public static function get_sizes() {
-		$size_db    = self::get_database_size();
-		$upload_dir = wp_get_upload_dir();
-
-		/*
-		 * We will be using the PHP max execution time to prevent the size calculations
-		 * from causing a timeout. The default value is 30 seconds, and some
-		 * hosts do not allow you to read configuration values.
-		 */
-		if ( function_exists( 'ini_get' ) ) {
-			$max_execution_time = ini_get( 'max_execution_time' );
-		}
-
-		// The max_execution_time defaults to 0 when PHP runs from cli.
-		// We still want to limit it below.
-		if ( empty( $max_execution_time ) ) {
-			$max_execution_time = 30;
-		}
-
-		if ( $max_execution_time > 20 ) {
-			// If the max_execution_time is set to lower than 20 seconds, reduce it a bit to prevent
-			// edge-case timeouts that may happen after the size loop has finished running.
-			$max_execution_time -= 2;
-		}
-
-		// Go through the various installation directories and calculate their sizes.
-		// No trailing slashes.
-		$paths = array(
-			'wordpress_size' => untrailingslashit( ABSPATH ),
-			'themes_size'    => get_theme_root(),
-			'plugins_size'   => WP_PLUGIN_DIR,
-			'uploads_size'   => $upload_dir['basedir'],
-		);
-
-		$exclude = $paths;
-		unset( $exclude['wordpress_size'] );
-		$exclude = array_values( $exclude );
-
-		$size_total = 0;
-		$all_sizes  = array();
-
-		// Loop over all the directories we want to gather the sizes for.
-		foreach ( $paths as $name => $path ) {
-			$dir_size = null; // Default to timeout.
-			$results  = array(
-				'path' => $path,
-				'raw'  => 0,
-			);
-
-			if ( microtime( true ) - WP_START_TIMESTAMP < $max_execution_time ) {
-				if ( 'wordpress_size' === $name ) {
-					$dir_size = recurse_dirsize( $path, $exclude, $max_execution_time );
-				} else {
-					$dir_size = recurse_dirsize( $path, null, $max_execution_time );
-				}
-			}
-
-			if ( false === $dir_size ) {
-				// Error reading.
-				$results['size']  = __( 'The size cannot be calculated. The directory is not accessible. Usually caused by invalid permissions.' );
-				$results['debug'] = 'not accessible';
-
-				// Stop total size calculation.
-				$size_total = null;
-			} elseif ( null === $dir_size ) {
-				// Timeout.
-				$results['size']  = __( 'The directory size calculation has timed out. Usually caused by a very large number of sub-directories and files.' );
-				$results['debug'] = 'timeout while calculating size';
-
-				// Stop total size calculation.
-				$size_total = null;
-			} else {
-				if ( null !== $size_total ) {
-					$size_total += $dir_size;
-				}
-
-				$results['raw']   = $dir_size;
-				$results['size']  = size_format( $dir_size, 2 );
-				$results['debug'] = $results['size'] . " ({$dir_size} bytes)";
-			}
-
-			$all_sizes[ $name ] = $results;
-		}
-
-		if ( $size_db > 0 ) {
-			$database_size = size_format( $size_db, 2 );
-
-			$all_sizes['database_size'] = array(
-				'raw'   => $size_db,
-				'size'  => $database_size,
-				'debug' => $database_size . " ({$size_db} bytes)",
-			);
-		} else {
-			$all_sizes['database_size'] = array(
-				'size'  => __( 'Not available' ),
-				'debug' => 'not available',
-			);
-		}
-
-		if ( null !== $size_total && $size_db > 0 ) {
-			$total_size    = $size_total + $size_db;
-			$total_size_mb = size_format( $total_size, 2 );
-
-			$all_sizes['total_size'] = array(
-				'raw'   => $total_size,
-				'size'  => $total_size_mb,
-				'debug' => $total_size_mb . " ({$total_size} bytes)",
-			);
-		} else {
-			$all_sizes['total_size'] = array(
-				'size'  => __( 'Total size is not available. Some errors were encountered when determining the size of your installation.' ),
-				'debug' => 'not available',
-			);
-		}
-
-		return $all_sizes;
 	}
 }

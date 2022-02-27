@@ -1,6 +1,6 @@
-/* global ajaxurl, SiteHealth */
+/* global ajaxurl, HealthCheck */
 jQuery( document ).ready( function( $ ) {
-	$( '#health-check-mail-check' ).submit( function( e ) {
+	$( '#health-check-mail-check' ).on( 'submit', function( e ) {
 		const email = $( '#health-check-mail-check #email' ).val(),
 			emailMessage = $( '#health-check-mail-check #email_message' ).val();
 
@@ -13,7 +13,7 @@ jQuery( document ).ready( function( $ ) {
 			action: 'health-check-mail-check',
 			email,
 			email_message: emailMessage,
-			_wpnonce: SiteHealth.nonce.mail_check,
+			_wpnonce: HealthCheck.nonce.mail_check,
 		};
 
 		$.post(

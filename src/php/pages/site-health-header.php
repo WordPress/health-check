@@ -18,18 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</h1>
 	</div>
 
-	<div class="health-check-title-section site-health-progress-wrapper loading hide-if-no-js">
-		<div class="site-health-progress">
-			<svg role="img" aria-hidden="true" focusable="false" width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
-				<circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-				<circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-			</svg>
-		</div>
-		<div class="site-health-progress-label">
-			<?php _e( 'Results are still loading&hellip;', 'health-check' ); ?>
-		</div>
-	</div>
-
 	<nav class="health-check-tabs-wrapper hide-if-no-js" aria-label="<?php esc_attr_e( 'Secondary menu', 'health-check' ); ?>">
 		<?php
 		$tabs        = Health_Check::tabs();
@@ -39,12 +27,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 			if ( ! empty( $tab ) ) {
 				$url = add_query_arg(
 					array(
-						'tab' => $tab,
+						'page' => 'site-health',
+						'tab'  => $tab,
 					),
-					admin_url( 'site-health.php' )
+					admin_url( 'tools.php?page=site-health' )
 				);
 			} else {
-				$url = admin_url( 'site-health.php' );
+				$url = admin_url( 'tools.php?page=site-health' );
 			}
 
 			printf(

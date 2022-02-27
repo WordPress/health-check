@@ -3,6 +3,90 @@
 // Manually include the versions file as we can't always rely on `get_bloginfo()` to fetch versions.
 include ABSPATH . WPINC . '/version.php';
 
+if ( ! function_exists( 'wp_timezone_string' ) ) {
+	/**
+	 * Fallback function for replicating core behavior from WordPress 5.3.0 to get a timezone string
+	 *
+	 * @return string PHP timezone string or a ±HH:MM offset.
+	 */
+	function wp_timezone_string() {
+		$timezone_string = get_option( 'timezone_string' );
+
+		if ( $timezone_string ) {
+			return $timezone_string;
+		}
+
+		$offset  = (float) get_option( 'gmt_offset' );
+		$hours   = (int) $offset;
+		$minutes = ( $offset - $hours );
+
+		$sign      = ( $offset < 0 ) ? '-' : '+';
+		$abs_hour  = abs( $hours );
+		$abs_mins  = abs( $minutes * 60 );
+		$tz_offset = sprintf( '%s%02d:%02d', $sign, $abs_hour, $abs_mins );
+
+		return $tz_offset;
+	}
+}
+
+if ( ! function_exists( 'wp_get_environment_type' ) ) {
+	/**
+	 * Fallback function replicating core behavior from WordPress 5.5.0 to get the current environment used.
+	 *
+	 * @return string The current environment type.
+	 */
+	function wp_get_environment_type() {
+		static $current_env = '';
+
+		if ( $current_env ) {
+			return $current_env;
+		}
+
+		$wp_environments = array(
+			'local',
+			'development',
+			'staging',
+			'production',
+		);
+
+		// Add a note about the deprecated WP_ENVIRONMENT_TYPES constant.
+		if ( defined( 'WP_ENVIRONMENT_TYPES' ) && function_exists( '_deprecated_argument' ) ) {
+			if ( function_exists( '__' ) ) {
+				/* translators: %s: WP_ENVIRONMENT_TYPES */
+				$message = sprintf( __( 'The %s constant is no longer supported.' ), 'WP_ENVIRONMENT_TYPES' );
+			} else {
+				$message = sprintf( 'The %s constant is no longer supported.', 'WP_ENVIRONMENT_TYPES' );
+			}
+
+			_deprecated_argument(
+				'define()',
+				'5.5.1',
+				$message
+			);
+		}
+
+		// Check if the environment variable has been set, if `getenv` is available on the system.
+		if ( function_exists( 'getenv' ) ) {
+			$has_env = getenv( 'WP_ENVIRONMENT_TYPE' );
+			if ( false !== $has_env ) {
+				$current_env = $has_env;
+			}
+		}
+
+		// Fetch the environment from a constant, this overrides the global system variable.
+		if ( defined( 'WP_ENVIRONMENT_TYPE' ) ) {
+			$current_env = WP_ENVIRONMENT_TYPE;
+		}
+
+		// Make sure the environment is an allowed one, and not accidentally set to an invalid value.
+		if ( ! in_array( $current_env, $wp_environments, true ) ) {
+			$current_env = 'production';
+		}
+
+		return $current_env;
+	}
+}
+
 if ( ! function_exists( 'wp_check_php_version' ) && version_compare( '5.1', $wp_version, '>' ) ) {
 	/**
 	 * Fallback function replicating core behavior from WordPress 5.1.0 to check PHP versions.

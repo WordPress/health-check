@@ -49,6 +49,10 @@ At this time, the plugin has been tested with every version of PHP from 5.2 thro
 
 == Changelog ==
 
+= UNRELEASED =
+* Moved Site Health checks to backwards compatible folder in favor of core implementations when available.
+* Separated Javascript logic for easier maintenance and compatibility-handling.
+
 = v1.4.5 =
 * Fix Troubleshooting Mode throwing errors in frontend on WordPress 5.5
 

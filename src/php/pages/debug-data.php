@@ -132,7 +132,7 @@ $info = WP_Debug_Data::debug_data();
 	<?php
 	printf(
 		'<a href="%s" class="button button-primary">%s</a>',
-		esc_url( add_query_arg( array( 'tab' => 'phpinfo' ), admin_url( 'site-health.php' ) ) ),
+		esc_url( add_query_arg( array( 'page' => 'site-health', 'tab' => 'phpinfo' ), admin_url( 'tools.php' ) ) ),
 		esc_html__( 'View extended PHP information', 'health-check' )
 	);
 	?>
