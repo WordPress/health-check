@@ -1,5 +1,5 @@
 {
-  "core": null,
+  "core": "WordPress/WordPress",
   "plugins": [
 	"./health-check"
   ],
@@ -7,6 +7,6 @@
 	"WP_DEBUG": true,
 	"SCRIPT_DEBUG": true,
 	"WP_DEBUG_DISPLAY": true,
-	"WP_DEBUG_LOG": true
+	"WP_DEBUG_LOG": "/tmp/wp-debug.log"
   }
 }
