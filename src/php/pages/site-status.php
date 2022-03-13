@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<span class="dashicons dashicons-wordpress"></span>
 	</p>
 
-	<p class="encouragement">
+	<h2 class="encouragement">
 		<?php _e( 'WordPress update needed!', 'health-check' ); ?>
-	</p>
+	</h2>
 
 	<p>
 		<?php
@@ -34,5 +34,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<p>
 		<?php _e( 'Due to this, some functionality has been removed from the plugin, you can find these features in a more recent version of WordPress it self.', 'health-check' ); ?>
+	</p>
+
+	<br>
+
+	<p>
+		<?php _e( 'The plugin itself still offers you the ability to troubleshoot issues with your installation, and various tools associated with this functionality.', 'health-check' ); ?>
 	</p>
 </div>
