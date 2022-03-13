@@ -74,10 +74,6 @@ require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-plugi
 // Initialize our plugin.
 new Health_Check();
 
-// Setup up scheduled events.
-register_activation_hook( __FILE__, array( 'Health_Check', 'plugin_activation' ) );
-register_deactivation_hook( __FILE__, array( 'Health_Check', 'plugin_deactivation' ) );
-
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once( dirname( __FILE__ ) . '/HealthCheck/class-cli.php' );
 }

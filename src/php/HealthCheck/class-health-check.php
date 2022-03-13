@@ -66,6 +66,19 @@ class Health_Check {
 
 		add_filter( 'site_health_navigation_tabs', array( $this, 'add_site_health_navigation_tabs' ) );
 		add_action( 'site_health_tab_content', array( $this, 'add_site_health_tab_content' ) );
+
+		add_action( 'init', array( $this, 'maybe_remove_old_scheduled_events' ) );
+	}
+
+	/**
+	 * Disable scheduled events previously used by the plugin, but now part of WordPress core.
+	 *
+	 * @return void
+	 */
+	public function maybe_remove_old_scheduled_events() {
+		if ( wp_next_scheduled( 'health-check-scheduled-site-status-check' ) ) {
+			wp_clear_scheduled_hook( 'health-check-scheduled-site-status-check' );
+		}
 	}
 
 	/**
@@ -419,15 +432,5 @@ class Health_Check {
 		}
 
 		return true;
-	}
-
-	public static function plugin_activation() {
-		if ( ! wp_next_scheduled( 'health-check-scheduled-site-status-check' ) ) {
-			wp_schedule_event( time(), 'weekly', 'health-check-scheduled-site-status-check' );
-		}
-	}
-
-	public static function plugin_deactivation() {
-		wp_clear_scheduled_hook( 'health-check-scheduled-site-status-check' );
 	}
 }
