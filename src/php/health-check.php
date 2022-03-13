@@ -56,6 +56,10 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 			require_once $original_path;
 		} else {
 			require_once __DIR__ . '/HealthCheck/BackCompat/' . $filename;
+
+			if ( ! defined( 'HEALTH_CHECK_BACKCOMPAT_LOADED' ) ) {
+				define( 'HEALTH_CHECK_BACKCOMPAT_LOADED', true );
+			}
 		}
 	}
 }
@@ -70,6 +74,7 @@ require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-tool.
 require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-files-integrity.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-mail-check.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-plugin-compatibility.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-phpinfo.php' );
 
 // Initialize our plugin.
 new Health_Check();

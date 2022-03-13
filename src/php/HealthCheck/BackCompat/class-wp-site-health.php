@@ -130,9 +130,6 @@ class SiteHealth {
 			case 'debug':
 				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/debug-data.php' );
 				break;
-			case 'phpinfo':
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/phpinfo.php' );
-				break;
 			case 'troubleshoot':
 				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php' );
 				break;

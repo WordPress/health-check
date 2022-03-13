@@ -11,6 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
+<div class="health-check-body">
+
 <h2>
 	<?php esc_html_e( 'Extended PHP Information', 'health-check' ); ?>
 </h2>
@@ -25,15 +27,8 @@ if ( ! function_exists( 'phpinfo' ) ) {
 		</p>
 	</div>
 
-<?php } else { ?>
-
-	<div class="notice notice-warning inline">
-		<p>
-			<?php esc_html_e( 'Some scenarios require you to look up more detailed server configurations than what is normally required. This page allows you to view all available configuration options for your PHP setup. Please be advised that WordPress does not guarantee that any information shown on this page may not be considered private.', 'health-check' ); ?>
-		</p>
-	</div>
-
 	<?php
+} else {
 	ob_start();
 	phpinfo();
 	$phpinfo_raw = ob_get_clean();
@@ -65,3 +60,5 @@ if ( ! function_exists( 'phpinfo' ) ) {
 
 	<?php
 }
+?>
+</div>
