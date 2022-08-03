@@ -7,7 +7,7 @@
  * @since 5.2.0
  */
 
-class SiteHealth {
+class WP_Site_Health {
 
 	public function __construct() {
 		$this->init();
@@ -63,7 +63,7 @@ class SiteHealth {
 			'health-check',
 			'HealthCheck',
 			array(
-				'nonce'    => array(
+				'nonce' => array(
 					'rest_api' => wp_create_nonce( 'wp_rest' ),
 				),
 			)
@@ -118,7 +118,7 @@ class SiteHealth {
 	public function render_menu_page() {
 		require_once HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-health-header.php';
 
-		$tab = ( isset( $_GET['tab'] ) && ! empty( $_GET['tab'] )  ? $_GET['tab'] : '' );
+		$tab = ( isset( $_GET['tab'] ) && ! empty( $_GET['tab'] ) ? $_GET['tab'] : '' );
 
 		do_action( 'site_health_tab_content', $tab );
 	}
@@ -146,4 +146,4 @@ class SiteHealth {
 	}
 }
 
-new SiteHealth();
+new WP_Site_Health();

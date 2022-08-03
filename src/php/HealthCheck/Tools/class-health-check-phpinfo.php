@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Health_Check_Phpinfo extends Health_Check_Tool {
 
 	public function __construct() {
-		$this->label       = __( 'PHP Info', 'health-check' );
+		$this->label = __( 'PHP Info', 'health-check' );
 
 		if ( ! function_exists( 'phpinfo' ) ) {
 			$this->description = __( 'The phpinfo() function has been disabled by your host. Please contact the host if you need more information about your setup.', 'health-check' );
@@ -59,7 +59,13 @@ class Health_Check_Phpinfo extends Health_Check_Tool {
 
 		$phpinfo_url = add_query_arg( array( 'tab' => 'phpinfo' ), admin_url( 'site-health.php' ) );
 		if ( defined( 'HEALTH_CHECK_BACKCOMPAT_LOADED' ) && HEALTH_CHECK_BACKCOMPAT_LOADED ) {
-			$phpinfo_url = add_query_arg( array( 'page' => 'site-health', 'tab' => 'phpinfo' ), admin_url( 'tools.php' ) );
+			$phpinfo_url = add_query_arg(
+				array(
+					'page' => 'site-health',
+					'tab'  => 'phpinfo',
+				),
+				admin_url( 'tools.php' )
+			);
 		}
 
 		?>
