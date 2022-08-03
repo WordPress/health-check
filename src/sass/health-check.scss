@@ -2,8 +2,8 @@
 
 body {
 
-  	&.wp-admin.site-health-php,
-	&.tools_page_site-health {
+	&.wp-admin.site-health-php,
+	&.tools_page_site-health { /* stylelint-disable-line selector-class-pattern -- The mix of separators is due to how WP core handles body classnames.  */
 
 		#wpcontent {
 			padding-left: 0;
