@@ -239,7 +239,7 @@ class Health_Check {
 				'troubleshoot',
 			);
 
-			if ( ! isset( $_GET['tab'] ) || ! in_array( $_GET['tab'], $plugin_tabs ) ) {
+			if ( ! isset( $_GET['tab'] ) || ! in_array( $_GET['tab'], $plugin_tabs, true ) ) {
 				return;
 			}
 		}
