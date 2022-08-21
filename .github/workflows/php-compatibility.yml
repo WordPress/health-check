@@ -4,7 +4,11 @@ on:
   push:
     branches:
       - trunk
+    paths:
+      - '**.php'
   pull_request:
+    paths:
+      - '**.php'
   workflow_dispatch:
 
 jobs:
