@@ -30,7 +30,7 @@ $wpdb->delete(
 );
 
 // Remove any transients and similar which the plugin may have left behind.
-$wpdb->query( "DELETE FROM {$wpdb->options} WHERE `option_name` LIKE '_transient_%_health-check%'" );
+$wpdb->query( "DELETE FROM {$wpdb->options} WHERE `option_name` LIKE '_transient_health-check%'" );
 
 // Remove the old Must-Use plugin if it was implemented.
 if ( file_exists( trailingslashit( WPMU_PLUGIN_DIR ) . 'health-check-disable-plugins.php' ) ) {
