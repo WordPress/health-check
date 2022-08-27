@@ -11,7 +11,7 @@
     <!-- Show sniff codes in all reports -->
     <arg value="s"/>
 
-    <file>src</file>
+    <file>.</file>
 
     <rule ref="Internal.NoCodeFound">
         <severity>0</severity>
@@ -27,5 +27,12 @@
     <rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
         <exclude-pattern>*/class-health-check-auto-updates.php</exclude-pattern>
     </rule>
+
+	<!-- Do not perform checks inside external package directories. -->
+	<exclude-pattern>vendor/</exclude-pattern>
+	<exclude-pattern>node_modules/</exclude-pattern>
+
+	<!-- Do not perform checks on the `build` directory. -->
+	<exclude-pattern>build/</exclude-pattern>
 
 </ruleset>

@@ -5,27 +5,15 @@
   },
   "description": "WordPress site health tester, and troubleshooting tools for end users and anyone providing support",
   "devDependencies": {
-    "@wordpress/scripts": "~17.1.0",
-    "@wordpress/browserslist-config": "~4.1.0",
-    "@wordpress/eslint-plugin": "~9.1.0",
-    "@wordpress/env": "~4.2.2",
-    "@wordpress/stylelint-config": "~19.1.0",
-    "matchdep": "~2.0.0",
-    "select2": "^4.0.13",
-    "mini-css-extract-plugin": "~1.6.2",
-    "css-loader": "~5.1.3",
-    "sass-loader": "~10.1.1",
-    "node-sass": "~7.0.0",
-    "copy-webpack-plugin": "~6.4.1",
-    "postcss": "~8.3.6"
+    "@wordpress/scripts": "~23.7.0",
+    "@wordpress/env": "~5.2.0",
+    "@wordpress/stylelint-config": "~20.0.2"
   },
   "dependencies": {
-    "clipboard": "^2.0.8",
-    "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "clipboard": "~2.0.11"
   },
   "engines": {
-    "node": ">=6.9.1"
+    "node": ">=16"
   },
   "keywords": [
     "support",
@@ -41,15 +29,27 @@
   "version": "0.1.0",
   "scripts": {
     "build": "wp-scripts build",
-    "lint:css": "wp-scripts lint-style './src/sass/**/*.scss'",
+    "lint:css": "wp-scripts lint-style './src/styles/**/*.scss'",
     "lint:js": "wp-scripts lint-js ./src/javascript/**/*.js",
     "watch": "wp-scripts start",
-    "wp-env": "wp-env"
+    "wp-env": "wp-env",
+	"plugin-zip": "wp-scripts plugin-zip"
   },
   "stylelint": {
     "extends": "@wordpress/stylelint-config",
     "rules": {
       "no-descending-specificity": null
     }
-  }
+  },
+  "files": [
+	"HealthCheck/**",
+	"modals/**",
+	"pages/**",
+	"build/**",
+	"compat.php",
+	"health-check.php",
+	"uninstall.php",
+	"changelog.txt",
+	"readme.txt"
+  ]
 }

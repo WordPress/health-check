@@ -75,7 +75,7 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: |
           echo "::group::Get current plugin version"
-          current_plugin_version_string=$(grep -oP '^.+?\* Version:\s+\K\S+$' health-check/health-check.php)
+          current_plugin_version_string=$(grep -oP '^.+?\* Version:\s+\K\S+$' health-check.php)
           echo "::endgroup::"
           echo "::group::Fetch current commit hash"
           current_commit_reference=$(git rev-parse --short "$GITHUB_SHA")
@@ -87,14 +87,13 @@ jobs:
           grep -rl $current_plugin_version_string health-check | xargs sed -i "s/$current_plugin_version_string/$new_plugin_version_string/g"
           echo "::endgroup::"
 
-      - name: Move plugin to a subfolder for correct architecture of a plugin
-        run: |
-          mkdir output
-          mv health-check output/health-check
+      - name: Create plugin zip
+        if: ${{ github.event_name == 'push' }}
+        run: npm run plugin-zip
 
-      - name: Create zip of master at this time
+      - name: Upload zip of master at this time
         uses: actions/upload-artifact@v2
         if: ${{ github.event_name == 'push' }}
         with:
           name: health-check-latest
-          path: output
+          path: health-check.zip
