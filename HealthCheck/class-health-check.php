@@ -232,6 +232,8 @@ class Health_Check {
 			return;
 		}
 
+		wp_enqueue_style( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
+
 		// If the WordPress 5.2+ version of Site Health is used, do some extra checks to not mess with core scripts and styles.
 		if ( 'site-health' === $screen->id ) {
 			$plugin_tabs = array(
@@ -244,9 +246,7 @@ class Health_Check {
 			}
 		}
 
-		wp_enqueue_style( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
-
-		wp_enqueue_script( 'health-check-tools', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/health-check-tools.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION );
+		wp_enqueue_script( 'health-check-tools', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check-tools.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION );
 
 		wp_localize_script(
 			'health-check-tools',
