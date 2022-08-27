@@ -45,6 +45,7 @@
     }
   },
   "files": [
+	"mu-plugin/**",
 	"HealthCheck/**",
 	"modals/**",
 	"pages/**",
