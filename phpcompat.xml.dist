@@ -29,20 +29,19 @@
 	<arg value="ps"/>
 
 	<!-- For now, only the PHP files in src are scanned. -->
-	<file>./src/php/</file>
+	<file>./</file>
 
 	<!-- Code which doesn't go into production may have different requirements. -->
-	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>node_modules/</exclude-pattern>
 
 	<!--
 		Currently, there are no dependencies managed by Composer.
 		This will need to be modified when that changes to ensure external packages meet compatibility requirements.
 	-->
-	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>vendor/</exclude-pattern>
 
 	<!-- Whitelist backwards compatible use of the `mysql_` extension in PHP < 7.0. -->
 	<rule ref="PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved">
-		<exclude-pattern>/src/php/includes/class-health-check-site-status\.php</exclude-pattern>
-		<exclude-pattern>/src/php/includes/class-health-check-debug-data\.php</exclude-pattern>
+		<exclude-pattern>HealthCheck/BackCompat/</exclude-pattern>
 	</rule>
 </ruleset>
