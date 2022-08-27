@@ -4,7 +4,15 @@ on:
   push:
     branches:
       - trunk
+    paths:
+      - '**.php'
+      - '**.js'
+      - '**.scss'
   pull_request:
+    paths:
+      - '**.php'
+      - '**.js'
+      - '**.scss'
   workflow_dispatch:
 
 jobs:
