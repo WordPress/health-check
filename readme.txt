@@ -50,10 +50,11 @@ At this time, the plugin has been tested with every version of PHP from 5.2 thro
 == Changelog ==
 
 = UNRELEASED =
-* Moved Site Health checks to backwards compatible folder in favor of core implementations when available.
-* Separated Javascript logic for easier maintenance and compatibility-handling.
-* Moved the `phpinfo()` check to the Tools section.
-* Small style-adjustments for troubleshooting mode and WordPress 5.9 compatibility.
+* Added a custom filter for the Health Check plugin PHP Compatibility check.
+* Changed how Javascript is built and bundled in the plugin.
+* Changed the location of the `phpinfo()` check to the Tools section.
+* Fixed styling issues for troubleshooting mode in WordPress 5.9.
+* Removed Site Health Status from the plugin, as they were implemented in WordPress 5.2.
 
 = v1.4.5 =
 * Fix Troubleshooting Mode throwing errors in frontend on WordPress 5.5
