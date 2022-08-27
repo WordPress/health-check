@@ -55,9 +55,9 @@ class WP_Site_Health {
 			return;
 		}
 
-		wp_enqueue_style( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
+		wp_enqueue_style( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
 
-		wp_enqueue_script( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'assets/health-check.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION );
+		wp_enqueue_script( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION );
 
 		wp_localize_script(
 			'health-check',
