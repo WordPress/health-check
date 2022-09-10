@@ -51,6 +51,7 @@ At this time, the plugin has been tested with every version of PHP from 5.2 thro
 
 = UNRELEASED =
 * Added a custom filter for the Health Check plugin PHP Compatibility check.
+* Added functions which will try to disable cache solutions during troubleshooting.
 * Changed how Javascript is built and bundled in the plugin.
 * Changed the location of the `phpinfo()` check to the Tools section.
 * Fixed styling issues for troubleshooting mode in WordPress 5.9.

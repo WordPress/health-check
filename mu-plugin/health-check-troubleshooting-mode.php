@@ -92,6 +92,16 @@ class Health_Check_Troubleshooting_MU {
 		add_action( 'activated_plugin', array( $this, 'plugin_activated' ) );
 
 		$this->load_options();
+
+		// If troubleshooting mode is enabled, add special filters and actions.
+		if ( $this->is_troubleshooting() ) {
+			// Attempt to avoid cache entries from a troubleshooting session.
+			wp_suspend_cache_addition( true );
+
+			// Add nocache headers for browser caches.
+			add_action( 'init', 'nocache_headers' );
+			add_action( 'admin_init', 'nocache_headers' );
+		}
 	}
 
 	/**
@@ -1004,6 +1014,10 @@ class Health_Check_Troubleshooting_MU {
 
 						<p>
 							<?php _e( 'Here you can enable individual plugins or themes, helping you to find out what might be causing strange behaviors on your site. Do note that <strong>any changes you make to settings will be kept</strong> when you disable Troubleshooting Mode.', 'health-check' ); ?>
+						</p>
+
+						<p>
+							<?php _e( 'The Health Check plugin will attempt to disable cache solutions on your site, but if you are using a custom caching solution, you may need to disable it manually when troubleshooting.', 'health-check' ); ?>
 						</p>
 					</div>
 				</div>
