@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Health_Check_Mail_Check extends Health_Check_Tool {
 
+	private $mail_error = null;
+
 	public function __construct() {
 		$this->label       = __( 'Mail Check', 'health-check' );
 		$this->description = __( 'The Mail Check will invoke the <code>wp_mail()</code> function and check if it succeeds. We will use the E-mail address you have set up, but you can change it below if you like.', 'health-check' );
@@ -35,12 +37,14 @@ class Health_Check_Mail_Check extends Health_Check_Tool {
 	 *
 	 * @return void
 	 */
-	static function run_mail_check() {
+	public function run_mail_check() {
 		check_ajax_referer( 'health-check-mail-check' );
 
 		if ( ! current_user_can( 'view_site_health_checks' ) ) {
 			wp_send_json_error();
 		}
+
+		add_action( 'wp_mail_failed', array( $this, 'mail_failed' ) );
 
 		$output        = '';
 		$sendmail      = false;
@@ -81,6 +85,7 @@ class Health_Check_Mail_Check extends Health_Check_Tool {
 		} else {
 			$output .= '<div class="notice notice-error inline"><p>';
 			$output .= esc_html__( 'It seems there was a problem sending the e-mail.', 'health-check' );
+			$output .= '</p><p>' . $this->mail_error->get_error_message();
 			$output .= '</p></div>';
 		}
 
@@ -92,6 +97,17 @@ class Health_Check_Mail_Check extends Health_Check_Tool {
 
 		wp_die();
 
+	}
+
+	/**
+	 * Capture errors when sending emails from WordPress.
+	 *
+	 * @param \WP_Error $error A WP_Error object containing the PHPMailer error.
+	 *
+	 * @return void
+	 */
+	public function mail_failed( $error ) {
+		$this->mail_error = $error;
 	}
 
 	/**
