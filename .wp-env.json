@@ -1,6 +1,9 @@
 {
   "core": "WordPress/WordPress",
   "plugins": [ "." ],
+  "mappings": {
+	"wp-content/mu-plugins/health-check-troubleshooting-mode.php": "./mu-plugin/health-check-troubleshooting-mode.php"
+  },
   "config": {
 	"WP_DEBUG": true,
 	"SCRIPT_DEBUG": true,
