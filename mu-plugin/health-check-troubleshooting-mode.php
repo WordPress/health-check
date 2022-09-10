@@ -59,39 +59,14 @@ class Health_Check_Troubleshooting_MU {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'admin_bar_menu', array( $this, 'health_check_troubleshoot_menu_bar' ), 999 );
-
 		add_filter( 'option_active_plugins', array( $this, 'health_check_loopback_test_disable_plugins' ) );
 		add_filter( 'option_active_sitewide_plugins', array( $this, 'health_check_loopback_test_disable_plugins' ) );
 
 		add_filter( 'pre_option_template', array( $this, 'health_check_troubleshoot_theme_template' ) );
 		add_filter( 'pre_option_stylesheet', array( $this, 'health_check_troubleshoot_theme_stylesheet' ) );
 
-		add_filter( 'wp_fatal_error_handler_enabled', array( $this, 'wp_fatal_error_handler_enabled' ) );
-
 		add_filter( 'bulk_actions-plugins', array( $this, 'remove_plugin_bulk_actions' ) );
 		add_filter( 'handle_bulk_actions-plugins', array( $this, 'handle_plugin_bulk_actions' ), 10, 3 );
-
-		add_action( 'admin_notices', array( $this, 'prompt_install_default_theme' ) );
-		add_filter( 'user_has_cap', array( $this, 'remove_plugin_theme_install' ) );
-
-		add_action( 'plugin_action_links', array( $this, 'plugin_actions' ), 50, 4 );
-
-		add_action( 'admin_notices', array( $this, 'display_dashboard_widget' ) );
-		add_action( 'admin_footer', array( $this, 'dashboard_widget_scripts' ) );
-
-		add_action( 'wp_logout', array( $this, 'health_check_troubleshooter_mode_logout' ) );
-		add_action( 'init', array( $this, 'health_check_troubleshoot_get_captures' ) );
-
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-
-		/*
-		 * Plugin activations can be forced by other tools in things like themes, so let's
-		 * attempt to work around that by forcing plugin lists back and forth.
-		 *
-		 * This is not an ideal scenario, but one we must accept as reality.
-		 */
-		add_action( 'activated_plugin', array( $this, 'plugin_activated' ) );
 
 		$this->load_options();
 
@@ -103,6 +78,31 @@ class Health_Check_Troubleshooting_MU {
 			// Add nocache headers for browser caches.
 			add_action( 'init', 'nocache_headers' );
 			add_action( 'admin_init', 'nocache_headers' );
+
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+
+			add_action( 'admin_bar_menu', array( $this, 'health_check_troubleshoot_menu_bar' ), 999 );
+
+			add_filter( 'wp_fatal_error_handler_enabled', '__return_false' );
+
+			add_action( 'admin_notices', array( $this, 'prompt_install_default_theme' ) );
+			add_filter( 'user_has_cap', array( $this, 'remove_plugin_theme_install' ) );
+
+			add_action( 'plugin_action_links', array( $this, 'plugin_actions' ), 50, 4 );
+
+			add_action( 'admin_notices', array( $this, 'display_dashboard_widget' ) );
+			add_action( 'admin_footer', array( $this, 'dashboard_widget_scripts' ) );
+
+			add_action( 'wp_logout', array( $this, 'health_check_troubleshooter_mode_logout' ) );
+			add_action( 'init', array( $this, 'health_check_troubleshoot_get_captures' ) );
+
+			/*
+			 * Plugin activations can be forced by other tools in things like themes, so let's
+			 * attempt to work around that by forcing plugin lists back and forth.
+			 *
+			 * This is not an ideal scenario, but one we must accept as reality.
+			 */
+			add_action( 'activated_plugin', array( $this, 'plugin_activated' ) );
 		}
 	}
 
@@ -125,7 +125,7 @@ class Health_Check_Troubleshooting_MU {
 	 * @return void
 	 */
 	public function enqueue_assets() {
-		if ( ! $this->is_troubleshooting() || ! is_admin() ) {
+		if ( ! is_admin() ) {
 			return;
 		}
 
@@ -139,24 +139,6 @@ class Health_Check_Troubleshooting_MU {
 	}
 
 	/**
-	 * Allow troubleshooting Mode to override the WSOD protection introduced in WordPress 5.2.0
-	 *
-	 * This will prevent incorrect reporting of errors while testing sites, without touching the
-	 * settings put in by site admins in regular scenarios.
-	 *
-	 * @param bool $enabled
-	 *
-	 * @return bool
-	 */
-	public function wp_fatal_error_handler_enabled( $enabled ) {
-		if ( ! $this->is_troubleshooting() ) {
-			return $enabled;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Add a prompt to install a default theme.
 	 *
 	 * If no default theme exists, we can't reliably assert if an issue is
@@ -166,7 +148,7 @@ class Health_Check_Troubleshooting_MU {
 	 * @return void
 	 */
 	public function prompt_install_default_theme() {
-		if ( ! $this->is_troubleshooting() || $this->has_default_theme() ) {
+		if ( $this->has_default_theme() ) {
 			return;
 		}
 
@@ -197,10 +179,6 @@ class Health_Check_Troubleshooting_MU {
 	 * @return array
 	 */
 	public function remove_plugin_theme_install( $caps ) {
-		if ( ! $this->is_troubleshooting() ) {
-			return $caps;
-		}
-
 		$caps['switch_themes'] = false;
 
 		/*
@@ -226,10 +204,6 @@ class Health_Check_Troubleshooting_MU {
 	 * @return void
 	 */
 	public function plugin_activated() {
-		if ( ! $this->is_troubleshooting() ) {
-			return;
-		}
-
 		// Force the database entry for active plugins if someone tried changing plugins while in Troubleshooting Mode.
 		update_option( 'active_plugins', $this->active_plugins );
 	}
@@ -347,10 +321,6 @@ class Health_Check_Troubleshooting_MU {
 	 * @return array
 	 */
 	public function plugin_actions( $actions, $plugin_file, $plugin_data, $context ) {
-		if ( ! $this->is_troubleshooting() ) {
-			return $actions;
-		}
-
 		if ( 'mustuse' === $context ) {
 			return $actions;
 		}
@@ -613,10 +583,6 @@ class Health_Check_Troubleshooting_MU {
 	 * @return void
 	 */
 	function health_check_troubleshooter_mode_logout() {
-		if ( ! $this->is_troubleshooting() ) {
-			return;
-		}
-
 		if ( isset( $_COOKIE['wp-health-check-disable-plugins'] ) ) {
 			$this->disable_troubleshooting_mode();
 		}
@@ -641,10 +607,6 @@ class Health_Check_Troubleshooting_MU {
 	 * @return void
 	 */
 	function health_check_troubleshoot_get_captures() {
-		if ( ! $this->is_troubleshooting() ) {
-			return;
-		}
-
 		// Disable Troubleshooting Mode.
 		if ( isset( $_GET['health-check-disable-troubleshooting'] ) ) {
 			$this->disable_troubleshooting_mode();
@@ -761,10 +723,6 @@ class Health_Check_Troubleshooting_MU {
 	 * @return void
 	 */
 	function health_check_troubleshoot_menu_bar( $wp_menu ) {
-		if ( ! $this->is_troubleshooting() ) {
-			return;
-		}
-
 		// We need some admin functions to make this a better user experience, so include that file.
 		if ( ! is_admin() ) {
 			require_once( trailingslashit( ABSPATH ) . 'wp-admin/includes/plugin.php' );
@@ -950,10 +908,6 @@ class Health_Check_Troubleshooting_MU {
 	}
 
 	public function dashboard_widget_scripts() {
-		if ( ! $this->is_troubleshooting() ) {
-			return;
-		}
-
 		// Check that it's the dashboard page, we don't want to disturb any other pages.
 		$screen = get_current_screen();
 		if ( 'dashboard' !== $screen->id && 'plugins' !== $screen->id ) {
@@ -962,10 +916,6 @@ class Health_Check_Troubleshooting_MU {
 	}
 
 	public function display_dashboard_widget() {
-		if ( ! $this->is_troubleshooting() ) {
-			return;
-		}
-
 		// Check that it's the dashboard page, we don't want to disturb any other pages.
 		$screen = get_current_screen();
 		if ( 'dashboard' !== $screen->id && 'plugins' !== $screen->id ) {
