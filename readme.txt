@@ -54,6 +54,7 @@ At this time, the plugin has been tested with every version of PHP from 5.2 thro
 * Added functions which will try to disable cache solutions during troubleshooting.
 * Changed how Javascript is built and bundled in the plugin.
 * Changed the location of the `phpinfo()` check to the Tools section.
+* Changed how troubleshooting mode implements its conditional actions and filters when enabled.
 * Fixed styling issues for troubleshooting mode in WordPress 5.9.
 * Removed Site Health Status from the plugin, as they were implemented in WordPress 5.2.
 
