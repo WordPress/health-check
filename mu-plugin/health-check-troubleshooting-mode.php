@@ -29,6 +29,9 @@ class Health_Check_Troubleshooting_MU {
 		'health-check-change-active-theme',
 		'health-check-troubleshoot-enable-plugin',
 		'health-check-troubleshoot-disable-plugin',
+		'health-check-plugin-force-enable',
+		'health-check-plugin-force-disable',
+		'health-check-theme-force-switch',
 	);
 
 	private $default_themes = array(
@@ -631,16 +634,48 @@ class Health_Check_Troubleshooting_MU {
 
 			update_option( 'health-check-allowed-plugins', $this->allowed_plugins );
 
-			if ( ! $this->test_site_state() ) {
+			if ( isset( $_GET['health-check-plugin-force-enable'] ) ) {
+				$this->add_dashboard_notice(
+					sprintf(
+						// translators: %s: The plugin slug.
+						'The %s plugin was forcefully enabled.',
+						$_GET['health-check-troubleshoot-enable-plugin']
+					),
+					'info'
+				);
+			}
+
+			if ( ! $this->test_site_state() && ! isset( $_GET['health-check-plugin-force-enable'] ) ) {
 				$this->allowed_plugins = $old_allowed_plugins;
 				update_option( 'health-check-allowed-plugins', $old_allowed_plugins );
 
-				$this->add_dashboard_notice(
+				$notice = sprintf(
+					// Translators: %1$s: The link-button markup to force enable the plugin. %2$s: The force-enable link markup.
+					__( 'When enabling the plugin, %1$s, a site failure occurred. Because of this the change was automatically reverted. %2$s', 'health-check' ),
+					$_GET['health-check-troubleshoot-enable-plugin'],
 					sprintf(
-						// translators: %s: The plugin slug that was enabled.
-						__( 'When enabling the plugin, %s, a site failure occurred. Because of this the change was automatically reverted.', 'health-check' ),
-						$_GET['health-check-troubleshoot-enable-plugin']
-					),
+						'<a href="%s" aria-label="%s">%s</a>',
+						esc_url(
+							add_query_arg(
+								array(
+									'health-check-troubleshoot-enable-plugin' => $_GET['health-check-troubleshoot-enable-plugin'],
+									'health-check-plugin-force-enable' => 'true',
+								)
+							)
+						),
+						esc_attr(
+							sprintf(
+								// translators: %s: Plugin name.
+								__( 'Force-enable the plugin, %s, even though the loopback checks failed.', 'health-check' ),
+								$_GET['health-check-troubleshoot-enable-plugin']
+							)
+						),
+						__( 'Enable anyway', 'health-check' )
+					)
+				);
+
+				$this->add_dashboard_notice(
+					$notice,
 					'warning'
 				);
 			}
@@ -657,16 +692,48 @@ class Health_Check_Troubleshooting_MU {
 
 			update_option( 'health-check-allowed-plugins', $this->allowed_plugins );
 
-			if ( ! $this->test_site_state() ) {
+			if ( isset( $_GET['health-check-plugin-force-disable'] ) ) {
+				$this->add_dashboard_notice(
+					sprintf(
+						// translators: %s: The plugin slug.
+						'The %s plugin was forcefully disabled.',
+						$_GET['health-check-troubleshoot-disable-plugin']
+					),
+					'info'
+				);
+			}
+
+			if ( ! $this->test_site_state() && ! isset( $_GET['health-check-plugin-force-disable'] ) ) {
 				$this->allowed_plugins = $old_allowed_plugins;
 				update_option( 'health-check-allowed-plugins', $old_allowed_plugins );
 
-				$this->add_dashboard_notice(
+				$notice = sprintf(
+					// Translators: %1$s: The plugin slug that was disabled. %2$s: The force-disable link markup.
+					__( 'When disabling the plugin, %1$s, a site failure occurred. Because of this the change was automatically reverted. %2$s', 'health-check' ),
+					$_GET['health-check-troubleshoot-disable-plugin'],
 					sprintf(
-						// translators: %s: The plugin slug that was disabled.
-						__( 'When disabling the plugin, %s, a site failure occurred. Because of this the change was automatically reverted.', 'health-check' ),
-						$_GET['health-check-troubleshoot-disable-plugin']
-					),
+						'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+						esc_url(
+							add_query_arg(
+								array(
+									'health-check-troubleshoot-disable-plugin' => $_GET['health-check-troubleshoot-disable-plugin'],
+									'health-check-plugin-force-disable' => 'true',
+								)
+							)
+						),
+						esc_attr(
+							sprintf(
+								// translators: %s: Plugin name.
+								__( 'Force-disable the plugin, %s, even though the loopback checks failed.', 'health-check' ),
+								$_GET['health-check-troubleshoot-disable-plugin']
+							)
+						),
+						__( 'Disable anyway', 'health-check' )
+					)
+				);
+
+				$this->add_dashboard_notice(
+					$notice,
 					'warning'
 				);
 			}
@@ -681,15 +748,47 @@ class Health_Check_Troubleshooting_MU {
 
 			update_option( 'health-check-current-theme', $_GET['health-check-change-active-theme'] );
 
-			if ( ! $this->test_site_state() ) {
-				update_option( 'health-check-current-theme', $old_theme );
-
+			if ( isset( $_GET['health-check-theme-force-switch'] ) ) {
 				$this->add_dashboard_notice(
 					sprintf(
-						// translators: %s: The theme slug that was switched to.
-						__( 'When switching the active theme to %s, a site failure occurred. Because of this we reverted the theme to the one you used previously.', 'health-check' ),
+						// translators: %s: The theme slug.
+						'The theme was forcefully switched to %s.',
 						$_GET['health-check-change-active-theme']
 					),
+					'info'
+				);
+			}
+
+			if ( ! $this->test_site_state() && ! isset( $_GET['health-check-theme-force-switch'] ) ) {
+				update_option( 'health-check-current-theme', $old_theme );
+
+				$notice = sprintf(
+					// Translators: %1$s: The theme slug that was switched to.. %2$s: The force-enable link markup.
+					__( 'When switching the active theme to %1$s, a site failure occurred. Because of this we reverted the theme to the one you used previously. %2$s', 'health-check' ),
+					$_GET['health-check-change-active-theme'],
+					sprintf(
+						'<a href="%s" aria-label="%s">%s</a>',
+						esc_url(
+							add_query_arg(
+								array(
+									'health-check-change-active-theme' => $_GET['health-check-change-active-theme'],
+									'health-check-theme-force-switch' => 'true',
+								)
+							)
+						),
+						esc_attr(
+							sprintf(
+								// translators: %s: Plugin name.
+								__( 'Force-switch to the %s theme, even though the loopback checks failed.', 'health-check' ),
+								$_GET['health-check-change-active-theme']
+							)
+						),
+						__( 'Switch anyway', 'health-check' )
+					)
+				);
+
+				$this->add_dashboard_notice(
+					$notice,
 					'warning'
 				);
 			}
@@ -1196,7 +1295,16 @@ class Health_Check_Troubleshooting_MU {
 								printf(
 									'<div class="notice notice-%s inline"><p>%s</p></div>',
 									esc_attr( $notice['severity'] ),
-									esc_html( $notice['message'] )
+									wp_kses(
+										$notice['message'],
+										array(
+											'a' => array(
+												'class' => true,
+												'href'  => true,
+												'aria-label' => true,
+											),
+										)
+									)
 								);
 							}
 							?>
