@@ -985,7 +985,7 @@ class Health_Check_Troubleshooting_MU {
 
 		// Make sure the Health_Check_Loopback class is available to us, in case the primary plugin is disabled.
 		if ( ! method_exists( 'Health_Check_Loopback', 'can_perform_loopback' ) ) {
-			$plugin_file = trailingslashit( WP_PLUGIN_DIR ) . 'health-check/includes/class-health-check-loopback.php';
+			$plugin_file = trailingslashit( WP_PLUGIN_DIR ) . 'health-check/HealthCheck/class-health-check-loopback.php';
 
 			// Make sure the file exists, in case someone deleted the plugin manually, we don't want any errors.
 			if ( ! file_exists( $plugin_file ) ) {
