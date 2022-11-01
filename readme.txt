@@ -3,8 +3,8 @@ Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.4
 Requires PHP: 5.6
-Tested up to: 6.0
-Stable tag: 1.5.0
+Tested up to: 6.1
+Stable tag: 1.5.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,9 @@ At this time, the plugin has been tested with every version of PHP from 5.2 thro
 4. Troubleshooting mode enabled, showing your website Dashboard
 
 == Changelog ==
+
+= v1.5.1 (2022-11-02) =
+* Fixed a bug where if Health Check was disabled during troubleshooting, you would need to force-enable/disable other plugins or themes.
 
 = v1.5.0 (2022-09-10) =
 * Added a custom filter for the Health Check plugin PHP Compatibility check.
