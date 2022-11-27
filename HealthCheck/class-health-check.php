@@ -324,7 +324,7 @@ class Health_Check {
 
 		$page_link = sprintf(
 			'<a href="%s">%s</a>',
-			menu_page_url( 'health-check', false ),
+			admin_url( 'site-health.php' ),
 			_x( 'Health Check', 'Menu, Section and Page Title', 'health-check' )
 		);
 		array_unshift( $actions, $page_link );
