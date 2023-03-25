@@ -5,16 +5,16 @@
   },
   "description": "WordPress site health tester, and troubleshooting tools for end users and anyone providing support",
   "devDependencies": {
-    "@wordpress/scripts": "~23.7.0",
-    "@wordpress/env": "~5.2.0",
-    "@wordpress/stylelint-config": "~20.0.2",
-	"postcss-scss": "~4.0.4"
+    "@wordpress/scripts": "~26.0.0",
+    "@wordpress/env": "~5.14.0",
+    "@wordpress/stylelint-config": "~21.12.0",
+    "postcss-scss": "~4.0.6"
   },
   "dependencies": {
     "clipboard": "~2.0.11"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "keywords": [
     "support",
@@ -34,26 +34,26 @@
     "lint:js": "wp-scripts lint-js ./src/javascript/**/*.js",
     "watch": "wp-scripts start",
     "wp-env": "wp-env",
-	"plugin-zip": "wp-scripts plugin-zip"
+    "plugin-zip": "wp-scripts plugin-zip"
   },
   "stylelint": {
     "extends": "@wordpress/stylelint-config",
-	"customSyntax": "postcss-scss",
+    "customSyntax": "postcss-scss",
     "rules": {
       "no-descending-specificity": null,
-	  "no-invalid-position-at-import-rule": null
+      "no-invalid-position-at-import-rule": null
     }
   },
   "files": [
-	"mu-plugin/**",
-	"HealthCheck/**",
-	"modals/**",
-	"pages/**",
-	"build/**",
-	"compat.php",
-	"health-check.php",
-	"uninstall.php",
-	"changelog.txt",
-	"readme.txt"
+    "mu-plugin/**",
+    "HealthCheck/**",
+    "modals/**",
+    "pages/**",
+    "build/**",
+    "compat.php",
+    "health-check.php",
+    "uninstall.php",
+    "changelog.txt",
+    "readme.txt"
   ]
 }
