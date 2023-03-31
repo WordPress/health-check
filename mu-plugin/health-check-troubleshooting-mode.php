@@ -51,6 +51,8 @@ class Health_Check_Troubleshooting_MU {
 		'twentyten',
 	);
 
+	private $latest_classic_default_theme = 'twentytwentyone';
+
 	private $show_nonce_validator = false;
 
 	private $nonce_validator_details = '';
@@ -167,7 +169,7 @@ class Health_Check_Troubleshooting_MU {
 		}
 
 		printf(
-			'<div class="notice notice-warning dismissable"><p>%s</p><p><a href="%s" class="button button-primary">%s</a></p></div>',
+			'<div class="notice notice-warning dismissable"><p>%s</p><p><a href="%s" class="button button-primary">%s</a> <a href="%s" class="button button-secondary">%s</a></p></div>',
 			esc_html__( 'You don\'t have any of the default themes installed. A default theme helps you determine if your current theme is causing conflicts.', 'health-check' ),
 			esc_url(
 				admin_url(
@@ -177,7 +179,16 @@ class Health_Check_Troubleshooting_MU {
 					)
 				)
 			),
-			esc_html__( 'Install a default theme', 'health-check' )
+			esc_html__( 'Install the latest default theme', 'health-check' ),
+			esc_url(
+				admin_url(
+					sprintf(
+						'theme-install.php?theme=%s',
+						$this->latest_classic_default_theme
+					)
+				)
+			),
+			esc_html__( 'Install the latest classic default theme', 'health-check' )
 		);
 	}
 
