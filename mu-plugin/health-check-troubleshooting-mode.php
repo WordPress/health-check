@@ -739,7 +739,7 @@ class Health_Check_Troubleshooting_MU {
 
 				$this->nonce_validator_details = sprintf(
 					'<p>%s</p>',
-					__( 'You were attempting to <strong>dismiss all notices</strong>.', 'health-check' ),
+					__( 'You were attempting to <strong>dismiss all notices</strong>.', 'health-check' )
 				);
 
 				return;
