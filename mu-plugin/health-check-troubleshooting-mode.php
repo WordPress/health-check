@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check Troubleshooting Mode
 	Description: Conditionally disabled themes or plugins on your site for a given session, used to rule out conflicts during troubleshooting.
-	Version: 1.8.0
+	Version: 1.9.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
