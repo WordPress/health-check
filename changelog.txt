@@ -1,3 +1,50 @@
+= v1.4.5 =
+* Fix Troubleshooting Mode throwing errors in frontend on WordPress 5.5
+
+= v1.4.4 =
+* Fixed hidden JavaScript warning when using troubleshooting mode on the Dashboard
+* Fixed plugin and theme lists staying hidden in troubleshooting mode on the Dashboard
+
+= v1.4.3 =
+* Compatibility with WordPress 5.4
+
+= v1.4.2 =
+* Fix missing headers for a loopback request in the debug section
+
+= v1.4.1 =
+* Fixed SQL version checks for various MariaDB installs.
+* Fixed a warning being generated in logfiles for first-time users with no existing Site Health history.
+* Added missing translation function for the new PHP compatibility tool.
+
+= v1.4.0 =
+* Fix a bug when viewing the Site Health page if enabling the Health Check plugin in troubleshooting mode.
+* Fix an inconsistency with how database versions are checked.
+* Fix the file comparison view on Windows systems if there are modified core files.
+* Fix a bug where some premium plugins could not be enabled in troubleshooting mode
+* Improved styles for older browsers.
+* Improved the PHP module checks to allow for constant checks as well. Should help with some edge case tests.
+* Improved the core file integrity checker.
+* Improved testing of WP_cron, now works properly for those running a "real cron" outside of WordPress.
+* Improved the htaccess rule test to only run if using an Apache server that supports these.
+* Modify the Site Health grading indicator.
+* Modified strings to make them clearer.
+* Added server headers to the Debug information.
+* Added polyfills for core features from WordPress 5.2 so they work for older sites.
+* Added a link to the Site Health page from the plugin overview.
+* Added a custom capability, `view_site_health_checks` for the plugin.
+* Added support for parent/child theme output in the Debug screen.
+* Added system user information to the Debug information.
+* Added a Site Health test for timezone localization.
+* Added `mbstring` and `json` (again) as requirements to the list of PHP extensions.
+* Added a missing toggle to the list of plugins/themes to the troubleshooting dashboard widget.
+* Added bulk actions to enable or disable plugins when troubleshooting, or to initiate troubleshooting mode.
+* Added plugin compatibility checker ot the tools section.
+* Added a dashboard widget to show your Site Health status at a glance when logging in.
+* Added filters for Site Health test results.
+* Added WP-CLI support, you can now run `wp health-check status` for a list of test and their status.
+* Moved compatibility functions out of primary files and into a `compat.php` so they can be conditionally loaded.
+* Disable the Fatal Error (WSOD) protection in WordPress while in troubleshooting mode.
+
 = v1.3.2 =
 * Add polyfill for directory size calculations for sites running WordPress versions older than 5.2.0
 * Fix link for the extended PHP information
