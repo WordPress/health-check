@@ -96,3 +96,51 @@
 		}
 	}
 }
+
+#health-check-nonce-validator {
+	position: fixed;
+	z-index: 9999;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+
+	.health-check-nonce-validator-wrapper {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: rgba(0, 0, 0, 0.5);
+
+		.health-check-nonce-validator-inner {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 50%;
+			min-width: 400px;
+			max-width: 800px;
+			background: #fff;
+			padding: 20px;
+			border-radius: 2px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+			h2 {
+				margin: 0 0 20px;
+				font-size: 20px;
+				font-weight: 400;
+			}
+
+			p {
+				margin: 10px 0 0;
+				font-size: 14px;
+				font-weight: 400;
+
+				&:first-of-type {
+					margin: 0;
+				}
+			}
+		}
+	}
+}
