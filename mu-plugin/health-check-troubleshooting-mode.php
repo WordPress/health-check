@@ -609,6 +609,7 @@ class Health_Check_Troubleshooting_MU {
 		delete_option( 'health-check-allowed-plugins' );
 		delete_option( 'health-check-default-theme' );
 		delete_option( 'health-check-current-theme' );
+		delete_option( 'health-check-dashboard-notices' );
 
 		delete_option( 'health-check-backup-plugin-list' );
 	}
