@@ -49,6 +49,15 @@ At this time, the plugin has been tested with every version of PHP from 5.2 thro
 
 == Changelog ==
 
+= v1.6.0 (TBD) =
+* Improved the visual aspects of the Troubleshooting Mode Widget.
+* Improved security by hardening Troubleshooting Mode actions with security tokens (nonces).
+* Added a new tool to check `.htaccess` rules (where applicable).
+* Added TwentyTwenty Three to the list of default themes.
+* Added option to install the latest classic (non Site Editor-focused) default theme if no default theme exists.
+* Added a new security confirmation prompt in Troubleshooting Mode, if a security token (nonce) value is either expired, or missing.
+* Fixed a bug where notices from previous Troubleshooting sessions would show up in a new session, which is just confusing.
+
 = v1.5.1 (2022-11-02) =
 * Fixed a bug where if Health Check was disabled during troubleshooting, you would need to force-enable/disable other plugins or themes.
 
