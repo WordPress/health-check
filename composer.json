@@ -27,5 +27,11 @@
   "support": {
     "issues": "https://github.com/WordPress/health-check/issues",
     "source": "https://github.com/WordPress/health-check"
+  },
+  "config": {
+    "allow-plugins": {
+      "cweagans/composer-patches": false,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }
