@@ -4,7 +4,7 @@ Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.4
 Requires PHP: 5.6
 Tested up to: 6.2
-Stable tag: 1.5.1
+Stable tag: 1.6.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,7 +56,7 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 == Changelog ==
 
-= v1.6.0 (TBD) =
+= v1.6.0 (2023-03-31) =
 * Improved the visual aspects of the Troubleshooting Mode Widget.
 * Improved security by hardening Troubleshooting Mode actions with security tokens (nonces).
 * Added a new tool to check `.htaccess` rules (where applicable).
