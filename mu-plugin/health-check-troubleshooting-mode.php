@@ -36,6 +36,7 @@ class Health_Check_Troubleshooting_MU {
 	);
 
 	private $default_themes = array(
+		'twentytwentythree',
 		'twentytwentytwo',
 		'twentytwentyone',
 		'twentytwenty',
