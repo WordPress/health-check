@@ -104,7 +104,7 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		$highest = 0;
 
 		foreach ( $versions as $version ) {
-			if ( $highest < $version ) {
+			if ( version_compare( $version, $highest, '>' ) ) {
 				$highest = $version;
 			}
 		}
@@ -130,8 +130,9 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		if ( false === $tide_versions ) {
 			$tide_api_respone = wp_remote_get(
 				sprintf(
-					'https://wptide.org/api/tide/v1/audit/wporg/plugin/%s',
-					$slug
+					'https://wptide.org/api/v1/audit/wporg/plugin/%s/%s?reports=all',
+					$slug,
+					$version
 				)
 			);
 
@@ -142,7 +143,7 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 			if ( empty( $json ) ) {
 				$tide_versions = array();
 			} else {
-				$tide_versions = $json[0]->reports->phpcs_phpcompatibility->compatible_versions;
+				$tide_versions = $json->reports->phpcs_phpcompatibilitywp->report->compatible;
 			}
 
 			set_transient( $transient_name, $tide_versions, 1 * WEEK_IN_SECONDS );
