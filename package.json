@@ -5,9 +5,9 @@
   },
   "description": "WordPress site health tester, and troubleshooting tools for end users and anyone providing support",
   "devDependencies": {
-    "@wordpress/scripts": "~26.0.0",
-    "@wordpress/env": "~5.14.0",
-    "@wordpress/stylelint-config": "~21.12.0",
+    "@wordpress/scripts": "~26.6.0",
+    "@wordpress/env": "~8.2.0",
+    "@wordpress/stylelint-config": "~21.19.0",
     "postcss-scss": "~4.0.6"
   },
   "dependencies": {
