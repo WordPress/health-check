@@ -12,7 +12,7 @@ body {
 		/* Better position for the WordPress admin notices and update nag. */
 		.notice {
 
-			margin: 5px 20px 15px 22px;
+			margin: 25px 20px 15px 2px;
 		}
 
 		.update-nag {
@@ -22,7 +22,6 @@ body {
 
 		h2 {
 
-			padding: 1rem 0;
 			line-height: 1.4;
 		}
 
@@ -68,7 +67,7 @@ body {
 			text-align: center;
 			margin: 0 0 1rem;
 			background: #fff;
-			border-bottom: 1px solid #e2e4e7;
+			border-bottom: 1px solid #dcdcde;
 
 			.health-check-tabs-wrapper {
 
@@ -130,6 +129,11 @@ body {
 
 			max-width: 800px;
 			margin: 0 auto;
+
+			@media all and (max-width: $breakpoint_core__medium) {
+
+				margin: 0 22px;
+			}
 		}
 
 		.health-check-table {

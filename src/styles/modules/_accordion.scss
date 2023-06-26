@@ -21,15 +21,25 @@
 
 		background: #fff;
 		border: 0;
-		color: #32373c;
+		color: #2c3338;
 		cursor: pointer;
-		display: block;
+		display: flex;
 		font-weight: 400;
 		margin: 0;
 		padding: 1em 3.5em 1em 1.5em;
+		min-height: 46px;
 		position: relative;
 		text-align: left;
 		width: 100%;
+		align-items: center;
+		justify-content: space-between;
+		user-select: auto;
+
+		@media all and (max-width: $breakpoint_min__medium) {
+
+			flex-direction: column;
+			align-items: flex-start;
+		}
 
 		&:hover,
 		&:active {
