@@ -76,12 +76,25 @@ class Health_Check_Mail_Check extends Health_Check_Tool {
 			);
 		}
 
+		// Store the time before we send the email.
+		$pre_send_timer = microtime( true );
+
 		$sendmail = wp_mail( $email, $email_subject, $email_body );
+
+		// Store the time after we send the email.
+		$post_send_timer = microtime( true );
 
 		if ( ! empty( $sendmail ) ) {
 			$output .= '<div class="notice notice-success inline"><p>';
 			$output .= __( 'We have just sent an e-mail using <code>wp_mail()</code> and it seems to work. Please check your inbox and spam folder to see if you received it.', 'health-check' );
 			$output .= '</p></div>';
+
+			// Check how long the `wp_mail` function took, if it exceeds 3 seconds, it may indicate that something is not working correctly.
+			if ( ( $post_send_timer - $pre_send_timer ) > 3 ) {
+				$output .= '<div class="notice notice-warning inline"><p>';
+				$output .= __( 'The e-mail took a while to send; this may indicate that your server is really busy, or that the sending of emails may be experiencing other unexpected issues. If you experience continued issues, consider reaching out to your hosting provider.', 'health-check' );
+				$output .= '</p></div>';
+			}
 		} else {
 			$output .= '<div class="notice notice-error inline"><p>';
 			$output .= esc_html__( 'It seems there was a problem sending the e-mail.', 'health-check' );
