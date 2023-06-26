@@ -97,7 +97,8 @@ class Health_Check_Files_Integrity extends Health_Check_Tool {
 
 		$filepath = ABSPATH;
 		$files    = array();
-		// Parse the results.
+
+		// Parse the results to validate checksums.
 		foreach ( $checksums as $file => $checksum ) {
 			// Check the files.
 			if ( file_exists( $filepath . $file ) && md5_file( $filepath . $file ) !== $checksum ) {
@@ -108,6 +109,50 @@ class Health_Check_Files_Integrity extends Health_Check_Tool {
 				array_push( $files, array( $file, $reason ) );
 			}
 		}
+
+		// Iterate over the core directories to see if any unexpected files exist, but only if the directory iterator is available.
+		if ( class_exists( 'RecursiveDirectoryIterator' ) ) {
+			$directories = array(
+				untrailingslashit( ABSPATH ),            // Root directory.
+				untrailingslashit( ABSPATH . 'wp-admin' ),    // Admin directory.
+				untrailingslashit( ABSPATH . WPINC ), // Includes directory.
+			);
+
+			// Files that will not exist in the checksum iterator, but are expected and should not cause a warning.
+			$excluded_files = array(
+				'wp-config.php',
+			);
+
+			foreach ( $directories as $directory ) {
+				// For the root path, do not recursively iterate, to avoid false positives from the `wp-content` directory.
+				if ( untrailingslashit( ABSPATH ) === $directory ) {
+					$iterator = new DirectoryIterator( $directory );
+					foreach ( $iterator as $file ) {
+						if ( $file->isFile() ) {
+							$path = str_replace( ABSPATH, '', $file->getPathname() );
+
+							if ( ! isset( $checksums[ $path ] ) && ! in_array( $path, $excluded_files, true ) ) {
+								$reason = esc_html__( 'This is an unknown file', 'health-check' );
+								array_push( $files, array( $path, $reason ) );
+							}
+						}
+					}
+				} else {
+					$iterator = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $directory ) );
+					foreach ( $iterator as $file ) {
+						if ( $file->isFile() ) {
+							$path = str_replace( ABSPATH, '', $file->getPathname() );
+
+							if ( ! isset( $checksums[ $path ] ) && ! in_array( $path, $excluded_files, true ) ) {
+								$reason = esc_html__( 'This is an unknown file', 'health-check' );
+								array_push( $files, array( $path, $reason ) );
+							}
+						}
+					}
+				}
+			}
+		}
+
 		return $files;
 	}
 
