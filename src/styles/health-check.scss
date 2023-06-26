@@ -80,6 +80,12 @@ body {
 				display: inline-grid; /* stylelint-disable-line declaration-block-no-duplicate-properties */
 				grid-template-columns: 1fr 1fr 1fr 1fr;
 
+				@media all and (max-width: $breakpoint_min__small) {
+
+					-ms-grid-columns: 1fr 1fr;
+					grid-template-columns: 1fr 1fr;
+				}
+
 				.health-check-tab {
 
 					display: block; /* IE 11 */
