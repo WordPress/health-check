@@ -635,7 +635,13 @@ class Health_Check_Troubleshooting_MU {
 	 */
 	private function get_clean_url( $url = null ) {
 		if ( ! $url ) {
-			$url = site_url( $_SERVER['REQUEST_URI'] );
+			// The full URL for the current request.
+			$raw_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+			// We prepare the `REQUEST_URI` entry our selves, to account for WP installs in subdirectories or similar.
+			$request_uri = str_ireplace( site_url( '/' ), '', $raw_url );
+
+			$url = site_url( $request_uri );
 		}
 
 		return remove_query_arg( $this->available_query_args, $url );
