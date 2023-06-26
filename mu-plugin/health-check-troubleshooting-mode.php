@@ -1288,6 +1288,10 @@ class Health_Check_Troubleshooting_MU {
 						<p>
 							<?php _e( 'The Health Check plugin will attempt to disable cache solutions on your site, but if you are using a custom caching solution, you may need to disable it manually when troubleshooting.', 'health-check' ); ?>
 						</p>
+
+						<p>
+							<?php _e( 'If you wish to troubleshoot as another user, or as an anonymous site visitor, the <a href="https://wordpress.org/plugins/user-switching/">User Switcher plugin</a> allows for all of this while also being compatible with Troubleshooting Mode.', 'health-check' ); ?>
+						</p>
 					</div>
 				</div>
 
