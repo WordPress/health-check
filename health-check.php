@@ -72,6 +72,7 @@ require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-plugi
 require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-phpinfo.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-htaccess.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-robotstxt.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-beta-features.php' );
 
 // Initialize our plugin.
 new Health_Check();
