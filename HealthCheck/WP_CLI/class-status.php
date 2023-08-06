@@ -11,7 +11,7 @@ class Status {
 	}
 
 	public function run() {
-		$health_check_site_status = \WP_Site_Health::get_instance();;
+		$health_check_site_status = \WP_Site_Health::get_instance();
 
 		$tests = $health_check_site_status::get_tests();
 
