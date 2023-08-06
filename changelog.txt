@@ -51,7 +51,7 @@
 * Added `mbstring` and `json` (again) as requirements to the list of PHP extensions.
 * Added a missing toggle to the list of plugins/themes to the troubleshooting dashboard widget.
 * Added bulk actions to enable or disable plugins when troubleshooting, or to initiate troubleshooting mode.
-* Added plugin compatibility checker ot the tools section.
+* Added plugin compatibility checker to the tools section.
 * Added a dashboard widget to show your Site Health status at a glance when logging in.
 * Added filters for Site Health test results.
 * Added WP-CLI support, you can now run `wp health-check status` for a list of test and their status.
@@ -227,7 +227,7 @@
 * Fixed a bunch of PHP warnings
 
 = v 0.2.1 =
-* Fixed version comparision bug - When the server had the exact required versions we reported it as out of date.
+* Fixed version comparison bug - When the server had the exact required versions we reported it as out of date.
 
 = v 0.2 =
 * Updated with actual PHP and MySQL version requirements for WordPress 3.2
