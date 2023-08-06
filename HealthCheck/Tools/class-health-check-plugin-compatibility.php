@@ -83,7 +83,7 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		 */
 		if ( 'health-check/health-check.php' === $slug ) {
 			$response = array(
-				'version' => '7.4',
+				'version' => '8.1',
 			);
 		} else {
 			$response = array(
