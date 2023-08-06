@@ -621,7 +621,7 @@ class Health_Check_Troubleshooting_MU {
 
 	function disable_troubleshooting_mode() {
 		unset( $_COOKIE['wp-health-check-disable-plugins'] );
-		setcookie( 'wp-health-check-disable-plugins', null, 0, COOKIEPATH, COOKIE_DOMAIN );
+		setcookie( 'wp-health-check-disable-plugins', '', 0, COOKIEPATH, COOKIE_DOMAIN );
 		delete_option( 'health-check-allowed-plugins' );
 		delete_option( 'health-check-default-theme' );
 		delete_option( 'health-check-current-theme' );
