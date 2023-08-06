@@ -9,7 +9,7 @@
  * Plugin URI: https://wordpress.org/plugins/health-check/
  * Description: Checks the health of your WordPress install.
  * Author: The WordPress.org community
- * Version: 1.6.0
+ * Version: 1.7.0
  * Author URI: https://wordpress.org/plugins/health-check/
  * Text Domain: health-check
  */

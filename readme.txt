@@ -3,8 +3,8 @@ Tags: health check
 Contributors: wordpressdotorg, westi, pento, Clorith
 Requires at least: 4.4
 Requires PHP: 5.6
-Tested up to: 6.2
-Stable tag: 1.6.0
+Tested up to: 6.3
+Stable tag: 1.7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
