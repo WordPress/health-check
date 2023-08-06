@@ -16,6 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
+if ( ! class_exists( 'HealthCheck\WP_CLI\Status' ) ) {
+	require_once __DIR__ . '/WP_CLI/class-status.php';
+}
+
 /**
  * Class Health_Check_CLI
  */
