@@ -23,9 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
-// Set the plugin version.
-define( 'HEALTH_CHECK_PLUGIN_VERSION', '1.6.0' );
-
 // Set the plugin file.
 define( 'HEALTH_CHECK_PLUGIN_FILE', __FILE__ );
 
