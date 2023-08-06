@@ -103,7 +103,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				sprintf(
 					'<img src="%s" alt="%s" />',
 					( $screenshot->screenshot ),
-					esc_attr( $screenshot->post_title ),
+					esc_attr( $screenshot->post_title )
 				),
 				esc_html( $screenshot->post_title ),
 				sprintf(
