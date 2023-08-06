@@ -232,7 +232,9 @@ class Health_Check {
 			return;
 		}
 
-		wp_enqueue_style( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check.css', array(), HEALTH_CHECK_PLUGIN_VERSION );
+		$health_check = include HEALTH_CHECK_PLUGIN_DIRECTORY . 'build/health-check.asset.php';
+
+		wp_enqueue_style( 'health-check', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check.css', array(), $health_check['version'] );
 
 		// If the WordPress 5.2+ version of Site Health is used, do some extra checks to not mess with core scripts and styles.
 		if ( 'site-health' === $screen->id ) {
@@ -246,7 +248,9 @@ class Health_Check {
 			}
 		}
 
-		wp_enqueue_script( 'health-check-tools', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check-tools.js', array( 'jquery' ), HEALTH_CHECK_PLUGIN_VERSION );
+		$health_check_tools = include HEALTH_CHECK_PLUGIN_DIRECTORY . 'build/health-check-tools.asset.php';
+
+		wp_enqueue_script( 'health-check-tools', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check-tools.js', array( 'jquery' ), $health_check_tools['version'] );
 
 		wp_localize_script(
 			'health-check-tools',

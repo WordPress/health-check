@@ -61,6 +61,7 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 // Include class-files used by our plugin.
 require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-loopback.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-screenshots.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-troubleshoot.php' );
 
 // Tools section.
@@ -72,6 +73,7 @@ require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-plugi
 require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-phpinfo.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-htaccess.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-robotstxt.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-beta-features.php' );
 
 // Initialize our plugin.
 new Health_Check();
