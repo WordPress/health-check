@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Checks if wp_mail() works.
+ * Checks if a .htaccess file exists and is used.
  *
  * @package Health Check
  */
