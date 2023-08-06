@@ -56,6 +56,20 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 == Changelog ==
 
+= 1.7.0 (2023-08-06) =
+* General: Improved styling inconsistency between the plugin and WordPress core.
+* General: Fixed an issue with plugin translations where language strings would get mixed when using third party language plugins, or a separate profile language.
+* Troubleshooting Mode: Fixed the URL used when disabling elements and having a subdirectory installation.
+* Troubleshooting Mode: Fixed a deprecation warning when disabling troubleshooting mode on PHP version 8.3 or higher.
+* Troubleshooting Mode: Added reference on how to troubleshoot as different users when testing scenarios.
+* Tools: Fixed integration with WPTide for the PHP Compatibility checker.
+* Tools: Added a viewer that will display debug log output when enabled.
+* Tools: Added a warning to the File Integrity tester if unexpected files are mixed in with WordPress core files.
+* Tools: Added a warning if sending emails is taking longer than expected.
+* Tools: Added beta feature toggle for those who wish to test new functionality that may not be fully ready yet.
+* CLI: Fixed the CLI commands, you can now `wp health-check status` to your hearts content!
+* Beta feature: Added a new beta feature, making it easier for non-technical users to grab screenshots of issues on their site, and share them.
+
 = v1.6.0 (2023-03-31) =
 * Improved the visual aspects of the Troubleshooting Mode Widget.
 * Improved security by hardening Troubleshooting Mode actions with security tokens (nonces).
@@ -65,16 +79,3 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 * Added a new security confirmation prompt in Troubleshooting Mode, if a security token (nonce) value is either expired, or missing.
 * Added better documentation around reporting security concerns.
 * Fixed a bug where notices from previous Troubleshooting sessions would show up in a new session, which is just confusing.
-
-= v1.5.1 (2022-11-02) =
-* Fixed a bug where if Health Check was disabled during troubleshooting, you would need to force-enable/disable other plugins or themes.
-
-= v1.5.0 (2022-09-10) =
-* Added a custom filter for the Health Check plugin PHP Compatibility check.
-* Added functions which will try to disable cache solutions during troubleshooting.
-* Added ability to force changes if loopbacks fail during troubleshooting.
-* Changed how JavaScript is built and bundled in the plugin.
-* Changed the location of the `phpinfo()` check to the Tools section.
-* Changed how troubleshooting mode implements its conditional actions and filters when enabled.
-* Fixed styling issues for troubleshooting mode in WordPress 5.9.
-* Removed Site Health Status from the plugin, as they were implemented in WordPress 5.2.

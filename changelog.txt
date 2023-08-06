@@ -1,3 +1,16 @@
+= v1.5.1 (2022-11-02) =
+* Fixed a bug where if Health Check was disabled during troubleshooting, you would need to force-enable/disable other plugins or themes.
+
+= v1.5.0 (2022-09-10) =
+* Added a custom filter for the Health Check plugin PHP Compatibility check.
+* Added functions which will try to disable cache solutions during troubleshooting.
+* Added ability to force changes if loopbacks fail during troubleshooting.
+* Changed how JavaScript is built and bundled in the plugin.
+* Changed the location of the `phpinfo()` check to the Tools section.
+* Changed how troubleshooting mode implements its conditional actions and filters when enabled.
+* Fixed styling issues for troubleshooting mode in WordPress 5.9.
+* Removed Site Health Status from the plugin, as they were implemented in WordPress 5.2.
+
 = v1.4.5 =
 * Fix Troubleshooting Mode throwing errors in frontend on WordPress 5.5
 
