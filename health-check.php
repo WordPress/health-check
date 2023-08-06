@@ -61,6 +61,7 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 // Include class-files used by our plugin.
 require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-loopback.php' );
+require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-screenshots.php' );
 require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-troubleshoot.php' );
 
 // Tools section.

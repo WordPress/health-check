@@ -145,13 +145,17 @@ class Health_Check_Troubleshooting_MU {
 			return;
 		}
 
-		wp_enqueue_style( 'health-check', plugins_url( '/health-check/build/health-check.css' ), array(), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION );
+		$health_check = include WP_PLUGIN_DIR . '/health-check/build/health-check.asset.php';
+
+		wp_enqueue_style( 'health-check', plugins_url( '/health-check/build/health-check.css' ), array(), $health_check['version'] );
 
 		if ( ! wp_script_is( 'site-health', 'registered' ) ) {
-			wp_enqueue_script( 'site-health', plugins_url( '/health-check/build/health-check.js' ), array( 'jquery', 'wp-a11y', 'wp-util' ), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION, true );
+			wp_enqueue_script( 'site-health', plugins_url( '/health-check/build/health-check.js' ), array( 'jquery', 'wp-a11y', 'wp-util' ), $health_check['version'], true );
 		}
 
-		wp_enqueue_script( 'health-check', plugins_url( '/health-check/build/troubleshooting-mode.js' ), array( 'site-health' ), HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION, true );
+		$troubleshooter = include WP_PLUGIN_DIR . '/health-check/build/troubleshooting-mode.asset.php';
+
+		wp_enqueue_script( 'health-check', plugins_url( '/health-check/build/troubleshooting-mode.js' ), array( 'site-health' ), $troubleshooter['version'], true );
 	}
 
 	/**

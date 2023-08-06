@@ -1,0 +1,51 @@
+.health-check-screenshots {
+
+	.screenshot {
+		display: grid;
+		grid-template-columns: 40% 55%;
+		justify-content: space-between;
+		background: #fff;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		padding: 10px;
+		margin-bottom: 1rem;
+
+		img {
+			width: 100%;
+			height: auto;
+		}
+
+		.meta {
+
+			.title {
+				display: block;
+				font-weight: 600;
+			}
+
+			.date {
+				display: block;
+			}
+
+			.actions {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				grid-gap: 10px;
+				margin-top: 10px;
+				text-align: center;
+
+				a {
+
+					&.button-delete {
+						background-color: #d63638;
+						border-color: #d63638;
+						color: #fff;
+
+						&:hover {
+							background-color: #b52a2c;
+							border-color: #b52a2c;
+						}
+					}
+				}
+			}
+		}
+	}
+}
