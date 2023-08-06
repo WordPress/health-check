@@ -212,10 +212,10 @@ class Health_Check_Screenshots {
 
 		$asset = include HEALTH_CHECK_PLUGIN_DIRECTORY . 'build/health-check-global.asset.php';
 
-		wp_enqueue_script( 'health-check-tools', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check-global.js', array( 'jquery', 'wp-a11y' ), $asset['version'] );
+		wp_enqueue_script( 'health-check-global', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check-global.js', array( 'jquery', 'wp-a11y' ), $asset['version'] );
 
 		wp_localize_script(
-			'health-check-tools',
+			'health-check-global',
 			'HealthCheckTools',
 			array(
 				'nonce' => array(
