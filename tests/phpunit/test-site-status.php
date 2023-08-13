@@ -119,7 +119,7 @@ class Health_Check_Site_Status_Test extends WP_UnitTestCase {
 			);
 
 			/**
-			 * Result should be > 100 miliseconds.
+			 * Result should be > 100 milliseconds.
 			 */
 			$this->assertGreaterThan(
 				100,
