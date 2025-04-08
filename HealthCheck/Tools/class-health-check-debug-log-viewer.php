@@ -3,10 +3,14 @@
 class Health_Check_Debug_Log_Viewer extends Health_Check_Tool {
 
 	public function __construct() {
-		$this->label       = __( 'Debug logs', 'health-check' );
-		$this->description = __( 'The details below are gathered from your <code>debug.log</code> file, and is displayed because the <code>WP_DEBUG_LOG</code> constant has been set to allow logging of warnings and errors.', 'health-check' );
+		add_action( 'admin_init', array( $this, 'set_label_and_description' ) );
 
 		parent::__construct();
+	}
+
+	public function set_label_and_description() {
+		$this->label       = __( 'Debug logs', 'health-check' );
+		$this->description = __( 'The details below are gathered from your <code>debug.log</code> file, and is displayed because the <code>WP_DEBUG_LOG</code> constant has been set to allow logging of warnings and errors.', 'health-check' );
 	}
 
 	private function read_debug_log() {

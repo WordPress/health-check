@@ -17,10 +17,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Health_Check_Htaccess extends Health_Check_Tool {
 
 	public function __construct() {
-		$this->label       = __( '.htaccess Viewer', 'health-check' );
-		$this->description = __( 'The <code>.htaccess</code> file tells your server (if supported) how to handle links and file requests. This file usually requires direct server access to view, but if your system supports these files, you can verify its content here.', 'health-check' );
+		add_action( 'admin_init', array( $this, 'set_label_and_description' ) );
 
 		parent::__construct();
+	}
+
+	public function set_label_and_description() {
+		$this->label       = __( '.htaccess Viewer', 'health-check' );
+		$this->description = __( 'The <code>.htaccess</code> file tells your server (if supported) how to handle links and file requests. This file usually requires direct server access to view, but if your system supports these files, you can verify its content here.', 'health-check' );
 	}
 
 	public function tab_content() {

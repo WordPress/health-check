@@ -19,12 +19,16 @@ class Health_Check_Mail_Check extends Health_Check_Tool {
 	private $mail_error = null;
 
 	public function __construct() {
-		$this->label       = __( 'Mail Check', 'health-check' );
-		$this->description = __( 'The Mail Check will invoke the <code>wp_mail()</code> function and check if it succeeds. We will use the E-mail address you have set up, but you can change it below if you like.', 'health-check' );
+		add_action( 'admin_init', array( $this, 'set_label_and_description' ) );
 
 		add_action( 'wp_ajax_health-check-mail-check', array( $this, 'run_mail_check' ) );
 
 		parent::__construct();
+	}
+
+	public function set_label_and_description() {
+		$this->label       = __( 'Mail Check', 'health-check' );
+		$this->description = __( 'The Mail Check will invoke the <code>wp_mail()</code> function and check if it succeeds. We will use the E-mail address you have set up, but you can change it below if you like.', 'health-check' );
 	}
 
 	/**
