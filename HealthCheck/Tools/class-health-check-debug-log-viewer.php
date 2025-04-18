@@ -28,7 +28,16 @@ class Health_Check_Debug_Log_Viewer extends Health_Check_Tool {
 			return '';
 		}
 
-		$debug_log = @file_get_contents( $logfile );
+		if ( ! is_readable( $logfile ) ) {
+			return sprintf(
+				// translators: %s: The path to the debug log file.
+				__( 'The debug log file found at `%s`, could not be read.', 'health-check' ),
+				$logfile
+			);
+		}
+
+		// Only read the last 200k of the log file to avoid Oout of memory errors.
+		$debug_log = file_get_contents( $logfile, null, null, max( 0, filesize( $logfile ) - 200000 ) );
 
 		if ( false === $debug_log ) {
 			return sprintf(
