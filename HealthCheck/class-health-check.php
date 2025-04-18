@@ -250,7 +250,8 @@ class Health_Check {
 
 		$health_check_tools = include HEALTH_CHECK_PLUGIN_DIRECTORY . 'build/health-check-tools.asset.php';
 
-		wp_enqueue_script( 'health-check-tools', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check-tools.js', array( 'jquery' ), $health_check_tools['version'] );
+		wp_enqueue_script( 'health-check-tools', trailingslashit( HEALTH_CHECK_PLUGIN_URL ) . 'build/health-check-tools.js', array( 'jquery', 'thickbox' ), $health_check_tools['version'] );
+		wp_enqueue_style( 'thickbox' );
 
 		wp_localize_script(
 			'health-check-tools',
