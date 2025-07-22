@@ -1,48 +1,44 @@
-name: Build Status
+name: Coding Standards & Compatibility Checks
 
 on:
   push:
     branches:
-      - '**'
-  pull_request:
-    branches:
-      - '**'
+      - trunk
+      - anushka
+  workflow_dispatch:
 
 jobs:
-  js-css-lint:
-    name: JavaScript and CSS style linters
+  build:
+    name: Run Coding Standards and Compatibility Checks
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, iconv, intl, json, curl
+          coverage: none
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Install NPM dependencies
         run: npm install
 
-      - name: Run JS and CSS linters
-        run: npm run lint:js && npm run lint:css
+      - name: Run PHP Coding Standards (PHP_CodeSniffer)
+        run: vendor/bin/phpcs
 
-  php-lint:
-    name: PHP coding standards
-    runs-on: ubuntu-latest
+      - name: Run JS & CSS Lint
+        run: npm run lint
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
-
-      - name: Install Composer dependencies
-        run: composer install --no-progress --no-suggest --prefer-dist
-
-      - name: Run PHP code standards
-        run: composer run phpcs
+      - name: Check PHP Compatibility
+        run: vendor/bin/phpcs -p . --standard=PHPCompatibility --runtime-set testVersion 8.1
