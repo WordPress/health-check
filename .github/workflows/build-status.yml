@@ -3,8 +3,10 @@ name: Build Status
 on:
   push:
     branches:
-      - main
+      - '**'
   pull_request:
+    branches:
+      - '**'
 
 jobs:
   js-css-lint:
