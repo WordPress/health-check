@@ -7,14 +7,11 @@ on:
   pull_request:
 
 jobs:
-  build:
+  js-css-lint:
+    name: JavaScript and CSS style linters
     runs-on: ubuntu-latest
 
     steps:
-      # ✅ Install SVN first — immediately
-      - name: Install SVN early
-        run: sudo apt-get update && sudo apt-get install -y subversion
-
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -26,11 +23,24 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run lint checks
+      - name: Run JS and CSS linters
         run: npm run lint:js && npm run lint:css
 
-      - name: Build plugin
-        run: npm run build
+  php-lint:
+    name: PHP coding standards
+    runs-on: ubuntu-latest
 
-      - name: Create plugin ZIP
-        run: npm run plugin-zip
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist
+
+      - name: Run PHP code standards
+        run: composer run phpcs
