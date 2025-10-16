@@ -48,7 +48,7 @@ class Health_Check {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'init', array( $this, 'init_tools' ), 5 ); // Before init.
+		add_action( 'init', array( $this, 'init_tools' ), 1 ); // Early to allow tools to register on init as well.
 
 		add_action( 'init', array( $this, 'load_i18n' ) );
 
