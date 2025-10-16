@@ -83,5 +83,3 @@ class Health_Check_Phpinfo extends Health_Check_Tool {
 		<?php
 	}
 }
-
-new Health_Check_Phpinfo();

@@ -159,5 +159,3 @@ class Health_Check_Mail_Check extends Health_Check_Tool {
 		<?php
 	}
 }
-
-new Health_Check_Mail_Check();

@@ -152,5 +152,3 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		return $tide_versions;
 	}
 }
-
-new Health_Check_Plugin_Compatibility();

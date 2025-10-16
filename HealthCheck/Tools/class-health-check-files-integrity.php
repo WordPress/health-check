@@ -293,5 +293,3 @@ class Health_Check_Files_Integrity extends Health_Check_Tool {
 		<?php
 	}
 }
-
-new Health_Check_Files_Integrity();

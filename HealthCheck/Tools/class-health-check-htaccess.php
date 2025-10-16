@@ -49,5 +49,3 @@ class Health_Check_Htaccess extends Health_Check_Tool {
 	}
 
 }
-
-new Health_Check_Htaccess();

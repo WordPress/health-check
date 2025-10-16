@@ -73,5 +73,3 @@ class Health_Check_Debug_Log_Viewer extends Health_Check_Tool {
 		endif;
 	}
 }
-
-new Health_Check_Debug_Log_Viewer();

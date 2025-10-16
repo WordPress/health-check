@@ -25,6 +25,24 @@ class Health_Check {
 	public $admin_notices = array();
 
 	/**
+	 * Instances of available tools.
+	 * 
+	 * @var Health_Check_Tool[]
+	 */
+	private $tools = array();
+
+	/**
+	 * Register a tool.
+	 * 
+	 * @param Health_Check_Tool $tool Instance of a tool to register.
+	 */
+	public function add_tool( $tool ) {
+		if ( $tool instanceof Health_Check_Tool ) {
+			$this->tools[ get_class( $tool ) ] = $tool;
+		}
+	}
+
+	/**
 	 * Plugin initiation.
 	 *
 	 * A helper function, called by `HealthCheck::__construct()` to initiate actions, hooks and other features needed.

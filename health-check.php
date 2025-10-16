@@ -81,6 +81,21 @@ add_action(
 		// Initialize our plugin.
 		$health_check = new Health_Check();
 
+		$tools = array(
+			new Health_Check_Beta_Features(),
+			new Health_Check_Debug_Log_Viewer(),
+			new Health_Check_Files_Integrity(),
+			new Health_Check_Htaccess(),
+			new Health_Check_Mail_Check(),
+			new Health_Check_PHPInfo(),
+			new Health_Check_Plugin_Compatibility(),
+			new Health_Check_RobotsTxt(),
+		);
+
+		foreach ( $tools as $tool ) {
+			$health_check->add_tool( $tool );
+		}
+
 		$health_check->init();
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {

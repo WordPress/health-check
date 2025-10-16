@@ -66,5 +66,3 @@ class Health_Check_Beta_Features extends Health_Check_Tool {
 	}
 
 }
-
-new Health_Check_Beta_Features();

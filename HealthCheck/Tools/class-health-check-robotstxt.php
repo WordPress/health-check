@@ -42,5 +42,3 @@ class Health_Check_Robotstxt extends Health_Check_Tool {
 	}
 
 }
-
-new Health_Check_Robotstxt();
