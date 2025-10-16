@@ -19,9 +19,6 @@
 
 namespace HealthCheck;
 
-// Check that the file is not accessed directly.
-use Health_Check;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
@@ -79,17 +76,17 @@ add_action(
 		require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-beta-features.php' );
 
 		// Initialize our plugin.
-		$health_check = new Health_Check();
+		$health_check = new \Health_Check();
 
 		$tools = array(
-			new Health_Check_Beta_Features(),
-			new Health_Check_Debug_Log_Viewer(),
-			new Health_Check_Files_Integrity(),
-			new Health_Check_Htaccess(),
-			new Health_Check_Mail_Check(),
-			new Health_Check_PHPInfo(),
-			new Health_Check_Plugin_Compatibility(),
-			new Health_Check_RobotsTxt(),
+			new \Health_Check_Beta_Features(),
+			new \Health_Check_Debug_Log_Viewer(),
+			new \Health_Check_Files_Integrity(),
+			new \Health_Check_Htaccess(),
+			new \Health_Check_Mail_Check(),
+			new \Health_Check_PHPInfo(),
+			new \Health_Check_Plugin_Compatibility(),
+			new \Health_Check_RobotsTxt(),
 		);
 
 		foreach ( $tools as $tool ) {
