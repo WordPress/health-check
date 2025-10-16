@@ -78,7 +78,14 @@ class Health_Check {
 	 * Initialize our health check tools. 
 	 */
 	public function init_tools() {
-		foreach ( $this->tools as $tool ) {
+		/**
+		 * Filter the tools available under the Tools tab.
+		 * 
+		 * @param Health_Check_Tool[] $tools Array of tool instances indexed by class name.
+		 */
+		$tools = apply_filters( 'health_check_tools', $this->tools );
+
+		foreach ( $tools as $tool ) {
 			add_filter( 'health_check_tools_tab', array( $tool, 'tab_setup' ) );
 
 			$tool->init();
