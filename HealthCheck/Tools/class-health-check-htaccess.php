@@ -11,11 +11,9 @@
  */
 class Health_Check_Htaccess extends Health_Check_Tool {
 
-	public function __construct() {
+	public function init() {
 		$this->label       = __( '.htaccess Viewer', 'health-check' );
 		$this->description = __( 'The <code>.htaccess</code> file tells your server (if supported) how to handle links and file requests. This file usually requires direct server access to view, but if your system supports these files, you can verify its content here.', 'health-check' );
-
-		parent::__construct();
 	}
 
 	public function tab_content() {

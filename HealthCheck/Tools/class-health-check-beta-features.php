@@ -11,11 +11,9 @@
  */
 class Health_Check_Beta_Features extends Health_Check_Tool {
 
-	public function __construct() {
+	public function init() {
 		$this->label       = __( 'Beta features', 'health-check' );
 		$this->description = __( 'The plugin may contain beta features, which you as the site owner can enable or disable as you wish.', 'health-check' );
-
-		parent::__construct();
 
 		add_action( 'admin_init', array( $this, 'toggle_beta_features' ) );
 	}

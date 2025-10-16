@@ -11,14 +11,12 @@
  */
 class Health_Check_Files_Integrity extends Health_Check_Tool {
 
-	public function __construct() {
+	public function init() {
 		$this->label       = __( 'File integrity', 'health-check' );
 		$this->description = __( 'The File Integrity checks all the core files with the <code>checksums</code> provided by the WordPress API to see if they are intact. If there are changes you will be able to make a Diff between the files hosted on WordPress.org and your installation to see what has been changed.', 'health-check' );
 
 		add_action( 'wp_ajax_health-check-files-integrity-check', array( $this, 'run_files_integrity_check' ) );
 		add_action( 'wp_ajax_health-check-view-file-diff', array( $this, 'view_file_diff' ) );
-
-		parent::__construct();
 	}
 
 	/**

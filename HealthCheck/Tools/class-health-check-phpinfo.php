@@ -10,7 +10,7 @@
  */
 class Health_Check_Phpinfo extends Health_Check_Tool {
 
-	public function __construct() {
+	public function init() {
 		$this->label = __( 'PHP Info', 'health-check' );
 
 		if ( ! function_exists( 'phpinfo' ) ) {
@@ -20,8 +20,6 @@ class Health_Check_Phpinfo extends Health_Check_Tool {
 		}
 
 		add_action( 'site_health_tab_content', array( $this, 'add_site_health_tab_content' ) );
-
-		parent::__construct();
 	}
 
 	/**

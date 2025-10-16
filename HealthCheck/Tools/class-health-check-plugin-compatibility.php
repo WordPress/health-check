@@ -2,7 +2,7 @@
 
 class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 
-	public function __construct() {
+	public function init() {
 		$this->label       = __( 'Plugin compatibility', 'health-check' );
 		$this->description = sprintf(
 			'%s<br>%s',
@@ -11,8 +11,6 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		);
 
 		add_action( 'rest_api_init', array( $this, 'register_plugin_compat_rest_route' ) );
-
-		parent::__construct();
 	}
 
 	public function register_plugin_compat_rest_route() {
