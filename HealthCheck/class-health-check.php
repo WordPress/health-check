@@ -48,8 +48,8 @@ class Health_Check {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'plugins_loaded', array( $this, 'load_i18n' ) );
 		add_action( 'plugins_loaded', array( $this, 'init_tools' ) );
+		add_action( 'init', array( $this, 'load_i18n' ) );
 
 		add_filter( 'plugin_action_links', array( $this, 'troubleshoot_plugin_action' ), 20, 4 );
 		add_filter( 'plugin_action_links_' . plugin_basename( HEALTH_CHECK_PLUGIN_FILE ), array( $this, 'page_plugin_action' ) );
