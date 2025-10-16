@@ -49,6 +49,7 @@ class Health_Check {
 	 */
 	public function init() {
 		add_action( 'plugins_loaded', array( $this, 'load_i18n' ) );
+		add_action( 'plugins_loaded', array( $this, 'init_tools' ) );
 
 		add_filter( 'plugin_action_links', array( $this, 'troubleshoot_plugin_action' ), 20, 4 );
 		add_filter( 'plugin_action_links_' . plugin_basename( HEALTH_CHECK_PLUGIN_FILE ), array( $this, 'page_plugin_action' ) );
@@ -70,6 +71,17 @@ class Health_Check {
 		add_action( 'site_health_tab_content', array( $this, 'add_site_health_tab_content' ) );
 
 		add_action( 'init', array( $this, 'maybe_remove_old_scheduled_events' ) );
+	}
+
+	/**
+	 * Initialize our health check tools. 
+	 */
+	public function init_tools() {
+		foreach ( $this->tools as $tool ) {
+			add_filter( 'health_check_tools_tab', array( $tool, 'tab_setup' ) );
+
+			$tool->init();
+		}
 	}
 
 	/**
