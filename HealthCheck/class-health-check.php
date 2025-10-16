@@ -21,14 +21,14 @@ class Health_Check {
 
 	/**
 	 * Instances of available tools.
-	 * 
+	 *
 	 * @var Health_Check_Tool[]
 	 */
 	private $tools = array();
 
 	/**
 	 * Register a tool.
-	 * 
+	 *
 	 * @param Health_Check_Tool $tool Instance of a tool to register.
 	 */
 	public function add_tool( $tool ) {
@@ -75,12 +75,12 @@ class Health_Check {
 	}
 
 	/**
-	 * Initialize our health check tools. 
+	 * Initialize our health check tools.
 	 */
 	public function init_tools() {
 		/**
 		 * Filter the tools available under the Tools tab.
-		 * 
+		 *
 		 * @param Health_Check_Tool[] $tools Array of tool instances indexed by class name.
 		 */
 		$tools = apply_filters( 'health_check_tools', $this->tools );
