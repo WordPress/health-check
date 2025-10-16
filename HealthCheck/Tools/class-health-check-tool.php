@@ -12,6 +12,10 @@ abstract class Health_Check_Tool {
 	protected $description;
 	protected $label;
 
+	public function __construct() {
+		// Legacy fallback. Please use init() in child classes for your bootstrap logic.
+	}
+
 	public function init() {
 		// To be used by child classes as needed. Should define $this->label and $this->description.
 	}
