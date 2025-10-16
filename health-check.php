@@ -79,7 +79,9 @@ add_action(
 		require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-beta-features.php' );
 
 		// Initialize our plugin.
-		new Health_Check();
+		$health_check = new Health_Check();
+
+		$health_check->init();
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			require_once( dirname( __FILE__ ) . '/HealthCheck/class-cli.php' );

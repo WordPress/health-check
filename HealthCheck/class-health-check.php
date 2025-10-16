@@ -25,17 +25,6 @@ class Health_Check {
 	public $admin_notices = array();
 
 	/**
-	 * HealthCheck constructor.
-	 *
-	 * @uses Health_Check::init()
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		$this->init();
-	}
-
-	/**
 	 * Plugin initiation.
 	 *
 	 * A helper function, called by `HealthCheck::__construct()` to initiate actions, hooks and other features needed.
