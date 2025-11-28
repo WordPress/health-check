@@ -36,7 +36,7 @@ class Health_Check_Debug_Log_Viewer extends Health_Check_Tool {
 			);
 		}
 
-		// Only read the last 200k of the log file to avoid Oout of memory errors.
+		// Only read the last 200k of the log file to avoid Out of memory errors.
 		$debug_log = file_get_contents( $logfile, null, null, max( 0, filesize( $logfile ) - 200000 ) );
 
 		if ( false === $debug_log ) {
