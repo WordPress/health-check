@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Set the MU plugin version.
-define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.9.2' );
+define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.9.3' );
 
 class Health_Check_Troubleshooting_MU {
 	private $disable_hash    = null;
@@ -36,6 +36,7 @@ class Health_Check_Troubleshooting_MU {
 	);
 
 	private $default_themes = array(
+		'twentytwentyfive',
 		'twentytwentyfour',
 		'twentytwentythree',
 		'twentytwentytwo',
