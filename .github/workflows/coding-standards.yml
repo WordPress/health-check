@@ -99,7 +99,6 @@ jobs:
           npm --version
           node --version
           git --version
-          svn --version
 
       - name: Install Dependencies
         run: npm ci
