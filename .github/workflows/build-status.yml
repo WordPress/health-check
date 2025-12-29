@@ -24,22 +24,22 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Set up PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2.36.0
         with:
           php-version: '7.4'
           coverage: none
           tools: composer, cs2pr
 
       - name: Install NodeJS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: 16
 
       - name: Cache NodeJS modules
-        uses: actions/cache@v3
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         env:
           cache-name: cache-node-modules
         with:
@@ -57,7 +57,7 @@ jobs:
           npm --version
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v2
+        uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3.1.1
         with:
           composer-options: "--no-progress --no-ansi --no-interaction --no-dev"
 
@@ -70,7 +70,7 @@ jobs:
       - name: Build plugin
         run: npm run build
 
-      # Build a zip of master, but only if this is a push workflow scenario.
+      # Build a zip of trunk, but only if this is a push workflow scenario.
       - name: Set plugin build version
         if: ${{ github.event_name == 'push' }}
         run: |
@@ -91,8 +91,8 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: npm run plugin-zip
 
-      - name: Upload zip of master at this time
-        uses: actions/upload-artifact@v2
+      - name: Upload zip of trunk at this time
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: ${{ github.event_name == 'push' }}
         with:
           name: health-check-latest
