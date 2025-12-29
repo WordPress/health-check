@@ -1,3 +1,5 @@
+@use "../variables";
+
 #health-check-dashboard-widget {
 
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -33,7 +35,7 @@
 
 			p {
 
-				color: $font_color__troubleshooting_mode;
+				color: variables.$font_color__troubleshooting_mode;
 				font-size: 1.2rem;
 			}
 		}
@@ -42,10 +44,10 @@
 
 			p {
 
-				font-size: $font_size__text;
+				font-size: variables.$font_size__text;
 			}
 
-			color: $font_color__troubleshooting_mode;
+			color: variables.$font_color__troubleshooting_mode;
 			margin-left: 0;
 		}
 
@@ -74,7 +76,7 @@
 
 		li {
 
-			font-size: $font_size__text;
+			font-size: variables.$font_size__text;
 
 			@media all and (max-width: 870px) {
 

@@ -1,3 +1,5 @@
+@use "../variables";
+
 .health-check-accordion {
 
 	border: 1px solid #e2e4e7;
@@ -35,7 +37,7 @@
 		justify-content: space-between;
 		user-select: auto;
 
-		@media all and (max-width: $breakpoint_min__medium) {
+		@media all and (max-width: variables.$breakpoint_min__medium) {
 
 			flex-direction: column;
 			align-items: flex-start;

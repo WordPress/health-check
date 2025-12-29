@@ -5,17 +5,17 @@
   },
   "description": "WordPress site health tester, and troubleshooting tools for end users and anyone providing support",
   "devDependencies": {
-    "@wordpress/env": "~10.22.0",
-    "@wordpress/scripts": "~26.6.0",
-    "@wordpress/stylelint-config": "~21.19.0",
-    "postcss-scss": "~4.0.6"
+    "@wordpress/env": "~10.37.0",
+    "@wordpress/scripts": "~31.2.0",
+    "@wordpress/stylelint-config": "~23.29.0",
+    "stylelint-scss": "^6.14.0"
   },
   "dependencies": {
     "clipboard": "~2.0.11",
     "html2canvas": "^1.4.1"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=24"
   },
   "keywords": [
     "support",
@@ -38,11 +38,8 @@
     "plugin-zip": "wp-scripts plugin-zip"
   },
   "stylelint": {
-    "extends": "@wordpress/stylelint-config",
-    "customSyntax": "postcss-scss",
     "rules": {
-      "no-descending-specificity": null,
-      "no-invalid-position-at-import-rule": null
+      "no-descending-specificity": null
     }
   },
   "files": [

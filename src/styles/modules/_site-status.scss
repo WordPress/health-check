@@ -1,3 +1,5 @@
+@use "../variables";
+
 .site-health-issues-wrapper {
 
 	margin-bottom: 3rem;
@@ -46,7 +48,7 @@ h3 {
 	width: 100%;
 	margin-top: 0;
 
-	@media all and (min-width: $breakpoint_min__medium) {
+	@media all and (min-width: variables.$breakpoint_min__medium) {
 
 		margin: 5rem 0;
 	}
@@ -71,7 +73,7 @@ h3 {
 
 	.encouragement {
 
-		font-family: $font_family__h1;
+		font-family: variables.$font_family__h1;
 		font-size: 1.5rem;
 		font-weight: 600;
 	}

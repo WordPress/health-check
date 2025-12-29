@@ -1,4 +1,5 @@
-@import "variables";
+@use "sass:meta";
+@use "variables";
 
 body {
 
@@ -33,11 +34,11 @@ body {
 			h2 {
 
 				padding: 1rem 0.5rem;
-				font-size: $font_size__h2;
+				font-size: variables.$font_size__h2;
 				font-weight: 600;
-				font-family: $font_family__h2;
+				font-family: variables.$font_family__h2;
 
-				@media all and (min-width: $breakpoint_min__large) {
+				@media all and (min-width: variables.$breakpoint_min__large) {
 
 					padding: 1rem 0;
 				}
@@ -49,7 +50,7 @@ body {
 
 			li {
 
-				font-size: $font_size__text;
+				font-size: variables.$font_size__text;
 				line-height: 1.5;
 			}
 		}
@@ -58,7 +59,7 @@ body {
 
 			.button {
 
-				font-size: $font_size__text;
+				font-size: variables.$font_size__text;
 			}
 		}
 
@@ -80,7 +81,7 @@ body {
 				display: inline-grid; /* stylelint-disable-line declaration-block-no-duplicate-properties */
 				grid-template-columns: 1fr 1fr 1fr 1fr;
 
-				@media all and (max-width: $breakpoint_min__small) {
+				@media all and (max-width: variables.$breakpoint_min__small) {
 
 					-ms-grid-columns: 1fr 1fr;
 					grid-template-columns: 1fr 1fr;
@@ -136,7 +137,7 @@ body {
 			max-width: 800px;
 			margin: 0 auto;
 
-			@media all and (max-width: $breakpoint_core__medium) {
+			@media all and (max-width: variables.$breakpoint_core__medium) {
 
 				margin: 0 22px;
 			}
@@ -151,7 +152,7 @@ body {
 				th,
 				td {
 
-					font-size: $font_size__text;
+					font-size: variables.$font_size__text;
 
 					&:first-child {
 
@@ -167,7 +168,7 @@ body {
 					width: 100%;
 					box-sizing: border-box;
 					display: block;
-					font-size: $font_size__text;
+					font-size: variables.$font_size__text;
 					word-wrap: break-word;
 
 					&:first-child {
@@ -194,7 +195,7 @@ body {
 				content: "\f147";
 				display: inline-block;
 				color: #46b450;
-				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
+				font-family: dashicons; /* stylelint-disable-line font-family-no-missing-generic-family-keyword */
 			}
 		}
 
@@ -205,7 +206,7 @@ body {
 				content: "\f460";
 				display: inline-block;
 				color: #ffb900;
-				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
+				font-family: dashicons; /* stylelint-disable-line font-family-no-missing-generic-family-keyword */
 
 			}
 		}
@@ -217,7 +218,7 @@ body {
 				content: "\f348";
 				display: inline-block;
 				color: #00a0d2;
-				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
+				font-family: dashicons; /* stylelint-disable-line font-family-no-missing-generic-family-keyword */
 			}
 		}
 
@@ -229,7 +230,7 @@ body {
 				content: "\f335";
 				display: inline-block;
 				color: #dc3232;
-				font-family: dashicons; // stylelint-disable-line font-family-no-missing-generic-family-keyword
+				font-family: dashicons; /* stylelint-disable-line font-family-no-missing-generic-family-keyword */
 			}
 		}
 
@@ -238,30 +239,30 @@ body {
 		}
 
 		/* Info screen styles */
-		@import "modules/info";
+		@include meta.load-css("modules/info");
 
 		/* Tools screen styles */
-		@import "modules/tools";
+		@include meta.load-css("modules/tools");
 
 		/* Diff viewer styles */
-		@import "modules/diff-viewer";
+		@include meta.load-css("modules/diff-viewer");
 
 		/* Site Status styles */
-		@import "modules/site-status";
+		@include meta.load-css("modules/site-status");
 
 		/* Screenshot screen styles */
-		@import "modules/screenshots";
+		@include meta.load-css("modules/screenshots");
 	}
 
 	/* Accordion styles */
-	@import "modules/accordion";
+	@include meta.load-css("modules/accordion");
 }
 
 /* Modal styles */
-@import "modules/modal";
+@include meta.load-css("modules/modal");
 
 /* Progress indicator styles */
-@import "modules/progress";
+@include meta.load-css("modules/progress");
 
 /* Troubleshooting Mode styles */
-@import "modules/troubleshooting-mode";
+@include meta.load-css("modules/troubleshooting-mode");
