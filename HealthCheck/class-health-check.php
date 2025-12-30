@@ -46,8 +46,6 @@ class Health_Check {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'plugins_loaded', array( $this, 'load_i18n' ) );
-
 		add_filter( 'plugin_action_links', array( $this, 'troubleshoot_plugin_action' ), 20, 4 );
 		add_filter( 'plugin_action_links_' . plugin_basename( HEALTH_CHECK_PLUGIN_FILE ), array( $this, 'page_plugin_action' ) );
 
@@ -194,21 +192,6 @@ class Health_Check {
 		);
 
 		wp_redirect( admin_url( 'plugins.php' ) );
-	}
-
-	/**
-	 * Load translations.
-	 *
-	 * Loads the textdomain needed to get translations for our plugin.
-	 *
-	 * @uses load_plugin_textdomain()
-	 * @uses basename()
-	 * @uses dirname()
-	 *
-	 * @return void
-	 */
-	public function load_i18n() {
-		load_plugin_textdomain( 'health-check', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
