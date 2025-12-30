@@ -13,17 +13,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div class="health-check-body">
-	<p class="notice notice-warning notice-inline">
-		<?php esc_html_e( 'The Troubleshooting Mode from the Health Check plugin will be available as a standalone plugin in the future, since the primary Health Check features have been available in WordPress since version 5.2.', 'health-check' ); ?>
-		<br>
-		<br>
+	<div class="notice notice-warning inline">
+		<p>
+			<?php esc_html_e( 'The Troubleshooting Mode from the Health Check plugin will be available as a standalone plugin in the future, since the primary Health Check features have been available in WordPress since version 5.2.', 'health-check' ); ?>
+		</p>
 
-		<span>
+		<p>
 			<a href="https://wordpress.org/plugins/troubleshooting"><?php esc_html_e( 'Troubleshooting plugin page', 'health-check' ); ?></a>
 			-
 			<a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=troubleshooting&TB_iframe=true&width=772&height=500' ) ); ?>" class="thickbox open-plugin-details-modal" data-title="Troubleshooting"><?php esc_html_e( 'Troubleshooting plugin details', 'health-check' ); ?></a>
-		</span>
-	</p>
+		</p>
+	</div>
 
 	<h2>
 		<?php esc_html_e( 'Troubleshooting mode', 'health-check' ); ?>

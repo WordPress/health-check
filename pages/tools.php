@@ -13,18 +13,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div class="health-check-body">
-	<p class="notice notice-warning notice-inline">
-		<?php esc_html_e( 'The additional tools for the Health Check plugin will be available as a standalone plugin in the future, since the primary Health Check features have been available in WordPress since version 5.2.', 'health-check' ); ?>
+	<div class="notice notice-warning inline">
+		<p>
+			<?php esc_html_e( 'The additional tools for the Health Check plugin will be available as a standalone plugin in the future, since the primary Health Check features have been available in WordPress since version 5.2.', 'health-check' ); ?>
+		</p>
 
-		<br>
-		<br>
-
-		<span>
+		<p>
 			<a href="https://wordpress.org/plugins/site-health-tools/"><?php esc_html_e( 'Site Health Tools plugin page', 'health-check' ); ?></a>
 			-
 			<a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=site-health-tools&TB_iframe=true&width=772&height=500' ) ); ?>" class="thickbox open-plugin-details-modal" data-title="Site Health Tools"><?php esc_html_e( 'Site Health Tools details', 'health-check' ); ?></a>
-		</span>
-	</p>
+		</p>
+	</div>
 
 	<h2>
 		<?php esc_html_e( 'Tools', 'health-check' ); ?>
