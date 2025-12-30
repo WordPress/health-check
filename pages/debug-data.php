@@ -16,7 +16,7 @@ $info = WP_Debug_Data::debug_data();
 ?>
 
 <div class="notice notice-error hide-if-js">
-	<p><?php _e( 'The Site Health check requires JavaScript.' ); ?></p>
+	<p><?php _e( 'The Site Health check requires JavaScript.', 'health-check' ); ?></p>
 </div>
 
 <div class="health-check-body health-check-debug-tab hide-if-no-js">
@@ -29,25 +29,25 @@ $info = WP_Debug_Data::debug_data();
 	?>
 
 	<h2>
-		<?php _e( 'Site Health Info' ); ?>
+		<?php _e( 'Site Health Info', 'health-check' ); ?>
 	</h2>
 
 	<p>
 		<?php
 		/* translators: %s: URL to Site Health Status page. */
-		printf( __( 'This page can show you every detail about the configuration of your WordPress website. For any improvements that could be made, see the <a href="%s">Site Health Status</a> page.' ), esc_url( admin_url( 'site-health.php' ) ) );
+		printf( __( 'This page can show you every detail about the configuration of your WordPress website. For any improvements that could be made, see the <a href="%s">Site Health Status</a> page.', 'health-check' ), esc_url( admin_url( 'site-health.php' ) ) );
 		?>
 	</p>
 	<p>
-		<?php _e( 'If you want to export a handy list of all the information on this page, you can use the button below to copy it to the clipboard. You can then paste it in a text file and save it to your device, or paste it in an email exchange with a support engineer or theme/plugin developer for example.' ); ?>
+		<?php _e( 'If you want to export a handy list of all the information on this page, you can use the button below to copy it to the clipboard. You can then paste it in a text file and save it to your device, or paste it in an email exchange with a support engineer or theme/plugin developer for example.', 'health-check' ); ?>
 	</p>
 
 	<div class="site-health-copy-buttons">
 		<div class="copy-button-wrapper">
 			<button type="button" class="button copy-button" data-clipboard-text="<?php echo esc_attr( WP_Debug_Data::format( $info, 'debug' ) ); ?>">
-				<?php _e( 'Copy site info to clipboard' ); ?>
+				<?php _e( 'Copy site info to clipboard', 'health-check' ); ?>
 			</button>
-			<span class="success hidden" aria-hidden="true"><?php _e( 'Copied!' ); ?></span>
+			<span class="success hidden" aria-hidden="true"><?php _e( 'Copied!', 'health-check' ); ?></span>
 		</div>
 	</div>
 

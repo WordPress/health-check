@@ -53,7 +53,7 @@ if ( ! function_exists( 'wp_get_environment_type' ) ) {
 		if ( defined( 'WP_ENVIRONMENT_TYPES' ) && function_exists( '_deprecated_argument' ) ) {
 			if ( function_exists( '__' ) ) {
 				/* translators: %s: WP_ENVIRONMENT_TYPES */
-				$message = sprintf( __( 'The %s constant is no longer supported.' ), 'WP_ENVIRONMENT_TYPES' );
+				$message = sprintf( __( 'The %s constant is no longer supported.', 'health-check' ), 'WP_ENVIRONMENT_TYPES' );
 			} else {
 				$message = sprintf( 'The %s constant is no longer supported.', 'WP_ENVIRONMENT_TYPES' );
 			}
