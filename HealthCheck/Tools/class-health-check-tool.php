@@ -18,8 +18,18 @@ abstract class Health_Check_Tool {
 	protected $label;
 
 	public function __construct() {
+		add_action( 'init', array( $this, 'init' ) );
 		add_filter( 'health_check_tools_tab', array( $this, 'tab_setup' ) );
 	}
+
+	/**
+	 * Initialize the tool.
+	 *
+	 * This method should be implemented by child classes to set the label and description.
+	 *
+	 * @return void
+	 */
+	abstract public function init();
 
 	public function tab_setup( $tabs ) {
 		if ( ! isset( $this->label ) || empty( $this->label ) ) {

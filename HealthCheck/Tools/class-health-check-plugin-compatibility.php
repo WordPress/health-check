@@ -3,16 +3,18 @@
 class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 
 	public function __construct() {
+		add_action( 'rest_api_init', array( $this, 'register_plugin_compat_rest_route' ) );
+
+		parent::__construct();
+	}
+
+	public function init() {
 		$this->label       = __( 'Plugin compatibility', 'health-check' );
 		$this->description = sprintf(
 			'%s<br>%s',
 			__( 'Attempt to identify the compatibility of your plugins before upgrading PHP, note that a compatibility check may not always be accurate, and you may want to contact the plugin author to confirm that things will continue working.', 'health-check' ),
 			__( 'The compatibility check will need to send requests to the <a href="https://wptide.org">WPTide</a> project to fetch the test results for each of your plugins.', 'health-check' )
 		);
-
-		add_action( 'rest_api_init', array( $this, 'register_plugin_compat_rest_route' ) );
-
-		parent::__construct();
 	}
 
 	public function register_plugin_compat_rest_route() {

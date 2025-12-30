@@ -16,6 +16,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Health_Check_Phpinfo extends Health_Check_Tool {
 
 	public function __construct() {
+		add_action( 'site_health_tab_content', array( $this, 'add_site_health_tab_content' ) );
+
+		parent::__construct();
+	}
+
+	public function init() {
 		$this->label = __( 'PHP Info', 'health-check' );
 
 		if ( ! function_exists( 'phpinfo' ) ) {
@@ -23,10 +29,6 @@ class Health_Check_Phpinfo extends Health_Check_Tool {
 		} else {
 			$this->description = __( 'Some scenarios require you to look up more detailed server configurations than what is normally required. The PHP Info page allows you to view all available configuration options for your PHP setup. Please be advised that WordPress does not guarantee that any information shown on that page may not be considered sensitive.', 'health-check' );
 		}
-
-		add_action( 'site_health_tab_content', array( $this, 'add_site_health_tab_content' ) );
-
-		parent::__construct();
 	}
 
 	/**
