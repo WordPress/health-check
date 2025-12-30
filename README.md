@@ -1,6 +1,12 @@
 # Health Check
 
-![Build Status](https://github.com/WordPress/health-check/workflows/Build%20Status/badge.svg)
+> [!WARNING]
+> This plugin has been deprecated, and its core features included in WordPress since version 5.2
+> 
+> ---
+> Troubleshooting Mode, and Site Health Tools have been moved to their own canonical plugins.
+> 
+> [Troubleshooting](https://github.com/WordPress/site-health-troubleshooting) - [Site Health Tools](https://github.com/WordPress/site-health-tools)
 
 Health Check is a WordPress plugin that will perform a number of checks on your WordPress install to detect common configuration errors and known issues.
 
