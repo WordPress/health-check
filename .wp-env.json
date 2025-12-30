@@ -1,6 +1,10 @@
 {
   "core": "WordPress/WordPress",
-  "plugins": [ "." ],
+  "plugins": [
+	  ".",
+	  "https://downloads.wordpress.org/plugin/query-monitor.zip",
+	  "https://downloads.wordpress.org/plugin/plugin-check.zip"
+  ],
   "mappings": {
 	"wp-content/mu-plugins/health-check-troubleshooting-mode.php": "./mu-plugin/health-check-troubleshooting-mode.php"
   },
