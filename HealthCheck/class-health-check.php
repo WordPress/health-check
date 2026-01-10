@@ -126,7 +126,7 @@ class Health_Check {
 	 *
 	 * @return string
 	 */
-	public static function current_tab() {
+	public static function current_tab(): string {
 		if ( empty( $_GET['tab'] ) ) {
 			return 'site-status';
 		}
