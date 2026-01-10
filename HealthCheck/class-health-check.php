@@ -124,8 +124,10 @@ class Health_Check {
 	/**
 	 * Get the current Site Health tab safely.
 	 *
-	 * @return string
+	 * @return string Current Site Health tab slug.
 	 */
+	public static function current_tab() {
+
 	public static function current_tab(): string {
 		if ( empty( $_GET['tab'] ) ) {
 			return 'site-status';
