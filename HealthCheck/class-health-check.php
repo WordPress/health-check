@@ -122,13 +122,11 @@ class Health_Check {
 	}
 
 	/**
-	 * Get the current Site Health tab safely.
+	 * Get the current Site Health tab.
 	 *
 	 * @return string Current Site Health tab slug.
 	 */
 	public static function current_tab() {
-
-	public static function current_tab(): string {
 		if ( empty( $_GET['tab'] ) ) {
 			return 'site-status';
 		}
@@ -138,6 +136,9 @@ class Health_Check {
 
 	/**
 	 * Display styled admin notice.
+	 *
+	 * @param string $message Notice message.
+	 * @param string $status  Notice type.
 	 *
 	 * @return void
 	 */
@@ -166,6 +167,8 @@ class Health_Check {
 
 	/**
 	 * Get filesystem credentials.
+	 *
+	 * @param array $args Optional arguments.
 	 *
 	 * @return bool
 	 */
