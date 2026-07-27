@@ -44,7 +44,7 @@ class Health_Check_Phpinfo extends Health_Check_Tool {
 		}
 
 		if ( 'phpinfo' === $tab ) {
-			include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/phpinfo.php' );
+			include_once HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/phpinfo.php';
 		}
 	}
 

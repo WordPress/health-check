@@ -2,9 +2,14 @@
 <ruleset name="WordPress Coding Standards">
     <description>Apply WordPress Coding Standards to all Health Check plugin files.</description>
 
-    <config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
+    <config name="installed_paths" value="vendor/wp-coding-standards/wpcs,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra" />
 
     <rule ref="WordPress-Core"/>
+
+    <!-- dirname( $path, 2 ) requires PHP 7.0; this plugin still supports PHP 5.6 (see phpcompat.xml.dist). -->
+    <rule ref="Modernize.FunctionCalls.Dirname.Nested">
+        <severity>0</severity>
+    </rule>
 
     <arg name="extensions" value="php"/>
 

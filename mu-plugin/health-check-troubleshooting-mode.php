@@ -463,7 +463,7 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return array
 	 */
-	function health_check_loopback_test_disable_plugins( $plugins ) {
+	public function health_check_loopback_test_disable_plugins( $plugins ) {
 		if ( ! $this->is_troubleshooting() || ! $this->override_active ) {
 			return $plugins;
 		}
@@ -497,7 +497,7 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return bool|string
 	 */
-	function has_default_theme() {
+	public function has_default_theme() {
 		foreach ( $this->default_themes as $default_theme ) {
 			if ( $this->theme_exists( $default_theme ) ) {
 				return $default_theme;
@@ -514,7 +514,7 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return bool
 	 */
-	function theme_exists( $theme_slug ) {
+	public function theme_exists( $theme_slug ) {
 		return is_dir( WP_CONTENT_DIR . '/themes/' . $theme_slug );
 	}
 
@@ -523,7 +523,7 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return bool
 	 */
-	function override_theme() {
+	public function override_theme() {
 		if ( ! $this->is_troubleshooting() ) {
 			return false;
 		}
@@ -541,7 +541,7 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return bool|string
 	 */
-	function health_check_troubleshoot_theme_stylesheet( $default ) {
+	public function health_check_troubleshoot_theme_stylesheet( $default ) {
 		if ( $this->self_fetching_theme ) {
 			return $default;
 		}
@@ -576,7 +576,7 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return bool|string
 	 */
-	function health_check_troubleshoot_theme_template( $default ) {
+	public function health_check_troubleshoot_theme_template( $default ) {
 		if ( $this->self_fetching_theme ) {
 			return $default;
 		}
@@ -615,13 +615,13 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return void
 	 */
-	function health_check_troubleshooter_mode_logout() {
+	public function health_check_troubleshooter_mode_logout() {
 		if ( isset( $_COOKIE['wp-health-check-disable-plugins'] ) ) {
 			$this->disable_troubleshooting_mode();
 		}
 	}
 
-	function disable_troubleshooting_mode() {
+	public function disable_troubleshooting_mode() {
 		unset( $_COOKIE['wp-health-check-disable-plugins'] );
 		setcookie( 'wp-health-check-disable-plugins', '', 0, COOKIEPATH, COOKIE_DOMAIN );
 		delete_option( 'health-check-allowed-plugins' );
@@ -708,7 +708,7 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return void
 	 */
-	function health_check_troubleshoot_get_captures() {
+	public function health_check_troubleshoot_get_captures() {
 		// Disable Troubleshooting Mode.
 		if ( isset( $_GET['health-check-disable-troubleshooting'] ) ) {
 			// Validate the cache or return early.
@@ -1041,19 +1041,19 @@ class Health_Check_Troubleshooting_MU {
 	 *
 	 * @return void
 	 */
-	function health_check_troubleshoot_menu_bar( $wp_menu ) {
+	public function health_check_troubleshoot_menu_bar( $wp_menu ) {
 		// We need some admin functions to make this a better user experience, so include that file.
 		if ( ! is_admin() ) {
-			require_once( trailingslashit( ABSPATH ) . 'wp-admin/includes/plugin.php' );
+			require_once trailingslashit( ABSPATH ) . 'wp-admin/includes/plugin.php';
 		}
 
 		// Make sure the updater tools are available since WordPress 5.5.0 auto-updates were introduced.
 		if ( ! function_exists( 'wp_is_auto_update_enabled_for_type' ) ) {
-			require_once( trailingslashit( ABSPATH ) . 'wp-admin/includes/update.php' );
+			require_once trailingslashit( ABSPATH ) . 'wp-admin/includes/update.php';
 		}
 
 		// Ensure the theme functions are available to us on every page.
-		include_once( trailingslashit( ABSPATH ) . 'wp-admin/includes/theme.php' );
+		include_once trailingslashit( ABSPATH ) . 'wp-admin/includes/theme.php';
 
 		// Add top-level menu item.
 		$wp_menu->add_menu(
@@ -1222,7 +1222,7 @@ class Health_Check_Troubleshooting_MU {
 				return false;
 			}
 
-			require_once( $plugin_file );
+			require_once $plugin_file;
 		}
 
 		$loopback_state = Health_Check_Loopback::can_perform_loopback();

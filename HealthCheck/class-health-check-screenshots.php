@@ -122,7 +122,7 @@ class Health_Check_Screenshots {
 			return;
 		}
 
-		include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/screenshots.php' );
+		include_once HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/screenshots.php';
 	}
 
 	public function add_site_health_navigation_tabs( $tabs ) {
@@ -172,19 +172,19 @@ class Health_Check_Screenshots {
 				'args'                => array(
 					'nonce'      => array(
 						'required'          => true,
-						'validate_callback' => function( $param, $request, $key ) {
+						'validate_callback' => function ( $param, $request, $key ) {
 							return wp_verify_nonce( $param, 'health-check-screenshot' );
 						},
 					),
 					'label'      => array(
 						'required'          => true,
-						'validate_callback' => function( $param, $request, $key ) {
+						'validate_callback' => function ( $param, $request, $key ) {
 							return is_string( $param ) && ! empty( $param );
 						},
 					),
 					'screenshot' => array(
 						'required'          => true,
-						'validate_callback' => function( $param, $request, $key ) {
+						'validate_callback' => function ( $param, $request, $key ) {
 							return is_string( $param ) && 'data:image/jpeg;' === substr( $param, 0, 16 );
 						},
 					),
@@ -238,7 +238,7 @@ class Health_Check_Screenshots {
 		}
 
 		if ( ! is_admin() ) {
-			require_once( trailingslashit( ABSPATH ) . 'wp-admin/includes/plugin.php' );
+			require_once trailingslashit( ABSPATH ) . 'wp-admin/includes/plugin.php';
 		}
 
 		// Add top-level menu item.
@@ -253,7 +253,6 @@ class Health_Check_Screenshots {
 			)
 		);
 	}
-
 }
 
 new Health_Check_Screenshots();

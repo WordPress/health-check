@@ -126,21 +126,21 @@ class WP_Site_Health {
 	}
 
 	public function site_health_tab( $tab ) {
-		include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-health-header.php' );
+		include_once HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-health-header.php';
 
 		switch ( Health_Check::current_tab() ) {
 			case 'debug':
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/debug-data.php' );
+				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/debug-data.php';
 				break;
 			case 'troubleshoot':
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php' );
+				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php';
 				break;
 			case 'tools':
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php' );
+				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php';
 				break;
 			case 'site-status':
 			default:
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-status.php' );
+				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/site-status.php';
 		}
 
 		// Close out the div tag opened as a wrapper in the header.

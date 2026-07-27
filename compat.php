@@ -1,7 +1,7 @@
 <?php
 
 // Manually include the versions file as we can't always rely on `get_bloginfo()` to fetch versions.
-include ABSPATH . WPINC . '/version.php';
+require ABSPATH . WPINC . '/version.php';
 
 if ( ! function_exists( 'wp_timezone_string' ) ) {
 	/**

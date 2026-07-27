@@ -36,7 +36,7 @@ define( 'HEALTH_CHECK_PLUGIN_DIRECTORY', plugin_dir_path( __FILE__ ) );
 define( 'HEALTH_CHECK_PLUGIN_URL', plugins_url( '/', __FILE__ ) );
 
 // Always include our compatibility file first.
-require_once( dirname( __FILE__ ) . '/compat.php' );
+require_once __DIR__ . '/compat.php';
 
 // Backwards compatible pull in of extra resources
 if ( ! class_exists( 'WP_Debug_Data' ) ) {
@@ -60,29 +60,29 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 
 add_action(
 	'plugins_loaded',
-	function() {
+	function () {
 		// Include class-files used by our plugin.
-		require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check.php' );
-		require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-loopback.php' );
-		require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-screenshots.php' );
-		require_once( dirname( __FILE__ ) . '/HealthCheck/class-health-check-troubleshoot.php' );
+		require_once __DIR__ . '/HealthCheck/class-health-check.php';
+		require_once __DIR__ . '/HealthCheck/class-health-check-loopback.php';
+		require_once __DIR__ . '/HealthCheck/class-health-check-screenshots.php';
+		require_once __DIR__ . '/HealthCheck/class-health-check-troubleshoot.php';
 
 		// Tools section.
-		require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-tool.php' );
-		require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-files-integrity.php' );
-		require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-mail-check.php' );
-		require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-debug-log-viewer.php' );
-		require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-plugin-compatibility.php' );
-		require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-phpinfo.php' );
-		require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-htaccess.php' );
-		require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-robotstxt.php' );
-		require_once( dirname( __FILE__ ) . '/HealthCheck/Tools/class-health-check-beta-features.php' );
+		require_once __DIR__ . '/HealthCheck/Tools/class-health-check-tool.php';
+		require_once __DIR__ . '/HealthCheck/Tools/class-health-check-files-integrity.php';
+		require_once __DIR__ . '/HealthCheck/Tools/class-health-check-mail-check.php';
+		require_once __DIR__ . '/HealthCheck/Tools/class-health-check-debug-log-viewer.php';
+		require_once __DIR__ . '/HealthCheck/Tools/class-health-check-plugin-compatibility.php';
+		require_once __DIR__ . '/HealthCheck/Tools/class-health-check-phpinfo.php';
+		require_once __DIR__ . '/HealthCheck/Tools/class-health-check-htaccess.php';
+		require_once __DIR__ . '/HealthCheck/Tools/class-health-check-robotstxt.php';
+		require_once __DIR__ . '/HealthCheck/Tools/class-health-check-beta-features.php';
 
 		// Initialize our plugin.
 		new Health_Check();
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			require_once( dirname( __FILE__ ) . '/HealthCheck/class-cli.php' );
+			require_once __DIR__ . '/HealthCheck/class-cli.php';
 		}
 	}
 );
