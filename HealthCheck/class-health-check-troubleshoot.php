@@ -28,7 +28,7 @@ class Health_Check_Troubleshoot {
 	 *
 	 * @return void
 	 */
-	static function initiate_troubleshooting_mode( $allowed_plugins = array() ) {
+	public static function initiate_troubleshooting_mode( $allowed_plugins = array() ) {
 		if ( ! is_array( $allowed_plugins ) ) {
 			$allowed_plugins = (array) $allowed_plugins;
 		}
@@ -49,7 +49,7 @@ class Health_Check_Troubleshoot {
 	 *
 	 * @return bool
 	 */
-	static function mu_plugin_exists() {
+	public static function mu_plugin_exists() {
 		return file_exists( WPMU_PLUGIN_DIR . '/health-check-troubleshooting-mode.php' );
 	}
 
@@ -60,7 +60,7 @@ class Health_Check_Troubleshoot {
 	 *
 	 * @return bool
 	 */
-	static function old_mu_plugin_exists() {
+	public static function old_mu_plugin_exists() {
 		return file_exists( WPMU_PLUGIN_DIR . '/health-check-disable-plugins.php' );
 	}
 
@@ -81,7 +81,7 @@ class Health_Check_Troubleshoot {
 	 *
 	 * @return bool
 	 */
-	static function setup_must_use_plugin( $redirect = true ) {
+	public static function setup_must_use_plugin( $redirect = true ) {
 		global $wp_filesystem;
 
 		// Make sure the `mu-plugins` directory exists.
@@ -128,7 +128,7 @@ class Health_Check_Troubleshoot {
 	 *
 	 * @return bool
 	 */
-	static function maybe_update_must_use_plugin() {
+	public static function maybe_update_must_use_plugin() {
 		if ( ! Health_Check_Troubleshoot::mu_plugin_exists() ) {
 			return false;
 		}
@@ -165,7 +165,7 @@ class Health_Check_Troubleshoot {
 	 *
 	 * @return void
 	 */
-	static function session_started() {
+	public static function session_started() {
 		Health_Check::display_notice(
 			sprintf(
 				'%s<br>%s',
@@ -211,7 +211,7 @@ class Health_Check_Troubleshoot {
 	 *
 	 * @return void
 	 */
-	static function show_enable_troubleshoot_form() {
+	public static function show_enable_troubleshoot_form() {
 		if ( isset( $_POST['health-check-troubleshoot-mode'] ) ) {
 			if ( Health_Check_Troubleshoot::mu_plugin_exists() ) {
 				if ( ! Health_Check_Troubleshoot::maybe_update_must_use_plugin() ) {

@@ -2,7 +2,7 @@
 <ruleset name="WordPress Coding Standards">
     <description>Apply WordPress Coding Standards to all Health Check plugin files.</description>
 
-    <config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
+    <config name="installed_paths" value="vendor/wp-coding-standards/wpcs,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra" />
 
     <rule ref="WordPress-Core"/>
 

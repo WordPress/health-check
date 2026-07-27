@@ -33,7 +33,7 @@ class Health_Check_Files_Integrity extends Health_Check_Tool {
 	 *
 	 * @return void
 	 */
-	function run_files_integrity_check() {
+	public function run_files_integrity_check() {
 		check_ajax_referer( 'health-check-files-integrity-check' );
 
 		$checksums = $this->call_checksum_api();
@@ -56,7 +56,7 @@ class Health_Check_Files_Integrity extends Health_Check_Tool {
 	*
 	* @return array
 	*/
-	function call_checksum_api() {
+	public function call_checksum_api() {
 		// Setup variables.
 		$wpversion = get_bloginfo( 'version' );
 		$wplocale  = get_locale();
@@ -91,7 +91,7 @@ class Health_Check_Files_Integrity extends Health_Check_Tool {
 	*
 	* @return array|bool
 	*/
-	function parse_checksum_results( $checksums ) {
+	public function parse_checksum_results( $checksums ) {
 		// Check if the checksums are valid
 		if ( false === $checksums ) {
 			return false;
@@ -169,7 +169,7 @@ class Health_Check_Files_Integrity extends Health_Check_Tool {
 	*
 	* @return void
 	*/
-	function create_the_response( $files ) {
+	public function create_the_response( $files ) {
 		$filepath = ABSPATH;
 		$output   = '';
 
@@ -229,7 +229,7 @@ class Health_Check_Files_Integrity extends Health_Check_Tool {
 	*
 	* @return void
 	*/
-	function view_file_diff() {
+	public function view_file_diff() {
 		check_ajax_referer( 'health-check-view-file-diff' );
 
 		if ( ! current_user_can( 'view_site_health_checks' ) ) {

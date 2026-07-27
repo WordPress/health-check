@@ -23,9 +23,9 @@ require_once $_tests_dir . '/includes/functions.php';
  */
 function _manually_load_plugin() {
 	// Load in our MU plugin first
-	require dirname( dirname( dirname( __FILE__ ) ) ) . '/src/php/assets/mu-plugin/health-check-troubleshooting-mode.php';
+	require dirname( __DIR__, 2 ) . '/src/php/assets/mu-plugin/health-check-troubleshooting-mode.php';
 
-	require dirname( dirname( dirname( __FILE__ ) ) ) . '/src/php/health-check.php';
+	require dirname( __DIR__, 2 ) . '/src/php/health-check.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 

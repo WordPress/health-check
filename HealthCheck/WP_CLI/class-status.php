@@ -70,5 +70,4 @@ class Status {
 			\WP_CLI\Utils\format_items( 'table', $test_result, array( 'test', 'type', 'result' ) );
 		}
 	}
-
 }

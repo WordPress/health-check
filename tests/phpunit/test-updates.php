@@ -118,5 +118,4 @@ class Health_Check_Updates_Test extends WP_UnitTestCase {
 				return $pre;
 		}
 	}
-
 }

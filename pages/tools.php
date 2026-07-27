@@ -71,5 +71,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php endforeach; ?>
 	</div>
 
-	<?php include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/modals/diff.php' ); ?>
+	<?php require_once HEALTH_CHECK_PLUGIN_DIRECTORY . '/modals/diff.php'; ?>
 </div>

@@ -96,7 +96,7 @@ class Health_Check {
 	 * @param WP_User  $user    The user object.
 	 * @return bool[] Filtered array of the user's capabilities.
 	 */
-	function maybe_grant_site_health_caps( $allcaps, $caps, $args, $user ) {
+	public function maybe_grant_site_health_caps( $allcaps, $caps, $args, $user ) {
 		if ( ! empty( $allcaps['install_plugins'] ) && ( ! is_multisite() || is_super_admin( $user->ID ) ) ) {
 			$allcaps['view_site_health_checks'] = true;
 		}
@@ -319,7 +319,7 @@ class Health_Check {
 		return $actions;
 	}
 
-	static function tabs() {
+	public static function tabs() {
 		return array(
 			''             => esc_html__( 'Status', 'health-check' ), // The status tab is the front page, and therefore has no tab key relation.
 			'debug'        => esc_html__( 'Info', 'health-check' ),
@@ -341,15 +341,15 @@ class Health_Check {
 	public function add_site_health_tab_content( $tab ) {
 		switch ( $tab ) {
 			case 'troubleshoot':
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php' );
+				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/troubleshoot.php';
 				break;
 			case 'tools':
-				include_once( HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php' );
+				include_once HEALTH_CHECK_PLUGIN_DIRECTORY . '/pages/tools.php';
 				break;
 		}
 	}
 
-	static function current_tab() {
+	public static function current_tab() {
 		return ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'site-status' );
 	}
 
@@ -363,7 +363,7 @@ class Health_Check {
 	 *
 	 * @return void
 	 */
-	static function display_notice( $message, $status = 'success' ) {
+	public static function display_notice( $message, $status = 'success' ) {
 		printf(
 			'<div class="notice notice-%s inline"><p>%s</p></div>',
 			esc_attr( $status ),
@@ -399,7 +399,7 @@ class Health_Check {
 	 *
 	 * @return bool
 	 */
-	static function get_filesystem_credentials( $args = array() ) {
+	public static function get_filesystem_credentials( $args = array() ) {
 		$args = array_merge(
 			array(
 				'page' => 'health-check',

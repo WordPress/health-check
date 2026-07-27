@@ -49,7 +49,6 @@ class Health_Check_Htaccess extends Health_Check_Tool {
 		?>
 		<?php
 	}
-
 }
 
 new Health_Check_Htaccess();

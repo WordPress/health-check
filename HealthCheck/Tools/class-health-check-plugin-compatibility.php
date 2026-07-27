@@ -24,7 +24,7 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 			array(
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'check_plugin_version' ),
-				'permission_callback' => function() {
+				'permission_callback' => function () {
 					return current_user_can( 'view_site_health_checks' );
 				},
 			)
@@ -70,7 +70,7 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		<?php
 	}
 
-	function check_plugin_version( $request ) {
+	public function check_plugin_version( $request ) {
 		if ( ! $request->has_param( 'slug' ) || ! $request->has_param( 'version' ) ) {
 			return new WP_Error( 'missing_arg', __( 'The slug, or version, is missing from the request.', 'health-check' ) );
 		}
@@ -96,7 +96,7 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		return new WP_REST_Response( $response, 200 );
 	}
 
-	function get_highest_supported_php( $slug, $version ) {
+	public function get_highest_supported_php( $slug, $version ) {
 		$versions = $this->get_supported_php( $slug, $version );
 
 		if ( empty( $versions ) ) {
@@ -114,7 +114,7 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		return $highest;
 	}
 
-	function get_supported_php( $slug, $version ) {
+	public function get_supported_php( $slug, $version ) {
 		// Clean up the slug, in case it's got more details
 		if ( stristr( $slug, '/' ) ) {
 			$parts = explode( '/', $slug );

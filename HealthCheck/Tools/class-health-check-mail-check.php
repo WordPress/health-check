@@ -111,7 +111,6 @@ class Health_Check_Mail_Check extends Health_Check_Tool {
 		wp_send_json_success( $response );
 
 		wp_die();
-
 	}
 
 	/**
