@@ -12,6 +12,14 @@ Health Check identifies common problems, and helps you troubleshoot plugin and t
 
 == Description ==
 
+**This plugin has been deprecated, and its core features included in WordPress since version 5.2**
+
+Troubleshooting Mode and Site Health Tools have been moved to their own canonical plugins:
+
+- [Troubleshooting](https://wordpress.org/plugins/troubleshooting/)
+- [Site Health Tools](https://wordpress.org/plugins/site-health-tools/)
+
+
 This plugin will perform a number of checks on your WordPress installation to detect common configuration errors and known issues, and also allows plugins and themes to add their own checks.
 
 The debug section, which allows you to gather information about your WordPress and server configuration that you may easily share with support representatives for themes, plugins or on the official WordPress.org support forums.
