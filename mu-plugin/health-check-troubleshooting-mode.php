@@ -446,7 +446,10 @@ class Health_Check_Troubleshooting_MU {
 		$slugs = array();
 
 		foreach ( $this->active_plugins as $single_plugin ) {
-			// Split up the plugin path, [0] is the slug and [1] holds the primary plugin file.
+			/*
+			 * The slug is the first segment of the plugin path. Plugins living in the
+			 * plugins directory root have no other segment, and are identified by their filename.
+			 */
 			$plugin_parts = explode( '/', $single_plugin );
 
 			$slugs[] = $plugin_parts[0];
@@ -517,7 +520,10 @@ class Health_Check_Troubleshooting_MU {
 
 		// If we've received a comma-separated list of allowed plugins, we'll add them to the array of allowed plugins.
 		if ( isset( $_GET['health-check-allowed-plugins'] ) ) {
-			$allowed_plugins = explode( ',', sanitize_text_field( wp_unslash( $_GET['health-check-allowed-plugins'] ) ) );
+			$allowed_plugins = array_map(
+				'trim',
+				explode( ',', sanitize_text_field( wp_unslash( $_GET['health-check-allowed-plugins'] ) ) )
+			);
 
 			// Discard any entry which does not hold a plausible plugin slug.
 			$this->allowed_plugins = array_values(
