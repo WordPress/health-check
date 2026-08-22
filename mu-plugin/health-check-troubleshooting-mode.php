@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Health Check Troubleshooting Mode
 	Description: Conditionally disabled themes or plugins on your site for a given session, used to rule out conflicts during troubleshooting.
-	Version: 1.9.2
+	Version: 1.9.4
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Set the MU plugin version.
-define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.9.3' );
+define( 'HEALTH_CHECK_TROUBLESHOOTING_MODE_PLUGIN_VERSION', '1.9.4' );
 
 class Health_Check_Troubleshooting_MU {
 	private $disable_hash    = null;
@@ -134,7 +134,13 @@ class Health_Check_Troubleshooting_MU {
 		$this->allowed_plugins = get_option( 'health-check-allowed-plugins', array() );
 		$this->default_theme   = ( 'yes' === get_option( 'health-check-default-theme', 'yes' ) ? true : false );
 		$this->active_plugins  = $this->get_unfiltered_plugin_list();
-		$this->current_theme   = get_option( 'health-check-current-theme', false );
+
+		/*
+		 * Discard any stored theme slug which no longer resolves to an actual theme, this
+		 * also covers entries which may have been tampered with to point elsewhere.
+		 */
+		$current_theme       = get_option( 'health-check-current-theme', false );
+		$this->current_theme = ( $this->theme_exists( $current_theme ) ? $current_theme : false );
 	}
 
 	/**
@@ -429,6 +435,47 @@ class Health_Check_Troubleshooting_MU {
 	}
 
 	/**
+	 * Get the slugs of the plugins which are active outside of Troubleshooting Mode.
+	 *
+	 * Used to validate that a user supplied plugin slug belongs to a plugin which
+	 * may actually be toggled during a Troubleshooting session.
+	 *
+	 * @return array Array of plugin slugs.
+	 */
+	private function get_active_plugin_slugs() {
+		$slugs = array();
+
+		foreach ( $this->active_plugins as $single_plugin ) {
+			// Split up the plugin path, [0] is the slug and [1] holds the primary plugin file.
+			$plugin_parts = explode( '/', $single_plugin );
+
+			$slugs[] = $plugin_parts[0];
+		}
+
+		return $slugs;
+	}
+
+	/**
+	 * Validate a user supplied plugin slug.
+	 *
+	 * @param string $plugin_slug The plugin slug to validate.
+	 *
+	 * @return bool
+	 */
+	private function is_valid_plugin_slug( $plugin_slug ) {
+		if ( ! is_string( $plugin_slug ) || '' === $plugin_slug ) {
+			return false;
+		}
+
+		// Discard any slug attempting to traverse outside of the plugins directory.
+		if ( 0 !== validate_file( $plugin_slug ) ) {
+			return false;
+		}
+
+		return in_array( $plugin_slug, $this->get_active_plugin_slugs(), true );
+	}
+
+	/**
 	 * Check if the user is currently in Troubleshooting Mode or not.
 	 *
 	 * @return bool
@@ -470,7 +517,17 @@ class Health_Check_Troubleshooting_MU {
 
 		// If we've received a comma-separated list of allowed plugins, we'll add them to the array of allowed plugins.
 		if ( isset( $_GET['health-check-allowed-plugins'] ) ) {
-			$this->allowed_plugins = explode( ',', $_GET['health-check-allowed-plugins'] );
+			$allowed_plugins = explode( ',', sanitize_text_field( wp_unslash( $_GET['health-check-allowed-plugins'] ) ) );
+
+			// Discard any entry which does not hold a plausible plugin slug.
+			$this->allowed_plugins = array_values(
+				array_filter(
+					$allowed_plugins,
+					function ( $plugin_slug ) {
+						return ( '' !== $plugin_slug && 0 === validate_file( $plugin_slug ) );
+					}
+				)
+			);
 		}
 
 		foreach ( $plugins as $plugin_no => $plugin_path ) {
@@ -510,11 +567,28 @@ class Health_Check_Troubleshooting_MU {
 	/**
 	 * Check if a theme exists by looking for the slug.
 	 *
+	 * The slug is validated before it is used as part of a path, to make sure it can not
+	 * be used to reference a location outside of the themes directory.
+	 *
 	 * @param string $theme_slug
 	 *
 	 * @return bool
 	 */
 	public function theme_exists( $theme_slug ) {
+		if ( ! is_string( $theme_slug ) || '' === $theme_slug ) {
+			return false;
+		}
+
+		// A theme slug is a directory name, and may never hold a path separator.
+		if ( false !== strpbrk( $theme_slug, '/\\' ) ) {
+			return false;
+		}
+
+		// Discard any slug attempting to traverse outside of the themes directory.
+		if ( 0 !== validate_file( $theme_slug ) ) {
+			return false;
+		}
+
 		return is_dir( WP_CONTENT_DIR . '/themes/' . $theme_slug );
 	}
 
@@ -550,6 +624,11 @@ class Health_Check_Troubleshooting_MU {
 			return $default;
 		}
 
+		// Never hand out a slug which does not belong to an actual theme.
+		if ( ! $this->theme_exists( $this->current_theme ) ) {
+			$this->current_theme = false;
+		}
+
 		if ( empty( $this->current_theme_details ) ) {
 			$this->self_fetching_theme   = true;
 			$this->current_theme_details = wp_get_theme( $this->current_theme );
@@ -583,6 +662,11 @@ class Health_Check_Troubleshooting_MU {
 
 		if ( ! $this->override_theme() ) {
 			return $default;
+		}
+
+		// Never hand out a slug which does not belong to an actual theme.
+		if ( ! $this->theme_exists( $this->current_theme ) ) {
+			$this->current_theme = false;
 		}
 
 		if ( empty( $this->current_theme_details ) ) {
@@ -765,15 +849,17 @@ class Health_Check_Troubleshooting_MU {
 
 		// Enable an individual plugin.
 		if ( isset( $_GET['health-check-troubleshoot-enable-plugin'] ) ) {
+			$enable_plugin = sanitize_text_field( wp_unslash( $_GET['health-check-troubleshoot-enable-plugin'] ) );
+
 			// Validate the cache or return early.
-			if ( ! $this->validate_action_nonce( 'health-check-troubleshoot-enable-plugin', array( $_GET['health-check-troubleshoot-enable-plugin'] ) ) ) {
+			if ( ! $this->validate_action_nonce( 'health-check-troubleshoot-enable-plugin', array( $enable_plugin ) ) ) {
 				$this->show_nonce_validator   = true;
 				$this->nonce_validator_fields = array(
 					'_wpnonce' => $this->prepare_action_nonce(
 						'health-check-troubleshoot-enable-plugin',
-						array( $_GET['health-check-troubleshoot-enable-plugin'] )
+						array( $enable_plugin )
 					),
-					'health-check-troubleshoot-enable-plugin' => implode( ',', array( $_GET['health-check-troubleshoot-enable-plugin'] ) ),
+					'health-check-troubleshoot-enable-plugin' => implode( ',', array( $enable_plugin ) ),
 				);
 
 				$this->nonce_validator_details = sprintf(
@@ -783,7 +869,7 @@ class Health_Check_Troubleshooting_MU {
 						__( 'You were attempting to <strong>enable</strong> the %s plugin while troubleshooting.', 'health-check' ),
 						sprintf(
 							'<strong>%s</strong>',
-							$_GET['health-check-troubleshoot-enable-plugin']
+							esc_html( $enable_plugin )
 						)
 					)
 				);
@@ -791,9 +877,20 @@ class Health_Check_Troubleshooting_MU {
 				return;
 			}
 
+			// Only plugins which are actually installed and active may be toggled.
+			if ( ! $this->is_valid_plugin_slug( $enable_plugin ) ) {
+				$this->add_dashboard_notice(
+					esc_html__( 'The plugin you attempted to enable could not be found, so no changes were made.', 'health-check' ),
+					'warning'
+				);
+
+				wp_redirect( remove_query_arg( $this->available_query_args ) );
+				die();
+			}
+
 			$old_allowed_plugins = $this->allowed_plugins;
 
-			$this->allowed_plugins[ $_GET['health-check-troubleshoot-enable-plugin'] ] = $_GET['health-check-troubleshoot-enable-plugin'];
+			$this->allowed_plugins[ $enable_plugin ] = $enable_plugin;
 
 			update_option( 'health-check-allowed-plugins', $this->allowed_plugins );
 
@@ -802,7 +899,7 @@ class Health_Check_Troubleshooting_MU {
 					sprintf(
 						// translators: %s: The plugin slug.
 						'The %s plugin was forcefully enabled.',
-						$_GET['health-check-troubleshoot-enable-plugin']
+						esc_html( $enable_plugin )
 					),
 					'info'
 				);
@@ -815,15 +912,15 @@ class Health_Check_Troubleshooting_MU {
 				$notice = sprintf(
 					// Translators: %1$s: The link-button markup to force enable the plugin. %2$s: The force-enable link markup.
 					__( 'When enabling the plugin, %1$s, a site failure occurred. Because of this the change was automatically reverted. %2$s', 'health-check' ),
-					$_GET['health-check-troubleshoot-enable-plugin'],
+					esc_html( $enable_plugin ),
 					sprintf(
 						'<a href="%s" aria-label="%s">%s</a>',
 						esc_url(
 							add_query_arg(
 								array(
-									'health-check-troubleshoot-enable-plugin' => $_GET['health-check-troubleshoot-enable-plugin'],
+									'health-check-troubleshoot-enable-plugin' => $enable_plugin,
 									'health-check-plugin-force-enable' => 'true',
-									'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-enable-plugin', array( $_GET['health-check-troubleshoot-enable-plugin'] ) ),
+									'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-enable-plugin', array( $enable_plugin ) ),
 								),
 								$this->get_clean_url()
 							)
@@ -832,7 +929,7 @@ class Health_Check_Troubleshooting_MU {
 							sprintf(
 								// translators: %s: Plugin name.
 								__( 'Force-enable the plugin, %s, even though the loopback checks failed.', 'health-check' ),
-								$_GET['health-check-troubleshoot-enable-plugin']
+								$enable_plugin
 							)
 						),
 						__( 'Enable anyway', 'health-check' )
@@ -851,15 +948,17 @@ class Health_Check_Troubleshooting_MU {
 
 		// Disable an individual plugin.
 		if ( isset( $_GET['health-check-troubleshoot-disable-plugin'] ) ) {
+			$disable_plugin = sanitize_text_field( wp_unslash( $_GET['health-check-troubleshoot-disable-plugin'] ) );
+
 			// Validate the cache or return early.
-			if ( ! $this->validate_action_nonce( 'health-check-troubleshoot-disable-plugin', array( $_GET['health-check-troubleshoot-disable-plugin'] ) ) ) {
+			if ( ! $this->validate_action_nonce( 'health-check-troubleshoot-disable-plugin', array( $disable_plugin ) ) ) {
 				$this->show_nonce_validator   = true;
 				$this->nonce_validator_fields = array(
 					'_wpnonce' => $this->prepare_action_nonce(
 						'health-check-troubleshoot-disable-plugin',
-						array( $_GET['health-check-troubleshoot-disable-plugin'] )
+						array( $disable_plugin )
 					),
-					'health-check-troubleshoot-disable-plugin' => implode( ',', array( $_GET['health-check-troubleshoot-disable-plugin'] ) ),
+					'health-check-troubleshoot-disable-plugin' => implode( ',', array( $disable_plugin ) ),
 				);
 
 				$this->nonce_validator_details = sprintf(
@@ -869,16 +968,28 @@ class Health_Check_Troubleshooting_MU {
 						__( 'You were attempting to <strong>disable</strong> the %s plugin while troubleshooting.', 'health-check' ),
 						sprintf(
 							'<strong>%s</strong>',
-							$_GET['health-check-troubleshoot-disable-plugin']
+							esc_html( $disable_plugin )
 						)
 					)
 				);
 
 				return;
 			}
+
+			// Only plugins which are actually installed and active may be toggled.
+			if ( ! $this->is_valid_plugin_slug( $disable_plugin ) ) {
+				$this->add_dashboard_notice(
+					esc_html__( 'The plugin you attempted to disable could not be found, so no changes were made.', 'health-check' ),
+					'warning'
+				);
+
+				wp_redirect( remove_query_arg( $this->available_query_args ) );
+				die();
+			}
+
 			$old_allowed_plugins = $this->allowed_plugins;
 
-			unset( $this->allowed_plugins[ $_GET['health-check-troubleshoot-disable-plugin'] ] );
+			unset( $this->allowed_plugins[ $disable_plugin ] );
 
 			update_option( 'health-check-allowed-plugins', $this->allowed_plugins );
 
@@ -887,7 +998,7 @@ class Health_Check_Troubleshooting_MU {
 					sprintf(
 						// translators: %s: The plugin slug.
 						'The %s plugin was forcefully disabled.',
-						$_GET['health-check-troubleshoot-disable-plugin']
+						esc_html( $disable_plugin )
 					),
 					'info'
 				);
@@ -900,15 +1011,15 @@ class Health_Check_Troubleshooting_MU {
 				$notice = sprintf(
 					// Translators: %1$s: The plugin slug that was disabled. %2$s: The force-disable link markup.
 					__( 'When disabling the plugin, %1$s, a site failure occurred. Because of this the change was automatically reverted. %2$s', 'health-check' ),
-					$_GET['health-check-troubleshoot-disable-plugin'],
+					esc_html( $disable_plugin ),
 					sprintf(
 						'<a href="%1$s" aria-label="%2$s">%3$s</a>',
 						esc_url(
 							add_query_arg(
 								array(
-									'health-check-troubleshoot-disable-plugin' => $_GET['health-check-troubleshoot-disable-plugin'],
+									'health-check-troubleshoot-disable-plugin' => $disable_plugin,
 									'health-check-plugin-force-disable' => 'true',
-									'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-disable-plugin', array( $_GET['health-check-troubleshoot-disable-plugin'] ) ),
+									'_wpnonce' => $this->prepare_action_nonce( 'health-check-troubleshoot-disable-plugin', array( $disable_plugin ) ),
 								),
 								$this->get_clean_url()
 							)
@@ -917,7 +1028,7 @@ class Health_Check_Troubleshooting_MU {
 							sprintf(
 								// translators: %s: Plugin name.
 								__( 'Force-disable the plugin, %s, even though the loopback checks failed.', 'health-check' ),
-								$_GET['health-check-troubleshoot-disable-plugin']
+								$disable_plugin
 							)
 						),
 						__( 'Disable anyway', 'health-check' )
@@ -936,15 +1047,17 @@ class Health_Check_Troubleshooting_MU {
 
 		// Change the active theme for this session.
 		if ( isset( $_GET['health-check-change-active-theme'] ) ) {
+			$requested_theme = sanitize_text_field( wp_unslash( $_GET['health-check-change-active-theme'] ) );
+
 			// Validate the cache or return early.
-			if ( ! $this->validate_action_nonce( 'health-check-change-active-theme', array( $_GET['health-check-change-active-theme'] ) ) ) {
+			if ( ! $this->validate_action_nonce( 'health-check-change-active-theme', array( $requested_theme ) ) ) {
 				$this->show_nonce_validator   = true;
 				$this->nonce_validator_fields = array(
 					'_wpnonce'                         => $this->prepare_action_nonce(
 						'health-check-change-active-theme',
-						array( $_GET['health-check-change-active-theme'] )
+						array( $requested_theme )
 					),
-					'health-check-change-active-theme' => implode( ',', array( $_GET['health-check-change-active-theme'] ) ),
+					'health-check-change-active-theme' => implode( ',', array( $requested_theme ) ),
 				);
 
 				$this->nonce_validator_details = sprintf(
@@ -954,7 +1067,7 @@ class Health_Check_Troubleshooting_MU {
 						__( 'You were attempting to <strong>change the active theme</strong> to %s while troubleshooting.', 'health-check' ),
 						sprintf(
 							'<strong>%s</strong>',
-							$_GET['health-check-change-active-theme']
+							esc_html( $requested_theme )
 						)
 					)
 				);
@@ -962,16 +1075,30 @@ class Health_Check_Troubleshooting_MU {
 				return;
 			}
 
+			/*
+			 * Only themes which actually exist may be activated, this also discards any attempt
+			 * at pointing the active theme at a location outside of the themes directory.
+			 */
+			if ( ! $this->theme_exists( $requested_theme ) ) {
+				$this->add_dashboard_notice(
+					esc_html__( 'The theme you attempted to switch to could not be found, so the theme was left unchanged.', 'health-check' ),
+					'warning'
+				);
+
+				wp_redirect( remove_query_arg( $this->available_query_args ) );
+				die();
+			}
+
 			$old_theme = get_option( 'health-check-current-theme' );
 
-			update_option( 'health-check-current-theme', $_GET['health-check-change-active-theme'] );
+			update_option( 'health-check-current-theme', $requested_theme );
 
 			if ( isset( $_GET['health-check-theme-force-switch'] ) ) {
 				$this->add_dashboard_notice(
 					sprintf(
 						// translators: %s: The theme slug.
 						'The theme was forcefully switched to %s.',
-						$_GET['health-check-change-active-theme']
+						esc_html( $requested_theme )
 					),
 					'info'
 				);
@@ -983,15 +1110,15 @@ class Health_Check_Troubleshooting_MU {
 				$notice = sprintf(
 					// Translators: %1$s: The theme slug that was switched to.. %2$s: The force-enable link markup.
 					__( 'When switching the active theme to %1$s, a site failure occurred. Because of this we reverted the theme to the one you used previously. %2$s', 'health-check' ),
-					$_GET['health-check-change-active-theme'],
+					esc_html( $requested_theme ),
 					sprintf(
 						'<a href="%s" aria-label="%s">%s</a>',
 						esc_url(
 							add_query_arg(
 								array(
-									'health-check-change-active-theme' => $_GET['health-check-change-active-theme'],
+									'health-check-change-active-theme' => $requested_theme,
 									'health-check-theme-force-switch' => 'true',
-									'_wpnonce' => $this->prepare_action_nonce( 'health-check-change-active-theme', array( $_GET['health-check-change-active-theme'] ) ),
+									'_wpnonce' => $this->prepare_action_nonce( 'health-check-change-active-theme', array( $requested_theme ) ),
 								),
 								$this->get_clean_url()
 							)
@@ -1000,7 +1127,7 @@ class Health_Check_Troubleshooting_MU {
 							sprintf(
 								// translators: %s: Plugin name.
 								__( 'Force-switch to the %s theme, even though the loopback checks failed.', 'health-check' ),
-								$_GET['health-check-change-active-theme']
+								$requested_theme
 							)
 						),
 						__( 'Switch anyway', 'health-check' )
