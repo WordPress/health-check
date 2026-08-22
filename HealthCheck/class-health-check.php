@@ -151,8 +151,18 @@ class Health_Check {
 			return;
 		}
 
+		$plugin_slug = sanitize_text_field( wp_unslash( $_GET['health-check-troubleshoot-plugin'] ) );
+
 		// Don't enable troubleshooting for an individual plugin if the nonce is missing or invalid.
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'health-check-troubleshoot-plugin-' . $_GET['health-check-troubleshoot-plugin'] ) ) {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'health-check-troubleshoot-plugin-' . $plugin_slug ) ) {
+			return;
+		}
+
+		/*
+		 * Only slugs belonging to an installed plugin are accepted, this also discards any
+		 * slug attempting to reference a location outside of the plugins directory.
+		 */
+		if ( 0 !== validate_file( $plugin_slug ) || ! in_array( $plugin_slug, $this->get_installed_plugin_slugs(), true ) ) {
 			return;
 		}
 
@@ -187,11 +197,45 @@ class Health_Check {
 
 		Health_Check_Troubleshoot::initiate_troubleshooting_mode(
 			array(
-				$_GET['health-check-troubleshoot-plugin'] => $_GET['health-check-troubleshoot-plugin'],
+				$plugin_slug => $plugin_slug,
 			)
 		);
 
 		wp_redirect( admin_url( 'plugins.php' ) );
+	}
+
+	/**
+	 * Get the slugs of every installed plugin.
+	 *
+	 * @uses function_exists()
+	 * @uses trailingslashit()
+	 * @uses get_plugins()
+	 * @uses array_keys()
+	 * @uses stristr()
+	 * @uses explode()
+	 *
+	 * @return array Array of plugin slugs.
+	 */
+	private function get_installed_plugin_slugs() {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once trailingslashit( ABSPATH ) . 'wp-admin/includes/plugin.php';
+		}
+
+		$slugs = array();
+
+		foreach ( array_keys( get_plugins() ) as $plugin_file ) {
+			// Plugins living in the plugins directory root are identified by their filename.
+			if ( ! stristr( $plugin_file, '/' ) ) {
+				$slugs[] = $plugin_file;
+				continue;
+			}
+
+			$plugin_parts = explode( '/', $plugin_file );
+
+			$slugs[] = $plugin_parts[0];
+		}
+
+		return $slugs;
 	}
 
 	/**
