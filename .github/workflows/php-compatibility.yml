@@ -25,7 +25,7 @@ jobs:
   # - Make Composer packages available globally.
   # - Logs PHP_CodeSniffer debug information.
   # - Runs the PHP compatibility tests.
-  php-comatibility:
+  php-compatibility:
     name: Check PHP compatibility
     runs-on: ubuntu-latest
     if: ${{ github.repository == 'WordPress/health-check' || github.event_name == 'pull_request' }}
